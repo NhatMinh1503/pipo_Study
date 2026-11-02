@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { FormAlert } from "@/components/common/form-alert";
+import { PlayButton } from "@/components/audio/play-button";
 import { Flashcard } from "@/components/flashcard/flashcard";
 import { Button } from "@/components/ui/button";
 import { useHotkeys } from "@/hooks/use-hotkeys";
@@ -50,6 +51,16 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
       </p>
 
       <Flashcard card={session.current} flipped={session.flipped} onFlip={session.flip} />
+      {/* Outside the card: a button cannot contain another button */}
+      {session.flipped && (
+        <div className="flex justify-center">
+          <PlayButton
+            key={session.current.id}
+            text={session.current.contextSentence ?? session.current.term}
+            language={session.current.language}
+          />
+        </div>
+      )}
 
       {session.flipped ? (
         <div className="grid grid-cols-4 gap-2" role="group" aria-label={t("rateLabel")}>

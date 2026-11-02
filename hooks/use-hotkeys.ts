@@ -17,6 +17,11 @@ export function useHotkeys(map: HotkeyMap, enabled = true) {
       target instanceof HTMLElement &&
       (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
     if (typing || event.isComposing || event.metaKey || event.ctrlKey || event.altKey) return;
+    // Space/Enter on a focused button or link already activates it; handling the shortcut
+    // too would run the action twice (e.g. flip a card and immediately flip it back)
+    const activates = event.key === " " || event.key === "Enter";
+    if (activates && target instanceof HTMLElement && target.closest("button, a, [role='button']"))
+      return;
 
     const handler = map[event.key];
     if (handler) {

@@ -185,7 +185,9 @@
       "title": "{count, plural, =0 {Xem trước} other {Xem trước · # câu}}",
       "empty": "Các câu sẽ hiện ở đây khi bạn dán đoạn văn.",
       "tooMany": "Chỉ {max} câu đầu tiên được dùng. Hãy rút ngắn đoạn văn."
-    }
+    },
+    "dictationAria": "Chép chính tả bài {title}",
+    "clozeAria": "Điền từ (Cloze) bài {title}"
   },
   "translate": {
     "sourceLabel": "Văn bản gốc",
@@ -276,7 +278,8 @@
     "editAria": "Sửa nghĩa của {term}",
     "editDescription": "Viết nghĩa theo cách bạn dễ nhớ nhất.",
     "meaning": "Nghĩa",
-    "save": "Lưu"
+    "save": "Lưu",
+    "quiz": "Luyện Quiz"
   },
   "review": {
     "remaining": "{count, plural, other {Còn # thẻ}}",
@@ -330,5 +333,70 @@
     "empty": "Vườn còn trống.",
     "emptyHint": "Hoàn thành một phiên Pomodoro để trồng cây đầu tiên.",
     "treeLabel": "Cây từ phiên {minutes} phút"
+  },
+  "audio": {
+    "play": "Nghe",
+    "stop": "Dừng",
+    "speed": "Tốc độ đọc",
+    "noVoice": "Máy chưa có giọng đọc cho ngôn ngữ này"
+  },
+  "quiz": {
+    "title": "Quiz từ vựng",
+    "description": "Luyện các từ trong Sổ tay theo 3 cách.",
+    "modeLabel": "Chế độ",
+    "mode": {
+      "choice": "Trắc nghiệm",
+      "fill": "Điền từ",
+      "match": "Ghép thẻ"
+    },
+    "progress": "Câu {current}/{total}",
+    "chooseMeaning": "Chọn nghĩa đúng",
+    "correct": "Chính xác!",
+    "wrong": "Chưa đúng",
+    "next": "Tiếp theo",
+    "check": "Kiểm tra",
+    "typeWord": "Gõ từ còn thiếu (có thể gõ cách đọc)",
+    "answerWas": "Đáp án:",
+    "matched": "Đã ghép {done}/{total}",
+    "words": "Từ",
+    "meanings": "Nghĩa",
+    "matchTime": "Thời gian {time}",
+    "resultLabel": "Kết quả",
+    "resultSummary": "Đúng {correct}/{total}",
+    "restart": "Chơi lại",
+    "notEnough": "Cần ít nhất {min} từ có nghĩa trong Sổ tay",
+    "notEnoughHint": "Hãy lưu thêm từ khi dịch bài.",
+    "toLessons": "Đến Bài học"
+  },
+  "practice": {
+    "score": "Điểm",
+    "backToLesson": "Về bài học",
+    "allLessons": "Tất cả bài học"
+  },
+  "dictation": {
+    "title": "Chép chính tả",
+    "description": "Nghe từng câu và gõ lại.",
+    "progress": "Câu {current}/{total}",
+    "placeholder": "Gõ lại câu bạn vừa nghe...",
+    "check": "Kiểm tra",
+    "next": "Câu tiếp theo",
+    "result": "Kết quả",
+    "summary": "{count, plural, other {Trung bình của # câu}}",
+    "legend": {
+      "equal": "Đúng",
+      "missing": "Thiếu",
+      "extra": "Thừa / sai"
+    }
+  },
+  "cloze": {
+    "title": "Điền từ (Cloze)",
+    "description": "Nghe và điền các từ thuộc trình độ đã chọn.",
+    "levelLabel": "Trình độ",
+    "blankLabel": "Ô trống",
+    "check": "Kiểm tra",
+    "finish": "Xem điểm",
+    "summary": "Đúng {correct}/{total} ô",
+    "noBlanks": "Không có từ nào thuộc trình độ {level} trong bài này.",
+    "noBlanksHint": "Hãy thử trình độ khác."
   }
 }

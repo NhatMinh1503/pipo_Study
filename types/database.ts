@@ -99,6 +99,41 @@ export type Database = {
           },
         ]
       }
+      cloze_sets: {
+        Row: {
+          blanks: Json
+          created_at: string
+          id: string
+          lesson_id: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          user_id: string
+        }
+        Insert: {
+          blanks?: Json
+          created_at?: string
+          id?: string
+          lesson_id: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          user_id: string
+        }
+        Update: {
+          blanks?: Json
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          level?: Database["public"]["Enums"]["proficiency_level"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cloze_sets_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dictionary_entries: {
         Row: {
           common: boolean

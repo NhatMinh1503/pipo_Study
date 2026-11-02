@@ -7,7 +7,7 @@ import { LessonProgressCard } from "@/components/lessons/lesson-progress-card";
 import { Button } from "@/components/ui/button";
 import { listLessonsWithProgress } from "@/server/queries/lessons";
 
-import { DeleteLessonButton } from "./delete-lesson-button";
+import { LessonRowActions } from "./lesson-row-actions";
 
 export async function LessonsList() {
   const [lessons, t] = await Promise.all([listLessonsWithProgress(), getTranslations("lessons")]);
@@ -33,7 +33,7 @@ export async function LessonsList() {
         <li key={lesson.id}>
           <LessonProgressCard
             lesson={lesson}
-            actions={<DeleteLessonButton lessonId={lesson.id} title={lesson.title} />}
+            actions={<LessonRowActions lessonId={lesson.id} title={lesson.title} />}
           />
         </li>
       ))}

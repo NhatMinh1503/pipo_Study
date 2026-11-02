@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { LessonWorkspace } from "@/lib/lessons/workspace";
 import { tokenizeSentence } from "@/server/nlp/tokenize";
+import { getLessonWorkspace } from "@/server/queries/lesson-workspace";
 import type { Database } from "@/types/database";
 
 /**
@@ -37,4 +38,13 @@ export async function ensureTokens(
       tokens: sentence.tokens ?? byId.get(sentence.id) ?? null,
     })),
   };
+}
+
+/** The lesson workspace with every sentence tokenized, or null if not found / not the user's. */
+export async function getTokenizedWorkspace(
+  client: SupabaseClient<Database>,
+  lessonId: string,
+): Promise<LessonWorkspace | null> {
+  const workspace = await getLessonWorkspace(client, lessonId);
+  return workspace ? ensureTokens(client, workspace) : null;
 }

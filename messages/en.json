@@ -185,7 +185,9 @@
       "title": "{count, plural, =0 {Preview} one {Preview · # sentence} other {Preview · # sentences}}",
       "empty": "Sentences appear here once you paste a passage.",
       "tooMany": "Only the first {max} sentences can be used. Please shorten the passage."
-    }
+    },
+    "dictationAria": "Dictation for {title}",
+    "clozeAria": "Cloze test for {title}"
   },
   "translate": {
     "sourceLabel": "Source text",
@@ -276,7 +278,8 @@
     "editAria": "Edit meaning of {term}",
     "editDescription": "Write the meaning in the way you remember best.",
     "meaning": "Meaning",
-    "save": "Save"
+    "save": "Save",
+    "quiz": "Practice quiz"
   },
   "review": {
     "remaining": "{count, plural, one {# card left} other {# cards left}}",
@@ -330,5 +333,70 @@
     "empty": "Your garden is empty.",
     "emptyHint": "Finish a Pomodoro session to plant your first tree.",
     "treeLabel": "Tree from a {minutes}-minute session"
+  },
+  "audio": {
+    "play": "Listen",
+    "stop": "Stop",
+    "speed": "Speaking rate",
+    "noVoice": "No voice for this language on this device"
+  },
+  "quiz": {
+    "title": "Vocabulary quiz",
+    "description": "Practise your notebook words three ways.",
+    "modeLabel": "Mode",
+    "mode": {
+      "choice": "Multiple choice",
+      "fill": "Fill in",
+      "match": "Match"
+    },
+    "progress": "Question {current}/{total}",
+    "chooseMeaning": "Pick the right meaning",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "next": "Next",
+    "check": "Check",
+    "typeWord": "Type the missing word (reading is fine)",
+    "answerWas": "Answer:",
+    "matched": "Matched {done}/{total}",
+    "words": "Words",
+    "meanings": "Meanings",
+    "matchTime": "Time {time}",
+    "resultLabel": "Result",
+    "resultSummary": "{correct} of {total} correct",
+    "restart": "Play again",
+    "notEnough": "You need at least {min} words with meanings",
+    "notEnoughHint": "Save more words while translating.",
+    "toLessons": "Go to lessons"
+  },
+  "practice": {
+    "score": "Score",
+    "backToLesson": "Back to lesson",
+    "allLessons": "All lessons"
+  },
+  "dictation": {
+    "title": "Dictation",
+    "description": "Listen to each sentence and type it.",
+    "progress": "Sentence {current}/{total}",
+    "placeholder": "Type what you heard...",
+    "check": "Check",
+    "next": "Next sentence",
+    "result": "Result",
+    "summary": "{count, plural, one {Average of # sentence} other {Average of # sentences}}",
+    "legend": {
+      "equal": "Correct",
+      "missing": "Missing",
+      "extra": "Extra / wrong"
+    }
+  },
+  "cloze": {
+    "title": "Cloze test",
+    "description": "Listen and fill in the words of the chosen level.",
+    "levelLabel": "Level",
+    "blankLabel": "Blank",
+    "check": "Check",
+    "finish": "See score",
+    "summary": "{correct} of {total} blanks correct",
+    "noBlanks": "No {level} words in this lesson.",
+    "noBlanksHint": "Try another level."
   }
 }

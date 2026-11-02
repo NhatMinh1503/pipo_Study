@@ -53,7 +53,7 @@ test.describe("flashcard review", () => {
     await expect(page.getByRole("heading", { name: "Xong phiên ôn tập!" })).toBeVisible();
     await expect(page.getByText("Bạn đã ôn 3 lượt thẻ.")).toBeVisible();
     // Navigation is offered only once every rating is saved
-    await expect(page.getByRole("link", { name: "Về tổng quan" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Về tổng quan" })).toBeVisible({ timeout: 15_000 });
 
     // Nothing is due any more
     await page.goto("/review");

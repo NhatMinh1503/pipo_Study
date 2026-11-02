@@ -154,7 +154,12 @@ export function WordPopup({ context }: { context: WordContext }) {
               {t("explain")}
             </Button>
           )}
-          <Button size="sm" className="flex-1" onClick={save} disabled={saved || isSaving}>
+          <Button
+            size="sm"
+            className="flex-1"
+            onClick={save}
+            disabled={saved || isSaving || lookup.isPending}
+          >
             {saved ? <Check aria-hidden /> : <BookmarkPlus aria-hidden />}
             {saved ? t("inNotebook") : t("save")}
           </Button>

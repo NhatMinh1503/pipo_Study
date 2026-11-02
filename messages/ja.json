@@ -185,7 +185,9 @@
       "title": "{count, plural, =0 {プレビュー} other {プレビュー · #文}}",
       "empty": "文章を貼り付けると、ここに文が表示されます。",
       "tooMany": "使えるのは最初の{max}文までです。文章を短くしてください。"
-    }
+    },
+    "dictationAria": "「{title}」のディクテーション",
+    "clozeAria": "「{title}」の穴埋め"
   },
   "translate": {
     "sourceLabel": "原文",
@@ -276,7 +278,8 @@
     "editAria": "{term}の意味を編集",
     "editDescription": "自分が覚えやすい言葉で意味を書きましょう。",
     "meaning": "意味",
-    "save": "保存"
+    "save": "保存",
+    "quiz": "クイズで練習"
   },
   "review": {
     "remaining": "残り{count}枚",
@@ -330,5 +333,70 @@
     "empty": "庭はまだ空です。",
     "emptyHint": "ポモドーロを1回完了して最初の木を植えましょう。",
     "treeLabel": "{minutes}分セッションの木"
+  },
+  "audio": {
+    "play": "聞く",
+    "stop": "止める",
+    "speed": "読み上げ速度",
+    "noVoice": "この端末にはこの言語の音声がありません"
+  },
+  "quiz": {
+    "title": "単語クイズ",
+    "description": "単語帳の単語を3つの方法で練習します。",
+    "modeLabel": "モード",
+    "mode": {
+      "choice": "選択",
+      "fill": "穴埋め",
+      "match": "マッチング"
+    },
+    "progress": "問題 {current}/{total}",
+    "chooseMeaning": "正しい意味を選ぶ",
+    "correct": "正解！",
+    "wrong": "不正解",
+    "next": "次へ",
+    "check": "判定",
+    "typeWord": "抜けている単語を入力（読みでも可）",
+    "answerWas": "正解：",
+    "matched": "{done}/{total} 組",
+    "words": "単語",
+    "meanings": "意味",
+    "matchTime": "タイム {time}",
+    "resultLabel": "結果",
+    "resultSummary": "{total}問中{correct}問正解",
+    "restart": "もう一度",
+    "notEnough": "意味のある単語が{min}語以上必要です",
+    "notEnoughHint": "翻訳しながら単語を保存しましょう。",
+    "toLessons": "レッスンへ"
+  },
+  "practice": {
+    "score": "スコア",
+    "backToLesson": "レッスンに戻る",
+    "allLessons": "すべてのレッスン"
+  },
+  "dictation": {
+    "title": "ディクテーション",
+    "description": "一文ずつ聞いて書き取りましょう。",
+    "progress": "{current}/{total}文目",
+    "placeholder": "聞こえた文を入力...",
+    "check": "判定",
+    "next": "次の文へ",
+    "result": "結果",
+    "summary": "{count}文の平均",
+    "legend": {
+      "equal": "正しい",
+      "missing": "抜け",
+      "extra": "余分 / 誤り"
+    }
+  },
+  "cloze": {
+    "title": "穴埋め（クローズ）",
+    "description": "選んだレベルの単語を聞いて埋めましょう。",
+    "levelLabel": "レベル",
+    "blankLabel": "空欄",
+    "check": "判定",
+    "finish": "スコアを見る",
+    "summary": "{total}問中{correct}問正解",
+    "noBlanks": "このレッスンには{level}の単語がありません。",
+    "noBlanksHint": "別のレベルを試してください。"
   }
 }
