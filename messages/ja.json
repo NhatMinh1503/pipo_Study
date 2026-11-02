@@ -275,5 +275,28 @@
     "editDescription": "自分が覚えやすい言葉で意味を書きましょう。",
     "meaning": "意味",
     "save": "保存"
+  },
+  "review": {
+    "remaining": "残り{count}枚",
+    "flip": "カードをめくって意味を見る",
+    "flipBack": "表に戻す",
+    "tapToFlip": "カードをタップするかSpaceキーでめくる",
+    "showAnswer": "答えを見る",
+    "noMeaning": "（意味が未入力）",
+    "rateLabel": "どのくらい覚えていましたか？",
+    "rating": {
+      "again": "もう一度",
+      "hard": "難しい",
+      "good": "正解",
+      "easy": "簡単"
+    },
+    "doneTitle": "復習完了！",
+    "doneDescription": "{count}枚を復習しました。",
+    "nothingDue": "復習するカードはありません",
+    "nothingDueHint": "新しいレッスンを翻訳して、単語帳に単語を保存しましょう。",
+    "toLessons": "レッスンを始める",
+    "toDashboard": "ダッシュボードへ",
+    "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
+    "saving": "結果を保存しています..."
   }
 }

@@ -275,5 +275,28 @@
     "editDescription": "Write the meaning in the way you remember best.",
     "meaning": "Meaning",
     "save": "Save"
+  },
+  "review": {
+    "remaining": "{count, plural, one {# card left} other {# cards left}}",
+    "flip": "Flip to see the meaning",
+    "flipBack": "Flip back to the front",
+    "tapToFlip": "Tap the card or press Space to flip",
+    "showAnswer": "Show answer",
+    "noMeaning": "(no meaning yet)",
+    "rateLabel": "How well did you remember it?",
+    "rating": {
+      "again": "Again",
+      "hard": "Hard",
+      "good": "Good",
+      "easy": "Easy"
+    },
+    "doneTitle": "Session complete!",
+    "doneDescription": "{count, plural, one {You reviewed # card.} other {You reviewed # cards.}}",
+    "nothingDue": "Nothing to review",
+    "nothingDueHint": "Translate a new lesson and save words to your notebook.",
+    "toLessons": "Start a lesson",
+    "toDashboard": "Back to dashboard",
+    "saveFailed": "Some reviews could not be saved. Please reload the page.",
+    "saving": "Saving your results..."
   }
 }

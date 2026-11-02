@@ -275,5 +275,28 @@
     "editDescription": "Viết nghĩa theo cách bạn dễ nhớ nhất.",
     "meaning": "Nghĩa",
     "save": "Lưu"
+  },
+  "review": {
+    "remaining": "{count, plural, other {Còn # thẻ}}",
+    "flip": "Lật thẻ để xem nghĩa",
+    "flipBack": "Lật lại mặt trước",
+    "tapToFlip": "Bấm vào thẻ hoặc nhấn Space để lật",
+    "showAnswer": "Xem đáp án",
+    "noMeaning": "(chưa có nghĩa)",
+    "rateLabel": "Bạn nhớ từ này thế nào?",
+    "rating": {
+      "again": "Quên",
+      "hard": "Khó",
+      "good": "Nhớ",
+      "easy": "Dễ"
+    },
+    "doneTitle": "Xong phiên ôn tập!",
+    "doneDescription": "{count, plural, other {Bạn đã ôn # lượt thẻ.}}",
+    "nothingDue": "Không có thẻ nào cần ôn",
+    "nothingDueHint": "Hãy dịch bài mới và lưu từ vào Sổ tay.",
+    "toLessons": "Học bài mới",
+    "toDashboard": "Về tổng quan",
+    "saveFailed": "Một số lượt ôn chưa lưu được. Hãy tải lại trang.",
+    "saving": "Đang lưu kết quả..."
   }
 }
