@@ -56,7 +56,7 @@ Code dùng chung đặt ở cấp cao hơn:
 ## Server vs Client
 
 - Mặc định Server Component; chỉ thêm `"use client"` khi cần state, effect, event handler, hoặc browser API.
-- Component client **không** import từ `server/`.
+- Component client **không** import từ `server/`, trừ Server Action dùng chung ở `server/actions/*.ts` (file `"use server"`, client chỉ nhận reference). Action chỉ một trang dùng → `app/.../_lib/actions.ts`.
 
 ## State
 

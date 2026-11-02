@@ -73,9 +73,12 @@ Quy tắc chi tiết theo thư mục nằm ở `.claude/rules/` (tự nạp khi 
 ```bash
 supabase start                          # Postgres/Auth/Storage/Realtime + Studio (localhost:55423), Mailpit (55424)
 npm run dev                             # Next.js (localhost:3000)
-supabase migration new <name>           # Tạo file migration
+supabase migration new <name> < /dev/null   # Tạo file migration (stdin phải đóng, nếu không lệnh sẽ chờ input)
 supabase migration up                   # Áp migration mới vào DB local
 npm run db:types                        # supabase gen types typescript --local > types/database.ts
 supabase test db                        # pgTAP: test RLS + functions
+npm run dict:import                     # Import JMdict (chạy lại sau mỗi `supabase db reset`)
 npm run lint && npm run typecheck && npm test
+npm run test:int                        # Integration test với Supabase local
+npm run test:e2e                        # Playwright: server riêng port 3100, AI giả (AI_PROVIDER=fake)
 ```

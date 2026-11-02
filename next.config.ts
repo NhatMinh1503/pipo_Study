@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 const nextConfig: NextConfig = {
   // E2E runs its own dev server next to `npm run dev`; a separate build dir avoids the dev lock
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  // kuromoji loads its dictionary from node_modules at runtime; keep it out of the bundle
+  serverExternalPackages: ["kuromoji"],
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

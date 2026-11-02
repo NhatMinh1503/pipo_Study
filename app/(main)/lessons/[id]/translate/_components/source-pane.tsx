@@ -4,6 +4,7 @@ import { CircleCheck, Lock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 
+import { TokenizedSentence } from "@/components/dictionary/tokenized-sentence";
 import type { LearningLanguage } from "@/lib/schemas/common";
 import { cn } from "@/lib/utils";
 import type { WorkspaceSentence } from "@/lib/lessons/workspace";
@@ -55,9 +56,27 @@ export function SourcePane({ sentences, language, statusOf, currentIndex }: Sour
                   )}
                 </span>
                 <div className="min-w-0 space-y-1">
-                  <p lang={language} className={cn(status === "current" ? "text-lg" : "text-base")}>
-                    {sentence.sourceText}
-                  </p>
+                  {/* Locked sentences stay plain text so the learner focuses on the current one */}
+                  {sentence.tokens && status !== "locked" ? (
+                    <TokenizedSentence
+                      tokens={sentence.tokens}
+                      language={language}
+                      className={cn(status === "current" ? "text-lg" : "text-base")}
+                      context={{
+                        language,
+                        sentence: sentence.sourceText,
+                        sentenceTranslation: sentence.referenceTranslation,
+                        sentenceId: sentence.id,
+                      }}
+                    />
+                  ) : (
+                    <p
+                      lang={language}
+                      className={cn(status === "current" ? "text-lg" : "text-base")}
+                    >
+                      {sentence.sourceText}
+                    </p>
+                  )}
                   {status === "done" && sentence.referenceTranslation && (
                     <p className="text-sm text-muted-foreground">{sentence.referenceTranslation}</p>
                   )}

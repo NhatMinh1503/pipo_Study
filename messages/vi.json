@@ -228,5 +228,52 @@
     "sentenceSummary": "{attempts, plural, other {# lần thử}} · {points} điểm",
     "newLesson": "Tạo bài mới",
     "backHome": "Về trang tổng quan"
+  },
+  "dictionary": {
+    "explain": "Giải thích (AI)",
+    "save": "Thêm vào Sổ tay",
+    "inNotebook": "Đã có trong Sổ tay",
+    "saved": "Đã thêm vào Sổ tay và tạo flashcard.",
+    "noEntry": "Chưa có trong từ điển offline. Bấm \"Giải thích\" để hỏi AI.",
+    "attribution": "Từ điển: JMdict © EDRDG (CC BY-SA 4.0)",
+    "pos": {
+      "noun": "Danh từ",
+      "verb": "Động từ",
+      "i-adjective": "Tính từ đuôi い",
+      "na-adjective": "Tính từ đuôi な",
+      "adjective": "Tính từ",
+      "adverb": "Phó từ",
+      "particle": "Trợ từ",
+      "auxiliary": "Trợ động từ",
+      "conjunction": "Liên từ",
+      "interjection": "Thán từ",
+      "prenoun": "Liên thể từ",
+      "pronoun": "Đại từ",
+      "symbol": "Ký hiệu",
+      "other": "Từ"
+    }
+  },
+  "notebook": {
+    "title": "Sổ tay",
+    "description": "Những từ bạn đã lưu, kèm câu gốc làm ví dụ.",
+    "empty": "Sổ tay đang trống.",
+    "emptyHint": "Khi dịch bài, bấm vào một từ rồi chọn \"Thêm vào Sổ tay\".",
+    "search": "Tìm theo từ, cách đọc hoặc nghĩa",
+    "filterLabel": "Lọc theo ngôn ngữ",
+    "all": "Tất cả",
+    "count": "{count, plural, other {# từ}}",
+    "noMatch": "Không có từ nào khớp.",
+    "noMeaning": "Chưa có nghĩa — bấm bút chì để thêm.",
+    "alreadySaved": "Từ này đã có trong Sổ tay.",
+    "deleted": "Đã xoá từ.",
+    "updated": "Đã lưu nghĩa.",
+    "delete": "Xoá",
+    "deleteTitle": "Xoá từ này?",
+    "deleteDescription": "\"{term}\" và flashcard của nó sẽ bị xoá.",
+    "deleteAria": "Xoá {term}",
+    "editAria": "Sửa nghĩa của {term}",
+    "editDescription": "Viết nghĩa theo cách bạn dễ nhớ nhất.",
+    "meaning": "Nghĩa",
+    "save": "Lưu"
   }
 }

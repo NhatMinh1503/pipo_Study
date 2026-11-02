@@ -18,6 +18,11 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    // CLI scripts report progress on the terminal
+    files: ["scripts/**"],
+    rules: { "no-console": "off" },
+  },
+  {
     // shadcn primitives are generated code; keep them as upstream ships them
     files: ["components/ui/**"],
     rules: { "@typescript-eslint/consistent-type-imports": "off" },

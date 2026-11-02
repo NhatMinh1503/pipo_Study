@@ -99,6 +99,30 @@ export type Database = {
           },
         ]
       }
+      dictionary_entries: {
+        Row: {
+          common: boolean
+          id: string
+          kana: string[]
+          kanji: string[]
+          senses: Json
+        }
+        Insert: {
+          common?: boolean
+          id: string
+          kana?: string[]
+          kanji?: string[]
+          senses?: Json
+        }
+        Update: {
+          common?: boolean
+          id?: string
+          kana?: string[]
+          kanji?: string[]
+          senses?: Json
+        }
+        Relationships: []
+      }
       error_logs: {
         Row: {
           attempt_id: string
@@ -316,6 +340,7 @@ export type Database = {
           position: number
           reference_translation: string | null
           source_text: string
+          tokens: Json | null
           user_id: string
         }
         Insert: {
@@ -326,6 +351,7 @@ export type Database = {
           position: number
           reference_translation?: string | null
           source_text: string
+          tokens?: Json | null
           user_id: string
         }
         Update: {
@@ -336,6 +362,7 @@ export type Database = {
           position?: number
           reference_translation?: string | null
           source_text?: string
+          tokens?: Json | null
           user_id?: string
         }
         Relationships: [
@@ -464,6 +491,42 @@ export type Database = {
           updated_at?: string
           user_id?: string
           xp?: number
+        }
+        Relationships: []
+      }
+      word_explanations: {
+        Row: {
+          created_at: string
+          display_language: Database["public"]["Enums"]["display_language"]
+          id: string
+          language: Database["public"]["Enums"]["learning_language"]
+          meaning: string
+          note: string | null
+          part_of_speech: string | null
+          reading: string
+          term: string
+        }
+        Insert: {
+          created_at?: string
+          display_language: Database["public"]["Enums"]["display_language"]
+          id?: string
+          language: Database["public"]["Enums"]["learning_language"]
+          meaning: string
+          note?: string | null
+          part_of_speech?: string | null
+          reading?: string
+          term: string
+        }
+        Update: {
+          created_at?: string
+          display_language?: Database["public"]["Enums"]["display_language"]
+          id?: string
+          language?: Database["public"]["Enums"]["learning_language"]
+          meaning?: string
+          note?: string | null
+          part_of_speech?: string | null
+          reading?: string
+          term?: string
         }
         Relationships: []
       }

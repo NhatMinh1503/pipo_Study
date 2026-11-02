@@ -15,7 +15,8 @@
     "db:types": "supabase gen types typescript --local > types/database.ts",
     "prepare": "husky",
     "test:int": "vitest run --config vitest.int.config.mts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dict:import": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-jmdict.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.1",
@@ -24,6 +25,7 @@
     "@tanstack/react-query": "^5.105.1",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.1",
+    "kuromoji": "^0.1.2",
     "lucide-react": "^1.66.0",
     "next": "16.4.3",
     "next-intl": "^4.14.9",
@@ -41,6 +43,7 @@
   "devDependencies": {
     "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
+    "@types/kuromoji": "^0.1.3",
     "@types/node": "^22.20.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",

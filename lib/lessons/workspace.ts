@@ -1,3 +1,4 @@
+import type { Token } from "@/lib/nlp/token";
 import type { LearningLanguage, ProficiencyLevel } from "@/lib/schemas/common";
 import type { Verdict } from "@/lib/schemas/translation";
 
@@ -18,6 +19,8 @@ export interface WorkspaceSentence {
   referenceTranslation: string | null;
   completed: boolean;
   attempts: WorkspaceAttempt[];
+  /** Clickable words for the dictionary popup; null until tokenized. */
+  tokens: Token[] | null;
 }
 
 export interface LessonWorkspace {

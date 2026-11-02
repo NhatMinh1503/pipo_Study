@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { SentenceAttempts } from "@/lib/scoring";
 import type { LessonWorkspace } from "@/lib/lessons/workspace";
+import { tokensSchema } from "@/lib/nlp/token";
 import type { Database } from "@/types/database";
 
 /**
@@ -17,7 +18,7 @@ export async function getLessonWorkspace(
   const { data: lesson } = await client
     .from("lessons")
     .select(
-      "id, title, language, level, completed_at, sentences(id, position, source_text, reference_translation, completed_at, attempts(verdict, feedback, hint, user_translation, created_at))",
+      "id, title, language, level, completed_at, sentences(id, position, source_text, reference_translation, completed_at, tokens, attempts(verdict, feedback, hint, user_translation, created_at))",
     )
     .eq("id", lessonId)
     .order("position", { referencedTable: "sentences" })
@@ -40,6 +41,7 @@ export async function getLessonWorkspace(
         // Never send the answer for a sentence the learner has not solved yet
         referenceTranslation: completed ? sentence.reference_translation : null,
         completed,
+        tokens: tokensSchema.safeParse(sentence.tokens).data ?? null,
         attempts: sentence.attempts.map((attempt) => ({
           verdict: attempt.verdict,
           feedback: attempt.feedback,

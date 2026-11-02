@@ -228,5 +228,52 @@
     "sentenceSummary": "{attempts, plural, one {# attempt} other {# attempts}} · {points} points",
     "newLesson": "New lesson",
     "backHome": "Back to dashboard"
+  },
+  "dictionary": {
+    "explain": "Explain (AI)",
+    "save": "Add to notebook",
+    "inNotebook": "In notebook",
+    "saved": "Added to your notebook with a flashcard.",
+    "noEntry": "Not in the offline dictionary. Tap \"Explain\" to ask the AI.",
+    "attribution": "Dictionary: JMdict © EDRDG (CC BY-SA 4.0)",
+    "pos": {
+      "noun": "Noun",
+      "verb": "Verb",
+      "i-adjective": "i-adjective",
+      "na-adjective": "na-adjective",
+      "adjective": "Adjective",
+      "adverb": "Adverb",
+      "particle": "Particle",
+      "auxiliary": "Auxiliary verb",
+      "conjunction": "Conjunction",
+      "interjection": "Interjection",
+      "prenoun": "Pre-noun adjectival",
+      "pronoun": "Pronoun",
+      "symbol": "Symbol",
+      "other": "Word"
+    }
+  },
+  "notebook": {
+    "title": "Notebook",
+    "description": "Words you saved, with the sentence they came from.",
+    "empty": "Your notebook is empty.",
+    "emptyHint": "While translating, tap a word and choose \"Add to notebook\".",
+    "search": "Search by word, reading or meaning",
+    "filterLabel": "Filter by language",
+    "all": "All",
+    "count": "{count, plural, one {# word} other {# words}}",
+    "noMatch": "No words match.",
+    "noMeaning": "No meaning yet — tap the pencil to add one.",
+    "alreadySaved": "This word is already in your notebook.",
+    "deleted": "Word deleted.",
+    "updated": "Meaning saved.",
+    "delete": "Delete",
+    "deleteTitle": "Delete this word?",
+    "deleteDescription": "\"{term}\" and its flashcard will be deleted.",
+    "deleteAria": "Delete {term}",
+    "editAria": "Edit meaning of {term}",
+    "editDescription": "Write the meaning in the way you remember best.",
+    "meaning": "Meaning",
+    "save": "Save"
   }
 }

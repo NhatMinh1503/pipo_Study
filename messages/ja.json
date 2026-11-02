@@ -228,5 +228,52 @@
     "sentenceSummary": "{attempts}回 · {points}点",
     "newLesson": "新しいレッスン",
     "backHome": "ダッシュボードへ戻る"
+  },
+  "dictionary": {
+    "explain": "AIで解説",
+    "save": "単語帳に追加",
+    "inNotebook": "単語帳に追加済み",
+    "saved": "単語帳に追加し、フラッシュカードを作成しました。",
+    "noEntry": "オフライン辞書にありません。「AIで解説」を押してください。",
+    "attribution": "辞書：JMdict © EDRDG（CC BY-SA 4.0）",
+    "pos": {
+      "noun": "名詞",
+      "verb": "動詞",
+      "i-adjective": "い形容詞",
+      "na-adjective": "な形容詞",
+      "adjective": "形容詞",
+      "adverb": "副詞",
+      "particle": "助詞",
+      "auxiliary": "助動詞",
+      "conjunction": "接続詞",
+      "interjection": "感動詞",
+      "prenoun": "連体詞",
+      "pronoun": "代名詞",
+      "symbol": "記号",
+      "other": "語"
+    }
+  },
+  "notebook": {
+    "title": "単語帳",
+    "description": "保存した単語と、その例文です。",
+    "empty": "単語帳は空です。",
+    "emptyHint": "翻訳中に単語をタップして「単語帳に追加」を選んでください。",
+    "search": "単語・読み・意味で検索",
+    "filterLabel": "言語で絞り込み",
+    "all": "すべて",
+    "count": "{count}語",
+    "noMatch": "一致する単語はありません。",
+    "noMeaning": "意味が未入力です。鉛筆アイコンから追加できます。",
+    "alreadySaved": "この単語はすでに単語帳にあります。",
+    "deleted": "単語を削除しました。",
+    "updated": "意味を保存しました。",
+    "delete": "削除",
+    "deleteTitle": "この単語を削除しますか？",
+    "deleteDescription": "「{term}」とそのフラッシュカードが削除されます。",
+    "deleteAria": "{term}を削除",
+    "editAria": "{term}の意味を編集",
+    "editDescription": "自分が覚えやすい言葉で意味を書きましょう。",
+    "meaning": "意味",
+    "save": "保存"
   }
 }
