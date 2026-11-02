@@ -55,15 +55,428 @@ export type Database = {
         }
         Relationships: []
       }
+      attempts: {
+        Row: {
+          created_at: string
+          error_tags: string[]
+          feedback: string
+          hint: string | null
+          id: string
+          sentence_id: string
+          user_id: string
+          user_translation: string
+          verdict: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Insert: {
+          created_at?: string
+          error_tags?: string[]
+          feedback?: string
+          hint?: string | null
+          id?: string
+          sentence_id: string
+          user_id: string
+          user_translation: string
+          verdict: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Update: {
+          created_at?: string
+          error_tags?: string[]
+          feedback?: string
+          hint?: string | null
+          id?: string
+          sentence_id?: string
+          user_id?: string
+          user_translation?: string
+          verdict?: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attempts_sentence_id_fkey"
+            columns: ["sentence_id"]
+            isOneToOne: false
+            referencedRelation: "sentences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      error_logs: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          id: string
+          tag: string
+          user_id: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          id?: string
+          tag: string
+          user_id: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          id?: string
+          tag?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "error_logs_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      flashcards: {
+        Row: {
+          created_at: string
+          due_date: string
+          ease: number
+          id: string
+          interval_days: number
+          lapses: number
+          last_reviewed_at: string | null
+          repetitions: number
+          user_id: string
+          vocab_item_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_date?: string
+          ease?: number
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_reviewed_at?: string | null
+          repetitions?: number
+          user_id: string
+          vocab_item_id: string
+        }
+        Update: {
+          created_at?: string
+          due_date?: string
+          ease?: number
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_reviewed_at?: string | null
+          repetitions?: number
+          user_id?: string
+          vocab_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flashcards_vocab_item_id_fkey"
+            columns: ["vocab_item_id"]
+            isOneToOne: true
+            referencedRelation: "vocab_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lessons: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          language: Database["public"]["Enums"]["learning_language"]
+          level: Database["public"]["Enums"]["proficiency_level"]
+          source: Database["public"]["Enums"]["lesson_source"]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          language: Database["public"]["Enums"]["learning_language"]
+          level: Database["public"]["Enums"]["proficiency_level"]
+          source?: Database["public"]["Enums"]["lesson_source"]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          language?: Database["public"]["Enums"]["learning_language"]
+          level?: Database["public"]["Enums"]["proficiency_level"]
+          source?: Database["public"]["Enums"]["lesson_source"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pomodoro_sessions: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          planned_minutes: number
+          started_at: string
+          status: Database["public"]["Enums"]["pomodoro_status"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          planned_minutes?: number
+          started_at?: string
+          status?: Database["public"]["Enums"]["pomodoro_status"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          planned_minutes?: number
+          started_at?: string
+          status?: Database["public"]["Enums"]["pomodoro_status"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_language: Database["public"]["Enums"]["display_language"]
+          display_name: string | null
+          learning_language:
+            | Database["public"]["Enums"]["learning_language"]
+            | null
+          level: Database["public"]["Enums"]["proficiency_level"] | null
+          onboarded_at: string | null
+          timezone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_language?: Database["public"]["Enums"]["display_language"]
+          display_name?: string | null
+          learning_language?:
+            | Database["public"]["Enums"]["learning_language"]
+            | null
+          level?: Database["public"]["Enums"]["proficiency_level"] | null
+          onboarded_at?: string | null
+          timezone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_language?: Database["public"]["Enums"]["display_language"]
+          display_name?: string | null
+          learning_language?:
+            | Database["public"]["Enums"]["learning_language"]
+            | null
+          level?: Database["public"]["Enums"]["proficiency_level"] | null
+          onboarded_at?: string | null
+          timezone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sentences: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          lesson_id: string
+          position: number
+          reference_translation: string | null
+          source_text: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          lesson_id: string
+          position: number
+          reference_translation?: string | null
+          source_text: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          position?: number
+          reference_translation?: string | null
+          source_text?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sentences_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          coins_delta: number
+          created_at: string
+          id: string
+          idempotency_key: string
+          metadata: Json
+          reason: string
+          user_id: string
+          xp_delta: number
+        }
+        Insert: {
+          coins_delta?: number
+          created_at?: string
+          id?: string
+          idempotency_key: string
+          metadata?: Json
+          reason: string
+          user_id: string
+          xp_delta?: number
+        }
+        Update: {
+          coins_delta?: number
+          created_at?: string
+          id?: string
+          idempotency_key?: string
+          metadata?: Json
+          reason?: string
+          user_id?: string
+          xp_delta?: number
+        }
+        Relationships: []
+      }
+      vocab_items: {
+        Row: {
+          context_sentence: string | null
+          context_translation: string | null
+          created_at: string
+          id: string
+          language: Database["public"]["Enums"]["learning_language"]
+          meaning: string
+          part_of_speech: string | null
+          reading: string | null
+          sentence_id: string | null
+          term: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          context_sentence?: string | null
+          context_translation?: string | null
+          created_at?: string
+          id?: string
+          language: Database["public"]["Enums"]["learning_language"]
+          meaning?: string
+          part_of_speech?: string | null
+          reading?: string | null
+          sentence_id?: string | null
+          term: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          context_sentence?: string | null
+          context_translation?: string | null
+          created_at?: string
+          id?: string
+          language?: Database["public"]["Enums"]["learning_language"]
+          meaning?: string
+          part_of_speech?: string | null
+          reading?: string | null
+          sentence_id?: string | null
+          term?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vocab_items_sentence_id_fkey"
+            columns: ["sentence_id"]
+            isOneToOne: false
+            referencedRelation: "sentences"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          coins: number
+          created_at: string
+          last_active_date: string | null
+          streak_best: number
+          streak_current: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          coins?: number
+          created_at?: string
+          last_active_date?: string | null
+          streak_best?: number
+          streak_current?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          coins?: number
+          created_at?: string
+          last_active_date?: string | null
+          streak_best?: number
+          streak_current?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      level_matches_language: {
+        Args: {
+          lang: Database["public"]["Enums"]["learning_language"]
+          lvl: Database["public"]["Enums"]["proficiency_level"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      display_language: "vi" | "en" | "ja"
+      learning_language: "ja" | "en"
+      lesson_source: "manual" | "ai" | "news"
+      pomodoro_status: "running" | "completed" | "abandoned"
+      proficiency_level:
+        | "N5"
+        | "N4"
+        | "N3"
+        | "N2"
+        | "N1"
+        | "A1"
+        | "A2"
+        | "B1"
+        | "B2"
+        | "C1"
+        | "C2"
+      translation_verdict: "exact" | "acceptable" | "incorrect"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -193,7 +606,26 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      display_language: ["vi", "en", "ja"],
+      learning_language: ["ja", "en"],
+      lesson_source: ["manual", "ai", "news"],
+      pomodoro_status: ["running", "completed", "abandoned"],
+      proficiency_level: [
+        "N5",
+        "N4",
+        "N3",
+        "N2",
+        "N1",
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2",
+      ],
+      translation_verdict: ["exact", "acceptable", "incorrect"],
+    },
   },
 } as const
 
