@@ -305,6 +305,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          accent: string | null
+          avatar_path: string | null
           created_at: string
           display_language: Database["public"]["Enums"]["display_language"]
           display_name: string | null
@@ -318,6 +320,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          accent?: string | null
+          avatar_path?: string | null
           created_at?: string
           display_language?: Database["public"]["Enums"]["display_language"]
           display_name?: string | null
@@ -331,6 +335,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          accent?: string | null
+          avatar_path?: string | null
           created_at?: string
           display_language?: Database["public"]["Enums"]["display_language"]
           display_name?: string | null
@@ -343,7 +349,41 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_accent_fkey"
+            columns: ["accent"]
+            isOneToOne: false
+            referencedRelation: "shop_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      purchases: {
+        Row: {
+          created_at: string
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "shop_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       rate_limits: {
         Row: {
@@ -409,6 +449,27 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shop_items: {
+        Row: {
+          id: string
+          kind: Database["public"]["Enums"]["shop_item_kind"]
+          price: number
+          sort_order: number
+        }
+        Insert: {
+          id: string
+          kind: Database["public"]["Enums"]["shop_item_kind"]
+          price: number
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          kind?: Database["public"]["Enums"]["shop_item_kind"]
+          price?: number
+          sort_order?: number
+        }
+        Relationships: []
       }
       transactions: {
         Row: {
@@ -571,6 +632,7 @@ export type Database = {
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      buy_item: { Args: { p_item_id: string }; Returns: number }
       complete_pomodoro: { Args: { p_session_id: string }; Returns: number }
       create_lesson: {
         Args: {
@@ -641,6 +703,7 @@ export type Database = {
         | "B2"
         | "C1"
         | "C2"
+      shop_item_kind: "theme" | "decoration" | "topic_pack"
       translation_verdict: "exact" | "acceptable" | "incorrect"
     }
     CompositeTypes: {
@@ -789,6 +852,7 @@ export const Constants = {
         "C1",
         "C2",
       ],
+      shop_item_kind: ["theme", "decoration", "topic_pack"],
       translation_verdict: ["exact", "acceptable", "incorrect"],
     },
   },

@@ -97,7 +97,9 @@
       "label": "Shortcuts",
       "analytics": "Mistake analytics",
       "quiz": "Quiz",
-      "news": "News"
+      "news": "News",
+      "skills": "Skills",
+      "shop": "Shop"
     }
   },
   "languages": {
@@ -155,7 +157,11 @@
   },
   "userMenu": {
     "open": "Open account menu",
-    "language": "Display language"
+    "language": "Display language",
+    "profile": "Profile",
+    "settings": "Settings",
+    "shop": "Shop",
+    "skills": "Skill tree"
   },
   "lessons": {
     "title": "Lessons",
@@ -341,7 +347,8 @@
     "minutes": "{count, plural, one {# min} other {# min}}",
     "empty": "Your garden is empty.",
     "emptyHint": "Finish a Pomodoro session to plant your first tree.",
-    "treeLabel": "Tree from a {minutes}-minute session"
+    "treeLabel": "Tree from a {minutes}-minute session",
+    "decorations": "Decorations"
   },
   "audio": {
     "play": "Listen",
@@ -422,7 +429,13 @@
       "food": "Food",
       "work": "Work",
       "technology": "AI technology",
-      "health": "Health"
+      "health": "Health",
+      "anime": "Anime",
+      "manga": "Manga",
+      "game": "Video games",
+      "meeting": "Meetings",
+      "email": "Work emails",
+      "interview": "Job interviews"
     }
   },
   "analytics": {
@@ -464,5 +477,123 @@
     "empty": "Could not load the news.",
     "emptyHint": "Check your connection and try again later.",
     "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher."
+  },
+  "shop": {
+    "title": "Shop",
+    "description": "Spend the coins you earn by studying on themes, garden decorations and topic packs.",
+    "balance": "Your coins",
+    "buy": "Buy",
+    "notEnough": "Not enough coins",
+    "use": "Use",
+    "stopUsing": "Stop using",
+    "owned": "Owned",
+    "bought": "Purchased!",
+    "applied": "Theme updated.",
+    "sections": {
+      "theme": "Accent colours",
+      "decoration": "Garden decorations",
+      "topic_pack": "Topic packs for AI lessons"
+    },
+    "errors": {
+      "notEnoughCoins": "Not enough coins.",
+      "alreadyOwned": "You already own this item."
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "Sakura",
+        "description": "Cherry-blossom pink."
+      },
+      "theme-matcha": {
+        "name": "Matcha",
+        "description": "Green-tea green."
+      },
+      "theme-ocean": {
+        "name": "Ocean",
+        "description": "Deep-sea blue."
+      },
+      "deco-pond": {
+        "name": "Lotus pond",
+        "description": "A small lotus pond for your garden."
+      },
+      "deco-lantern": {
+        "name": "Lantern",
+        "description": "A red lantern for the evening."
+      },
+      "deco-bench": {
+        "name": "Stone bench",
+        "description": "A place to rest between sessions."
+      },
+      "topics-anime": {
+        "name": "Anime & Games pack",
+        "description": "Adds anime, manga and game topics."
+      },
+      "topics-business": {
+        "name": "Work pack",
+        "description": "Adds meeting, email and interview topics."
+      }
+    }
+  },
+  "skills": {
+    "title": "Skill tree",
+    "description": "Reach goals to unlock the next step of each branch.",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "completed",
+      "open": "in progress",
+      "locked": "locked"
+    },
+    "branches": {
+      "translate": {
+        "title": "Translation",
+        "goal": "{count, plural, one {Complete # lesson} other {Complete # lessons}}"
+      },
+      "vocabulary": {
+        "title": "Vocabulary",
+        "goal": "{count, plural, one {Save # word} other {Save # words}}"
+      },
+      "review": {
+        "title": "Review",
+        "goal": "{count, plural, one {# card review} other {# card reviews}}"
+      },
+      "focus": {
+        "title": "Focus",
+        "goal": "{count, plural, one {# Pomodoro session} other {# Pomodoro sessions}}"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "displayName": "Display name",
+    "save": "Save",
+    "saved": "Saved.",
+    "avatarAlt": "Avatar",
+    "avatarChange": "Change photo",
+    "avatarSaved": "Avatar updated.",
+    "avatarFailed": "Could not upload the picture.",
+    "avatarType": "Only PNG, JPG or WebP images.",
+    "avatarSize": "Images up to 1 MB.",
+    "statsLabel": "Statistics",
+    "streak": "Streak",
+    "best": "Best: {count}",
+    "lessons": "Lessons done",
+    "words": "Words saved",
+    "reviews": "Reviews",
+    "focus": "Focus sessions"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Learning language, level, interface and account.",
+    "learning": "Learning",
+    "learningLanguage": "Learning language",
+    "level": "Level",
+    "displayLanguage": "Display language",
+    "timeZone": "Time zone",
+    "save": "Save settings",
+    "saved": "Settings saved.",
+    "dangerZone": "Danger zone",
+    "deleteDescription": "Deleting your account permanently removes all lessons, words, points and coins.",
+    "deleteTitle": "Delete account?",
+    "deleteConfirm": "This cannot be undone.",
+    "deleteButton": "Delete account"
   }
 }

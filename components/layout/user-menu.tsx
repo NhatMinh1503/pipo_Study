@@ -1,6 +1,7 @@
 "use client";
 
-import { Languages, LogOut, UserRound } from "lucide-react";
+import { Languages, LogOut, Network, Settings, Store, UserRound } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
@@ -9,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -19,6 +21,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DISPLAY_LANGUAGES, displayLanguageSchema } from "@/lib/schemas/common";
+
+const ACCOUNT_LINKS = [
+  { href: "/profile", key: "profile", icon: UserRound },
+  { href: "/settings", key: "settings", icon: Settings },
+  { href: "/shop", key: "shop", icon: Store },
+  { href: "/skills", key: "skills", icon: Network },
+] as const;
 
 interface UserMenuProps {
   email: string | undefined;
@@ -53,6 +62,15 @@ export function UserMenu({ email, onChangeLanguage, onSignOut }: UserMenuProps) 
         <DropdownMenuLabel className="truncate font-mono text-[0.6875rem] font-normal tracking-normal text-muted-foreground normal-case">
           {email}
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {ACCOUNT_LINKS.map(({ href, key, icon: Icon }) => (
+          <DropdownMenuItem key={href} asChild>
+            <Link href={href}>
+              <Icon aria-hidden />
+              {t(`userMenu.${key}`)}
+            </Link>
+          </DropdownMenuItem>
+        ))}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>

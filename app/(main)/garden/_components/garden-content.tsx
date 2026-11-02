@@ -6,18 +6,25 @@ import { EmptyState } from "@/components/common/empty-state";
 import { PageHeader } from "@/components/common/page-header";
 import { StatCard } from "@/components/common/stat-card";
 import { Button } from "@/components/ui/button";
+import { SHOP_ITEMS, isShopItemId } from "@/lib/shop/catalog";
 import { getGardenTrees } from "@/server/queries/garden";
+import { getOwnedItemIds } from "@/server/queries/shop";
 
 // A 50-minute session grows a bigger tree; the species varies so the garden looks alive
 const SPECIES = [TreeDeciduous, TreePine, TreePalm, Trees] as const;
 
 export async function GardenContent() {
-  const [trees, t, format] = await Promise.all([
+  const [trees, owned, t, format] = await Promise.all([
     getGardenTrees(),
+    getOwnedItemIds(),
     getTranslations("garden"),
     getFormatter(),
   ]);
   const totalMinutes = trees.reduce((sum, tree) => sum + tree.minutes, 0);
+  const decorations = owned.flatMap((id) => {
+    const item = isShopItemId(id) ? SHOP_ITEMS[id] : null;
+    return item && "emoji" in item ? [{ id, emoji: item.emoji }] : [];
+  });
 
   return (
     <>
@@ -41,6 +48,16 @@ export async function GardenContent() {
           icon={Clock}
         />
       </section>
+
+      {decorations.length > 0 && (
+        <p className="flex gap-3 text-3xl" aria-label={t("decorations")}>
+          {decorations.map((decoration) => (
+            <span key={decoration.id} role="img" aria-label={decoration.id}>
+              {decoration.emoji}
+            </span>
+          ))}
+        </p>
+      )}
 
       {trees.length === 0 ? (
         <EmptyState icon={Sprout} title={t("empty")} description={t("emptyHint")} />

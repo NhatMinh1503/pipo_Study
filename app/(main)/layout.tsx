@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { HeaderUserMenu } from "./_components/header-user-menu";
 import { OnboardedGate } from "./_components/onboarded-gate";
 import { PageSkeleton } from "./_components/page-skeleton";
+import { UserAccent } from "./_components/user-accent";
 
 // The app shell (nav, header) renders instantly; user-specific parts stream in.
 export default function MainLayout({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <ThemeToggle />
             <Suspense fallback={<Skeleton className="size-9" />}>
               <HeaderUserMenu />
+            </Suspense>
+            <Suspense fallback={null}>
+              <UserAccent />
             </Suspense>
           </header>
           {/* Bottom padding keeps content clear of the mobile tab bar */}

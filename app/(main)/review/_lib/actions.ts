@@ -6,7 +6,9 @@ import { z } from "zod";
 import type { ActionResult } from "@/lib/action-result";
 import { ratingSchema, scheduleReview } from "@/lib/srs/schedule";
 import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/server/auth";
 import { logger } from "@/server/logger";
+import { createAdminClient } from "@/server/supabase-admin";
 
 const reviewSchema = z.object({ cardId: z.uuid(), rating: ratingSchema });
 
@@ -50,6 +52,16 @@ export async function reviewFlashcard(input: unknown): Promise<ActionResult> {
     logger.error("review update failed", { code: error.code, module: "review" });
     return { ok: false, error: "errors.unexpected" };
   }
+
+  // Reviewing counts as studying today (streak) and earns 1 XP
+  const user = await requireUser();
+  await createAdminClient().rpc("wallet_apply", {
+    p_user_id: user.id,
+    p_xp_delta: 1,
+    p_coins_delta: 0,
+    p_reason: "flashcard_review",
+    p_idempotency_key: `review:${card.id}:${now.toISOString()}`,
+  });
 
   revalidatePath("/dashboard");
   return { ok: true };

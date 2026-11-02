@@ -206,3 +206,29 @@
     background-color: var(--paper-well);
   }
 }
+
+/* Accent themes bought in the shop (S23): only the accent changes, the paper stays */
+[data-accent="theme-sakura"] {
+  --primary: #a8496b;
+  --ring: #a8496b;
+}
+.dark[data-accent="theme-sakura"] {
+  --primary: #e9a3bc;
+  --ring: #e9a3bc;
+}
+[data-accent="theme-matcha"] {
+  --primary: #4d6b2f;
+  --ring: #4d6b2f;
+}
+.dark[data-accent="theme-matcha"] {
+  --primary: #a9c98a;
+  --ring: #a9c98a;
+}
+[data-accent="theme-ocean"] {
+  --primary: #1f6577;
+  --ring: #1f6577;
+}
+.dark[data-accent="theme-ocean"] {
+  --primary: #86c6d6;
+  --ring: #86c6d6;
+}

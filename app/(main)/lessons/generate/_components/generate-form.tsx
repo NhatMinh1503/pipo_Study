@@ -17,7 +17,13 @@ const topicSchema = z.object({
 
 const SUGGESTIONS = ["travel", "food", "work", "technology", "health"] as const;
 
-export function GenerateForm({ level }: { level: string }) {
+interface GenerateFormProps {
+  level: string;
+  /** Topic keys unlocked by packs bought in the shop. */
+  extraTopics?: string[];
+}
+
+export function GenerateForm({ level, extraTopics = [] }: GenerateFormProps) {
   const t = useTranslations("generate");
   const { form, onSubmit, serverError, isSubmitting } = useActionForm({
     schema: topicSchema,
@@ -37,7 +43,7 @@ export function GenerateForm({ level }: { level: string }) {
           description={t("levelNote", { level })}
         />
         <div className="flex flex-wrap gap-2" aria-label={t("suggestions")}>
-          {SUGGESTIONS.map((key) => (
+          {[...SUGGESTIONS, ...extraTopics].map((key) => (
             <button
               key={key}
               type="button"

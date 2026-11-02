@@ -97,7 +97,9 @@
       "label": "ショートカット",
       "analytics": "ミス分析",
       "quiz": "クイズ",
-      "news": "ニュース"
+      "news": "ニュース",
+      "skills": "スキル",
+      "shop": "ショップ"
     }
   },
   "languages": {
@@ -155,7 +157,11 @@
   },
   "userMenu": {
     "open": "アカウントメニューを開く",
-    "language": "表示言語"
+    "language": "表示言語",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "shop": "ショップ",
+    "skills": "スキルツリー"
   },
   "lessons": {
     "title": "レッスン",
@@ -341,7 +347,8 @@
     "minutes": "{count}分",
     "empty": "庭はまだ空です。",
     "emptyHint": "ポモドーロを1回完了して最初の木を植えましょう。",
-    "treeLabel": "{minutes}分セッションの木"
+    "treeLabel": "{minutes}分セッションの木",
+    "decorations": "飾り"
   },
   "audio": {
     "play": "聞く",
@@ -422,7 +429,13 @@
       "food": "食べ物",
       "work": "仕事",
       "technology": "AI技術",
-      "health": "健康"
+      "health": "健康",
+      "anime": "アニメ",
+      "manga": "マンガ",
+      "game": "ゲーム",
+      "meeting": "会議",
+      "email": "ビジネスメール",
+      "interview": "面接"
     }
   },
   "analytics": {
@@ -464,5 +477,123 @@
     "empty": "ニュースを読み込めませんでした。",
     "emptyHint": "接続を確認して、後でもう一度お試しください。",
     "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。"
+  },
+  "shop": {
+    "title": "ショップ",
+    "description": "学習で貯めたコインで、テーマ・庭の飾り・トピックパックを購入できます。",
+    "balance": "所持コイン",
+    "buy": "購入",
+    "notEnough": "コイン不足",
+    "use": "使う",
+    "stopUsing": "使用をやめる",
+    "owned": "所持済み",
+    "bought": "購入しました！",
+    "applied": "テーマを変更しました。",
+    "sections": {
+      "theme": "アクセントカラー",
+      "decoration": "庭の飾り",
+      "topic_pack": "AIレッスン用トピックパック"
+    },
+    "errors": {
+      "notEnoughCoins": "コインが足りません。",
+      "alreadyOwned": "すでに所持しています。"
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "桜",
+        "description": "桜色のピンク。"
+      },
+      "theme-matcha": {
+        "name": "抹茶",
+        "description": "抹茶のグリーン。"
+      },
+      "theme-ocean": {
+        "name": "オーシャン",
+        "description": "深い海のブルー。"
+      },
+      "deco-pond": {
+        "name": "蓮の池",
+        "description": "庭に小さな蓮の池を。"
+      },
+      "deco-lantern": {
+        "name": "提灯",
+        "description": "夜を照らす赤い提灯。"
+      },
+      "deco-bench": {
+        "name": "石のベンチ",
+        "description": "セッションの合間の休憩に。"
+      },
+      "topics-anime": {
+        "name": "アニメ・ゲームパック",
+        "description": "アニメ・マンガ・ゲームのトピックを追加。"
+      },
+      "topics-business": {
+        "name": "ビジネスパック",
+        "description": "会議・メール・面接のトピックを追加。"
+      }
+    }
+  },
+  "skills": {
+    "title": "スキルツリー",
+    "description": "目標を達成すると、各ブランチの次のステップが解放されます。",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "達成",
+      "open": "挑戦中",
+      "locked": "未解放"
+    },
+    "branches": {
+      "translate": {
+        "title": "翻訳",
+        "goal": "レッスンを{count}回完了"
+      },
+      "vocabulary": {
+        "title": "語彙",
+        "goal": "単語を{count}語保存"
+      },
+      "review": {
+        "title": "復習",
+        "goal": "カードを{count}回復習"
+      },
+      "focus": {
+        "title": "集中",
+        "goal": "ポモドーロ{count}回"
+      }
+    }
+  },
+  "profile": {
+    "title": "プロフィール",
+    "displayName": "表示名",
+    "save": "保存",
+    "saved": "保存しました。",
+    "avatarAlt": "プロフィール画像",
+    "avatarChange": "画像を変更",
+    "avatarSaved": "プロフィール画像を更新しました。",
+    "avatarFailed": "画像をアップロードできませんでした。",
+    "avatarType": "PNG・JPG・WebPのみ対応しています。",
+    "avatarSize": "画像は1MBまでです。",
+    "statsLabel": "統計",
+    "streak": "連続日数",
+    "best": "最高：{count}",
+    "lessons": "完了レッスン",
+    "words": "保存した単語",
+    "reviews": "復習回数",
+    "focus": "集中セッション"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "学習言語・レベル・表示・アカウント。",
+    "learning": "学習",
+    "learningLanguage": "学習言語",
+    "level": "レベル",
+    "displayLanguage": "表示言語",
+    "timeZone": "タイムゾーン",
+    "save": "設定を保存",
+    "saved": "設定を保存しました。",
+    "dangerZone": "危険な操作",
+    "deleteDescription": "アカウントを削除すると、レッスン・単語・ポイント・コインがすべて完全に削除されます。",
+    "deleteTitle": "アカウントを削除しますか？",
+    "deleteConfirm": "この操作は取り消せません。",
+    "deleteButton": "アカウントを削除"
   }
 }

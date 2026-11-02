@@ -97,7 +97,9 @@
       "label": "Lối tắt",
       "analytics": "Phân tích lỗi",
       "quiz": "Quiz",
-      "news": "Tin tức"
+      "news": "Tin tức",
+      "skills": "Kỹ năng",
+      "shop": "Cửa hàng"
     }
   },
   "languages": {
@@ -155,7 +157,11 @@
   },
   "userMenu": {
     "open": "Mở menu tài khoản",
-    "language": "Ngôn ngữ hiển thị"
+    "language": "Ngôn ngữ hiển thị",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt",
+    "shop": "Cửa hàng",
+    "skills": "Cây kỹ năng"
   },
   "lessons": {
     "title": "Bài học",
@@ -341,7 +347,8 @@
     "minutes": "{count, plural, other {# phút}}",
     "empty": "Vườn còn trống.",
     "emptyHint": "Hoàn thành một phiên Pomodoro để trồng cây đầu tiên.",
-    "treeLabel": "Cây từ phiên {minutes} phút"
+    "treeLabel": "Cây từ phiên {minutes} phút",
+    "decorations": "Đồ trang trí"
   },
   "audio": {
     "play": "Nghe",
@@ -422,7 +429,13 @@
       "food": "Ẩm thực",
       "work": "Công việc",
       "technology": "Công nghệ AI",
-      "health": "Sức khoẻ"
+      "health": "Sức khoẻ",
+      "anime": "Anime",
+      "manga": "Manga",
+      "game": "Trò chơi điện tử",
+      "meeting": "Cuộc họp",
+      "email": "Viết email công việc",
+      "interview": "Phỏng vấn xin việc"
     }
   },
   "analytics": {
@@ -464,5 +477,123 @@
     "empty": "Chưa tải được tin tức.",
     "emptyHint": "Hãy kiểm tra kết nối mạng và thử lại sau.",
     "copyrightNote": "pipo chỉ hiển thị tiêu đề và liên kết; nội dung bài báo thuộc về nhà xuất bản."
+  },
+  "shop": {
+    "title": "Cửa hàng",
+    "description": "Dùng Coins kiếm được từ học tập để mua theme, đồ trang trí vườn và gói chủ đề.",
+    "balance": "Số Coins hiện có",
+    "buy": "Mua",
+    "notEnough": "Chưa đủ Coins",
+    "use": "Dùng",
+    "stopUsing": "Bỏ dùng",
+    "owned": "Đã có",
+    "bought": "Đã mua!",
+    "applied": "Đã đổi giao diện.",
+    "sections": {
+      "theme": "Màu chủ đạo",
+      "decoration": "Trang trí Vườn tri thức",
+      "topic_pack": "Gói chủ đề cho bài AI"
+    },
+    "errors": {
+      "notEnoughCoins": "Không đủ Coins.",
+      "alreadyOwned": "Bạn đã có vật phẩm này."
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "Sakura",
+        "description": "Màu hồng hoa anh đào."
+      },
+      "theme-matcha": {
+        "name": "Matcha",
+        "description": "Màu xanh trà matcha."
+      },
+      "theme-ocean": {
+        "name": "Đại dương",
+        "description": "Màu xanh biển sâu."
+      },
+      "deco-pond": {
+        "name": "Hồ sen",
+        "description": "Một hồ sen nhỏ trong vườn."
+      },
+      "deco-lantern": {
+        "name": "Đèn lồng",
+        "description": "Đèn lồng đỏ cho buổi tối."
+      },
+      "deco-bench": {
+        "name": "Ghế đá",
+        "description": "Chỗ ngồi nghỉ giữa các phiên."
+      },
+      "topics-anime": {
+        "name": "Gói Anime & Game",
+        "description": "Thêm chủ đề anime, manga, game."
+      },
+      "topics-business": {
+        "name": "Gói Công việc",
+        "description": "Thêm chủ đề họp, email, phỏng vấn."
+      }
+    }
+  },
+  "skills": {
+    "title": "Cây kỹ năng",
+    "description": "Hoàn thành mục tiêu để mở khoá bước tiếp theo của từng nhánh.",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "đã hoàn thành",
+      "open": "đang thực hiện",
+      "locked": "chưa mở khoá"
+    },
+    "branches": {
+      "translate": {
+        "title": "Dịch bài",
+        "goal": "{count, plural, other {Hoàn thành # bài}}"
+      },
+      "vocabulary": {
+        "title": "Từ vựng",
+        "goal": "{count, plural, other {Lưu # từ}}"
+      },
+      "review": {
+        "title": "Ôn tập",
+        "goal": "{count, plural, other {Ôn # lượt thẻ}}"
+      },
+      "focus": {
+        "title": "Tập trung",
+        "goal": "{count, plural, other {# phiên Pomodoro}}"
+      }
+    }
+  },
+  "profile": {
+    "title": "Hồ sơ",
+    "displayName": "Tên hiển thị",
+    "save": "Lưu",
+    "saved": "Đã lưu.",
+    "avatarAlt": "Ảnh đại diện",
+    "avatarChange": "Đổi ảnh",
+    "avatarSaved": "Đã cập nhật ảnh đại diện.",
+    "avatarFailed": "Không tải được ảnh lên.",
+    "avatarType": "Chỉ nhận ảnh PNG, JPG hoặc WebP.",
+    "avatarSize": "Ảnh tối đa 1 MB.",
+    "statsLabel": "Thống kê",
+    "streak": "Chuỗi ngày",
+    "best": "Kỷ lục: {count}",
+    "lessons": "Bài đã xong",
+    "words": "Từ đã lưu",
+    "reviews": "Lượt ôn",
+    "focus": "Phiên tập trung"
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "description": "Ngôn ngữ học, trình độ, giao diện và tài khoản.",
+    "learning": "Học tập",
+    "learningLanguage": "Ngôn ngữ học",
+    "level": "Trình độ",
+    "displayLanguage": "Ngôn ngữ hiển thị",
+    "timeZone": "Múi giờ",
+    "save": "Lưu cài đặt",
+    "saved": "Đã lưu cài đặt.",
+    "dangerZone": "Vùng nguy hiểm",
+    "deleteDescription": "Xoá tài khoản sẽ xoá vĩnh viễn toàn bộ bài học, từ vựng, điểm và Coins.",
+    "deleteTitle": "Xoá tài khoản?",
+    "deleteConfirm": "Thao tác này không thể hoàn tác.",
+    "deleteButton": "Xoá tài khoản"
   }
 }

@@ -5,18 +5,24 @@ import { Suspense } from "react";
 import { PageContainer } from "@/components/common/page-container";
 import { PageHeader } from "@/components/common/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
+import { unlockedTopics } from "@/lib/shop/catalog";
 import { requireOnboardedProfile } from "@/server/profile";
+import { getOwnedItemIds } from "@/server/queries/shop";
 
 import { GenerateForm } from "./_components/generate-form";
 
 export const metadata: Metadata = { title: "Generate lesson" };
 
 async function GenerateContent() {
-  const [profile, t] = await Promise.all([requireOnboardedProfile(), getTranslations("generate")]);
+  const [profile, owned, t] = await Promise.all([
+    requireOnboardedProfile(),
+    getOwnedItemIds(),
+    getTranslations("generate"),
+  ]);
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
-      <GenerateForm level={profile.level ?? ""} />
+      <GenerateForm level={profile.level ?? ""} extraTopics={unlockedTopics(owned)} />
     </>
   );
 }
