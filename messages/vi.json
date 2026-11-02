@@ -92,7 +92,13 @@
     "continueTitle": "Tiếp tục bài đang học",
     "continueEmpty": "Chưa có bài nào đang học.",
     "newLesson": "Tạo bài mới",
-    "progress": "Đã dịch {done}/{total} câu"
+    "progress": "Đã dịch {done}/{total} câu",
+    "quick": {
+      "label": "Lối tắt",
+      "analytics": "Phân tích lỗi",
+      "quiz": "Quiz",
+      "news": "Tin tức"
+    }
   },
   "languages": {
     "ja": "Tiếng Nhật",
@@ -144,7 +150,8 @@
   },
   "theme": {
     "toLight": "Chuyển sang giao diện sáng",
-    "toDark": "Chuyển sang giao diện tối"
+    "toDark": "Chuyển sang giao diện tối",
+    "toggle": "Đổi giao diện sáng/tối"
   },
   "userMenu": {
     "open": "Mở menu tài khoản",
@@ -187,7 +194,9 @@
       "tooMany": "Chỉ {max} câu đầu tiên được dùng. Hãy rút ngắn đoạn văn."
     },
     "dictationAria": "Chép chính tả bài {title}",
-    "clozeAria": "Điền từ (Cloze) bài {title}"
+    "clozeAria": "Điền từ (Cloze) bài {title}",
+    "news": "Tin tức",
+    "generate": "Tạo bằng AI"
   },
   "translate": {
     "sourceLabel": "Văn bản gốc",
@@ -398,5 +407,62 @@
     "summary": "Đúng {correct}/{total} ô",
     "noBlanks": "Không có từ nào thuộc trình độ {level} trong bài này.",
     "noBlanksHint": "Hãy thử trình độ khác."
+  },
+  "generate": {
+    "title": "Tạo bài bằng AI",
+    "description": "Nhập một chủ đề, AI viết đoạn văn đúng trình độ của bạn để luyện dịch.",
+    "topic": "Chủ đề",
+    "topicPlaceholder": "VD: Công nghệ AI",
+    "levelNote": "Đoạn văn sẽ ở trình độ {level}.",
+    "suggestions": "Gợi ý chủ đề",
+    "submit": "Tạo bài",
+    "generating": "AI đang viết...",
+    "suggestion": {
+      "travel": "Du lịch",
+      "food": "Ẩm thực",
+      "work": "Công việc",
+      "technology": "Công nghệ AI",
+      "health": "Sức khoẻ"
+    }
+  },
+  "analytics": {
+    "title": "Phân tích lỗi",
+    "description": "Những lỗi AI phát hiện trong {weeks} tuần gần đây.",
+    "empty": "Chưa có lỗi nào được ghi nhận.",
+    "emptyHint": "Hãy dịch vài bài — mỗi câu sai sẽ được phân loại ở đây.",
+    "byTypeTitle": "Theo loại lỗi",
+    "byWeekTitle": "Theo tuần",
+    "barTooltip": "{label}: {count} lần",
+    "weekTooltip": "Tuần {week}: {count} lỗi",
+    "weakTitle": "3 điểm yếu nhất",
+    "times": "{count} lần",
+    "practise": "Luyện điểm yếu (3–5 phút)",
+    "generating": "AI đang soạn bài...",
+    "tags": {
+      "particle": "Trợ từ (は/が, を/に…)",
+      "verb_form": "Chia động từ",
+      "tense": "Thì",
+      "politeness": "Kính ngữ / thân mật",
+      "word_choice": "Chọn từ",
+      "word_order": "Trật tự từ",
+      "omission": "Dịch thiếu",
+      "addition": "Dịch thừa",
+      "meaning": "Sai nghĩa",
+      "grammar": "Ngữ pháp",
+      "spelling": "Chính tả",
+      "article": "Mạo từ",
+      "preposition": "Giới từ",
+      "plural": "Số ít / số nhiều",
+      "naturalness": "Độ tự nhiên"
+    }
+  },
+  "news": {
+    "title": "Tin tức hôm nay",
+    "description": "Tiêu đề mới nhất từ {source}. Mở bài gốc, chọn đoạn bạn thích rồi tạo bài luyện dịch.",
+    "read": "Đọc bài gốc",
+    "makeLesson": "Tạo bài",
+    "empty": "Chưa tải được tin tức.",
+    "emptyHint": "Hãy kiểm tra kết nối mạng và thử lại sau.",
+    "copyrightNote": "pipo chỉ hiển thị tiêu đề và liên kết; nội dung bài báo thuộc về nhà xuất bản."
   }
 }

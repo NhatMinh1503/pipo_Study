@@ -92,7 +92,13 @@
     "continueTitle": "Continue learning",
     "continueEmpty": "No lessons in progress yet.",
     "newLesson": "New lesson",
-    "progress": "Translated {done} of {total} sentences"
+    "progress": "Translated {done} of {total} sentences",
+    "quick": {
+      "label": "Shortcuts",
+      "analytics": "Mistake analytics",
+      "quiz": "Quiz",
+      "news": "News"
+    }
   },
   "languages": {
     "ja": "Japanese",
@@ -144,7 +150,8 @@
   },
   "theme": {
     "toLight": "Switch to light theme",
-    "toDark": "Switch to dark theme"
+    "toDark": "Switch to dark theme",
+    "toggle": "Toggle light/dark theme"
   },
   "userMenu": {
     "open": "Open account menu",
@@ -187,7 +194,9 @@
       "tooMany": "Only the first {max} sentences can be used. Please shorten the passage."
     },
     "dictationAria": "Dictation for {title}",
-    "clozeAria": "Cloze test for {title}"
+    "clozeAria": "Cloze test for {title}",
+    "news": "News",
+    "generate": "Generate with AI"
   },
   "translate": {
     "sourceLabel": "Source text",
@@ -398,5 +407,62 @@
     "summary": "{correct} of {total} blanks correct",
     "noBlanks": "No {level} words in this lesson.",
     "noBlanksHint": "Try another level."
+  },
+  "generate": {
+    "title": "Generate a lesson",
+    "description": "Enter a topic and the AI writes a passage at your level to translate.",
+    "topic": "Topic",
+    "topicPlaceholder": "e.g. AI technology",
+    "levelNote": "The passage will be at level {level}.",
+    "suggestions": "Topic ideas",
+    "submit": "Generate",
+    "generating": "The AI is writing...",
+    "suggestion": {
+      "travel": "Travel",
+      "food": "Food",
+      "work": "Work",
+      "technology": "AI technology",
+      "health": "Health"
+    }
+  },
+  "analytics": {
+    "title": "Mistake analytics",
+    "description": "Mistakes the AI found in the last {weeks} weeks.",
+    "empty": "No mistakes recorded yet.",
+    "emptyHint": "Translate a few lessons — every wrong answer is categorised here.",
+    "byTypeTitle": "By type",
+    "byWeekTitle": "By week",
+    "barTooltip": "{label}: {count} times",
+    "weekTooltip": "Week of {week}: {count} mistakes",
+    "weakTitle": "Top 3 weak points",
+    "times": "{count}×",
+    "practise": "Practise weak points (3–5 min)",
+    "generating": "The AI is preparing...",
+    "tags": {
+      "particle": "Particles (は/が, を/に…)",
+      "verb_form": "Verb forms",
+      "tense": "Tense",
+      "politeness": "Politeness / register",
+      "word_choice": "Word choice",
+      "word_order": "Word order",
+      "omission": "Missing meaning",
+      "addition": "Added meaning",
+      "meaning": "Wrong meaning",
+      "grammar": "Grammar",
+      "spelling": "Spelling",
+      "article": "Articles",
+      "preposition": "Prepositions",
+      "plural": "Singular / plural",
+      "naturalness": "Naturalness"
+    }
+  },
+  "news": {
+    "title": "Today's news",
+    "description": "Latest headlines from {source}. Open the article, pick a passage you like and make a lesson.",
+    "read": "Read article",
+    "makeLesson": "Make lesson",
+    "empty": "Could not load the news.",
+    "emptyHint": "Check your connection and try again later.",
+    "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher."
   }
 }

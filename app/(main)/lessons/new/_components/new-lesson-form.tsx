@@ -25,13 +25,23 @@ import { SentencePreview } from "./sentence-preview";
 interface NewLessonFormProps {
   defaultLanguage: LearningLanguage;
   defaultLevel: ProficiencyLevel;
+  defaultTitle?: string;
 }
 
-export function NewLessonForm({ defaultLanguage, defaultLevel }: NewLessonFormProps) {
+export function NewLessonForm({
+  defaultLanguage,
+  defaultLevel,
+  defaultTitle = "",
+}: NewLessonFormProps) {
   const t = useTranslations();
   const { form, onSubmit, serverError, isSubmitting } = useActionForm({
     schema: createLessonSchema,
-    defaultValues: { title: "", language: defaultLanguage, level: defaultLevel, text: "" },
+    defaultValues: {
+      title: defaultTitle,
+      language: defaultLanguage,
+      level: defaultLevel,
+      text: "",
+    },
     action: createLesson,
   });
   const { errors } = form.formState;

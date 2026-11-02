@@ -92,7 +92,13 @@
     "continueTitle": "学習を続ける",
     "continueEmpty": "進行中のレッスンはまだありません。",
     "newLesson": "新しいレッスン",
-    "progress": "{total}文中{done}文を翻訳済み"
+    "progress": "{total}文中{done}文を翻訳済み",
+    "quick": {
+      "label": "ショートカット",
+      "analytics": "ミス分析",
+      "quiz": "クイズ",
+      "news": "ニュース"
+    }
   },
   "languages": {
     "ja": "日本語",
@@ -144,7 +150,8 @@
   },
   "theme": {
     "toLight": "ライトテーマに切り替え",
-    "toDark": "ダークテーマに切り替え"
+    "toDark": "ダークテーマに切り替え",
+    "toggle": "ライト/ダークを切り替え"
   },
   "userMenu": {
     "open": "アカウントメニューを開く",
@@ -187,7 +194,9 @@
       "tooMany": "使えるのは最初の{max}文までです。文章を短くしてください。"
     },
     "dictationAria": "「{title}」のディクテーション",
-    "clozeAria": "「{title}」の穴埋め"
+    "clozeAria": "「{title}」の穴埋め",
+    "news": "ニュース",
+    "generate": "AIで作成"
   },
   "translate": {
     "sourceLabel": "原文",
@@ -398,5 +407,62 @@
     "summary": "{total}問中{correct}問正解",
     "noBlanks": "このレッスンには{level}の単語がありません。",
     "noBlanksHint": "別のレベルを試してください。"
+  },
+  "generate": {
+    "title": "AIでレッスン作成",
+    "description": "トピックを入力すると、AIがあなたのレベルに合った文章を書きます。",
+    "topic": "トピック",
+    "topicPlaceholder": "例：AI技術",
+    "levelNote": "文章のレベルは{level}です。",
+    "suggestions": "トピック例",
+    "submit": "作成する",
+    "generating": "AIが執筆中...",
+    "suggestion": {
+      "travel": "旅行",
+      "food": "食べ物",
+      "work": "仕事",
+      "technology": "AI技術",
+      "health": "健康"
+    }
+  },
+  "analytics": {
+    "title": "ミス分析",
+    "description": "直近{weeks}週間にAIが見つけたミスです。",
+    "empty": "まだミスの記録はありません。",
+    "emptyHint": "レッスンを翻訳すると、間違いがここで分類されます。",
+    "byTypeTitle": "種類別",
+    "byWeekTitle": "週別",
+    "barTooltip": "{label}：{count}回",
+    "weekTooltip": "{week}の週：{count}件",
+    "weakTitle": "苦手トップ3",
+    "times": "{count}回",
+    "practise": "苦手を練習（3〜5分）",
+    "generating": "AIが準備中...",
+    "tags": {
+      "particle": "助詞（は/が、を/に…）",
+      "verb_form": "動詞の活用",
+      "tense": "時制",
+      "politeness": "敬語 / くだけた表現",
+      "word_choice": "語の選択",
+      "word_order": "語順",
+      "omission": "訳し漏れ",
+      "addition": "余分な訳",
+      "meaning": "意味の誤り",
+      "grammar": "文法",
+      "spelling": "表記",
+      "article": "冠詞",
+      "preposition": "前置詞",
+      "plural": "単数 / 複数",
+      "naturalness": "自然さ"
+    }
+  },
+  "news": {
+    "title": "今日のニュース",
+    "description": "{source}の最新見出し。記事を開いて好きな段落を選び、レッスンを作りましょう。",
+    "read": "記事を読む",
+    "makeLesson": "レッスン作成",
+    "empty": "ニュースを読み込めませんでした。",
+    "emptyHint": "接続を確認して、後でもう一度お試しください。",
+    "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。"
   }
 }

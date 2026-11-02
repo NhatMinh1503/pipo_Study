@@ -6,6 +6,7 @@ import { StatCard } from "@/components/common/stat-card";
 import { getDashboardData } from "../_lib/get-dashboard-data";
 
 import { ContinueLessons } from "./continue-lessons";
+import { QuickLinks } from "./quick-links";
 import { ReviewDueCard } from "./review-due-card";
 
 export async function DashboardContent() {
@@ -31,6 +32,7 @@ export async function DashboardContent() {
         <ReviewDueCard count={data.dueCards} />
         <ContinueLessons lessons={data.inProgress} />
       </div>
+      <QuickLinks />
     </>
   );
 }
