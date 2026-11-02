@@ -298,5 +298,35 @@
     "toDashboard": "ダッシュボードへ",
     "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
     "saving": "結果を保存しています..."
+  },
+  "pomodoro": {
+    "ready": "準備OK",
+    "focus": "集中",
+    "break": "休憩",
+    "timeLeft": "残り時間",
+    "startMinutes": "{minutes}分スタート",
+    "giveUp": "やめる（報酬なし）",
+    "skipBreak": "休憩をスキップ",
+    "focusHint": "ページを離れても再読み込みしても大丈夫。タイマーはサーバー時刻で動きます。",
+    "idleHint": "セッションを完了すると、知識の庭に木が植えられます。",
+    "toGarden": "庭を見る",
+    "rewardToast": "セッション完了！+{coins}コイン、新しい木が植えられました。",
+    "focusDoneTitle": "集中時間が終わりました",
+    "breakDoneTitle": "休憩が終わりました",
+    "breakDoneBody": "次のセッションを始めますか？",
+    "startFailed": "セッションを開始できませんでした。もう一度お試しください。",
+    "claimFailed": "このセッションの報酬を受け取れませんでした。"
+  },
+  "garden": {
+    "title": "知識の庭",
+    "description": "集中セッションを1回完了するごとに木が1本育ちます。",
+    "plant": "木を植える",
+    "statsLabel": "庭の統計",
+    "trees": "木の数",
+    "focusTime": "集中時間",
+    "minutes": "{count}分",
+    "empty": "庭はまだ空です。",
+    "emptyHint": "ポモドーロを1回完了して最初の木を植えましょう。",
+    "treeLabel": "{minutes}分セッションの木"
   }
 }

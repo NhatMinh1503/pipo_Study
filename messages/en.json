@@ -298,5 +298,35 @@
     "toDashboard": "Back to dashboard",
     "saveFailed": "Some reviews could not be saved. Please reload the page.",
     "saving": "Saving your results..."
+  },
+  "pomodoro": {
+    "ready": "Ready",
+    "focus": "Focus",
+    "break": "Break",
+    "timeLeft": "Time left",
+    "startMinutes": "Start {minutes} min",
+    "giveUp": "Give up (no reward)",
+    "skipBreak": "Skip break",
+    "focusHint": "You can leave or reload — the timer runs on server time.",
+    "idleHint": "Finish a session to plant a tree in your Knowledge Garden.",
+    "toGarden": "See the garden",
+    "rewardToast": "Session done! +{coins} coins and a new tree.",
+    "focusDoneTitle": "Focus time is over",
+    "breakDoneTitle": "Break is over",
+    "breakDoneBody": "Ready for the next session?",
+    "startFailed": "Could not start the session. Please try again.",
+    "claimFailed": "Could not claim the reward for this session."
+  },
+  "garden": {
+    "title": "Knowledge Garden",
+    "description": "Every completed focus session grows a tree.",
+    "plant": "Plant a tree",
+    "statsLabel": "Garden stats",
+    "trees": "Trees",
+    "focusTime": "Focus time",
+    "minutes": "{count, plural, one {# min} other {# min}}",
+    "empty": "Your garden is empty.",
+    "emptyHint": "Finish a Pomodoro session to plant your first tree.",
+    "treeLabel": "Tree from a {minutes}-minute session"
   }
 }

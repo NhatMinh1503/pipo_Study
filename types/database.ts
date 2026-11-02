@@ -535,6 +535,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      complete_pomodoro: { Args: { p_session_id: string }; Returns: number }
       create_lesson: {
         Args: {
           p_language: Database["public"]["Enums"]["learning_language"]
@@ -552,9 +554,28 @@ export type Database = {
         }
         Returns: boolean
       }
+      pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
+      }
+      start_pomodoro: {
+        Args: { p_planned_minutes?: number }
+        Returns: {
+          created_at: string
+          ended_at: string | null
+          id: string
+          planned_minutes: number
+          started_at: string
+          status: Database["public"]["Enums"]["pomodoro_status"]
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "pomodoro_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       wallet_apply: {
         Args: {
