@@ -186,5 +186,47 @@
       "empty": "文章を貼り付けると、ここに文が表示されます。",
       "tooMany": "使えるのは最初の{max}文までです。文章を短くしてください。"
     }
+  },
+  "translate": {
+    "sourceLabel": "原文",
+    "feedbackLabel": "AIフィードバック",
+    "progress": "{done}/{total}文",
+    "status": {
+      "done": "翻訳済み",
+      "current": "翻訳中の文",
+      "locked": "未解放"
+    },
+    "yourTranslation": "あなたの翻訳",
+    "placeholder": "ハイライトされた文の翻訳を入力...",
+    "keyboardHint": "Enterで判定 · Shift+Enterで改行",
+    "attempts": "{count}回目の挑戦",
+    "check": "判定する",
+    "next": "次の文へ",
+    "hint": "ヒント",
+    "reference": "参考訳",
+    "verdict": {
+      "exact": "正確",
+      "acceptable": "許容範囲",
+      "incorrect": "もう一歩"
+    },
+    "allDoneTitle": "文章をすべて翻訳しました！",
+    "allDoneDescription": "報酬を受け取って結果を確認しましょう。",
+    "finish": "報酬を受け取って結果を見る",
+    "errors": {
+      "rateLimited": "今日のAI判定回数を使い切りました。また明日どうぞ。",
+      "notConfigured": "AIが設定されていません（GEMINI_API_KEY がありません）。",
+      "unavailable": "AIが混み合っていて判定できませんでした。今回はカウントされません。もう一度お試しください。",
+      "network": "接続が切れました。ネットワークを確認して再度お試しください。"
+    }
+  },
+  "result": {
+    "title": "レッスン完了",
+    "titlePerfect": "パーフェクト！すべて一回で正解",
+    "statsLabel": "結果",
+    "score": "スコア",
+    "details": "文ごとの詳細",
+    "sentenceSummary": "{attempts}回 · {points}点",
+    "newLesson": "新しいレッスン",
+    "backHome": "ダッシュボードへ戻る"
   }
 }

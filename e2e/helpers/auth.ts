@@ -45,3 +45,15 @@ export async function signOutViaMenu(page: Page) {
     .click();
   await page.getByRole("button", { name: /Đăng xuất|Sign out|ログアウト/ }).click();
 }
+
+/** Brand-new user who finished onboarding (Japanese N4, Vietnamese UI); ends on /dashboard. */
+export async function createOnboardedUser(page: Page, testInfo: TestInfo) {
+  const email = await signUpAndConfirm(page, testInfo);
+  await page.getByText("Tiếng Nhật").click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByText("N4", { exact: true }).click();
+  await page.getByRole("button", { name: "Tiếp tục" }).click();
+  await page.getByRole("button", { name: "Bắt đầu học" }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+  return email;
+}

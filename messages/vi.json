@@ -186,5 +186,47 @@
       "empty": "Các câu sẽ hiện ở đây khi bạn dán đoạn văn.",
       "tooMany": "Chỉ {max} câu đầu tiên được dùng. Hãy rút ngắn đoạn văn."
     }
+  },
+  "translate": {
+    "sourceLabel": "Văn bản gốc",
+    "feedbackLabel": "Nhận xét từ AI",
+    "progress": "{done}/{total} câu",
+    "status": {
+      "done": "Đã dịch xong",
+      "current": "Câu đang dịch",
+      "locked": "Chưa mở khoá"
+    },
+    "yourTranslation": "Bản dịch của bạn",
+    "placeholder": "Gõ bản dịch câu đang được tô sáng...",
+    "keyboardHint": "Enter để kiểm tra · Shift+Enter để xuống dòng",
+    "attempts": "Lần thử thứ {count}",
+    "check": "Kiểm tra",
+    "next": "Câu tiếp theo",
+    "hint": "Gợi ý",
+    "reference": "Bản dịch tham khảo",
+    "verdict": {
+      "exact": "Chính xác",
+      "acceptable": "Chấp nhận được",
+      "incorrect": "Chưa đúng"
+    },
+    "allDoneTitle": "Bạn đã dịch xong cả bài!",
+    "allDoneDescription": "Nhận điểm và xem tổng kết.",
+    "finish": "Nhận thưởng & xem kết quả",
+    "errors": {
+      "rateLimited": "Bạn đã dùng hết lượt chấm AI hôm nay. Hãy quay lại vào ngày mai.",
+      "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
+      "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
+      "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại."
+    }
+  },
+  "result": {
+    "title": "Hoàn thành bài học",
+    "titlePerfect": "Hoàn hảo! Đúng hết ngay lần đầu",
+    "statsLabel": "Kết quả",
+    "score": "Điểm",
+    "details": "Chi tiết từng câu",
+    "sentenceSummary": "{attempts, plural, other {# lần thử}} · {points} điểm",
+    "newLesson": "Tạo bài mới",
+    "backHome": "Về trang tổng quan"
   }
 }

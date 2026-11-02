@@ -493,6 +493,17 @@ export type Database = {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
+      wallet_apply: {
+        Args: {
+          p_coins_delta: number
+          p_idempotency_key: string
+          p_metadata?: Json
+          p_reason: string
+          p_user_id: string
+          p_xp_delta: number
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       display_language: "vi" | "en" | "ja"

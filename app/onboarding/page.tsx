@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-import { getCurrentProfile } from "@/server/profile";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { OnboardingWizard } from "./_components/onboarding-wizard";
+import { OnboardingLoader } from "./_components/onboarding-loader";
 
 export const metadata: Metadata = { title: "Onboarding" };
 
-export default async function OnboardingPage() {
-  const profile = await getCurrentProfile();
-  if (profile?.onboarded_at) redirect("/dashboard");
-
+export default function OnboardingPage() {
   return (
     <main className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center px-4 py-12">
-      <OnboardingWizard initialDisplayLanguage={profile?.display_language ?? "vi"} />
+      <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
+        <OnboardingLoader />
+      </Suspense>
     </main>
   );
 }
