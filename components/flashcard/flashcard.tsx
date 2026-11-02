@@ -28,16 +28,19 @@ export function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
       onClick={onFlip}
       aria-label={flipped ? t("flipBack") : t("flip")}
       className={cn(
-        "flex min-h-72 w-full flex-col items-center justify-center gap-6 rounded-2xl border border-border bg-card p-8 text-center transition-colors",
-        "hover:bg-muted/30 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+        "flex min-h-72 w-full flex-col items-center justify-center gap-6 border-2 border-border bg-card p-8 text-center shadow-[5px_5px_0_0_var(--shadow-ink)] transition-colors",
+        "hover:bg-muted/20 focus-visible:ring-3 focus-visible:ring-ring/40 focus-visible:outline-none",
       )}
     >
-      <div className="space-y-1">
-        <p lang={card.language} className="text-4xl font-semibold">
+      <div className="space-y-1.5">
+        <p
+          lang={card.language}
+          className="font-heading text-4xl leading-none font-bold tracking-tight"
+        >
           {card.term}
         </p>
         {showReading && (
-          <p lang="ja" className="text-lg text-muted-foreground">
+          <p lang="ja" className="text-base text-muted-foreground">
             {card.reading}
           </p>
         )}
@@ -46,17 +49,20 @@ export function Flashcard({ card, flipped, onFlip }: FlashcardProps) {
       {!flipped ? (
         <>
           {cloze && (
-            <p lang={card.language} className="text-lg text-muted-foreground">
+            <p
+              lang={card.language}
+              className="max-w-md text-lg leading-relaxed text-muted-foreground"
+            >
               {cloze.text}
             </p>
           )}
-          <p className="text-xs text-muted-foreground">{t("tapToFlip")}</p>
+          <p className="mono-label">{t("tapToFlip")}</p>
         </>
       ) : (
-        <div className="w-full space-y-4 border-t border-border pt-6">
-          <p className="text-2xl font-medium">{card.meaning || t("noMeaning")}</p>
+        <div className="w-full space-y-4 border-t border-dashed border-border/40 pt-6">
+          <p className="text-xl leading-snug font-semibold">{card.meaning || t("noMeaning")}</p>
           {card.contextSentence && (
-            <div className="space-y-1 text-sm text-muted-foreground">
+            <div className="space-y-1 text-sm leading-relaxed text-muted-foreground">
               <p lang={card.language}>{card.contextSentence}</p>
               {card.contextTranslation && <p>{card.contextTranslation}</p>}
             </div>

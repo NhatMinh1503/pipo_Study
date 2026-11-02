@@ -17,9 +17,9 @@ export default function LessonsPage() {
       </Suspense>
       <Suspense
         fallback={
-          <div className="space-y-2">
+          <div className="divide-y divide-dashed divide-border/30 border-2 border-border bg-card">
             {[0, 1, 2].map((index) => (
-              <Skeleton key={index} className="h-20 rounded-xl" />
+              <Skeleton key={index} className="h-16" />
             ))}
           </div>
         }

@@ -84,17 +84,20 @@ export function WordPopup({ context }: { context: WordContext }) {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="rounded-sm underline decoration-muted-foreground/30 decoration-dotted underline-offset-4 transition-colors hover:bg-primary/10 hover:decoration-primary focus-visible:bg-primary/10 focus-visible:outline-none"
+          className="underline decoration-muted-foreground/40 decoration-dotted underline-offset-4 transition-colors hover:bg-primary/10 hover:decoration-primary focus-visible:bg-primary/10 focus-visible:outline-none"
         >
           {token.surface}
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 space-y-3" align="start">
-        <div className="space-y-0.5">
-          <p lang={language} className="text-xl font-semibold">
+        <div className="space-y-1 border-b border-dashed border-border/40 pb-2.5">
+          <p
+            lang={language}
+            className="font-heading text-lg leading-tight font-bold tracking-tight"
+          >
             {token.base}
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="font-mono text-[0.6875rem] tracking-[0.04em] text-muted-foreground">
             {showReading && <span lang="ja">{token.reading} · </span>}
             {t(`pos.${token.pos}`)}
           </p>
@@ -105,14 +108,14 @@ export function WordPopup({ context }: { context: WordContext }) {
         ) : (
           <>
             {explanation && (
-              <div className="space-y-1 rounded-lg bg-muted/60 p-3 text-sm">
-                <p className="font-medium">{explanation.meaning}</p>
+              <div className="space-y-1 bg-muted/50 p-2.5 text-sm leading-relaxed">
+                <p className="font-semibold">{explanation.meaning}</p>
                 {explanation.note && <p className="text-muted-foreground">{explanation.note}</p>}
               </div>
             )}
             {lookup.data && lookup.data.entries.length > 0 && (
-              <div className="space-y-1">
-                <ol className="list-decimal space-y-1 pl-4 text-sm text-muted-foreground">
+              <div className="space-y-1.5">
+                <ol className="list-decimal space-y-1 pl-4 text-sm leading-relaxed text-muted-foreground">
                   {lookup.data.entries[0]?.senses.slice(0, 3).map((sense, index) => (
                     <li key={index} lang="en">
                       {sense.glosses.join("; ")}
@@ -120,16 +123,21 @@ export function WordPopup({ context }: { context: WordContext }) {
                   ))}
                 </ol>
                 {/* Required attribution for JMdict (CC BY-SA 4.0) */}
-                <p className="text-[10px] text-muted-foreground/70">{t("attribution")}</p>
+                <p className="font-mono text-[0.5625rem] leading-relaxed tracking-[0.02em] text-muted-foreground/80">
+                  {t("attribution")}
+                </p>
               </div>
             )}
             {!explanation && lookup.data?.entries.length === 0 && (
-              <p className="text-sm text-muted-foreground">{t("noEntry")}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{t("noEntry")}</p>
             )}
           </>
         )}
 
-        <p lang={language} className="border-l-2 border-border pl-2 text-xs text-muted-foreground">
+        <p
+          lang={language}
+          className="rule-dotted pt-2.5 text-xs leading-relaxed text-muted-foreground"
+        >
           {context.sentence}
         </p>
 

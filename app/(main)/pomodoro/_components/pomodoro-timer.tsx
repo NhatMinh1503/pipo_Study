@@ -20,12 +20,12 @@ export function PomodoroTimer() {
     <div className="mx-auto flex w-full max-w-md flex-col items-center gap-8">
       <ProgressRing value={phase === "idle" ? 0 : pomodoro.progress}>
         {phase === "break" ? (
-          <Coffee className="size-6 text-muted-foreground" aria-hidden />
+          <Coffee className="size-5 text-muted-foreground" aria-hidden />
         ) : (
-          <Sprout className="size-6 text-emerald-500" aria-hidden />
+          <Sprout className="size-5 text-success" aria-hidden />
         )}
         <p
-          className="font-mono text-5xl font-semibold tabular-nums"
+          className="font-heading text-5xl leading-none font-bold tracking-tight tabular-nums"
           role="timer"
           aria-label={t("timeLeft")}
         >
@@ -33,11 +33,11 @@ export function PomodoroTimer() {
             ? `${String(pomodoro.minutes).padStart(2, "0")}:00`
             : (pomodoro.clock ?? "--:--")}
         </p>
-        <p className="text-sm text-muted-foreground">{t(phase === "idle" ? "ready" : phase)}</p>
+        <p className="mono-label">{t(phase === "idle" ? "ready" : phase)}</p>
       </ProgressRing>
 
       {pomodoro.lastReward !== null && phase !== "focus" && (
-        <p className="text-sm text-emerald-600 dark:text-emerald-400" role="status">
+        <p className="mono-label text-center text-success" role="status">
           {t("rewardToast", { coins: pomodoro.lastReward })}
         </p>
       )}
@@ -74,7 +74,7 @@ export function PomodoroTimer() {
         </Button>
       )}
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="max-w-sm text-center text-sm leading-relaxed text-muted-foreground">
         {phase === "focus" ? t("focusHint") : t("idleHint")}
       </p>
 

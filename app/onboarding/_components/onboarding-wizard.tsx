@@ -52,14 +52,14 @@ export function OnboardingWizard({ initialDisplayLanguage }: OnboardingWizardPro
   }));
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground">
-          {t("stepOf", { current: stepIndex + 1, total: stepCount })}
-        </p>
+    <div className="sheet-tight space-y-7 p-6 sm:p-8">
+      <div className="space-y-3 border-b border-dashed border-border/40 pb-5">
+        <p className="mono-label">{t("stepOf", { current: stepIndex + 1, total: stepCount })}</p>
         <Progress value={((stepIndex + 1) / stepCount) * 100} aria-hidden />
-        <h1 className="text-2xl font-semibold tracking-tight">{t(`${step}.title`)}</h1>
-        <p className="text-muted-foreground">{t(`${step}.description`)}</p>
+        <h1 className="pt-1 font-heading text-xl leading-tight font-bold tracking-tight sm:text-2xl">
+          {t(`${step}.title`)}
+        </h1>
+        <p className="text-sm leading-relaxed text-muted-foreground">{t(`${step}.description`)}</p>
       </div>
 
       {step === "language" && (

@@ -21,26 +21,30 @@ export function ReviewSummary({ counts, total, isSaving = false }: ReviewSummary
   const t = useTranslations("review");
 
   return (
-    <section className="mx-auto flex w-full max-w-md flex-col items-center gap-6 rounded-2xl border border-border bg-card p-8 text-center">
-      <CircleCheck className="size-10 text-emerald-500" aria-hidden />
-      <div className="space-y-1">
-        <h2 className="text-xl font-semibold">{total > 0 ? t("doneTitle") : t("nothingDue")}</h2>
-        <p className="text-sm text-muted-foreground">
+    <section className="sheet-tight mx-auto flex w-full max-w-md flex-col items-center gap-6 p-8 text-center">
+      <span className="flex size-12 items-center justify-center border border-border/35 text-success">
+        <CircleCheck className="size-5" aria-hidden />
+      </span>
+      <div className="space-y-1.5">
+        <h2 className="font-heading text-xl leading-tight font-bold tracking-tight">
+          {total > 0 ? t("doneTitle") : t("nothingDue")}
+        </h2>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           {total > 0 ? t("doneDescription", { count: total }) : t("nothingDueHint")}
         </p>
       </div>
       {total > 0 && (
-        <dl className="grid w-full grid-cols-4 gap-2 text-sm">
+        <dl className="grid w-full grid-cols-4 divide-x divide-dashed divide-border/30 border-2 border-border">
           {RATINGS.map((rating) => (
-            <div key={rating} className="rounded-lg bg-muted/60 p-2">
-              <dt className="text-muted-foreground">{t(`rating.${rating}`)}</dt>
-              <dd className="text-lg font-semibold tabular-nums">{counts[rating]}</dd>
+            <div key={rating} className="px-1.5 py-2.5">
+              <dt className="mono-label text-[0.5625rem]">{t(`rating.${rating}`)}</dt>
+              <dd className="mono-value mt-1 text-lg font-semibold">{counts[rating]}</dd>
             </div>
           ))}
         </dl>
       )}
       {isSaving ? (
-        <p className="text-sm text-muted-foreground" role="status">
+        <p className="mono-label" role="status">
           {t("saving")}
         </p>
       ) : (

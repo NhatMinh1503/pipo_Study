@@ -23,15 +23,15 @@ export function FormAlert({ messageKey, variant = "error", className }: FormAler
     <div
       role={variant === "error" ? "alert" : "status"}
       className={cn(
-        "flex items-start gap-2 rounded-lg border p-3 text-sm",
+        "flex items-start gap-2.5 border-2 px-3 py-2.5 text-sm leading-relaxed",
         variant === "error"
-          ? "border-destructive/40 bg-destructive/10 text-destructive"
-          : "border-emerald-500/40 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+          ? "border-destructive/45 bg-destructive/[0.07] text-destructive"
+          : "border-success/40 bg-success/10 text-success",
         className,
       )}
     >
       <Icon className="mt-0.5 size-4 shrink-0" aria-hidden />
-      <p>{t(messageKey)}</p>
+      <p className="font-medium">{t(messageKey)}</p>
     </div>
   );
 }

@@ -29,10 +29,14 @@ export function SignupForm() {
   if (sentTo) {
     return (
       <div className="flex flex-col items-center gap-4 text-center" role="status">
-        <MailCheck className="size-10 text-muted-foreground" aria-hidden />
-        <div className="space-y-1">
-          <p className="font-medium">{t("checkEmail.title")}</p>
-          <p className="text-sm text-muted-foreground">
+        <span className="flex size-12 items-center justify-center border border-border/35 text-muted-foreground">
+          <MailCheck className="size-5" aria-hidden />
+        </span>
+        <div className="space-y-1.5">
+          <p className="font-heading text-base font-semibold tracking-tight">
+            {t("checkEmail.title")}
+          </p>
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {t("checkEmail.description", { email: sentTo })}
           </p>
         </div>

@@ -23,11 +23,13 @@ export function FinishPanel({ lessonId }: { lessonId: string }) {
     });
 
   return (
-    <section className="flex flex-col items-center gap-4 rounded-xl border border-border bg-card p-6 text-center">
-      <PartyPopper className="size-8 text-amber-500" aria-hidden />
-      <div className="space-y-1">
-        <p className="font-medium">{t("allDoneTitle")}</p>
-        <p className="text-sm text-muted-foreground">{t("allDoneDescription")}</p>
+    <section className="flex flex-col items-center gap-4 border-2 border-border bg-card p-6 text-center shadow-[3px_3px_0_0_var(--shadow-ink)]">
+      <span className="flex size-12 items-center justify-center border border-border/35 text-success">
+        <PartyPopper className="size-5" aria-hidden />
+      </span>
+      <div className="space-y-1.5">
+        <p className="font-heading text-base font-semibold tracking-tight">{t("allDoneTitle")}</p>
+        <p className="text-sm leading-relaxed text-muted-foreground">{t("allDoneDescription")}</p>
       </div>
       <FormAlert messageKey={error} />
       <Button onClick={finish} disabled={isPending} className="w-full sm:w-auto">

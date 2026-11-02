@@ -38,7 +38,7 @@ export function LoginForm({ next, initialError }: LoginFormProps) {
           registration={form.register("email")}
           error={errors.email}
         />
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           <TextField
             label={t("password")}
             type="password"
@@ -48,7 +48,7 @@ export function LoginForm({ next, initialError }: LoginFormProps) {
           />
           <Link
             href="/forgot-password"
-            className="block text-right text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            className="block text-right font-mono text-[0.6875rem] font-semibold tracking-[0.08em] text-primary uppercase underline decoration-dotted underline-offset-4 hover:decoration-solid"
           >
             {t("signIn.forgot")}
           </Link>

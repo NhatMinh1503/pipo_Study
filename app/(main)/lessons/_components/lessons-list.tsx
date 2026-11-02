@@ -28,7 +28,7 @@ export async function LessonsList() {
   }
 
   return (
-    <ul className="space-y-2">
+    <ul className="sheet-flat divide-y divide-dashed divide-border/30">
       {lessons.map((lesson) => (
         <li key={lesson.id}>
           <LessonProgressCard

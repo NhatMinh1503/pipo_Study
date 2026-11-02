@@ -17,10 +17,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <div className="flex flex-1">
         <AppSidebar />
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 flex h-14 items-center justify-end gap-1 border-b border-border bg-background/80 px-4 backdrop-blur">
-            <span className="mr-auto text-lg font-semibold tracking-tight md:hidden">pipo</span>
+          <header className="sticky top-0 z-30 flex h-14 items-center justify-end gap-1 border-b-2 border-border bg-background/92 px-4 backdrop-blur-sm">
+            <span className="mr-auto font-heading text-base leading-none font-bold tracking-[0.2em] uppercase md:hidden">
+              pipo
+            </span>
             <ThemeToggle />
-            <Suspense fallback={<Skeleton className="size-9 rounded-lg" />}>
+            <Suspense fallback={<Skeleton className="size-9" />}>
               <HeaderUserMenu />
             </Suspense>
           </header>

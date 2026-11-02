@@ -20,22 +20,25 @@ export function FeedbackPanel({ feedback }: { feedback: Feedback | null }) {
     <section
       aria-live="polite"
       aria-label={t("feedbackLabel")}
-      className="space-y-3 rounded-xl border border-border bg-card p-4"
+      className="space-y-3 border-2 border-border bg-card p-4 shadow-[3px_3px_0_0_var(--shadow-ink)]"
     >
-      <VerdictBadge verdict={result.verdict} />
-      <p className="text-sm">{result.feedback}</p>
+      <div className="flex items-center justify-between gap-2 border-b border-dashed border-border/40 pb-2.5">
+        <VerdictBadge verdict={result.verdict} />
+        <span className="mono-label">{t("feedbackLabel")}</span>
+      </div>
+      <p className="text-sm leading-relaxed">{result.feedback}</p>
       {result.hint && (
-        <p className="flex gap-2 rounded-lg bg-muted/60 p-3 text-sm">
-          <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber-500" aria-hidden />
+        <p className="flex gap-2 bg-warning/[0.09] px-2.5 py-2 text-sm leading-relaxed">
+          <Lightbulb className="mt-0.5 size-4 shrink-0 text-warning" aria-hidden />
           <span>
-            <span className="font-medium">{t("hint")}: </span>
+            <span className="font-semibold">{t("hint")}: </span>
             {result.hint}
           </span>
         </p>
       )}
       {result.referenceTranslation && (
-        <p className="text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{t("reference")}: </span>
+        <p className="border-t border-dashed border-border/40 pt-2.5 text-sm leading-relaxed text-muted-foreground">
+          <span className="mono-label mr-2">{t("reference")}</span>
           {result.referenceTranslation}
         </p>
       )}

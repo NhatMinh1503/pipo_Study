@@ -25,14 +25,17 @@ export function VocabCard({ item }: { item: VocabItem }) {
     });
 
   return (
-    <article className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-4">
+    <article className="flex h-full flex-col gap-3 border-2 border-border bg-card p-4">
       <header className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p lang={item.language} className="text-lg font-semibold">
+          <p
+            lang={item.language}
+            className="font-heading text-lg leading-tight font-bold tracking-tight"
+          >
             {item.term}
           </p>
           {item.reading && hasKanji(item.term) && (
-            <p lang="ja" className="text-sm text-muted-foreground">
+            <p lang="ja" className="mt-0.5 text-sm text-muted-foreground">
               {item.reading}
             </p>
           )}
@@ -41,7 +44,7 @@ export function VocabCard({ item }: { item: VocabItem }) {
           <EditMeaningDialog item={item}>
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-sm"
               aria-label={t("notebook.editAria", { term: item.term })}
             >
               <Pencil aria-hidden />
@@ -56,7 +59,7 @@ export function VocabCard({ item }: { item: VocabItem }) {
           >
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-sm"
               disabled={isDeleting}
               aria-label={t("notebook.deleteAria", { term: item.term })}
             >
@@ -65,11 +68,17 @@ export function VocabCard({ item }: { item: VocabItem }) {
           </ConfirmDialog>
         </div>
       </header>
-      <p className={item.meaning ? "text-sm" : "text-sm text-muted-foreground italic"}>
+      <p
+        className={
+          item.meaning
+            ? "text-sm leading-relaxed"
+            : "text-sm leading-relaxed text-muted-foreground italic"
+        }
+      >
         {item.meaning || t("notebook.noMeaning")}
       </p>
       {item.contextSentence && (
-        <div className="mt-auto space-y-1 border-l-2 border-border pl-3 text-xs text-muted-foreground">
+        <div className="mt-auto space-y-1 border-t border-dashed border-border/40 pt-2.5 text-xs leading-relaxed text-muted-foreground">
           <p lang={item.language}>{item.contextSentence}</p>
           {item.contextTranslation && <p>{item.contextTranslation}</p>}
         </div>

@@ -41,7 +41,7 @@ export function NotebookView({ items }: { items: VocabItem[] }) {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search
-            className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+            className="pointer-events-none absolute top-1/2 left-0 size-4 -translate-y-1/2 text-muted-foreground"
             aria-hidden
           />
           <Input
@@ -50,11 +50,12 @@ export function NotebookView({ items }: { items: VocabItem[] }) {
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t("notebook.search")}
             aria-label={t("notebook.search")}
-            className="pl-9"
+            className="pl-7"
           />
         </div>
+        {/* Index tabs: the selected language is the open drawer */}
         <div
-          className="flex gap-1 rounded-lg bg-muted p-1"
+          className="flex shrink-0 border-2 border-border bg-card"
           role="group"
           aria-label={t("notebook.filterLabel")}
         >
@@ -65,10 +66,10 @@ export function NotebookView({ items }: { items: VocabItem[] }) {
               aria-pressed={language === value}
               onClick={() => setLanguage(value)}
               className={cn(
-                "rounded-md px-3 py-1 text-sm transition-colors",
+                "border-r border-dashed border-border/35 px-3 py-2 font-mono text-[0.625rem] font-semibold tracking-[0.1em] uppercase transition-colors last:border-r-0 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none",
                 language === value
-                  ? "bg-background font-medium shadow-sm"
-                  : "text-muted-foreground",
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
               )}
             >
               {value === "all" ? t("notebook.all") : t(`languages.${value}`)}
@@ -77,9 +78,7 @@ export function NotebookView({ items }: { items: VocabItem[] }) {
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground">
-        {t("notebook.count", { count: visible.length })}
-      </p>
+      <p className="mono-label">{t("notebook.count", { count: visible.length })}</p>
 
       {visible.length === 0 ? (
         <EmptyState icon={Search} title={t("notebook.noMatch")} />

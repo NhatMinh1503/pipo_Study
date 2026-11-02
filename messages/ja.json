@@ -224,6 +224,8 @@
     "titlePerfect": "パーフェクト！すべて一回で正解",
     "statsLabel": "結果",
     "score": "スコア",
+    "xp": "XP",
+    "coins": "コイン",
     "details": "文ごとの詳細",
     "sentenceSummary": "{attempts}回 · {points}点",
     "newLesson": "新しいレッスン",

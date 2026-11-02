@@ -11,7 +11,10 @@ export function AuthFooterLink({ prompt, href, label }: AuthFooterLinkProps) {
   return (
     <p>
       {prompt}{" "}
-      <Link href={href} className="font-medium text-foreground underline-offset-4 hover:underline">
+      <Link
+        href={href}
+        className="font-mono text-[0.75rem] font-semibold tracking-[0.04em] text-primary underline decoration-dotted underline-offset-4 hover:decoration-solid"
+      >
         {label}
       </Link>
     </p>

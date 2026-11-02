@@ -224,6 +224,8 @@
     "titlePerfect": "Hoàn hảo! Đúng hết ngay lần đầu",
     "statsLabel": "Kết quả",
     "score": "Điểm",
+    "xp": "XP",
+    "coins": "Coins",
     "details": "Chi tiết từng câu",
     "sentenceSummary": "{attempts, plural, other {# lần thử}} · {points} điểm",
     "newLesson": "Tạo bài mới",

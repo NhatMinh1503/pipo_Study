@@ -23,7 +23,7 @@ interface ChoiceGroupProps<TValue extends string> {
 }
 
 /**
- * Single-choice list rendered as selectable cards. Built on native radio inputs,
+ * Single-choice list rendered as selectable rows. Built on native radio inputs,
  * so arrow keys, focus and screen readers work without extra code.
  */
 export function ChoiceGroup<TValue extends string>({
@@ -37,16 +37,18 @@ export function ChoiceGroup<TValue extends string>({
   return (
     <fieldset>
       <legend className="sr-only">{legend}</legend>
-      <div className={cn("grid gap-3", columns === 2 && "sm:grid-cols-2")}>
+      <div className={cn("grid gap-2.5", columns === 2 && "sm:grid-cols-2")}>
         {choices.map((choice) => {
           const checked = choice.value === value;
           return (
             <label
               key={choice.value}
               className={cn(
-                "group flex cursor-pointer items-center gap-4 rounded-xl border p-4 transition-colors",
-                "has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50",
-                checked ? "border-primary bg-primary/5" : "border-border hover:bg-muted/50",
+                "group flex cursor-pointer items-center gap-3 border-2 px-3.5 py-3 transition-colors",
+                "has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/40",
+                checked
+                  ? "border-primary bg-primary/[0.06]"
+                  : "border-border/30 hover:border-border/70 hover:bg-muted/40",
               )}
             >
               <input
@@ -58,23 +60,29 @@ export function ChoiceGroup<TValue extends string>({
                 className="sr-only"
               />
               {choice.badge && (
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-sm font-semibold">
+                <span className="flex h-8 min-w-8 shrink-0 items-center justify-center border border-border/40 bg-muted/60 px-1.5 font-mono text-xs font-semibold tracking-[0.06em]">
                   {choice.badge}
                 </span>
               )}
               <span className="flex-1 space-y-0.5">
-                <span className="block font-medium">{choice.label}</span>
+                <span className="block text-sm font-semibold">{choice.label}</span>
                 {choice.description && (
-                  <span className="block text-sm text-muted-foreground">{choice.description}</span>
+                  <span className="block text-[0.8125rem] leading-snug text-muted-foreground">
+                    {choice.description}
+                  </span>
                 )}
               </span>
-              <Check
-                className={cn(
-                  "size-5 text-primary transition-opacity",
-                  checked ? "opacity-100" : "opacity-0",
-                )}
+              <span
                 aria-hidden
-              />
+                className={cn(
+                  "flex size-5 shrink-0 items-center justify-center border-2 transition-colors",
+                  checked
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border/35 text-transparent",
+                )}
+              >
+                <Check className="size-3.5" strokeWidth={3} />
+              </span>
             </label>
           );
         })}

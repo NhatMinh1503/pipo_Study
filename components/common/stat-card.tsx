@@ -8,16 +8,21 @@ interface StatCardProps {
   hint?: string;
 }
 
-/** Single metric tile used on the dashboard and profile. */
+/**
+ * One cell of a ledger strip: no box of its own, just an ink rule and the
+ * figure. The parent places several cells in a single ruled container.
+ */
 export function StatCard({ label, value, icon: Icon, hint }: StatCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>{label}</span>
-        <Icon className="size-4" aria-hidden />
+    <div className="flex flex-col gap-2 px-4 py-4">
+      <div className="flex items-center gap-1.5 text-muted-foreground">
+        <Icon className="size-3.5 shrink-0" aria-hidden />
+        <span className="mono-label">{label}</span>
       </div>
-      <p className="mt-2 text-2xl font-semibold tabular-nums">{value}</p>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      <p className="mono-value text-2xl leading-none font-semibold text-foreground sm:text-[1.75rem]">
+        {value}
+      </p>
+      {hint && <p className="text-xs leading-snug text-muted-foreground">{hint}</p>}
     </div>
   );
 }

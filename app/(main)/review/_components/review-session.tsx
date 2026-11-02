@@ -15,10 +15,10 @@ import { useReviewSession } from "../_hooks/use-review-session";
 import { ReviewSummary } from "./review-summary";
 
 const RATING_STYLES: Record<Rating, string> = {
-  again: "border-destructive/40 text-destructive hover:bg-destructive/10",
-  hard: "border-amber-500/40 text-amber-700 hover:bg-amber-500/10 dark:text-amber-400",
-  good: "border-emerald-500/40 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400",
-  easy: "border-sky-500/40 text-sky-700 hover:bg-sky-500/10 dark:text-sky-400",
+  again: "border-destructive/50 text-destructive hover:bg-destructive/[0.08]",
+  hard: "border-warning/50 text-warning hover:bg-warning/[0.08]",
+  good: "border-success/50 text-success hover:bg-success/[0.08]",
+  easy: "border-primary/50 text-primary hover:bg-primary/[0.08]",
 };
 
 /** Review screen: Space flips the card, keys 1–4 rate it (Again / Hard / Good / Easy). */
@@ -45,7 +45,7 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-6">
-      <p className="text-center text-sm text-muted-foreground" aria-live="polite">
+      <p className="mono-label text-center" aria-live="polite">
         {t("remaining", { count: session.remaining })}
       </p>
 
@@ -58,16 +58,21 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
               key={rating}
               variant="outline"
               onClick={() => session.rate(rating)}
-              className={cn("h-auto flex-col gap-0.5 py-3", RATING_STYLES[rating])}
+              className={cn("h-auto flex-col gap-1 px-1 py-2.5", RATING_STYLES[rating])}
             >
-              <span className="font-medium">{t(`rating.${rating}`)}</span>
-              <kbd className="text-[10px] text-muted-foreground">{index + 1}</kbd>
+              <span className="text-[0.75rem] font-semibold">{t(`rating.${rating}`)}</span>
+              <kbd className="border border-border/40 px-1 font-mono text-[0.5625rem] leading-4 text-muted-foreground">
+                {index + 1}
+              </kbd>
             </Button>
           ))}
         </div>
       ) : (
         <Button className="w-full" size="lg" onClick={session.flip}>
-          {t("showAnswer")} <kbd className="ml-1 text-xs opacity-70">Space</kbd>
+          {t("showAnswer")}
+          <kbd className="border border-primary-foreground/40 px-1 font-mono text-[0.625rem] leading-4">
+            Space
+          </kbd>
         </Button>
       )}
 

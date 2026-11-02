@@ -8,7 +8,7 @@ interface ProgressRingProps {
 }
 
 const SIZE = 280;
-const STROKE = 10;
+const STROKE = 8;
 const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
@@ -23,7 +23,7 @@ export function ProgressRing({ value, className, children }: ProgressRingProps) 
           r={RADIUS}
           fill="none"
           strokeWidth={STROKE}
-          className="stroke-muted"
+          className="stroke-border/20"
         />
         <circle
           cx={SIZE / 2}
@@ -31,13 +31,13 @@ export function ProgressRing({ value, className, children }: ProgressRingProps) 
           r={RADIUS}
           fill="none"
           strokeWidth={STROKE}
-          strokeLinecap="round"
+          strokeLinecap="butt"
           strokeDasharray={CIRCUMFERENCE}
           strokeDashoffset={CIRCUMFERENCE * (1 - Math.min(1, Math.max(0, value)))}
           className="stroke-primary transition-[stroke-dashoffset] duration-1000 ease-linear"
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
         {children}
       </div>
     </div>

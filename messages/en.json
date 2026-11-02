@@ -224,6 +224,8 @@
     "titlePerfect": "Perfect! All correct on the first try",
     "statsLabel": "Results",
     "score": "Score",
+    "xp": "XP",
+    "coins": "Coins",
     "details": "Sentence details",
     "sentenceSummary": "{attempts, plural, one {# attempt} other {# attempts}} · {points} points",
     "newLesson": "New lesson",

@@ -13,7 +13,11 @@ export async function DashboardContent() {
 
   return (
     <>
-      <section aria-label={t("statsLabel")} className="grid grid-cols-3 gap-3">
+      {/* One ruled strip, three figures — not three separate tiles */}
+      <section
+        aria-label={t("statsLabel")}
+        className="sheet-flat grid grid-cols-3 divide-x divide-dashed divide-border/30"
+      >
         <StatCard label={t("xp")} value={data.xp} icon={Sparkles} />
         <StatCard label={t("coins")} value={data.coins} icon={Coins} />
         <StatCard
@@ -23,7 +27,7 @@ export async function DashboardContent() {
           hint={t("streakBest", { count: data.streakBest })}
         />
       </section>
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-start">
         <ReviewDueCard count={data.dueCards} />
         <ContinueLessons lessons={data.inProgress} />
       </div>

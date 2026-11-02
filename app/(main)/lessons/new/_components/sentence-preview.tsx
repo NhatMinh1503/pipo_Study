@@ -23,32 +23,34 @@ export function SentencePreview({ text, language }: SentencePreviewProps) {
 
   return (
     <aside className="space-y-3" aria-live="polite">
-      <h2 className="text-sm font-medium text-muted-foreground">
-        {t("title", { count: sentences.length })}
-      </h2>
+      <h2 className="mono-label">{t("title", { count: sentences.length })}</h2>
       {sentences.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+        <p className="border border-dashed border-border/35 px-6 py-10 text-center text-sm leading-relaxed text-muted-foreground">
           {t("empty")}
         </p>
       ) : (
-        <ol className="max-h-[28rem] space-y-2 overflow-y-auto pr-1">
+        <ol className="max-h-[28rem] divide-y divide-dashed divide-border/25 overflow-y-auto border-y border-dashed border-border/35">
           {sentences.map((sentence, index) => (
             <li
               key={`${index}-${sentence}`}
               lang={language}
               className={cn(
-                "flex gap-3 rounded-lg border border-border bg-card p-3 text-sm",
+                "flex gap-3 py-2.5 text-sm leading-relaxed",
                 index >= MAX_SENTENCES && "opacity-40",
               )}
             >
-              <span className="text-muted-foreground tabular-nums">{index + 1}</span>
-              <span>{sentence}</span>
+              <span className="mono-value w-6 shrink-0 pt-0.5 text-[0.6875rem] text-muted-foreground">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="min-w-0">{sentence}</span>
             </li>
           ))}
         </ol>
       )}
       {tooMany && (
-        <p className="text-sm text-destructive">{t("tooMany", { max: MAX_SENTENCES })}</p>
+        <p className="text-sm leading-relaxed font-medium text-destructive">
+          {t("tooMany", { max: MAX_SENTENCES })}
+        </p>
       )}
     </aside>
   );

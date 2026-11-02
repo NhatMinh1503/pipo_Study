@@ -12,7 +12,7 @@ export async function ContinueLessons({ lessons }: { lessons: LessonSummary[] })
 
   return (
     <section className="space-y-3">
-      <h2 className="text-sm font-medium text-muted-foreground">{t("continueTitle")}</h2>
+      <h2 className="mono-label">{t("continueTitle")}</h2>
       {lessons.length === 0 ? (
         <EmptyState
           icon={BookOpenText}
@@ -24,7 +24,7 @@ export async function ContinueLessons({ lessons }: { lessons: LessonSummary[] })
           }
         />
       ) : (
-        <ul className="space-y-2">
+        <ul className="sheet-flat divide-y divide-dashed divide-border/30">
           {lessons.map((lesson) => (
             <li key={lesson.id}>
               <LessonProgressCard lesson={lesson} />

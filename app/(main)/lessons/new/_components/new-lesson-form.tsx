@@ -46,41 +46,50 @@ export function NewLessonForm({ defaultLanguage, defaultLevel }: NewLessonFormPr
   };
 
   return (
-    <form onSubmit={onSubmit} noValidate className="grid gap-8 lg:grid-cols-[3fr_2fr]">
-      <FieldGroup>
-        <FormAlert messageKey={serverError} />
-        <TextField
-          label={t("lessons.form.title")}
-          placeholder={t("lessons.form.titlePlaceholder")}
-          registration={form.register("title")}
-          error={errors.title}
-        />
-        <div className="grid grid-cols-2 gap-4">
-          <SelectField
-            control={form.control}
-            name="language"
-            label={t("lessons.form.language")}
-            options={LEARNING_LANGUAGES.map((value) => ({ value, label: t(`languages.${value}`) }))}
-            onValueChange={keepLevelValid}
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="grid gap-8 lg:grid-cols-[3fr_2fr] lg:items-start lg:gap-10"
+    >
+      <div className="sheet-tight p-5 sm:p-6">
+        <FieldGroup>
+          <FormAlert messageKey={serverError} />
+          <TextField
+            label={t("lessons.form.title")}
+            placeholder={t("lessons.form.titlePlaceholder")}
+            registration={form.register("title")}
+            error={errors.title}
           />
-          <SelectField
-            control={form.control}
-            name="level"
-            label={t("lessons.form.level")}
-            options={LEVELS_BY_LANGUAGE[language].map((value) => ({ value, label: value }))}
+          <div className="grid grid-cols-2 gap-4">
+            <SelectField
+              control={form.control}
+              name="language"
+              label={t("lessons.form.language")}
+              options={LEARNING_LANGUAGES.map((value) => ({
+                value,
+                label: t(`languages.${value}`),
+              }))}
+              onValueChange={keepLevelValid}
+            />
+            <SelectField
+              control={form.control}
+              name="level"
+              label={t("lessons.form.level")}
+              options={LEVELS_BY_LANGUAGE[language].map((value) => ({ value, label: value }))}
+            />
+          </div>
+          <TextareaField
+            label={t("lessons.form.text")}
+            placeholder={t(`lessons.form.textPlaceholder.${language}`)}
+            description={t("lessons.form.textHint")}
+            registration={form.register("text")}
+            error={errors.text}
+            lang={language}
+            rows={10}
           />
-        </div>
-        <TextareaField
-          label={t("lessons.form.text")}
-          placeholder={t(`lessons.form.textPlaceholder.${language}`)}
-          description={t("lessons.form.textHint")}
-          registration={form.register("text")}
-          error={errors.text}
-          lang={language}
-          rows={10}
-        />
-        <SubmitButton isPending={isSubmitting}>{t("lessons.form.submit")}</SubmitButton>
-      </FieldGroup>
+          <SubmitButton isPending={isSubmitting}>{t("lessons.form.submit")}</SubmitButton>
+        </FieldGroup>
+      </div>
 
       <SentencePreview text={text} language={language} />
     </form>

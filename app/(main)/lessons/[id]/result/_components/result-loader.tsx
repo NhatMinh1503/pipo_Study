@@ -29,30 +29,34 @@ export async function ResultLoader({ params }: { params: Promise<{ id: string }>
         title={score.perfect ? t("titlePerfect") : t("title")}
         description={workspace.title}
       />
-      <section aria-label={t("statsLabel")} className="grid grid-cols-3 gap-3">
+      <section
+        aria-label={t("statsLabel")}
+        className="grid grid-cols-3 border-2 border-border bg-card sm:divide-x sm:divide-dashed sm:divide-border/30"
+      >
         <StatCard label={t("score")} value={`${score.percent}%`} icon={Target} />
-        <StatCard label="XP" value={`+${score.xp}`} icon={Sparkles} />
-        <StatCard label="Coins" value={`+${score.coins}`} icon={Coins} />
+        <StatCard label={t("xp")} value={`+${score.xp}`} icon={Sparkles} />
+        <StatCard label={t("coins")} value={`+${score.coins}`} icon={Coins} />
       </section>
 
-      <section className="space-y-2">
-        <h2 className="text-sm font-medium text-muted-foreground">{t("details")}</h2>
-        <ol className="space-y-2">
+      <section className="space-y-3">
+        <h2 className="mono-label">{t("details")}</h2>
+        <ol className="divide-y divide-dashed divide-border/30 border-2 border-border bg-card">
           {workspace.sentences.map((sentence, index) => {
             const sentenceScore = score.sentences[index];
             return (
-              <li
-                key={sentence.id}
-                className="space-y-2 rounded-xl border border-border bg-card p-4"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p lang={workspace.language}>{sentence.sourceText}</p>
+              <li key={sentence.id} className="space-y-2 px-4 py-3.5">
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <p lang={workspace.language} className="leading-relaxed">
+                    {sentence.sourceText}
+                  </p>
                   {sentenceScore?.finalVerdict && (
-                    <VerdictBadge verdict={sentenceScore.finalVerdict} />
+                    <VerdictBadge verdict={sentenceScore.finalVerdict} className="shrink-0" />
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">{sentence.referenceTranslation}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {sentence.referenceTranslation}
+                </p>
+                <p className="font-mono text-[0.6875rem] tracking-[0.04em] text-muted-foreground">
                   {t("sentenceSummary", {
                     attempts: sentenceScore?.attempts ?? 0,
                     points: sentenceScore?.points ?? 0,

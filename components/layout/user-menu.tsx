@@ -49,8 +49,8 @@ export function UserMenu({ email, onChangeLanguage, onSignOut }: UserMenuProps) 
           <UserRound aria-hidden />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+      <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel className="truncate font-mono text-[0.6875rem] font-normal tracking-normal text-muted-foreground normal-case">
           {email}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -81,7 +81,7 @@ function DropdownMenuItemForm({ action, label }: { action: () => Promise<void>; 
     <form action={action}>
       <button
         type="submit"
-        className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted [&_svg]:size-4"
+        className="flex w-full items-center gap-2 px-2 py-1.5 text-sm transition-colors hover:bg-accent hover:text-accent-foreground [&_svg]:size-4"
       >
         <LogOut aria-hidden />
         {label}

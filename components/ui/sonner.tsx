@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme();
+  const { theme = "light" } = useTheme();
 
   return (
     <Sonner
@@ -29,12 +29,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--border-radius": "0px",
         } as React.CSSProperties
       }
       toastOptions={{
         classNames: {
-          toast: "cn-toast",
+          toast: "cn-toast border-2! shadow-[3px_3px_0_0_var(--shadow-ink)] font-sans text-sm",
+          description: "text-muted-foreground!",
         },
       }}
       {...props}

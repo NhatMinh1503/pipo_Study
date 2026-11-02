@@ -8,16 +8,16 @@ export async function HealthStatus() {
 
   if (!health.connected) {
     return (
-      <p className="flex items-center gap-2 text-sm text-destructive">
-        <CircleAlert className="size-4" aria-hidden />
+      <p className="flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.06em] text-destructive uppercase">
+        <CircleAlert className="size-3.5 shrink-0" aria-hidden />
         {t("healthError")}: {health.error}
       </p>
     );
   }
 
   return (
-    <p className="flex items-center gap-2 text-sm text-muted-foreground">
-      <CircleCheck className="size-4 text-emerald-500" aria-hidden />
+    <p className="flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.06em] text-muted-foreground uppercase">
+      <CircleCheck className="size-3.5 shrink-0 text-success" aria-hidden />
       {t("healthOk")}
     </p>
   );

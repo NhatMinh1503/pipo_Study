@@ -51,7 +51,7 @@ export function TargetPane({
         submit();
       }}
     >
-      <label htmlFor={inputId} className="text-sm font-medium">
+      <label htmlFor={inputId} className="mono-label block">
         {t("yourTranslation")}
         <span className="sr-only">: {sourceText}</span>
       </label>
@@ -71,16 +71,16 @@ export function TargetPane({
         }}
       />
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground">
+        <p className="font-mono text-[0.6875rem] leading-snug tracking-[0.04em] text-muted-foreground">
           {attemptCount > 0 ? t("attempts", { count: attemptCount }) : t("keyboardHint")}
         </p>
         {isReviewing ? (
-          <Button ref={nextRef} type="button" onClick={onNext}>
+          <Button ref={nextRef} type="button" onClick={onNext} className="shrink-0">
             {t("next")}
             <ArrowRight aria-hidden />
           </Button>
         ) : (
-          <SubmitButton isPending={isGrading} disabled={!text.trim()} className="w-auto">
+          <SubmitButton isPending={isGrading} disabled={!text.trim()} className="w-auto shrink-0">
             {t("check")}
           </SubmitButton>
         )}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Inter, Noto_Sans_JP } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Noto_Sans_JP } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { Suspense } from "react";
 
@@ -20,9 +20,12 @@ const notoSansJp = Noto_Sans_JP({
   preload: false,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// Typewriter voice for headings, micro-labels and numerals.
+// Static weights, and the Vietnamese subset keeps diacritics intact in display type.
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="vi"
-      className={`${inter.variable} ${notoSansJp.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoSansJp.variable} ${plexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
