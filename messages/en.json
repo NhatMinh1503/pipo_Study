@@ -99,7 +99,10 @@
       "quiz": "Quiz",
       "news": "News",
       "skills": "Skills",
-      "shop": "Shop"
+      "shop": "Shop",
+      "community": "Community",
+      "leaderboard": "Leaderboard",
+      "battle": "1v1 battle"
     }
   },
   "languages": {
@@ -246,7 +249,10 @@
     "details": "Sentence details",
     "sentenceSummary": "{attempts, plural, one {# attempt} other {# attempts}} · {points} points",
     "newLesson": "New lesson",
-    "backHome": "Back to dashboard"
+    "backHome": "Back to dashboard",
+    "publish": "Share to community",
+    "publishing": "Sharing…",
+    "publishFailed": "Couldn't share it, please try again."
   },
   "dictionary": {
     "explain": "Explain (AI)",
@@ -595,5 +601,86 @@
     "deleteTitle": "Delete account?",
     "deleteConfirm": "This cannot be undone.",
     "deleteButton": "Delete account"
+  },
+  "community": {
+    "title": "Community",
+    "description": "Translations other learners have shared. Like, comment and learn from each other.",
+    "anonymous": "Anonymous learner",
+    "failed": "Something went wrong, please try again.",
+    "delete": "Delete post",
+    "deleteTitle": "Delete this post?",
+    "deleteDescription": "The post and all its comments will be removed for good.",
+    "report": "Report",
+    "reported": "Report sent. Thank you!",
+    "like": "Like",
+    "comments": "{count, plural, one {# comment} other {# comments}}",
+    "commentPlaceholder": "Write a comment…",
+    "send": "Send",
+    "empty": "No posts yet",
+    "emptyHint": "Finish a translation, then press “Share to community” on the summary screen.",
+    "older": "Older posts",
+    "newest": "Newest"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "description": "Top 50 learners by XP, streak and focus time.",
+    "metricLabel": "Metric",
+    "periodLabel": "Period",
+    "metric": {
+      "xp": "XP",
+      "streak": "Streak",
+      "focus": "Focus"
+    },
+    "period": {
+      "week": "This week",
+      "month": "This month"
+    },
+    "unit": {
+      "xp": "{count} XP",
+      "streak": "{count, plural, one {# day} other {# days}}",
+      "focus": "{count, plural, one {# min} other {# min}}"
+    },
+    "empty": "Nobody on the board yet",
+    "anonymous": "Anonymous learner",
+    "you": "You"
+  },
+  "battle": {
+    "title": "1v1 translation battle",
+    "description": "Translate the same five sentences as another learner. Accuracy first, then speed.",
+    "find": "Find an opponent",
+    "finding": "Searching…",
+    "failed": "Something went wrong, please try again.",
+    "history": "Recent battles",
+    "noHistory": "You haven't played any battles yet",
+    "outcome": {
+      "won": "Won",
+      "lost": "Lost",
+      "draw": "Draw",
+      "waiting": "Waiting for opponent",
+      "active": "In progress",
+      "cancelled": "Cancelled"
+    },
+    "notFound": "Battle not found",
+    "backToLobby": "Back to lobby",
+    "cancelled": "This battle was cancelled",
+    "waiting": "Waiting for an opponent…",
+    "waitingHint": "Keep this page open. The battle starts as soon as someone learning the same language joins.",
+    "cancel": "Stop searching",
+    "forfeit": "Forfeit",
+    "forfeitTitle": "Forfeit this battle?",
+    "forfeitDescription": "Your opponent will be awarded the win.",
+    "scoreboard": "Scoreboard",
+    "progress": "{answered}/{total} sentences",
+    "offline": "disconnected",
+    "you": "You",
+    "opponent": "Opponent",
+    "noOpponent": "No opponent yet",
+    "sentence": "Sentence {index}/{total}",
+    "yourTranslation": "Your translation",
+    "keyboardHint": "Enter to submit · Shift+Enter for a new line",
+    "submit": "Submit",
+    "grading": "Grading…",
+    "gradeFailed": "Couldn't grade this one, please submit again.",
+    "waitingOpponentFinish": "You're done! Waiting for your opponent to finish…"
   }
 }

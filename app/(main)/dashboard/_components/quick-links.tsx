@@ -1,4 +1,13 @@
-import { ChartNoAxesColumn, Network, Newspaper, Shapes, Store } from "lucide-react";
+import {
+  ChartNoAxesColumn,
+  MessagesSquare,
+  Network,
+  Newspaper,
+  Shapes,
+  Store,
+  Swords,
+  Trophy,
+} from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
@@ -8,6 +17,9 @@ const LINKS = [
   { href: "/news", key: "news", icon: Newspaper },
   { href: "/skills", key: "skills", icon: Network },
   { href: "/shop", key: "shop", icon: Store },
+  { href: "/community", key: "community", icon: MessagesSquare },
+  { href: "/leaderboard", key: "leaderboard", icon: Trophy },
+  { href: "/battle", key: "battle", icon: Swords },
 ] as const;
 
 /** Shortcuts to practice tools that are not in the main navigation. */
@@ -17,7 +29,7 @@ export async function QuickLinks() {
   return (
     <nav
       aria-label={t("label")}
-      className="sheet-flat grid grid-cols-3 divide-x divide-y divide-dashed divide-border/30 sm:grid-cols-5 sm:divide-y-0"
+      className="sheet-flat grid grid-cols-2 divide-x divide-y divide-dashed divide-border/30 sm:grid-cols-4"
     >
       {LINKS.map(({ href, key, icon: Icon }) => (
         <Link

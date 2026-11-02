@@ -99,6 +99,115 @@ export type Database = {
           },
         ]
       }
+      battle_answers: {
+        Row: {
+          battle_id: string
+          created_at: string
+          points: number
+          sentence_index: number
+          translation: string
+          user_id: string
+          verdict: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Insert: {
+          battle_id: string
+          created_at?: string
+          points: number
+          sentence_index: number
+          translation: string
+          user_id: string
+          verdict: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Update: {
+          battle_id?: string
+          created_at?: string
+          points?: number
+          sentence_index?: number
+          translation?: string
+          user_id?: string
+          verdict?: Database["public"]["Enums"]["translation_verdict"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "battle_answers_battle_id_fkey"
+            columns: ["battle_id"]
+            isOneToOne: false
+            referencedRelation: "battles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      battle_players: {
+        Row: {
+          answered: number
+          battle_id: string
+          finished_at: string | null
+          score: number
+          user_id: string
+        }
+        Insert: {
+          answered?: number
+          battle_id: string
+          finished_at?: string | null
+          score?: number
+          user_id: string
+        }
+        Update: {
+          answered?: number
+          battle_id?: string
+          finished_at?: string | null
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "battle_players_battle_id_fkey"
+            columns: ["battle_id"]
+            isOneToOne: false
+            referencedRelation: "battles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      battles: {
+        Row: {
+          created_at: string
+          created_by: string
+          finished_at: string | null
+          id: string
+          language: Database["public"]["Enums"]["learning_language"]
+          level: Database["public"]["Enums"]["proficiency_level"]
+          sentences: string[]
+          started_at: string | null
+          status: Database["public"]["Enums"]["battle_status"]
+          winner_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          finished_at?: string | null
+          id?: string
+          language: Database["public"]["Enums"]["learning_language"]
+          level: Database["public"]["Enums"]["proficiency_level"]
+          sentences: string[]
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["battle_status"]
+          winner_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          finished_at?: string | null
+          id?: string
+          language?: Database["public"]["Enums"]["learning_language"]
+          level?: Database["public"]["Enums"]["proficiency_level"]
+          sentences?: string[]
+          started_at?: string | null
+          status?: Database["public"]["Enums"]["battle_status"]
+          winner_id?: string | null
+        }
+        Relationships: []
+      }
       cloze_sets: {
         Row: {
           blanks: Json
@@ -130,6 +239,38 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comments: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
             referencedColumns: ["id"]
           },
         ]
@@ -273,6 +414,32 @@ export type Database = {
         }
         Relationships: []
       }
+      likes: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pomodoro_sessions: {
         Row: {
           created_at: string
@@ -302,6 +469,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      posts: {
+        Row: {
+          created_at: string
+          id: string
+          language: Database["public"]["Enums"]["learning_language"]
+          lesson_id: string | null
+          pairs: Json
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          language: Database["public"]["Enums"]["learning_language"]
+          lesson_id?: string | null
+          pairs: Json
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          language?: Database["public"]["Enums"]["learning_language"]
+          lesson_id?: string | null
+          pairs?: Json
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -405,6 +610,35 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          post_id: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          reason: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sentences: {
         Row: {
@@ -628,7 +862,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      profile_cards: {
+        Row: {
+          avatar_path: string | null
+          display_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_path?: string | null
+          display_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          avatar_path?: string | null
+          display_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
@@ -644,6 +895,26 @@ export type Database = {
         }
         Returns: string
       }
+      is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
+      join_battle: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+        }
+        Returns: string
+      }
+      leaderboard: {
+        Args: { p_metric: string; p_period: string }
+        Returns: {
+          avatar_path: string
+          display_name: string
+          rank: number
+          user_id: string
+          value: number
+        }[]
+      }
+      leave_battle: { Args: { p_battle_id: string }; Returns: undefined }
       level_matches_language: {
         Args: {
           lang: Database["public"]["Enums"]["learning_language"]
@@ -687,6 +958,7 @@ export type Database = {
       }
     }
     Enums: {
+      battle_status: "waiting" | "active" | "finished" | "cancelled"
       display_language: "vi" | "en" | "ja"
       learning_language: "ja" | "en"
       lesson_source: "manual" | "ai" | "news"
@@ -835,6 +1107,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      battle_status: ["waiting", "active", "finished", "cancelled"],
       display_language: ["vi", "en", "ja"],
       learning_language: ["ja", "en"],
       lesson_source: ["manual", "ai", "news"],

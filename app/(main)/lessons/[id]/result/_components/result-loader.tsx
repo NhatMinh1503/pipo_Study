@@ -11,6 +11,8 @@ import { scoreLesson } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/server";
 import { getLessonWorkspace, toSentenceAttempts } from "@/server/queries/lesson-workspace";
 
+import { PublishButton } from "./publish-button";
+
 export async function ResultLoader({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const [workspace, t] = await Promise.all([
@@ -75,6 +77,7 @@ export async function ResultLoader({ params }: { params: Promise<{ id: string }>
         <Button asChild variant="outline">
           <Link href="/dashboard">{t("backHome")}</Link>
         </Button>
+        <PublishButton lessonId={workspace.id} />
       </div>
     </>
   );

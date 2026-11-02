@@ -75,33 +75,33 @@ e2e/                      # Playwright
 | #      | Session                                       | Loại              | Nhóm           |
 | ------ | --------------------------------------------- | ----------------- | -------------- |
 | S01 ✅ | Khởi tạo dự án + Supabase local + tooling     | Nền               | Nền tảng       |
-| S02    | Data models (migrations + RLS + Zod)          | Nền               | Nền tảng       |
-| S03    | Trang Đăng nhập / Đăng ký                     | Trang             | Nền tảng       |
-| S04    | Trang Onboarding                              | Trang             | Nền tảng       |
-| S05    | Layout chung + i18n + Trang Dashboard         | Trang             | Nền tảng       |
-| S06    | Trang Danh sách bài + Tạo bài (tách câu)      | Trang             | Dịch           |
-| S07    | Chức năng AI chấm bản dịch (Gemini)           | Chức năng         | Dịch           |
-| S08    | Trang Dịch song song (UI)                     | Trang             | Dịch           |
-| S09    | Chức năng Luồng làm bài + chấm điểm           | Chức năng         | Dịch           |
-| S10    | Chức năng Tách từ + Popup từ điển             | Chức năng         | Từ vựng        |
-| S11    | Chức năng Thêm Flashcard + Trang Sổ tay       | Trang + Chức năng | Từ vựng        |
-| S12    | Chức năng Thuật toán SRS                      | Chức năng         | Từ vựng        |
-| S13    | Trang Ôn tập Flashcard                        | Trang             | Từ vựng        |
-| S14    | Trang Quiz (trắc nghiệm / điền từ / ghép thẻ) | Trang             | Từ vựng        |
-| S15    | Chức năng TTS (Web Speech API)                | Chức năng         | Nghe           |
-| S16    | Trang Chép chính tả                           | Trang             | Nghe           |
-| S17    | Trang Cloze Test                              | Trang             | Nghe           |
-| S18    | Chức năng Lấy tin tức tự động                 | Chức năng         | Nghe           |
-| S19    | Chức năng Ghi lỗi + Trang Phân tích lỗi       | Trang + Chức năng | AI cá nhân hóa |
-| S20    | Trang Tạo bài bằng AI + Micro-lesson          | Trang + Chức năng | AI cá nhân hóa |
-| S21    | Trang Pomodoro + Vườn tri thức                | Trang             | Game hóa       |
-| S22    | Chức năng Ví Coins/XP + Streak                | Chức năng         | Game hóa       |
-| S23    | Trang Shop + Themes                           | Trang             | Game hóa       |
-| S24    | Trang Skill Tree                              | Trang             | Game hóa       |
-| S25    | Trang Hồ sơ & Cài đặt                         | Trang             | Tài khoản      |
-| S26    | Trang Community Feed                          | Trang             | Cộng đồng      |
-| S27    | Trang Bảng xếp hạng                           | Trang             | Cộng đồng      |
-| S28    | Trang Battle 1v1                              | Trang             | Cộng đồng      |
+| S02 ✅ | Data models (migrations + RLS + Zod)          | Nền               | Nền tảng       |
+| S03 ✅ | Trang Đăng nhập / Đăng ký                     | Trang             | Nền tảng       |
+| S04 ✅ | Trang Onboarding                              | Trang             | Nền tảng       |
+| S05 ✅ | Layout chung + i18n + Trang Dashboard         | Trang             | Nền tảng       |
+| S06 ✅ | Trang Danh sách bài + Tạo bài (tách câu)      | Trang             | Dịch           |
+| S07 ✅ | Chức năng AI chấm bản dịch (Gemini)           | Chức năng         | Dịch           |
+| S08 ✅ | Trang Dịch song song (UI)                     | Trang             | Dịch           |
+| S09 ✅ | Chức năng Luồng làm bài + chấm điểm           | Chức năng         | Dịch           |
+| S10 ✅ | Chức năng Tách từ + Popup từ điển             | Chức năng         | Từ vựng        |
+| S11 ✅ | Chức năng Thêm Flashcard + Trang Sổ tay       | Trang + Chức năng | Từ vựng        |
+| S12 ✅ | Chức năng Thuật toán SRS                      | Chức năng         | Từ vựng        |
+| S13 ✅ | Trang Ôn tập Flashcard                        | Trang             | Từ vựng        |
+| S14 ✅ | Trang Quiz (trắc nghiệm / điền từ / ghép thẻ) | Trang             | Từ vựng        |
+| S15 ✅ | Chức năng TTS (Web Speech API)                | Chức năng         | Nghe           |
+| S16 ✅ | Trang Chép chính tả                           | Trang             | Nghe           |
+| S17 ✅ | Trang Cloze Test                              | Trang             | Nghe           |
+| S18 ✅ | Chức năng Lấy tin tức tự động                 | Chức năng         | Nghe           |
+| S19 ✅ | Chức năng Ghi lỗi + Trang Phân tích lỗi       | Trang + Chức năng | AI cá nhân hóa |
+| S20 ✅ | Trang Tạo bài bằng AI + Micro-lesson          | Trang + Chức năng | AI cá nhân hóa |
+| S21 ✅ | Trang Pomodoro + Vườn tri thức                | Trang             | Game hóa       |
+| S22 ✅ | Chức năng Ví Coins/XP + Streak                | Chức năng         | Game hóa       |
+| S23 ✅ | Trang Shop + Themes                           | Trang             | Game hóa       |
+| S24 ✅ | Trang Skill Tree                              | Trang             | Game hóa       |
+| S25 ✅ | Trang Hồ sơ & Cài đặt                         | Trang             | Tài khoản      |
+| S26 ✅ | Trang Community Feed                          | Trang             | Cộng đồng      |
+| S27 ✅ | Trang Bảng xếp hạng                           | Trang             | Cộng đồng      |
+| S28 ✅ | Trang Battle 1v1                              | Trang             | Cộng đồng      |
 | S29    | PWA + Docker hoá + Deploy                     | Nền               | Ra mắt         |
 | S30    | Browser Extension                             | Dự án phụ         | Mở rộng        |
 | S31    | Mobile App                                    | Dự án phụ         | Mở rộng        |

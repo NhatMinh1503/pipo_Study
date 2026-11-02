@@ -24,3 +24,12 @@ export async function grantCoins(email: string, coins: number) {
   });
   if (error) throw error;
 }
+
+/** Cancels every open lobby so a battle test only ever meets its own second player. */
+export async function cancelWaitingBattles() {
+  const { error } = await admin
+    .from("battles")
+    .update({ status: "cancelled", finished_at: new Date().toISOString() })
+    .eq("status", "waiting");
+  if (error) throw error;
+}

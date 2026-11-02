@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/common/page-header";
 import { StatCard } from "@/components/common/stat-card";
-import { publicEnv } from "@/lib/env";
+import { avatarUrl as toAvatarUrl } from "@/lib/avatar";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
 import { requireOnboardedProfile } from "@/server/profile";
@@ -26,9 +26,7 @@ export async function ProfileContent() {
     .select("xp, coins, streak_current, streak_best")
     .maybeSingle();
 
-  const avatarUrl = profile.avatar_path
-    ? `${publicEnv.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatars/${profile.avatar_path}`
-    : null;
+  const avatarUrl = toAvatarUrl(profile.avatar_path);
 
   return (
     <>

@@ -20,3 +20,18 @@
 - 2026-11-02 · S14–S17 done · branch feat/s14-s17-practice (trên style/design-refresh) · TTS Web Speech (chọn giọng tốt nhất, tốc độ 0.6–1×), Quiz 3 chế độ, Chép chính tả (diff LCS ký tự/từ), Cloze do AI chọn từ theo trình độ (cache cloze_sets, fake không cache). Sửa: lưu từ khi tra chưa xong → nghĩa rỗng; Space kích hoạt 2 lần trên nút; hydration PlayButton. E2E 44/44.
 - 2026-11-02 · S18–S20 done · branch feat/s18-s20-ai-personalization · Phân tích lỗi (biểu đồ CSS 1 màu, theo loại + tuần, top 3), Tạo bài AI (chủ đề / micro-lesson theo điểm yếu), Tin tức chỉ tiêu đề+link RSS NHK/BBC qua 'use cache' (thay pg_cron, tránh vi phạm bản quyền). Sửa: form tạo bài bị co hẹp; hydration nhãn nút theme. E2E 50/50.
 - 2026-11-02 · S22–S25 done · branch feat/s22-s25-gamification-account · Streak trong wallet_apply theo múi giờ user (ôn thẻ +1 XP), Shop (giá ở DB, buy_item RPC, theme accent phải sở hữu mới dùng, đồ trang trí vườn, gói chủ đề AI), Skill Tree 4 nhánh × 5 nút, Hồ sơ (avatar Storage theo thư mục owner, tên, thống kê) + Cài đặt (ngôn ngữ, trình độ, múi giờ, xoá tài khoản). Quyền UPDATE theo cột cho profiles. 13 pgTAP mới. E2E 56/56.
+
+- 2026-11-02 16:07 · compact (auto)
+  M .claude/progress.md
+  M types/database.ts
+  ?? ".claude/rules/frontend 2.md"
+  ?? .kombai/
+  ?? app/(main)/community/
+  ?? app/(main)/leaderboard/
+  ?? components/common/user-avatar.tsx
+  ?? lib/community/
+  ?? server/actions/community.ts
+  ?? server/queries/feed.ts
+  ?? supabase/migrations/20261102070447_community_leaderboard_battle.sql
+  ?? supabase/tests/community_battle.test.sql
+- 2026-11-02 · S26–S28 done · branch feat/s26-s28-community · Feed cộng đồng (chia sẻ từ màn kết quả, like/comment/báo cáo, phân trang keyset theo (created_at, id) có cursor kiểm tra chặt), Bảng xếp hạng (hàm leaderboard() tính khi xem, 3 tiêu chí × tuần/tháng — thay cho pg_cron), Battle 1v1 (join_battle/leave_battle RPC, ngân hàng đề 5 câu theo trình độ, server tự bấm giờ + chấm qua grader, Realtime broadcast + presence kênh battle:<id>, polling dự phòng). Helper avatarUrl dùng chung. 12 pgTAP mới.

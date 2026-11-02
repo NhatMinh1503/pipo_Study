@@ -99,7 +99,10 @@
       "quiz": "Quiz",
       "news": "Tin tức",
       "skills": "Kỹ năng",
-      "shop": "Cửa hàng"
+      "shop": "Cửa hàng",
+      "community": "Cộng đồng",
+      "leaderboard": "Xếp hạng",
+      "battle": "Đấu 1v1"
     }
   },
   "languages": {
@@ -246,7 +249,10 @@
     "details": "Chi tiết từng câu",
     "sentenceSummary": "{attempts, plural, other {# lần thử}} · {points} điểm",
     "newLesson": "Tạo bài mới",
-    "backHome": "Về trang tổng quan"
+    "backHome": "Về trang tổng quan",
+    "publish": "Chia sẻ lên cộng đồng",
+    "publishing": "Đang chia sẻ…",
+    "publishFailed": "Chưa chia sẻ được, thử lại nhé."
   },
   "dictionary": {
     "explain": "Giải thích (AI)",
@@ -595,5 +601,86 @@
     "deleteTitle": "Xoá tài khoản?",
     "deleteConfirm": "Thao tác này không thể hoàn tác.",
     "deleteButton": "Xoá tài khoản"
+  },
+  "community": {
+    "title": "Cộng đồng",
+    "description": "Bài dịch người học khác đã chia sẻ. Thích, bình luận và học hỏi lẫn nhau.",
+    "anonymous": "Người học ẩn danh",
+    "failed": "Có lỗi xảy ra, thử lại nhé.",
+    "delete": "Xoá bài",
+    "deleteTitle": "Xoá bài đăng này?",
+    "deleteDescription": "Bài đăng cùng mọi bình luận sẽ bị xoá vĩnh viễn.",
+    "report": "Báo cáo",
+    "reported": "Đã gửi báo cáo. Cảm ơn bạn!",
+    "like": "Thích",
+    "comments": "{count, plural, other {# bình luận}}",
+    "commentPlaceholder": "Viết bình luận…",
+    "send": "Gửi",
+    "empty": "Chưa có bài đăng nào",
+    "emptyHint": "Hoàn thành một bài dịch rồi bấm “Chia sẻ lên cộng đồng” ở màn tổng kết.",
+    "older": "Bài cũ hơn",
+    "newest": "Mới nhất"
+  },
+  "leaderboard": {
+    "title": "Bảng xếp hạng",
+    "description": "Top 50 người học theo XP, chuỗi ngày và thời gian tập trung.",
+    "metricLabel": "Tiêu chí",
+    "periodLabel": "Khoảng thời gian",
+    "metric": {
+      "xp": "XP",
+      "streak": "Chuỗi ngày",
+      "focus": "Tập trung"
+    },
+    "period": {
+      "week": "Tuần này",
+      "month": "Tháng này"
+    },
+    "unit": {
+      "xp": "{count} XP",
+      "streak": "{count, plural, other {# ngày}}",
+      "focus": "{count, plural, other {# phút}}"
+    },
+    "empty": "Chưa có ai trên bảng xếp hạng",
+    "anonymous": "Người học ẩn danh",
+    "you": "Bạn"
+  },
+  "battle": {
+    "title": "Đấu dịch 1v1",
+    "description": "Cùng dịch một đoạn 5 câu với người học khác. Chính xác trước, nhanh sau.",
+    "find": "Tìm đối thủ",
+    "finding": "Đang tìm…",
+    "failed": "Có lỗi xảy ra, thử lại nhé.",
+    "history": "Trận gần đây",
+    "noHistory": "Bạn chưa đấu trận nào",
+    "outcome": {
+      "won": "Thắng",
+      "lost": "Thua",
+      "draw": "Hoà",
+      "waiting": "Đang chờ đối thủ",
+      "active": "Đang đấu",
+      "cancelled": "Đã huỷ"
+    },
+    "notFound": "Không tìm thấy trận đấu",
+    "backToLobby": "Về sảnh đấu",
+    "cancelled": "Trận đấu đã bị huỷ",
+    "waiting": "Đang chờ đối thủ…",
+    "waitingHint": "Giữ trang này mở. Trận bắt đầu ngay khi có người cùng ngôn ngữ tham gia.",
+    "cancel": "Huỷ tìm trận",
+    "forfeit": "Bỏ cuộc",
+    "forfeitTitle": "Bỏ cuộc trận này?",
+    "forfeitDescription": "Đối thủ sẽ được tính thắng.",
+    "scoreboard": "Bảng điểm",
+    "progress": "{answered}/{total} câu",
+    "offline": "mất kết nối",
+    "you": "Bạn",
+    "opponent": "Đối thủ",
+    "noOpponent": "Chưa có đối thủ",
+    "sentence": "Câu {index}/{total}",
+    "yourTranslation": "Bản dịch của bạn",
+    "keyboardHint": "Enter để nộp · Shift+Enter xuống dòng",
+    "submit": "Nộp",
+    "grading": "Đang chấm…",
+    "gradeFailed": "Chưa chấm được câu này, thử nộp lại nhé.",
+    "waitingOpponentFinish": "Bạn đã xong! Đang chờ đối thủ hoàn thành…"
   }
 }
