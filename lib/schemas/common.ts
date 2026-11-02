@@ -49,4 +49,4 @@ export function isLevelForLanguage(language: LearningLanguage, level: Proficienc
   return (LEVELS_BY_LANGUAGE[language] as readonly ProficiencyLevel[]).includes(level);
 }
 
-export const LEVEL_MISMATCH_MESSAGE = "level_mismatch";
+export const LEVEL_MISMATCH_MESSAGE = "validation.level_mismatch";

@@ -77,5 +77,45 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Hi, {name}!"
+  },
+  "languages": {
+    "ja": "Japanese",
+    "en": "English",
+    "vi": "Vietnamese"
+  },
+  "levels": {
+    "N5": "Beginner — greetings, simple sentences",
+    "N4": "Beginner — basic daily conversation",
+    "N3": "Intermediate — familiar everyday texts",
+    "N2": "Upper intermediate — newspapers, news",
+    "N1": "Advanced — complex, abstract texts",
+    "A1": "Starter",
+    "A2": "Elementary",
+    "B1": "Intermediate",
+    "B2": "Upper intermediate",
+    "C1": "Advanced",
+    "C2": "Proficient"
+  },
+  "onboarding": {
+    "stepOf": "Step {current} of {total}",
+    "back": "Back",
+    "next": "Continue",
+    "finish": "Start learning",
+    "languageHint": {
+      "ja": "JLPT levels N5 → N1",
+      "en": "CEFR levels A1 → C2"
+    },
+    "language": {
+      "title": "Which language do you want to learn?",
+      "description": "You can change this later in Settings."
+    },
+    "level": {
+      "title": "What is your current level?",
+      "description": "Lessons and AI grading adapt to this level."
+    },
+    "display": {
+      "title": "Display language",
+      "description": "Language of the interface and AI feedback."
+    }
   }
 }

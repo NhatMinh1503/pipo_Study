@@ -77,5 +77,45 @@
   "dashboard": {
     "title": "Bảng điều khiển",
     "welcome": "Xin chào, {name}!"
+  },
+  "languages": {
+    "ja": "Tiếng Nhật",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  },
+  "levels": {
+    "N5": "Sơ cấp — chào hỏi, câu đơn giản",
+    "N4": "Sơ cấp — hội thoại hằng ngày cơ bản",
+    "N3": "Trung cấp — đọc hiểu văn bản quen thuộc",
+    "N2": "Trung cao cấp — báo, tin tức",
+    "N1": "Cao cấp — văn bản phức tạp, trừu tượng",
+    "A1": "Mới bắt đầu",
+    "A2": "Sơ cấp",
+    "B1": "Trung cấp",
+    "B2": "Trung cao cấp",
+    "C1": "Cao cấp",
+    "C2": "Thành thạo"
+  },
+  "onboarding": {
+    "stepOf": "Bước {current}/{total}",
+    "back": "Quay lại",
+    "next": "Tiếp tục",
+    "finish": "Bắt đầu học",
+    "languageHint": {
+      "ja": "Trình độ JLPT N5 → N1",
+      "en": "Trình độ CEFR A1 → C2"
+    },
+    "language": {
+      "title": "Bạn muốn học ngôn ngữ nào?",
+      "description": "Có thể đổi sau trong Cài đặt."
+    },
+    "level": {
+      "title": "Trình độ hiện tại của bạn?",
+      "description": "Bài học và chấm điểm AI sẽ theo trình độ này."
+    },
+    "display": {
+      "title": "Ngôn ngữ hiển thị",
+      "description": "Ngôn ngữ của giao diện và nhận xét từ AI."
+    }
   }
 }

@@ -12,6 +12,7 @@ import {
   signUpSchema,
 } from "@/lib/schemas/auth";
 import { createClient } from "@/lib/supabase/server";
+import { setLocaleCookie } from "@/server/locale";
 import { logger } from "@/server/logger";
 
 import { mapAuthError } from "./map-auth-error";
@@ -29,11 +30,19 @@ export async function signIn(input: unknown, next?: string): Promise<ActionResul
   if (!parsed.success) return { ok: false, error: "errors.unexpected" };
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
     log.info("sign in rejected", { code: error.code });
     return { ok: false, error: mapAuthError(error.code) };
   }
+
+  // Restore the user's UI language on this device
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_language")
+    .eq("user_id", data.user.id)
+    .maybeSingle();
+  if (profile) await setLocaleCookie(profile.display_language);
 
   redirect(safeRedirectPath(next));
 }
