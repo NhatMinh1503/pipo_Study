@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npx tsc --noEmit:*)",
+      "Bash(npx prettier:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(supabase start:*)",
+      "Bash(supabase status:*)",
+      "Bash(supabase migration new:*)",
+      "Bash(supabase migration up:*)",
+      "Bash(supabase migration list:*)",
+      "Bash(supabase gen types typescript --local:*)",
+      "Bash(supabase db lint:*)",
+      "Bash(supabase db diff:*)",
+      "Bash(supabase test db:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout -b:*)",
+      "Bash(git switch -c:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push -u origin feat/:*)",
+      "Bash(git push -u origin fix/:*)",
+      "Bash(git push -u origin chore/:*)"
+    ],
+    "ask": [
+      "Bash(supabase db reset:*)",
+      "Bash(supabase stop --no-backup:*)",
+      "Bash(supabase link:*)",
+      "Bash(supabase db push:*)",
+      "Bash(supabase login:*)",
+      "Bash(supabase projects:*)",
+      "Bash(docker system prune:*)",
+      "Bash(docker volume rm:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push origin main:*)",
+      "Bash(git push origin HEAD\\:main:*)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.production*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard-git.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-tool-use.sh"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-compact.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

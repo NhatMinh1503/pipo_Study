@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Tests
+coverage/
+playwright-report/
+test-results/
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Claude Code — personal files
+CLAUDE.local.md
+.claude/settings.local.json
+*.local.*
+
+# Misc
+.DS_Store
+*.log
+*.dump
