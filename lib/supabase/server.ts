@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 import { publicEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
@@ -9,6 +10,9 @@ import type { Database } from "@/types/database";
  * Create one per request — the client carries per-request cookie state.
  */
 export async function createClient() {
+  // Supabase data is always per user and per request; supabase-js also reads the clock
+  // to check token expiry, which Cache Components only allows at request time.
+  await connection();
   const cookieStore = await cookies();
 
   return createServerClient<Database>(

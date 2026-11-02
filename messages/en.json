@@ -3,7 +3,8 @@
     "appName": "pipo",
     "tagline": "Learn languages through contextual translation, SRS and AI feedback.",
     "loading": "Loading...",
-    "or": "or"
+    "or": "or",
+    "cancel": "Cancel"
   },
   "home": {
     "getStarted": "Get started free",
@@ -148,5 +149,42 @@
   "userMenu": {
     "open": "Open account menu",
     "language": "Display language"
+  },
+  "lessons": {
+    "title": "Lessons",
+    "description": "Paste a passage, translate it sentence by sentence and get AI feedback.",
+    "new": "New lesson",
+    "newTitle": "New lesson",
+    "newDescription": "Paste the passage you want to practise. It is split into sentences automatically.",
+    "empty": "You have no lessons yet.",
+    "emptyHint": "Start with a short passage of 3–5 sentences.",
+    "completed": "Completed",
+    "progress": "Translated {done} of {total} sentences",
+    "delete": "Delete",
+    "deleteAria": "Delete lesson {title}",
+    "deleteTitle": "Delete lesson?",
+    "deleteDescription": "\"{title}\" and all of its attempts will be permanently deleted.",
+    "deleted": "Lesson deleted.",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. At the supermarket",
+      "language": "Language",
+      "level": "Level",
+      "text": "Passage",
+      "textHint": "Each sentence becomes one translation step. A line break also ends a sentence.",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "Create and start translating",
+      "titleTooLong": "Title must be at most 120 characters.",
+      "textTooLong": "Passage must be at most 5000 characters.",
+      "tooManySentences": "Passage must be at most 200 sentences."
+    },
+    "preview": {
+      "title": "{count, plural, =0 {Preview} one {Preview · # sentence} other {Preview · # sentences}}",
+      "empty": "Sentences appear here once you paste a passage.",
+      "tooMany": "Only the first {max} sentences can be used. Please shorten the passage."
+    }
   }
 }

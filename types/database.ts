@@ -451,6 +451,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_lesson: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+          p_source?: Database["public"]["Enums"]["lesson_source"]
+          p_title: string
+        }
+        Returns: string
+      }
       level_matches_language: {
         Args: {
           lang: Database["public"]["Enums"]["learning_language"]

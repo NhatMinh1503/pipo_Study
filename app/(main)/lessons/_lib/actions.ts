@@ -1,0 +1,60 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { z } from "zod";
+
+import type { ActionResult } from "@/lib/action-result";
+import { splitSentences } from "@/lib/nlp/split-sentences";
+import { createLessonSchema, MAX_SENTENCES } from "@/lib/schemas/lesson";
+import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/server/logger";
+
+const log = logger.child({ module: "lessons-actions" });
+
+export async function createLesson(input: unknown): Promise<ActionResult> {
+  const parsed = createLessonSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "errors.unexpected" };
+
+  const { title, language, level, text } = parsed.data;
+  const sentences = splitSentences(text, language);
+  if (sentences.length === 0) {
+    return { ok: false, fieldErrors: { text: "validation.required" } };
+  }
+  if (sentences.length > MAX_SENTENCES) {
+    return { ok: false, fieldErrors: { text: "lessons.form.tooManySentences" } };
+  }
+
+  const supabase = await createClient();
+  const { data: lessonId, error } = await supabase.rpc("create_lesson", {
+    p_title: title,
+    p_language: language,
+    p_level: level,
+    p_sentences: sentences,
+  });
+
+  if (error || !lessonId) {
+    log.error("create lesson failed", { code: error?.code });
+    return { ok: false, error: "errors.unexpected" };
+  }
+
+  revalidatePath("/lessons");
+  redirect(`/lessons/${lessonId}/translate`);
+}
+
+export async function deleteLesson(lessonId: unknown): Promise<ActionResult> {
+  const id = z.uuid().safeParse(lessonId);
+  if (!id.success) return { ok: false, error: "errors.unexpected" };
+
+  // RLS ensures only the owner's row can be deleted; sentences cascade
+  const supabase = await createClient();
+  const { error } = await supabase.from("lessons").delete().eq("id", id.data);
+  if (error) {
+    log.error("delete lesson failed", { code: error.code });
+    return { ok: false, error: "errors.unexpected" };
+  }
+
+  revalidatePath("/lessons");
+  revalidatePath("/dashboard");
+  return { ok: true };
+}

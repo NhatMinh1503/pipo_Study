@@ -3,7 +3,8 @@
     "appName": "pipo",
     "tagline": "Học ngoại ngữ qua dịch thuật ngữ cảnh, SRS và phản hồi AI.",
     "loading": "Đang tải...",
-    "or": "hoặc"
+    "or": "hoặc",
+    "cancel": "Huỷ"
   },
   "home": {
     "getStarted": "Bắt đầu miễn phí",
@@ -148,5 +149,42 @@
   "userMenu": {
     "open": "Mở menu tài khoản",
     "language": "Ngôn ngữ hiển thị"
+  },
+  "lessons": {
+    "title": "Bài học",
+    "description": "Dán một đoạn văn, dịch từng câu và nhận phản hồi từ AI.",
+    "new": "Tạo bài mới",
+    "newTitle": "Tạo bài mới",
+    "newDescription": "Dán đoạn văn bạn muốn luyện dịch. Hệ thống sẽ tự tách thành từng câu.",
+    "empty": "Bạn chưa có bài học nào.",
+    "emptyHint": "Bắt đầu bằng một đoạn văn ngắn 3–5 câu.",
+    "completed": "Hoàn thành",
+    "progress": "Đã dịch {done}/{total} câu",
+    "delete": "Xoá",
+    "deleteAria": "Xoá bài {title}",
+    "deleteTitle": "Xoá bài học?",
+    "deleteDescription": "Bài \"{title}\" và toàn bộ lượt dịch sẽ bị xoá vĩnh viễn.",
+    "deleted": "Đã xoá bài học.",
+    "form": {
+      "title": "Tiêu đề",
+      "titlePlaceholder": "VD: Đi siêu thị",
+      "language": "Ngôn ngữ",
+      "level": "Trình độ",
+      "text": "Đoạn văn",
+      "textHint": "Mỗi câu sẽ trở thành một bước dịch. Xuống dòng cũng được tính là hết câu.",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "Tạo bài và bắt đầu dịch",
+      "titleTooLong": "Tiêu đề tối đa 120 ký tự.",
+      "textTooLong": "Đoạn văn tối đa 5000 ký tự.",
+      "tooManySentences": "Đoạn văn tối đa 200 câu."
+    },
+    "preview": {
+      "title": "{count, plural, =0 {Xem trước} other {Xem trước · # câu}}",
+      "empty": "Các câu sẽ hiện ở đây khi bạn dán đoạn văn.",
+      "tooMany": "Chỉ {max} câu đầu tiên được dùng. Hãy rút ngắn đoạn văn."
+    }
   }
 }

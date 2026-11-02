@@ -3,7 +3,8 @@
     "appName": "pipo",
     "tagline": "文脈翻訳・SRS・AIフィードバックで外国語を学ぶ。",
     "loading": "読み込み中...",
-    "or": "または"
+    "or": "または",
+    "cancel": "キャンセル"
   },
   "home": {
     "getStarted": "無料ではじめる",
@@ -148,5 +149,42 @@
   "userMenu": {
     "open": "アカウントメニューを開く",
     "language": "表示言語"
+  },
+  "lessons": {
+    "title": "レッスン",
+    "description": "文章を貼り付けて一文ずつ翻訳し、AIのフィードバックを受けましょう。",
+    "new": "新しいレッスン",
+    "newTitle": "新しいレッスン",
+    "newDescription": "練習したい文章を貼り付けてください。自動で一文ずつに分割されます。",
+    "empty": "レッスンはまだありません。",
+    "emptyHint": "まずは3〜5文の短い文章から始めましょう。",
+    "completed": "完了",
+    "progress": "{total}文中{done}文を翻訳済み",
+    "delete": "削除",
+    "deleteAria": "レッスン「{title}」を削除",
+    "deleteTitle": "レッスンを削除しますか？",
+    "deleteDescription": "「{title}」とすべての解答履歴が完全に削除されます。",
+    "deleted": "レッスンを削除しました。",
+    "form": {
+      "title": "タイトル",
+      "titlePlaceholder": "例：スーパーで買い物",
+      "language": "言語",
+      "level": "レベル",
+      "text": "文章",
+      "textHint": "一文ごとに翻訳ステップになります。改行も文の区切りとして扱われます。",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "作成して翻訳をはじめる",
+      "titleTooLong": "タイトルは120文字以内にしてください。",
+      "textTooLong": "文章は5000文字以内にしてください。",
+      "tooManySentences": "文章は200文以内にしてください。"
+    },
+    "preview": {
+      "title": "{count, plural, =0 {プレビュー} other {プレビュー · #文}}",
+      "empty": "文章を貼り付けると、ここに文が表示されます。",
+      "tooMany": "使えるのは最初の{max}文までです。文章を短くしてください。"
+    }
   }
 }

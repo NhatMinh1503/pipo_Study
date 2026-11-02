@@ -4,12 +4,22 @@ import { waitForEmailLink } from "./mailpit";
 
 export const DEMO = { email: "demo@pipo.local", password: "password123" };
 
-/** Signs in through the UI (Vietnamese labels, the default locale). */
-export async function signIn(page: Page, email = DEMO.email, password = DEMO.password) {
+/**
+ * Signs in through the UI (Vietnamese labels, the default locale).
+ * By default waits until the app has left /login, so the session cookie is set before
+ * the test navigates anywhere else.
+ */
+export async function signIn(
+  page: Page,
+  email = DEMO.email,
+  password = DEMO.password,
+  { expectSuccess = true }: { expectSuccess?: boolean } = {},
+) {
   await page.goto("/login");
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Mật khẩu", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Đăng nhập" }).click();
+  if (expectSuccess) await page.waitForURL((url) => !url.pathname.startsWith("/login"));
 }
 
 /** Creates a brand-new account and confirms it via the Mailpit email; ends signed in on /onboarding. */

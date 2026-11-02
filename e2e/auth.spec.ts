@@ -18,7 +18,7 @@ test.describe("authentication", () => {
   });
 
   test("shows an error for wrong credentials", async ({ page }) => {
-    await signIn(page, DEMO.email, "wrong-password");
+    await signIn(page, DEMO.email, "wrong-password", { expectSuccess: false });
     await expect(page.locator("form").getByRole("alert")).toHaveText(
       "Email hoặc mật khẩu không đúng.",
     );
@@ -46,7 +46,7 @@ test.describe("authentication", () => {
     await page.getByRole("button", { name: "Đăng ký" }).click();
     await expect(page.getByText("Kiểm tra email của bạn")).toBeVisible();
 
-    await signIn(page, email, "password123");
+    await signIn(page, email, "password123", { expectSuccess: false });
     await expect(page.locator("form").getByRole("alert")).toContainText("chưa được xác thực");
 
     await page.goto(await waitForEmailLink(email));
