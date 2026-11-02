@@ -8,7 +8,7 @@ import type { Database } from "@/types/database";
 /**
  * Refreshes the Supabase auth session on every matched request and forwards the
  * updated cookies to both the request (for Server Components) and the response.
- * Route protection (redirect to /login) is added in S03.
+ * Returns whether a valid session exists so the proxy can redirect optimistically.
  */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -35,7 +35,14 @@ export async function updateSession(request: NextRequest) {
   );
 
   // Must run right after creating the client: validates the JWT and triggers a refresh if needed
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
 
-  return response;
+  return { response, isSignedIn: Boolean(data?.claims.sub) };
+}
+
+/** Redirect that keeps any refreshed session cookies from `from`. */
+export function redirectWithCookies(url: URL, from: NextResponse) {
+  const redirect = NextResponse.redirect(url);
+  from.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+  return redirect;
 }

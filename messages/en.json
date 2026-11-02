@@ -1,0 +1,81 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "Learn languages through contextual translation, SRS and AI feedback.",
+    "loading": "Loading...",
+    "or": "or"
+  },
+  "home": {
+    "getStarted": "Get started free",
+    "signIn": "Sign in",
+    "healthOk": "Database connected",
+    "healthError": "Cannot reach Supabase"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "newPassword": "New password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": {
+      "title": "Welcome back",
+      "description": "Sign in to continue your learning path.",
+      "submit": "Sign in",
+      "forgot": "Forgot password?",
+      "noAccount": "No account yet?",
+      "toSignUp": "Sign up"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "description": "Free. Just an email and a password.",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "toSignIn": "Sign in",
+      "passwordHint": "At least 8 characters."
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "description": "We sent a confirmation link to {email}. Open it to finish signing up.",
+      "back": "Back to sign in"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "description": "Enter your email and we will send a reset link.",
+      "submit": "Send link",
+      "sent": "If the email exists, a reset link has been sent. Check your inbox.",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "description": "Your new password must be at least 8 characters.",
+      "submit": "Save password",
+      "success": "Password updated."
+    },
+    "signOut": "Sign out",
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotConfirmed": "Email not confirmed yet. Open the link in your inbox.",
+      "weakPassword": "Password is too weak. Choose a longer one.",
+      "samePassword": "The new password must differ from the old one.",
+      "rateLimited": "Too many attempts. Please try again in a few minutes.",
+      "linkInvalid": "The link is invalid or has expired. Please try again.",
+      "sessionMissing": "Your reset session expired. Request a new link."
+    }
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Invalid email address.",
+    "passwordMin": "Password must be at least 8 characters.",
+    "passwordMax": "Password must be at most 72 characters.",
+    "passwordMismatch": "Passwords do not match.",
+    "level_mismatch": "Level does not match the language."
+  },
+  "errors": {
+    "unexpected": "Something went wrong. Please try again."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Hi, {name}!"
+  }
+}

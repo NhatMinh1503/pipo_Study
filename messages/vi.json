@@ -1,0 +1,81 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "Học ngoại ngữ qua dịch thuật ngữ cảnh, SRS và phản hồi AI.",
+    "loading": "Đang tải...",
+    "or": "hoặc"
+  },
+  "home": {
+    "getStarted": "Bắt đầu miễn phí",
+    "signIn": "Đăng nhập",
+    "healthOk": "Đã kết nối cơ sở dữ liệu",
+    "healthError": "Chưa kết nối được Supabase"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Nhập lại mật khẩu",
+    "newPassword": "Mật khẩu mới",
+    "showPassword": "Hiện mật khẩu",
+    "hidePassword": "Ẩn mật khẩu",
+    "signIn": {
+      "title": "Chào mừng trở lại",
+      "description": "Đăng nhập để tiếp tục lộ trình học của bạn.",
+      "submit": "Đăng nhập",
+      "forgot": "Quên mật khẩu?",
+      "noAccount": "Chưa có tài khoản?",
+      "toSignUp": "Đăng ký"
+    },
+    "signUp": {
+      "title": "Tạo tài khoản",
+      "description": "Miễn phí. Chỉ cần email và mật khẩu.",
+      "submit": "Đăng ký",
+      "hasAccount": "Đã có tài khoản?",
+      "toSignIn": "Đăng nhập",
+      "passwordHint": "Ít nhất 8 ký tự."
+    },
+    "checkEmail": {
+      "title": "Kiểm tra email của bạn",
+      "description": "Chúng tôi đã gửi liên kết xác thực tới {email}. Mở liên kết để hoàn tất.",
+      "back": "Quay lại đăng nhập"
+    },
+    "forgot": {
+      "title": "Quên mật khẩu",
+      "description": "Nhập email, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.",
+      "submit": "Gửi liên kết",
+      "sent": "Nếu email tồn tại, liên kết đặt lại đã được gửi. Hãy kiểm tra hộp thư.",
+      "back": "Quay lại đăng nhập"
+    },
+    "reset": {
+      "title": "Đặt mật khẩu mới",
+      "description": "Mật khẩu mới phải có ít nhất 8 ký tự.",
+      "submit": "Lưu mật khẩu",
+      "success": "Đã đổi mật khẩu."
+    },
+    "signOut": "Đăng xuất",
+    "errors": {
+      "invalidCredentials": "Email hoặc mật khẩu không đúng.",
+      "emailNotConfirmed": "Email chưa được xác thực. Hãy mở liên kết trong hộp thư.",
+      "weakPassword": "Mật khẩu quá yếu. Hãy chọn mật khẩu dài hơn.",
+      "samePassword": "Mật khẩu mới phải khác mật khẩu cũ.",
+      "rateLimited": "Bạn thao tác quá nhanh. Hãy thử lại sau ít phút.",
+      "linkInvalid": "Liên kết không hợp lệ hoặc đã hết hạn. Hãy thử lại.",
+      "sessionMissing": "Phiên đặt lại mật khẩu đã hết hạn. Hãy gửi lại liên kết."
+    }
+  },
+  "validation": {
+    "required": "Không được để trống.",
+    "email": "Email không hợp lệ.",
+    "passwordMin": "Mật khẩu cần ít nhất 8 ký tự.",
+    "passwordMax": "Mật khẩu tối đa 72 ký tự.",
+    "passwordMismatch": "Mật khẩu nhập lại không khớp.",
+    "level_mismatch": "Trình độ không khớp với ngôn ngữ."
+  },
+  "errors": {
+    "unexpected": "Đã có lỗi xảy ra. Hãy thử lại."
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "welcome": "Xin chào, {name}!"
+  }
+}

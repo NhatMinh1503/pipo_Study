@@ -1,0 +1,81 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "文脈翻訳・SRS・AIフィードバックで外国語を学ぶ。",
+    "loading": "読み込み中...",
+    "or": "または"
+  },
+  "home": {
+    "getStarted": "無料ではじめる",
+    "signIn": "ログイン",
+    "healthOk": "データベースに接続しました",
+    "healthError": "Supabase に接続できません"
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "パスワード（確認）",
+    "newPassword": "新しいパスワード",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す",
+    "signIn": {
+      "title": "おかえりなさい",
+      "description": "ログインして学習を続けましょう。",
+      "submit": "ログイン",
+      "forgot": "パスワードをお忘れですか？",
+      "noAccount": "アカウントをお持ちでない方",
+      "toSignUp": "新規登録"
+    },
+    "signUp": {
+      "title": "アカウント作成",
+      "description": "無料です。メールアドレスとパスワードだけで登録できます。",
+      "submit": "登録する",
+      "hasAccount": "すでにアカウントをお持ちの方",
+      "toSignIn": "ログイン",
+      "passwordHint": "8文字以上"
+    },
+    "checkEmail": {
+      "title": "メールを確認してください",
+      "description": "{email} に確認リンクを送信しました。リンクを開いて登録を完了してください。",
+      "back": "ログインに戻る"
+    },
+    "forgot": {
+      "title": "パスワードの再設定",
+      "description": "メールアドレスを入力すると、再設定リンクをお送りします。",
+      "submit": "リンクを送信",
+      "sent": "登録済みのメールアドレスであれば、再設定リンクを送信しました。受信箱をご確認ください。",
+      "back": "ログインに戻る"
+    },
+    "reset": {
+      "title": "新しいパスワードを設定",
+      "description": "新しいパスワードは8文字以上にしてください。",
+      "submit": "パスワードを保存",
+      "success": "パスワードを変更しました。"
+    },
+    "signOut": "ログアウト",
+    "errors": {
+      "invalidCredentials": "メールアドレスまたはパスワードが正しくありません。",
+      "emailNotConfirmed": "メールアドレスが未確認です。受信箱のリンクを開いてください。",
+      "weakPassword": "パスワードが弱すぎます。より長いものを設定してください。",
+      "samePassword": "新しいパスワードは以前と異なるものにしてください。",
+      "rateLimited": "操作が多すぎます。数分後にもう一度お試しください。",
+      "linkInvalid": "リンクが無効か、有効期限が切れています。もう一度お試しください。",
+      "sessionMissing": "再設定の有効期限が切れました。リンクを再送信してください。"
+    }
+  },
+  "validation": {
+    "required": "入力してください。",
+    "email": "メールアドレスの形式が正しくありません。",
+    "passwordMin": "パスワードは8文字以上にしてください。",
+    "passwordMax": "パスワードは72文字以内にしてください。",
+    "passwordMismatch": "パスワードが一致しません。",
+    "level_mismatch": "レベルが言語と一致しません。"
+  },
+  "errors": {
+    "unexpected": "エラーが発生しました。もう一度お試しください。"
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "こんにちは、{name}さん！"
+  }
+}
