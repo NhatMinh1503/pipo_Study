@@ -286,6 +286,27 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          bucket: string
+          count: number
+          key: string
+          user_id: string
+        }
+        Insert: {
+          bucket: string
+          count?: number
+          key: string
+          user_id: string
+        }
+        Update: {
+          bucket?: string
+          count?: number
+          key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sentences: {
         Row: {
           completed_at: string | null
@@ -466,6 +487,10 @@ export type Database = {
           lang: Database["public"]["Enums"]["learning_language"]
           lvl: Database["public"]["Enums"]["proficiency_level"]
         }
+        Returns: boolean
+      }
+      rate_limit_hit: {
+        Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
     }

@@ -6,6 +6,10 @@ const serverEnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
   SUPABASE_SECRET_KEY: z.string().min(1),
+  // Optional so the app runs without AI; AI routes answer AI_NOT_CONFIGURED instead
+  GEMINI_API_KEY: z.string().min(1).optional(),
+  GEMINI_MODEL: z.string().min(1).default("gemini-3.8-flash"),
+  AI_DAILY_LIMIT: z.coerce.number().int().positive().default(150),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;

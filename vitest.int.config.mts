@@ -9,5 +9,7 @@ export default defineConfig({
     include: ["test/integration/**/*.int.test.ts"],
     env: loadEnv("development", process.cwd(), ""),
     fileParallelism: false,
+    // `server-only` throws outside the React server bundler; services are tested directly
+    alias: { "server-only": new URL("./test/stubs/server-only.ts", import.meta.url).pathname },
   },
 });
