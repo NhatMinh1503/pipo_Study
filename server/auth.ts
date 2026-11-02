@@ -1,6 +1,7 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 
 import { createClient } from "@/lib/supabase/server";
@@ -15,6 +16,8 @@ export interface SessionUser {
  * pages can both call it without extra round trips.
  */
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
+  // Auth is always per request; getClaims() also reads the clock to check JWT expiry
+  await connection();
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;

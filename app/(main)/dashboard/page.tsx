@@ -1,27 +1,24 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
-import { requireUser } from "@/server/auth";
+import { PageContainer } from "@/components/common/page-container";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import { signOut } from "../_lib/actions";
+import { DashboardContent } from "./_components/dashboard-content";
+import { DashboardGreeting } from "./_components/dashboard-greeting";
+import { DashboardSkeleton } from "./_components/dashboard-skeleton";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-// Placeholder until S05 builds the real dashboard
-export default async function DashboardPage() {
-  const user = await requireUser();
-  const t = await getTranslations();
-
+export default function DashboardPage() {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight">{t("dashboard.title")}</h1>
-      <p className="text-muted-foreground">{t("dashboard.welcome", { name: user.email ?? "" })}</p>
-      <form action={signOut}>
-        <Button type="submit" variant="outline">
-          {t("auth.signOut")}
-        </Button>
-      </form>
-    </main>
+    <PageContainer>
+      <Suspense fallback={<Skeleton className="h-16 w-72" />}>
+        <DashboardGreeting />
+      </Suspense>
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent />
+      </Suspense>
+    </PageContainer>
   );
 }

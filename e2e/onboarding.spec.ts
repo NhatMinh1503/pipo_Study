@@ -31,7 +31,7 @@ test.describe("onboarding", () => {
 
     // Display language switched the UI to English
     await expect(page).toHaveURL(/\/dashboard$/);
-    await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Hi there!" })).toBeVisible();
 
     // Onboarding cannot be repeated
     await page.goto("/onboarding");

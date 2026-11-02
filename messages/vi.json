@@ -75,8 +75,23 @@
     "unexpected": "Đã có lỗi xảy ra. Hãy thử lại."
   },
   "dashboard": {
-    "title": "Bảng điều khiển",
-    "welcome": "Xin chào, {name}!"
+    "title": "Tổng quan",
+    "welcome": "Xin chào, {name}!",
+    "welcomeNoName": "Xin chào!",
+    "subtitle": "Hôm nay mình học gì nào?",
+    "statsLabel": "Thống kê",
+    "xp": "XP",
+    "coins": "Coins",
+    "streak": "Chuỗi ngày",
+    "streakBest": "Kỷ lục: {count} ngày",
+    "reviewTitle": "Thẻ cần ôn hôm nay",
+    "reviewDue": "{count, plural, other {# thẻ đang chờ bạn}}",
+    "reviewNone": "Không có thẻ nào đến hạn. Tuyệt vời!",
+    "reviewCta": "Ôn tập ngay",
+    "continueTitle": "Tiếp tục bài đang học",
+    "continueEmpty": "Chưa có bài nào đang học.",
+    "newLesson": "Tạo bài mới",
+    "progress": "Đã dịch {done}/{total} câu"
   },
   "languages": {
     "ja": "Tiếng Nhật",
@@ -117,5 +132,21 @@
       "title": "Ngôn ngữ hiển thị",
       "description": "Ngôn ngữ của giao diện và nhận xét từ AI."
     }
+  },
+  "nav": {
+    "label": "Điều hướng chính",
+    "dashboard": "Tổng quan",
+    "lessons": "Bài học",
+    "notebook": "Sổ tay",
+    "review": "Ôn tập",
+    "pomodoro": "Pomodoro"
+  },
+  "theme": {
+    "toLight": "Chuyển sang giao diện sáng",
+    "toDark": "Chuyển sang giao diện tối"
+  },
+  "userMenu": {
+    "open": "Mở menu tài khoản",
+    "language": "Ngôn ngữ hiển thị"
   }
 }

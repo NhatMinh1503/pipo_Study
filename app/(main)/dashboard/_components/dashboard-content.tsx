@@ -1,0 +1,32 @@
+import { Coins, Flame, Sparkles } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+
+import { StatCard } from "@/components/common/stat-card";
+
+import { getDashboardData } from "../_lib/get-dashboard-data";
+
+import { ContinueLessons } from "./continue-lessons";
+import { ReviewDueCard } from "./review-due-card";
+
+export async function DashboardContent() {
+  const [data, t] = await Promise.all([getDashboardData(), getTranslations("dashboard")]);
+
+  return (
+    <>
+      <section aria-label={t("statsLabel")} className="grid grid-cols-3 gap-3">
+        <StatCard label={t("xp")} value={data.xp} icon={Sparkles} />
+        <StatCard label={t("coins")} value={data.coins} icon={Coins} />
+        <StatCard
+          label={t("streak")}
+          value={data.streakCurrent}
+          icon={Flame}
+          hint={t("streakBest", { count: data.streakBest })}
+        />
+      </section>
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+        <ReviewDueCard count={data.dueCards} />
+        <ContinueLessons lessons={data.inProgress} />
+      </div>
+    </>
+  );
+}

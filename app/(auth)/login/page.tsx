@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
+
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { AuthCard } from "../_components/auth-card";
 import { AuthFooterLink } from "../_components/auth-footer-link";
@@ -13,7 +16,6 @@ const ERROR_KEYS: Record<string, string> = {
 };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  const { next, error } = await searchParams;
   const t = await getTranslations("auth");
 
   return (
@@ -28,10 +30,21 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         />
       }
     >
-      <LoginForm
-        next={typeof next === "string" ? next : undefined}
-        initialError={typeof error === "string" ? ERROR_KEYS[error] : undefined}
-      />
+      {/* Only the form depends on the URL, so the card shell can render instantly */}
+      <Suspense fallback={<Skeleton className="h-64 w-full" />}>
+        <LoginFormFromParams searchParams={searchParams} />
+      </Suspense>
     </AuthCard>
+  );
+}
+
+async function LoginFormFromParams({ searchParams }: Pick<PageProps<"/login">, "searchParams">) {
+  const { next, error } = await searchParams;
+
+  return (
+    <LoginForm
+      next={typeof next === "string" ? next : undefined}
+      initialError={typeof error === "string" ? ERROR_KEYS[error] : undefined}
+    />
   );
 }

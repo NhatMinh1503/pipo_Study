@@ -46,6 +46,13 @@ Code dùng chung đặt ở cấp cao hơn:
 - Truy cập dữ liệu: qua hook ở `lib/api/` (TanStack Query bọc Supabase client hoặc `fetch('/api/...')`). Component không gọi Supabase / `fetch` trực tiếp.
 - Route group: `app/(auth)/` (chưa đăng nhập), `app/(main)/` (đã đăng nhập, có layout chung). `app/api/**` theo `server.md`.
 
+## Cache Components (Next 16) — bắt buộc
+
+- `page.tsx` / `layout.tsx` **không `await` ở top-level** (kể cả `getTranslations`, `cookies`, `searchParams`, Supabase). Mỗi phần cần dữ liệu là một async component trong `_components/`, bọc bằng `<Suspense fallback={...}>`.
+- Đọc đồng hồ (`new Date()`, `Date.now()`) hoặc random ở server → gọi `await connection()` (từ `next/server`) trước đó.
+- `searchParams` / `params`: truyền Promise xuống component con trong `<Suspense>` rồi mới `await`.
+- Kiểm tra: mở trang ở dev, Console / dev overlay không được có lỗi "uncached data" hay "unstable value".
+
 ## Server vs Client
 
 - Mặc định Server Component; chỉ thêm `"use client"` khi cần state, effect, event handler, hoặc browser API.

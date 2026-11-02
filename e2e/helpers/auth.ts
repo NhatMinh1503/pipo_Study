@@ -27,3 +27,11 @@ export async function signUpAndConfirm(page: Page, testInfo: TestInfo) {
   await expect(page).toHaveURL(/\/onboarding$/);
   return email;
 }
+
+/** Signs out through the account menu in the app header. */
+export async function signOutViaMenu(page: Page) {
+  await page
+    .getByRole("button", { name: /menu tài khoản|account menu|アカウントメニュー/ })
+    .click();
+  await page.getByRole("button", { name: /Đăng xuất|Sign out|ログアウト/ }).click();
+}

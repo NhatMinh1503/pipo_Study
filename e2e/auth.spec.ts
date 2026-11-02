@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { DEMO, signIn } from "./helpers/auth";
+import { DEMO, signIn, signOutViaMenu } from "./helpers/auth";
 import { waitForEmailLink } from "./helpers/mailpit";
 
 test.describe("authentication", () => {
@@ -60,7 +60,7 @@ test.describe("authentication", () => {
     await page.goto("/signup");
     await expect(page).toHaveURL(/\/dashboard$/);
 
-    await page.getByRole("button", { name: "Đăng xuất" }).click();
+    await signOutViaMenu(page);
     await expect(page).toHaveURL(/\/login$/);
     await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/login/);

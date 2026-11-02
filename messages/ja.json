@@ -76,7 +76,22 @@
   },
   "dashboard": {
     "title": "ダッシュボード",
-    "welcome": "こんにちは、{name}さん！"
+    "welcome": "こんにちは、{name}さん！",
+    "welcomeNoName": "こんにちは！",
+    "subtitle": "今日は何を学びましょうか？",
+    "statsLabel": "統計",
+    "xp": "XP",
+    "coins": "コイン",
+    "streak": "連続日数",
+    "streakBest": "最高記録：{count}日",
+    "reviewTitle": "今日の復習カード",
+    "reviewDue": "{count}枚のカードが待っています",
+    "reviewNone": "復習するカードはありません。お見事！",
+    "reviewCta": "復習する",
+    "continueTitle": "学習を続ける",
+    "continueEmpty": "進行中のレッスンはまだありません。",
+    "newLesson": "新しいレッスン",
+    "progress": "{total}文中{done}文を翻訳済み"
   },
   "languages": {
     "ja": "日本語",
@@ -117,5 +132,21 @@
       "title": "表示言語",
       "description": "画面とAIフィードバックの言語です。"
     }
+  },
+  "nav": {
+    "label": "メインナビゲーション",
+    "dashboard": "ホーム",
+    "lessons": "レッスン",
+    "notebook": "単語帳",
+    "review": "復習",
+    "pomodoro": "ポモドーロ"
+  },
+  "theme": {
+    "toLight": "ライトテーマに切り替え",
+    "toDark": "ダークテーマに切り替え"
+  },
+  "userMenu": {
+    "open": "アカウントメニューを開く",
+    "language": "表示言語"
   }
 }

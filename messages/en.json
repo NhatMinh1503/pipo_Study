@@ -76,7 +76,22 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Hi, {name}!"
+    "welcome": "Hi, {name}!",
+    "welcomeNoName": "Hi there!",
+    "subtitle": "What shall we learn today?",
+    "statsLabel": "Statistics",
+    "xp": "XP",
+    "coins": "Coins",
+    "streak": "Streak",
+    "streakBest": "Best: {count, plural, one {# day} other {# days}}",
+    "reviewTitle": "Cards due today",
+    "reviewDue": "{count, plural, one {# card is waiting} other {# cards are waiting}}",
+    "reviewNone": "Nothing due. Nice work!",
+    "reviewCta": "Review now",
+    "continueTitle": "Continue learning",
+    "continueEmpty": "No lessons in progress yet.",
+    "newLesson": "New lesson",
+    "progress": "Translated {done} of {total} sentences"
   },
   "languages": {
     "ja": "Japanese",
@@ -117,5 +132,21 @@
       "title": "Display language",
       "description": "Language of the interface and AI feedback."
     }
+  },
+  "nav": {
+    "label": "Main navigation",
+    "dashboard": "Home",
+    "lessons": "Lessons",
+    "notebook": "Notebook",
+    "review": "Review",
+    "pomodoro": "Pomodoro"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  },
+  "userMenu": {
+    "open": "Open account menu",
+    "language": "Display language"
   }
 }
