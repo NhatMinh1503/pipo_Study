@@ -9,15 +9,15 @@ Dự án cá nhân của Minh. **Chi phí = 0**: chỉ dùng công cụ miễn p
 
 ## 🧱 Stack (tóm tắt)
 
-| Phần | Công nghệ |
-|---|---|
-| App | **Một app Next.js** (App Router) · TypeScript strict · Tailwind · shadcn/ui |
-| State | TanStack Query (dữ liệu server) · Zustand (state UI) |
-| Validation / i18n | Zod · next-intl (VI / EN / JA) |
-| Backend | Next.js Route Handlers (`app/api/**`) + **Supabase local trong Docker** (Postgres, Auth, Realtime, Storage) |
-| AI | Gemini API free tier (key trong `.env.local`, chỉ dùng ở server) |
-| TTS | Web Speech API của trình duyệt |
-| Chất lượng | ESLint · Prettier · Vitest · pgTAP (`supabase test db`) · Playwright · Husky · GitHub Actions |
+| Phần              | Công nghệ                                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| App               | **Một app Next.js** (App Router) · TypeScript strict · Tailwind · shadcn/ui                                 |
+| State             | TanStack Query (dữ liệu server) · Zustand (state UI)                                                        |
+| Validation / i18n | Zod · next-intl (VI / EN / JA)                                                                              |
+| Backend           | Next.js Route Handlers (`app/api/**`) + **Supabase local trong Docker** (Postgres, Auth, Realtime, Storage) |
+| AI                | Gemini API free tier (key trong `.env.local`, chỉ dùng ở server)                                            |
+| TTS               | Web Speech API của trình duyệt                                                                              |
+| Chất lượng        | ESLint · Prettier · Vitest · pgTAP (`supabase test db`) · Playwright · Husky · GitHub Actions               |
 
 Quy tắc chi tiết theo thư mục nằm ở `.claude/rules/` (tự nạp khi làm việc trong thư mục tương ứng).
 
@@ -36,13 +36,13 @@ Quy tắc chi tiết theo thư mục nằm ở `.claude/rules/` (tự nạp khi 
 - Dữ liệu qua ranh giới (form, request body, output Gemini) phải parse bằng Zod schema trong `lib/schemas/`.
 - Type của DB sinh tự động: `types/database.ts` — không sửa tay.
 - Logic thuần (SRS, scoring, nlp, diff) ở `lib/`, **bắt buộc có unit test**.
-- Comment tiếng Anh, chỉ giải thích *why*. JSDoc cho hàm export ở `lib/` và `server/`.
+- Comment tiếng Anh, chỉ giải thích _why_. JSDoc cho hàm export ở `lib/` và `server/`.
 - Text UI không hardcode — luôn qua key next-intl.
 
 ## 🔐 Bảo mật
 
 - Mọi bảng có **RLS bật** + policy rõ ràng; có test pgTAP cho policy.
-- Gemini key và `SUPABASE_SERVICE_ROLE_KEY` chỉ dùng trong `server/` (có `import "server-only"`), không bao giờ có tiền tố `NEXT_PUBLIC_`, không log.
+- Gemini key và `SUPABASE_SECRET_KEY` chỉ dùng trong `server/` (có `import "server-only"`), không bao giờ có tiền tố `NEXT_PUBLIC_`, không log.
 - Coins / XP / Streak chỉ thay đổi qua Postgres function `security definer`; client không có quyền UPDATE các cột này.
 - `user_id` lấy từ `auth.uid()` (DB) hoặc session phía server — không bao giờ từ body / query.
 - Không gửi thông tin cá nhân (email, tên) vào prompt Gemini (free tier có thể dùng dữ liệu để cải thiện sản phẩm).
@@ -71,7 +71,7 @@ Quy tắc chi tiết theo thư mục nằm ở `.claude/rules/` (tự nạp khi 
 ## 🛠 Lệnh thường dùng
 
 ```bash
-supabase start                          # Postgres/Auth/Storage/Realtime + Studio (localhost:54323), Mailpit (54324)
+supabase start                          # Postgres/Auth/Storage/Realtime + Studio (localhost:55423), Mailpit (55424)
 npm run dev                             # Next.js (localhost:3000)
 supabase migration new <name>           # Tạo file migration
 supabase migration up                   # Áp migration mới vào DB local

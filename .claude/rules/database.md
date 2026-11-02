@@ -18,6 +18,17 @@ paths:
 - Mọi bảng của user có `user_id uuid not null references auth.users on delete cascade`, `created_at timestamptz default now()`.
 - Function: động từ trước (`complete_lesson`, `wallet_apply`); index: `<table>_<cols>_idx`.
 
+## Quyền (GRANT) — bắt buộc khai báo rõ
+
+- Bảng mới **không** có quyền SELECT/INSERT/UPDATE/DELETE mặc định cho `anon`, `authenticated`, `service_role`, nhưng lại có sẵn `TRUNCATE`. Mỗi bảng mới phải:
+  ```sql
+  revoke all on public.<table> from anon, authenticated, service_role;
+  grant select, insert, update, delete on public.<table> to authenticated;  -- chỉ những quyền cần
+  grant select, insert, update, delete on public.<table> to service_role;   -- nếu server/cron cần
+  ```
+- Function mới: `revoke execute on function ... from public, anon;` rồi `grant execute ... to authenticated` khi cần.
+- GRANT quyết định role **có được chạm vào bảng không**; RLS quyết định **được chạm vào dòng nào**. Cần cả hai.
+
 ## RLS — bắt buộc
 
 - Mọi bảng trong `public`: `alter table ... enable row level security;` ngay trong migration tạo bảng.

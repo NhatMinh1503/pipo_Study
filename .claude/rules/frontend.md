@@ -2,16 +2,49 @@
 paths:
   - "app/**"
   - "components/**"
+  - "hooks/**"
   - "messages/**"
 ---
 
 # Frontend Rules (Next.js + shadcn)
 
-## Cấu trúc
+## Cấu trúc — feature-based colocation
 
-- Route group: `app/(auth)/` (chưa đăng nhập), `app/(main)/` (đã đăng nhập, có layout chung). `app/api/**` theo `server.md`.
-- Component theo tính năng: `components/<feature>/<name>.tsx`; shadcn ở `components/ui/` (không sửa trực tiếp trừ khi đổi style toàn app).
+Code của trang nào nằm trong thư mục của trang đó. Thư mục có tiền tố `_` là private folder, Next.js không coi là route.
+
+```
+app/(main)/lessons/[id]/translate/
+├── page.tsx                  # mỏng: lấy params, ghép component — không chứa logic
+├── loading.tsx · error.tsx   # trạng thái của trang (khi cần)
+├── _components/              # component CHỈ trang này dùng
+│   ├── source-pane.tsx
+│   └── target-pane.tsx
+├── _hooks/                   # hook CHỈ trang này dùng
+│   └── use-translate-session.ts
+└── _lib/                     # helper / constant / type CHỈ trang này dùng
+```
+
+Code dùng chung đặt ở cấp cao hơn:
+
+| Vị trí                  | Chứa gì                                                                                                     |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `components/ui/`        | shadcn primitives (Button, Dialog...) — không sửa trừ khi đổi style toàn app                                |
+| `components/common/`    | Khối UI dùng nhiều trang: `page-header`, `empty-state`, `error-state`, `loading-skeleton`, `confirm-dialog` |
+| `components/layout/`    | `app-nav`, `mobile-nav`, `theme-toggle`                                                                     |
+| `components/<feature>/` | Component của một tính năng dùng ở nhiều trang (vd. `flashcard/` dùng ở Ôn tập + Quiz + Sổ tay)             |
+| `hooks/`                | Hook dùng chung: `use-media-query`, `use-debounce`, `use-hotkeys`, `use-speech`                             |
+| `lib/api/`              | Hook TanStack Query theo tài nguyên: `use-lessons.ts`, `use-flashcards.ts`                                  |
+
+### Quy tắc tái sử dụng
+
+- **Lặp lần 2 → tách.** UI hoặc logic xuất hiện ở trang thứ 2 → chuyển từ `_components/` / `_hooks/` lên `components/` / `hooks/`.
+- **Logic ra hook, component chỉ hiển thị.** Có state + effect, fetch, timer, phím tắt → tách thành `use-*.ts`; component nhận dữ liệu qua props.
+- `page.tsx` ≤ ~60 dòng; component ≤ ~150 dòng — dài hơn thì tách component con.
+- Một component export chính mỗi file; props đặt tên `<Component>Props`, khai báo ngay trên component.
+- Không tạo file `index.ts` re-export (barrel) trong `app/` — import thẳng đường dẫn.
+- Import dùng alias `@/` (vd. `@/components/common/page-header`), không dùng `../../..`.
 - Truy cập dữ liệu: qua hook ở `lib/api/` (TanStack Query bọc Supabase client hoặc `fetch('/api/...')`). Component không gọi Supabase / `fetch` trực tiếp.
+- Route group: `app/(auth)/` (chưa đăng nhập), `app/(main)/` (đã đăng nhập, có layout chung). `app/api/**` theo `server.md`.
 
 ## Server vs Client
 

@@ -10,7 +10,7 @@ Bạn chuyên đọc log cho stack: Next.js + Supabase local chạy trong Docker
 
 1. Xác định nguồn log:
    - Next.js: output `npm run dev` / `npm run build`, log JSON từ `server/logger.ts`.
-   - Supabase: `supabase status`, `docker logs supabase_db_<project>` (Postgres), `supabase_auth_*`, `supabase_realtime_*`; Logs Explorer trong Studio (`localhost:54323`).
+   - Supabase: `supabase status`, `docker logs supabase_db_pipo-study` (Postgres), `supabase_auth_*`, `supabase_realtime_*`; Logs Explorer trong Studio (`localhost:55423`).
    - Migration / test: output `supabase migration up`, `supabase test db`.
    - Browser console / Network tab.
 2. Tìm dòng lỗi **đầu tiên** (không phải dòng cuối), lần ngược stack trace về file trong repo.
