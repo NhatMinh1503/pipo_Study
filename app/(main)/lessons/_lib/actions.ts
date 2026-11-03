@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import type { ActionResult } from "@/lib/action-result";
+import { findOpenSource } from "@/lib/news/open-sources";
 import { splitSentences } from "@/lib/nlp/split-sentences";
 import { createLessonSchema, MAX_SENTENCES } from "@/lib/schemas/lesson";
 import { createClient } from "@/lib/supabase/server";
@@ -16,7 +17,9 @@ export async function createLesson(input: unknown): Promise<ActionResult> {
   const parsed = createLessonSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "errors.unexpected" };
 
-  const { title, language, level, text } = parsed.data;
+  const { title, language, level, text, newsUrl } = parsed.data;
+  // Attribution comes from the allow-list, never from what the client sends
+  const source = newsUrl ? findOpenSource(newsUrl) : null;
   const sentences = splitSentences(text, language);
   if (sentences.length === 0) {
     return { ok: false, fieldErrors: { text: "validation.required" } };
@@ -31,6 +34,14 @@ export async function createLesson(input: unknown): Promise<ActionResult> {
     p_language: language,
     p_level: level,
     p_sentences: sentences,
+    ...(source && newsUrl
+      ? {
+          p_source: "news",
+          p_source_name: source.name,
+          p_source_url: newsUrl,
+          p_source_license: source.license,
+        }
+      : {}),
   });
 
   if (error || !lessonId) {

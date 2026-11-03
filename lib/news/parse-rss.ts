@@ -4,13 +4,16 @@ export interface NewsItem {
   publishedAt: string | null;
 }
 
-const decodeEntities = (text: string) =>
+/** Decodes CDATA and the XML entities feeds actually use. */
+export const decodeEntities = (text: string) =>
   text
     .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number(code)))
     .replace(/&amp;/g, "&")
     .trim();
 

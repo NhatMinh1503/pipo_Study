@@ -19,6 +19,9 @@ import {
 import { createLessonSchema } from "@/lib/schemas/lesson";
 
 import { createLesson } from "../../_lib/actions";
+import { useNewsPrefill } from "../_hooks/use-news-prefill";
+
+import { NewsPrefillStatus } from "./news-prefill-status";
 
 import { SentencePreview } from "./sentence-preview";
 
@@ -26,12 +29,15 @@ interface NewLessonFormProps {
   defaultLanguage: LearningLanguage;
   defaultLevel: ProficiencyLevel;
   defaultTitle?: string;
+  /** Allow-listed open news article to rewrite into the passage. */
+  newsUrl?: string;
 }
 
 export function NewLessonForm({
   defaultLanguage,
   defaultLevel,
   defaultTitle = "",
+  newsUrl,
 }: NewLessonFormProps) {
   const t = useTranslations();
   const { form, onSubmit, serverError, isSubmitting } = useActionForm({
@@ -41,9 +47,11 @@ export function NewLessonForm({
       language: defaultLanguage,
       level: defaultLevel,
       text: "",
+      newsUrl,
     },
     action: createLesson,
   });
+  const news = useNewsPrefill(form, newsUrl);
   const { errors } = form.formState;
   const language = form.watch("language");
   const text = form.watch("text");
@@ -64,6 +72,14 @@ export function NewLessonForm({
       <div className="sheet-tight p-5 sm:p-6">
         <FieldGroup>
           <FormAlert messageKey={serverError} />
+          {newsUrl && (
+            <NewsPrefillStatus
+              isPending={news.isPending}
+              error={news.error}
+              data={news.data}
+              onRetry={() => void news.refetch()}
+            />
+          )}
           <TextField
             label={t("lessons.form.title")}
             placeholder={t("lessons.form.titlePlaceholder")}
@@ -97,7 +113,9 @@ export function NewLessonForm({
             lang={language}
             rows={10}
           />
-          <SubmitButton isPending={isSubmitting}>{t("lessons.form.submit")}</SubmitButton>
+          <SubmitButton isPending={isSubmitting} disabled={Boolean(newsUrl) && news.isPending}>
+            {t("lessons.form.submit")}
+          </SubmitButton>
         </FieldGroup>
       </div>
 

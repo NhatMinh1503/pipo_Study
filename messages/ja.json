@@ -103,6 +103,36 @@
       "community": "コミュニティ",
       "leaderboard": "ランキング",
       "battle": "1対1バトル"
+    },
+    "goals": {
+      "title": "今日の目標",
+      "progress": "{done}/{total}",
+      "translate": "翻訳を1つ完了する",
+      "translateDetail": "{count, plural, =0 {今日はまだです} other {今日#件完了}}",
+      "review": "期限のカードを復習する",
+      "reviewLeft": "{count, plural, other {残り#枚}}",
+      "reviewDetail": "{count, plural, =0 {期限のカードはありません} other {今日#枚復習しました}}",
+      "focus": "ポモドーロを1回集中する",
+      "focusDetail": "{count, plural, =0 {まだありません} other {#回完了}}",
+      "done": "完了",
+      "todo": "未完了"
+    },
+    "activity": {
+      "title": "過去7日間のXP・合計{total}",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "今週はまだ活動がありません。翻訳を1つしてみましょう！"
+    },
+    "words": {
+      "title": "最近の単語",
+      "all": "ノートを開く",
+      "empty": "まだ単語がありません。翻訳中に単語をタップして追加しましょう。"
+    },
+    "weak": {
+      "title": "練習したい弱点",
+      "count": "{count, plural, other {2週間で#回}}",
+      "practise": "今すぐ練習",
+      "details": "分析を見る",
+      "none": "この2週間ミスはありません。その調子！"
     }
   },
   "languages": {
@@ -204,8 +234,19 @@
     },
     "dictationAria": "「{title}」のディクテーション",
     "clozeAria": "「{title}」の穴埋め",
-    "news": "ニュース",
-    "generate": "AIで作成"
+    "news": {
+      "writing": "AIがこのニュースをあなたのレベルに書き直しています…",
+      "ready": "文章ができました。作成前に編集もできます。",
+      "retry": "再試行",
+      "failed": "AIが文章を作れませんでした。もう一度お試しください。",
+      "unreadable": "このニュースの本文を読み込めませんでした。別のニュースを選んでください。",
+      "tooClose": "書き直しが原文に近すぎました。再試行するか別のニュースを選んでください。",
+      "rateLimited": "今日のAI利用回数を使い切りました。また明日お試しください。"
+    },
+    "generate": "AIで作成",
+    "source": {
+      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成"
+    }
   },
   "translate": {
     "sourceLabel": "原文",
@@ -478,12 +519,19 @@
   },
   "news": {
     "title": "今日のニュース",
-    "description": "{source}の最新見出し。記事を開いて好きな段落を選び、レッスンを作りましょう。",
+    "description": "オープンライセンスのニュースをもとに、AIがあなたのレベルに合わせて書き直した翻訳練習用の文章です。",
     "read": "記事を読む",
-    "makeLesson": "レッスン作成",
+    "makeLesson": "教材を作る",
     "empty": "ニュースを読み込めませんでした。",
     "emptyHint": "接続を確認して、後でもう一度お試しください。",
-    "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。"
+    "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。",
+    "open": {
+      "title": "オープンソースの読み物",
+      "description": "{source}（{license}）のニュースです。ライセンス上、編集・加工が認められています。「教材を作る」を押すと、AIが原文をコピーせずにあなたのレベルで書き直します。"
+    },
+    "headlines": {
+      "title": "{source}の最新見出し"
+    }
   },
   "shop": {
     "title": "ショップ",

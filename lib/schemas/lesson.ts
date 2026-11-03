@@ -27,6 +27,8 @@ export const createLessonSchema = z
       .trim()
       .min(1, { error: "validation.required" })
       .max(LESSON_TEXT_MAX, { error: "lessons.form.textTooLong" }),
+    /** Article the passage was rewritten from; the server derives the attribution from it. */
+    newsUrl: z.url().max(500).optional(),
   })
   .refine((value) => isLevelForLanguage(value.language, value.level), {
     message: LEVEL_MISMATCH_MESSAGE,

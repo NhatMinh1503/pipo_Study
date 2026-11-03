@@ -386,6 +386,9 @@ export type Database = {
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
           source: Database["public"]["Enums"]["lesson_source"]
+          source_license: string | null
+          source_name: string | null
+          source_url: string | null
           title: string
           updated_at: string
           user_id: string
@@ -397,6 +400,9 @@ export type Database = {
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
           source?: Database["public"]["Enums"]["lesson_source"]
+          source_license?: string | null
+          source_name?: string | null
+          source_url?: string | null
           title: string
           updated_at?: string
           user_id: string
@@ -408,6 +414,9 @@ export type Database = {
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
           source?: Database["public"]["Enums"]["lesson_source"]
+          source_license?: string | null
+          source_name?: string | null
+          source_url?: string | null
           title?: string
           updated_at?: string
           user_id?: string
@@ -439,6 +448,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      news_rewrites: {
+        Row: {
+          created_at: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          passage: string
+          prompt_version: string
+          source_url: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          level: Database["public"]["Enums"]["proficiency_level"]
+          passage: string
+          prompt_version: string
+          source_url: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          level?: Database["public"]["Enums"]["proficiency_level"]
+          passage?: string
+          prompt_version?: string
+          source_url?: string
+          title?: string
+        }
+        Relationships: []
       }
       pomodoro_sessions: {
         Row: {
@@ -891,6 +927,9 @@ export type Database = {
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
           p_source?: Database["public"]["Enums"]["lesson_source"]
+          p_source_license?: string
+          p_source_name?: string
+          p_source_url?: string
           p_title: string
         }
         Returns: string

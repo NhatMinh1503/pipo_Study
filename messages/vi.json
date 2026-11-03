@@ -103,6 +103,36 @@
       "community": "Cộng đồng",
       "leaderboard": "Xếp hạng",
       "battle": "Đấu 1v1"
+    },
+    "goals": {
+      "title": "Mục tiêu hôm nay",
+      "progress": "{done}/{total}",
+      "translate": "Hoàn thành 1 bài dịch",
+      "translateDetail": "{count, plural, =0 {Chưa có bài nào hôm nay} other {Đã xong # bài hôm nay}}",
+      "review": "Ôn hết thẻ đến hạn",
+      "reviewLeft": "{count, plural, other {Còn # thẻ}}",
+      "reviewDetail": "{count, plural, =0 {Không có thẻ nào đến hạn} other {Đã ôn # thẻ hôm nay}}",
+      "focus": "Tập trung 1 phiên Pomodoro",
+      "focusDetail": "{count, plural, =0 {Chưa có phiên nào} other {Đã xong # phiên}}",
+      "done": "đã xong",
+      "todo": "chưa xong"
+    },
+    "activity": {
+      "title": "XP 7 ngày qua · tổng {total}",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "Tuần này chưa có hoạt động — dịch một bài để bắt đầu nhé!"
+    },
+    "words": {
+      "title": "Từ mới gần đây",
+      "all": "Xem Sổ tay",
+      "empty": "Chưa lưu từ nào. Bấm vào một từ khi dịch để thêm vào Sổ tay."
+    },
+    "weak": {
+      "title": "Điểm yếu cần luyện",
+      "count": "{count, plural, other {# lần trong 2 tuần}}",
+      "practise": "Luyện ngay",
+      "details": "Xem phân tích",
+      "none": "Chưa có lỗi nào trong 2 tuần qua. Tiếp tục phát huy!"
     }
   },
   "languages": {
@@ -204,8 +234,19 @@
     },
     "dictationAria": "Chép chính tả bài {title}",
     "clozeAria": "Điền từ (Cloze) bài {title}",
-    "news": "Tin tức",
-    "generate": "Tạo bằng AI"
+    "news": {
+      "writing": "AI đang viết lại tin này thành bài đọc đúng trình độ của bạn…",
+      "ready": "Đoạn văn đã sẵn sàng — bạn có thể sửa trước khi tạo bài.",
+      "retry": "Thử lại",
+      "failed": "AI chưa viết được bài này. Hãy thử lại.",
+      "unreadable": "Không đọc được nội dung tin này. Hãy chọn tin khác.",
+      "tooClose": "Bản viết lại còn giống nguyên văn quá. Hãy thử lại hoặc chọn tin khác.",
+      "rateLimited": "Bạn đã dùng hết lượt AI hôm nay. Hãy quay lại vào ngày mai."
+    },
+    "generate": "Tạo bằng AI",
+    "source": {
+      "adapted": "Bài đọc do pipo biên tập lại cho người học từ <source></source>, theo giấy phép <license></license>."
+    }
   },
   "translate": {
     "sourceLabel": "Văn bản gốc",
@@ -478,12 +519,19 @@
   },
   "news": {
     "title": "Tin tức hôm nay",
-    "description": "Tiêu đề mới nhất từ {source}. Mở bài gốc, chọn đoạn bạn thích rồi tạo bài luyện dịch.",
+    "description": "Bài đọc luyện dịch được AI viết lại từ tin tức có giấy phép mở, đúng trình độ của bạn.",
     "read": "Đọc bài gốc",
     "makeLesson": "Tạo bài",
     "empty": "Chưa tải được tin tức.",
     "emptyHint": "Hãy kiểm tra kết nối mạng và thử lại sau.",
-    "copyrightNote": "pipo chỉ hiển thị tiêu đề và liên kết; nội dung bài báo thuộc về nhà xuất bản."
+    "copyrightNote": "pipo chỉ hiển thị tiêu đề và liên kết; nội dung bài báo thuộc về nhà xuất bản.",
+    "open": {
+      "title": "Bài đọc từ nguồn mở",
+      "description": "Tin từ {source} ({license}) — giấy phép cho phép biên tập lại. Bấm “Tạo bài” để AI viết lại thành đoạn văn đúng trình độ của bạn, không sao chép nguyên văn."
+    },
+    "headlines": {
+      "title": "Tin nóng từ {source}"
+    }
   },
   "shop": {
     "title": "Cửa hàng",

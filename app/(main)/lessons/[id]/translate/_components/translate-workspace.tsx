@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 
+import { SourceAttribution } from "@/components/lessons/source-attribution";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import type { LessonWorkspace } from "@/lib/lessons/workspace";
@@ -43,6 +44,12 @@ export function TranslateWorkspace({ workspace }: { workspace: LessonWorkspace }
             </span>
           </div>
         </header>
+        {workspace.source && (
+          <SourceAttribution
+            source={workspace.source}
+            className="border-b border-dashed border-border/40 px-4 py-2"
+          />
+        )}
 
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:divide-x lg:divide-dashed lg:divide-border/30">
           <div className="max-h-[45dvh] overflow-y-auto px-4 py-4 lg:max-h-[calc(100dvh-13rem)]">

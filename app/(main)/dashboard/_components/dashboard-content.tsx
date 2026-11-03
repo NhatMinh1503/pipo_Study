@@ -5,9 +5,13 @@ import { StatCard } from "@/components/common/stat-card";
 
 import { getDashboardData } from "../_lib/get-dashboard-data";
 
+import { ActivityChart } from "./activity-chart";
 import { ContinueLessons } from "./continue-lessons";
 import { QuickLinks } from "./quick-links";
+import { RecentWords } from "./recent-words";
 import { ReviewDueCard } from "./review-due-card";
+import { TodayGoals } from "./today-goals";
+import { WeakPointCard } from "./weak-point-card";
 
 export async function DashboardContent() {
   const [data, t] = await Promise.all([getDashboardData(), getTranslations("dashboard")]);
@@ -31,6 +35,14 @@ export async function DashboardContent() {
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-start">
         <ReviewDueCard count={data.dueCards} />
         <ContinueLessons lessons={data.inProgress} />
+      </div>
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-start">
+        <TodayGoals today={data.today} dueCards={data.dueCards} />
+        <ActivityChart activity={data.activity} />
+      </div>
+      <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+        <RecentWords words={data.recentWords} />
+        <WeakPointCard weakPoint={data.weakPoint} />
       </div>
       <QuickLinks />
     </>

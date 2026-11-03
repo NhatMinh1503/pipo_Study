@@ -23,11 +23,19 @@ export interface WorkspaceSentence {
   tokens: Token[] | null;
 }
 
+/** Where a lesson rewritten from open news came from; required attribution. */
+export interface LessonSource {
+  name: string;
+  url: string;
+  license: string;
+}
+
 export interface LessonWorkspace {
   id: string;
   title: string;
   language: LearningLanguage;
   level: ProficiencyLevel;
   completedAt: string | null;
+  source: LessonSource | null;
   sentences: WorkspaceSentence[];
 }

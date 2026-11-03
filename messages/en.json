@@ -103,6 +103,36 @@
       "community": "Community",
       "leaderboard": "Leaderboard",
       "battle": "1v1 battle"
+    },
+    "goals": {
+      "title": "Today's goals",
+      "progress": "{done}/{total}",
+      "translate": "Finish 1 translation",
+      "translateDetail": "{count, plural, =0 {None yet today} one {# done today} other {# done today}}",
+      "review": "Clear your due cards",
+      "reviewLeft": "{count, plural, one {# card left} other {# cards left}}",
+      "reviewDetail": "{count, plural, =0 {Nothing due} one {# card reviewed today} other {# cards reviewed today}}",
+      "focus": "Focus for 1 Pomodoro",
+      "focusDetail": "{count, plural, =0 {No sessions yet} one {# session done} other {# sessions done}}",
+      "done": "done",
+      "todo": "to do"
+    },
+    "activity": {
+      "title": "XP, last 7 days · {total} total",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "No activity this week yet — translate a lesson to get started!"
+    },
+    "words": {
+      "title": "Recent words",
+      "all": "Open notebook",
+      "empty": "No words saved yet. Tap a word while translating to add it."
+    },
+    "weak": {
+      "title": "Weak spot to practise",
+      "count": "{count, plural, one {# time in 2 weeks} other {# times in 2 weeks}}",
+      "practise": "Practise now",
+      "details": "See analytics",
+      "none": "No mistakes in the last 2 weeks. Keep it up!"
     }
   },
   "languages": {
@@ -204,8 +234,19 @@
     },
     "dictationAria": "Dictation for {title}",
     "clozeAria": "Cloze test for {title}",
-    "news": "News",
-    "generate": "Generate with AI"
+    "news": {
+      "writing": "The AI is rewriting this story at your level…",
+      "ready": "Your passage is ready — edit it before creating the lesson if you like.",
+      "retry": "Try again",
+      "failed": "The AI couldn't write this one. Please try again.",
+      "unreadable": "This article couldn't be read. Please pick another one.",
+      "tooClose": "The rewrite was still too close to the original. Try again or pick another story.",
+      "rateLimited": "You've used today's AI allowance. Come back tomorrow."
+    },
+    "generate": "Generate with AI",
+    "source": {
+      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence."
+    }
   },
   "translate": {
     "sourceLabel": "Source text",
@@ -478,12 +519,19 @@
   },
   "news": {
     "title": "Today's news",
-    "description": "Latest headlines from {source}. Open the article, pick a passage you like and make a lesson.",
+    "description": "Practice passages rewritten by AI from openly licensed news, at your level.",
     "read": "Read article",
-    "makeLesson": "Make lesson",
+    "makeLesson": "Make a lesson",
     "empty": "Could not load the news.",
     "emptyHint": "Check your connection and try again later.",
-    "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher."
+    "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher.",
+    "open": {
+      "title": "Readings from open sources",
+      "description": "News from {source} ({license}) — the licence allows adaptation. Press “Make a lesson” and the AI rewrites it at your level, without copying the original."
+    },
+    "headlines": {
+      "title": "Headlines from {source}"
+    }
   },
   "shop": {
     "title": "Shop",
