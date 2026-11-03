@@ -378,6 +378,30 @@ export type Database = {
           },
         ]
       }
+      grading_cache: {
+        Row: {
+          cache_key: string
+          created_at: string
+          hits: number
+          prompt_version: string
+          result: Json
+        }
+        Insert: {
+          cache_key: string
+          created_at?: string
+          hits?: number
+          prompt_version: string
+          result: Json
+        }
+        Update: {
+          cache_key?: string
+          created_at?: string
+          hits?: number
+          prompt_version?: string
+          result?: Json
+        }
+        Relationships: []
+      }
       lessons: {
         Row: {
           completed_at: string | null

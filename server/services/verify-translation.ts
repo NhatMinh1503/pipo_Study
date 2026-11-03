@@ -3,6 +3,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Grader } from "@/server/ai/grader";
+import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { GradeResponse } from "@/server/prompts/grade-translation.v1";
 import type { Database } from "@/types/database";
 
@@ -60,18 +61,10 @@ export async function verifyTranslation(
     userClient.from("profiles").select("display_language").eq("user_id", userId).maybeSingle(),
   ]);
 
-  const { data: allowed, error: limitError } = await userClient.rpc("rate_limit_hit", {
-    p_key: "ai",
-    p_limit: dailyLimit,
-  });
-  if (limitError) throw new ServiceError("INTERNAL");
-  if (!allowed) throw new ServiceError("RATE_LIMITED");
-
   const neighbor = (position: number) =>
     neighbors.data?.find((row) => row.position === position)?.source_text ?? null;
 
-  // AI failures throw AiError; nothing is recorded, so the learner's attempt count is untouched
-  const result = await grade({
+  const gradeInput = {
     source: sentence.source_text,
     userTranslation,
     sourceLanguage: sentence.lessons.language,
@@ -80,7 +73,22 @@ export async function verifyTranslation(
     contextBefore: neighbor(sentence.position - 1),
     contextAfter: neighbor(sentence.position + 1),
     referenceTranslation: sentence.reference_translation,
-  });
+  };
+
+  // Someone already wrote exactly this: answer instantly, without spending AI quota
+  const cached = await readCachedGrade(adminClient, gradeInput);
+  if (!cached) {
+    const { data: allowed, error: limitError } = await userClient.rpc("rate_limit_hit", {
+      p_key: "ai",
+      p_limit: dailyLimit,
+    });
+    if (limitError) throw new ServiceError("INTERNAL");
+    if (!allowed) throw new ServiceError("RATE_LIMITED");
+  }
+
+  // AI failures throw AiError; nothing is recorded, so the learner's attempt count is untouched
+  const result = cached ?? (await grade(gradeInput));
+  if (!cached) await storeGrade(adminClient, grade, gradeInput, result);
 
   const { data: attempt, error: attemptError } = await adminClient
     .from("attempts")

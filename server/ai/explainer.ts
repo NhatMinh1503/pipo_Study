@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getServerEnv } from "@/server/env";
-import { generateStructured } from "@/server/gemini";
+import { generateWithFallback } from "@/server/ai/llm";
 import {
   buildExplainPrompt,
   explainResponseSchema,
@@ -18,10 +18,7 @@ export type Explainer = ((input: ExplainInput) => Promise<ExplainResponse>) & {
 
 export const geminiExplainer: Explainer = Object.assign(
   async (input: ExplainInput) => {
-    const env = getServerEnv();
-    const { data } = await generateStructured({
-      apiKey: env.GEMINI_API_KEY,
-      model: env.GEMINI_MODEL,
+    const { data } = await generateWithFallback({
       systemInstruction: SYSTEM_INSTRUCTION,
       prompt: buildExplainPrompt(input),
       schema: explainResponseSchema,

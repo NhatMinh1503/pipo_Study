@@ -18,7 +18,8 @@
     "test:e2e": "playwright test",
     "dict:import": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-jmdict.mts",
     "docker:up": "docker compose --env-file .env.local up --build",
-    "icons": "node --experimental-strip-types --no-warnings scripts/generate-icons.mts"
+    "icons": "node --experimental-strip-types --no-warnings scripts/generate-icons.mts",
+    "ai:eval": "vitest run --config vitest.eval.config.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.1",

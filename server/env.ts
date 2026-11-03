@@ -9,6 +9,12 @@ const serverEnvSchema = z.object({
   // Optional so the app runs without AI; AI routes answer AI_NOT_CONFIGURED instead
   GEMINI_API_KEY: z.string().min(1).optional(),
   GEMINI_MODEL: z.string().min(1).default("gemini-3.5-flash-lite"),
+  // Groq answers first: qwen3.8-27b matched Gemini on the grading fixtures (10/11) at
+  // ~0.5 s vs ~16 s on a congested Gemini free tier (ai:eval, 2026-11-03). Without a Groq
+  // key, Gemini alone is used.
+  GROQ_API_KEY: z.string().min(1).optional(),
+  GROQ_MODEL: z.string().min(1).default("qwen/qwen3.8-27b"),
+  AI_PRIMARY: z.enum(["gemini", "groq"]).default("groq"),
   AI_DAILY_LIMIT: z.coerce.number().int().positive().default(150),
 });
 
