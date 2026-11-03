@@ -323,7 +323,8 @@
     "toLessons": "Học bài mới",
     "toDashboard": "Về tổng quan",
     "saveFailed": "Một số lượt ôn chưa lưu được. Hãy tải lại trang.",
-    "saving": "Đang lưu kết quả..."
+    "saving": "Đang lưu kết quả...",
+    "offlineQueued": "{count, plural, other {# lượt ôn sẽ được lưu khi có mạng}}"
   },
   "pomodoro": {
     "ready": "Sẵn sàng",
@@ -642,7 +643,8 @@
     },
     "empty": "Chưa có ai trên bảng xếp hạng",
     "anonymous": "Người học ẩn danh",
-    "you": "Bạn"
+    "you": "Bạn",
+    "notRanked": "Bạn chưa vào top 50 — tiếp tục học để leo bảng nhé!"
   },
   "battle": {
     "title": "Đấu dịch 1v1",
@@ -682,5 +684,11 @@
     "grading": "Đang chấm…",
     "gradeFailed": "Chưa chấm được câu này, thử nộp lại nhé.",
     "waitingOpponentFinish": "Bạn đã xong! Đang chờ đối thủ hoàn thành…"
+  },
+  "offline": {
+    "title": "Bạn đang ngoại tuyến",
+    "description": "Trang này cần kết nối mạng. Sổ tay và Ôn tập vẫn mở được nếu bạn đã mở chúng trước đó.",
+    "review": "Ôn tập",
+    "notebook": "Sổ tay"
   }
 }

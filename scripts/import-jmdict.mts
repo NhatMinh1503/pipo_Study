@@ -26,7 +26,8 @@ interface JmdictWord {
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const secret = process.env.SUPABASE_SECRET_KEY;
-if (!url || !secret) throw new Error("Run with .env.local (NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SECRET_KEY)");
+if (!url || !secret)
+  throw new Error("Run with .env.local (NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SECRET_KEY)");
 
 console.info(`Downloading JMdict common ${RELEASE}...`);
 const response = await fetch(URL_);
@@ -35,7 +36,9 @@ const zipPath = join(mkdtempSync(join(tmpdir(), "jmdict-")), "jmdict.zip");
 writeFileSync(zipPath, Buffer.from(await response.arrayBuffer()));
 
 // The archive holds a single JSON file; `unzip -p` streams it to stdout
-const json = execFileSync("unzip", ["-p", zipPath], { maxBuffer: 512 * 1024 * 1024 }).toString("utf8");
+const json = execFileSync("unzip", ["-p", zipPath], { maxBuffer: 512 * 1024 * 1024 }).toString(
+  "utf8",
+);
 const { words } = JSON.parse(json) as { words: JmdictWord[] };
 console.info(`Parsed ${words.length} entries`);
 
@@ -53,7 +56,9 @@ const rows = words.map((word) => ({
 
 const admin = createClient(url, secret, { auth: { persistSession: false } });
 for (let start = 0; start < rows.length; start += BATCH_SIZE) {
-  const { error } = await admin.from("dictionary_entries").upsert(rows.slice(start, start + BATCH_SIZE));
+  const { error } = await admin
+    .from("dictionary_entries")
+    .upsert(rows.slice(start, start + BATCH_SIZE));
   if (error) throw new Error(`Upsert failed at ${start}: ${error.message}`);
   process.stdout.write(`\r  imported ${Math.min(start + BATCH_SIZE, rows.length)}/${rows.length}`);
 }

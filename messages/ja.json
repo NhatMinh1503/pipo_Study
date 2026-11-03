@@ -323,7 +323,8 @@
     "toLessons": "レッスンを始める",
     "toDashboard": "ダッシュボードへ",
     "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
-    "saving": "結果を保存しています..."
+    "saving": "結果を保存しています...",
+    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}"
   },
   "pomodoro": {
     "ready": "準備OK",
@@ -642,7 +643,8 @@
     },
     "empty": "まだランキングに誰もいません",
     "anonymous": "匿名の学習者",
-    "you": "あなた"
+    "you": "あなた",
+    "notRanked": "まだトップ50に入っていません。学習を続けて上位を目指しましょう！"
   },
   "battle": {
     "title": "1対1翻訳バトル",
@@ -682,5 +684,11 @@
     "grading": "採点中…",
     "gradeFailed": "採点できませんでした。もう一度提出してください。",
     "waitingOpponentFinish": "完了しました！相手が終わるのを待っています…"
+  },
+  "offline": {
+    "title": "オフラインです",
+    "description": "このページには接続が必要です。以前に開いたノートと復習はオフラインでも使えます。",
+    "review": "復習",
+    "notebook": "ノート"
   }
 }

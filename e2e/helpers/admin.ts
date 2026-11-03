@@ -11,16 +11,25 @@ const admin = createClient(
 
 /** Credits coins to a test user through the same wallet function the app uses. */
 export async function grantCoins(email: string, coins: number) {
+  await grantRewards(email, { xp: 0, coins });
+}
+
+/** Credits XP, e.g. to put a fresh test user at the top of the leaderboard. */
+export async function grantXp(email: string, xp: number) {
+  await grantRewards(email, { xp, coins: 0 });
+}
+
+async function grantRewards(email: string, { xp, coins }: { xp: number; coins: number }) {
   const { data } = await admin.auth.admin.listUsers({ perPage: 1000 });
   const user = data.users.find((candidate) => candidate.email === email);
   if (!user) throw new Error(`No user ${email}`);
 
   const { error } = await admin.rpc("wallet_apply", {
     p_user_id: user.id,
-    p_xp_delta: 0,
+    p_xp_delta: xp,
     p_coins_delta: coins,
     p_reason: "e2e_grant",
-    p_idempotency_key: `e2e:${Date.now()}`,
+    p_idempotency_key: `e2e:${crypto.randomUUID()}`,
   });
   if (error) throw error;
 }

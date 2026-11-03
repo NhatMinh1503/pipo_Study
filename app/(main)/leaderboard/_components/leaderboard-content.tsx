@@ -93,6 +93,9 @@ export async function LeaderboardContent({ searchParams }: LeaderboardContentPro
           })}
         </ol>
       )}
+      {rows?.length && !rows.some((row) => row.user_id === user.id) ? (
+        <p className="mono-label text-center">{t("notRanked")}</p>
+      ) : null}
     </>
   );
 }

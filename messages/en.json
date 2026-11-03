@@ -323,7 +323,8 @@
     "toLessons": "Start a lesson",
     "toDashboard": "Back to dashboard",
     "saveFailed": "Some reviews could not be saved. Please reload the page.",
-    "saving": "Saving your results..."
+    "saving": "Saving your results...",
+    "offlineQueued": "{count, plural, one {# review will be saved when you're back online} other {# reviews will be saved when you're back online}}"
   },
   "pomodoro": {
     "ready": "Ready",
@@ -642,7 +643,8 @@
     },
     "empty": "Nobody on the board yet",
     "anonymous": "Anonymous learner",
-    "you": "You"
+    "you": "You",
+    "notRanked": "You're not in the top 50 yet — keep learning to climb!"
   },
   "battle": {
     "title": "1v1 translation battle",
@@ -682,5 +684,11 @@
     "grading": "Grading…",
     "gradeFailed": "Couldn't grade this one, please submit again.",
     "waitingOpponentFinish": "You're done! Waiting for your opponent to finish…"
+  },
+  "offline": {
+    "title": "You're offline",
+    "description": "This page needs a connection. Notebook and Review still open if you've visited them before.",
+    "review": "Review",
+    "notebook": "Notebook"
   }
 }

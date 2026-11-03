@@ -16,7 +16,9 @@
     "prepare": "husky",
     "test:int": "vitest run --config vitest.int.config.mts",
     "test:e2e": "playwright test",
-    "dict:import": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-jmdict.mts"
+    "dict:import": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-jmdict.mts",
+    "docker:up": "docker compose --env-file .env.local up --build",
+    "icons": "node --experimental-strip-types --no-warnings scripts/generate-icons.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.1",
@@ -62,7 +64,7 @@
     "node": ">=22"
   },
   "lint-staged": {
-    "*.{ts,tsx,mjs}": [
+    "*.{ts,tsx,mjs,mts}": [
       "eslint --fix --max-warnings=0 --no-warn-ignored",
       "prettier --write"
     ],

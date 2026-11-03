@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { Suspense } from "react";
 
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
@@ -31,6 +32,8 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: { default: "pipo", template: "%s · pipo" },
   description: "Học ngoại ngữ qua dịch thuật ngữ cảnh, SRS và AI.",
+  appleWebApp: { capable: true, title: "pipo", statusBarStyle: "default" },
+  icons: { apple: "/icons/apple-touch-icon.png" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -49,6 +52,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Toaster position="top-center" />
             </NextIntlClientProvider>
           </Suspense>
+          <ServiceWorkerRegistrar />
         </ThemeProvider>
       </body>
     </html>

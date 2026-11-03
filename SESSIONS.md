@@ -102,7 +102,7 @@ e2e/                      # Playwright
 | S26 ✅ | Trang Community Feed                          | Trang             | Cộng đồng      |
 | S27 ✅ | Trang Bảng xếp hạng                           | Trang             | Cộng đồng      |
 | S28 ✅ | Trang Battle 1v1                              | Trang             | Cộng đồng      |
-| S29    | PWA + Docker hoá + Deploy                     | Nền               | Ra mắt         |
+| S29 🟡 | PWA + Docker hoá + Deploy                     | Nền               | Ra mắt         |
 | S30    | Browser Extension                             | Dự án phụ         | Mở rộng        |
 | S31    | Mobile App                                    | Dự án phụ         | Mở rộng        |
 

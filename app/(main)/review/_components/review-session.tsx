@@ -88,6 +88,11 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
       )}
 
       {session.failed && <FormAlert messageKey="review.saveFailed" />}
+      {session.offlineQueued > 0 && (
+        <p className="mono-label text-center" role="status">
+          {t("offlineQueued", { count: session.offlineQueued })}
+        </p>
+      )}
     </div>
   );
 }

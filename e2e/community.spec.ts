@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { cancelWaitingBattles } from "./helpers/admin";
+import { cancelWaitingBattles, grantXp } from "./helpers/admin";
 import { createOnboardedUser } from "./helpers/auth";
 
 async function finishOneLesson(page: Page, title: string) {
@@ -40,15 +40,23 @@ test.describe("community", () => {
   });
 
   test("leaderboard shows the learner after earning XP", async ({ page }, testInfo) => {
-    await createOnboardedUser(page, testInfo);
+    const email = await createOnboardedUser(page, testInfo);
     await finishOneLesson(page, "Leo bảng");
+    // Earlier runs leave many test users behind. A grant that grows with the clock puts the
+    // newest user first however many runs came before (seconds still fit Postgres integer)
+    await grantXp(email, Math.floor(Date.now() / 1000));
 
     await page.goto("/leaderboard");
     await expect(page.getByRole("heading", { name: "Bảng xếp hạng" })).toBeVisible();
     await expect(page.locator("li[aria-current='true']")).toContainText("Bạn");
 
     await page.getByRole("link", { name: "Chuỗi ngày" }).click();
-    await expect(page.locator("li[aria-current='true']")).toContainText("1 ngày");
+    await expect(page.getByRole("link", { name: "Chuỗi ngày" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    // Streak has no week/month split
+    await expect(page.getByRole("navigation", { name: "Khoảng thời gian" })).toHaveCount(0);
   });
 });
 

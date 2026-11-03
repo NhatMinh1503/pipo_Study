@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { publicEnv } from "@/lib/env";
+import { authCookieName, serverSupabaseUrl } from "@/lib/supabase/config";
 import type { Database } from "@/types/database";
 
 /**
@@ -14,9 +15,10 @@ export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient<Database>(
-    publicEnv.NEXT_PUBLIC_SUPABASE_URL,
+    serverSupabaseUrl,
     publicEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     {
+      cookieOptions: { name: authCookieName },
       cookies: {
         getAll() {
           return request.cookies.getAll();

@@ -81,4 +81,6 @@ npm run dict:import                     # Import JMdict (chạy lại sau mỗi 
 npm run lint && npm run typecheck && npm test
 npm run test:int                        # Integration test với Supabase local
 npm run test:e2e                        # Playwright: server riêng port 3100, AI giả (AI_PROVIDER=fake)
+npm run docker:up                       # Bản production trong Docker (localhost:3000), nối Supabase local qua host.docker.internal
+npm run icons                           # Sinh lại icon PWA từ public/icons/icon.svg
 ```

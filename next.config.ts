@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
   // kuromoji loads its dictionary from node_modules at runtime; keep it out of the bundle
   serverExternalPackages: ["kuromoji"],
+  // Self-contained server for the Docker image (S29); `next dev` ignores it
+  output: "standalone",
+  // The dictionary is read from a computed path at runtime, so file tracing cannot see it
+  outputFileTracingIncludes: { "/**": ["./node_modules/kuromoji/dict/**"] },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

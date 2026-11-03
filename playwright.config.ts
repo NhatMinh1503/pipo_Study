@@ -11,6 +11,8 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
+  // The dev server compiles routes on first hit; 5 s is too tight with two workers
+  expect: { timeout: 10_000 },
   use: {
     baseURL: BASE_URL,
     trace: "retain-on-failure",

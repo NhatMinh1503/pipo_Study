@@ -2,7 +2,7 @@ import "server-only";
 
 import { createClient } from "@supabase/supabase-js";
 
-import { publicEnv } from "@/lib/env";
+import { serverSupabaseUrl } from "@/lib/supabase/config";
 import type { Database } from "@/types/database";
 
 import { getServerEnv } from "./env";
@@ -12,9 +12,7 @@ import { getServerEnv } from "./env";
  * not allowed to make (attempts, rewards) and always scope queries by user id yourself.
  */
 export function createAdminClient() {
-  return createClient<Database>(
-    publicEnv.NEXT_PUBLIC_SUPABASE_URL,
-    getServerEnv().SUPABASE_SECRET_KEY,
-    { auth: { persistSession: false, autoRefreshToken: false } },
-  );
+  return createClient<Database>(serverSupabaseUrl, getServerEnv().SUPABASE_SECRET_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }

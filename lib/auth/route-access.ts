@@ -2,6 +2,8 @@ export type RouteAccess = "public" | "guest-only" | "protected";
 
 const GUEST_ONLY = ["/login", "/signup", "/forgot-password"];
 const PUBLIC_PREFIXES = ["/auth/"];
+// Served by the service worker without a session; must never redirect to /login
+const PUBLIC_ROUTES = ["/offline", "/manifest.webmanifest", "/sw.js"];
 
 /**
  * Classifies a path for the proxy's optimistic redirects:
@@ -10,7 +12,7 @@ const PUBLIC_PREFIXES = ["/auth/"];
  * Real authorization still happens in Postgres RLS; this only improves navigation.
  */
 export function getRouteAccess(pathname: string): RouteAccess {
-  if (pathname === "/") return "public";
+  if (pathname === "/" || PUBLIC_ROUTES.includes(pathname)) return "public";
   if (GUEST_ONLY.some((route) => pathname === route || pathname.startsWith(`${route}/`))) {
     return "guest-only";
   }

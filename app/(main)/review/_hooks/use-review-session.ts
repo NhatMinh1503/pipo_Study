@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import {
+  enqueueReview,
+  flushPendingReviews,
+  readPendingReviews,
+  type PendingReview,
+} from "@/lib/review/offline-queue";
 import type { Rating } from "@/lib/srs/schedule";
 import type { ReviewCard } from "@/lib/srs/types";
 
@@ -22,6 +28,7 @@ export function useReviewSession(initialCards: ReviewCard[]) {
   // can never reach the server out of order
   const saveChain = useRef<Promise<void>>(Promise.resolve());
   const [pendingSaves, setPendingSaves] = useState(0);
+  const [offlineQueued, setOfflineQueued] = useState(0);
 
   // Warn before closing the tab while reviews are still being saved
   useEffect(() => {
@@ -30,6 +37,21 @@ export function useReviewSession(initialCards: ReviewCard[]) {
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, [pendingSaves]);
+
+  // Ratings made offline are kept in localStorage and sent, in order, once back online
+  useEffect(() => {
+    const send = async (review: PendingReview) =>
+      (await reviewFlashcard(review).catch(() => null))?.ok === true;
+    const flush = () => {
+      saveChain.current = saveChain.current.then(async () => {
+        await flushPendingReviews(window.localStorage, send).catch(() => 0);
+        setOfflineQueued(readPendingReviews(window.localStorage).length);
+      });
+    };
+    if (navigator.onLine) flush();
+    window.addEventListener("online", flush);
+    return () => window.removeEventListener("online", flush);
+  }, []);
 
   const current = queue[0];
   const reviewed = counts.again + counts.hard + counts.good + counts.easy;
@@ -51,8 +73,25 @@ export function useReviewSession(initialCards: ReviewCard[]) {
     const cardId = current.id;
     setPendingSaves((count) => count + 1);
     saveChain.current = saveChain.current.then(async () => {
-      const result = await reviewFlashcard({ cardId, rating }).catch(() => null);
-      if (!result?.ok) setFailed(true);
+      const queueOffline = () => {
+        try {
+          enqueueReview(window.localStorage, { cardId, rating });
+          setOfflineQueued((count) => count + 1);
+        } catch {
+          // Storage blocked or full: a throw here would stall every later save in the chain
+          setFailed(true);
+        }
+      };
+      if (!navigator.onLine) {
+        queueOffline();
+      } else {
+        // A thrown action means the request never got an answer (connection dropped): keep it
+        const result = await reviewFlashcard({ cardId, rating }).catch(
+          () => "unreachable" as const,
+        );
+        if (result === "unreachable") queueOffline();
+        else if (!result.ok) setFailed(true);
+      }
       setPendingSaves((count) => count - 1);
     });
   };
@@ -64,6 +103,7 @@ export function useReviewSession(initialCards: ReviewCard[]) {
     counts,
     flipped,
     failed,
+    offlineQueued,
     isSaving: pendingSaves > 0,
     isDone: queue.length === 0,
     flip,

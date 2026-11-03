@@ -15,6 +15,10 @@ describe("getRouteAccess", () => {
     ["/lessons/123/translate", "protected"],
     ["/loginx", "protected"],
     ["/authentic", "protected"],
+    ["/offline", "public"],
+    ["/sw.js", "public"],
+    ["/manifest.webmanifest", "public"],
+    ["/offline/extra", "protected"],
   ] as const)("%s → %s", (path, expected) => {
     expect(getRouteAccess(path)).toBe(expected);
   });
