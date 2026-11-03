@@ -1,0 +1,743 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "文脈翻訳・SRS・AIフィードバックで外国語を学ぶ。",
+    "loading": "読み込み中...",
+    "or": "または",
+    "cancel": "キャンセル"
+  },
+  "home": {
+    "getStarted": "無料ではじめる",
+    "signIn": "ログイン",
+    "healthOk": "データベースに接続しました",
+    "healthError": "Supabase に接続できません"
+  },
+  "auth": {
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "パスワード（確認）",
+    "newPassword": "新しいパスワード",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを隠す",
+    "signIn": {
+      "title": "おかえりなさい",
+      "description": "ログインして学習を続けましょう。",
+      "submit": "ログイン",
+      "forgot": "パスワードをお忘れですか？",
+      "noAccount": "アカウントをお持ちでない方",
+      "toSignUp": "新規登録"
+    },
+    "signUp": {
+      "title": "アカウント作成",
+      "description": "無料です。メールアドレスとパスワードだけで登録できます。",
+      "submit": "登録する",
+      "hasAccount": "すでにアカウントをお持ちの方",
+      "toSignIn": "ログイン",
+      "passwordHint": "8文字以上"
+    },
+    "checkEmail": {
+      "title": "メールを確認してください",
+      "description": "{email} に確認リンクを送信しました。リンクを開いて登録を完了してください。",
+      "back": "ログインに戻る"
+    },
+    "forgot": {
+      "title": "パスワードの再設定",
+      "description": "メールアドレスを入力すると、再設定リンクをお送りします。",
+      "submit": "リンクを送信",
+      "sent": "登録済みのメールアドレスであれば、再設定リンクを送信しました。受信箱をご確認ください。",
+      "back": "ログインに戻る"
+    },
+    "reset": {
+      "title": "新しいパスワードを設定",
+      "description": "新しいパスワードは8文字以上にしてください。",
+      "submit": "パスワードを保存",
+      "success": "パスワードを変更しました。"
+    },
+    "signOut": "ログアウト",
+    "errors": {
+      "invalidCredentials": "メールアドレスまたはパスワードが正しくありません。",
+      "emailNotConfirmed": "メールアドレスが未確認です。受信箱のリンクを開いてください。",
+      "weakPassword": "パスワードが弱すぎます。より長いものを設定してください。",
+      "samePassword": "新しいパスワードは以前と異なるものにしてください。",
+      "rateLimited": "操作が多すぎます。数分後にもう一度お試しください。",
+      "linkInvalid": "リンクが無効か、有効期限が切れています。もう一度お試しください。",
+      "sessionMissing": "再設定の有効期限が切れました。リンクを再送信してください。"
+    }
+  },
+  "validation": {
+    "required": "入力してください。",
+    "email": "メールアドレスの形式が正しくありません。",
+    "passwordMin": "パスワードは8文字以上にしてください。",
+    "passwordMax": "パスワードは72文字以内にしてください。",
+    "passwordMismatch": "パスワードが一致しません。",
+    "level_mismatch": "レベルが言語と一致しません。"
+  },
+  "errors": {
+    "unexpected": "エラーが発生しました。もう一度お試しください。"
+  },
+  "dashboard": {
+    "title": "ダッシュボード",
+    "welcome": "こんにちは、{name}さん！",
+    "welcomeNoName": "こんにちは！",
+    "subtitle": "今日は何を学びましょうか？",
+    "statsLabel": "統計",
+    "xp": "XP",
+    "coins": "コイン",
+    "streak": "連続日数",
+    "streakBest": "最高記録：{count}日",
+    "reviewTitle": "今日の復習カード",
+    "reviewDue": "{count}枚のカードが待っています",
+    "reviewNone": "復習するカードはありません。お見事！",
+    "reviewCta": "復習する",
+    "continueTitle": "学習を続ける",
+    "continueEmpty": "進行中のレッスンはまだありません。",
+    "newLesson": "新しいレッスン",
+    "progress": "{total}文中{done}文を翻訳済み",
+    "quick": {
+      "label": "ショートカット",
+      "analytics": "ミス分析",
+      "quiz": "クイズ",
+      "news": "ニュース",
+      "skills": "スキル",
+      "shop": "ショップ",
+      "community": "コミュニティ",
+      "leaderboard": "ランキング",
+      "battle": "1対1バトル"
+    },
+    "goals": {
+      "title": "今日の目標",
+      "progress": "{done}/{total}",
+      "translate": "翻訳を1つ完了する",
+      "translateDetail": "{count, plural, =0 {今日はまだです} other {今日#件完了}}",
+      "review": "期限のカードを復習する",
+      "reviewLeft": "{count, plural, other {残り#枚}}",
+      "reviewDetail": "{count, plural, =0 {期限のカードはありません} other {今日#枚復習しました}}",
+      "focus": "ポモドーロを1回集中する",
+      "focusDetail": "{count, plural, =0 {まだありません} other {#回完了}}",
+      "done": "完了",
+      "todo": "未完了"
+    },
+    "activity": {
+      "title": "過去7日間のXP・合計{total}",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "今週はまだ活動がありません。翻訳を1つしてみましょう！"
+    },
+    "words": {
+      "title": "最近の単語",
+      "all": "ノートを開く",
+      "empty": "まだ単語がありません。翻訳中に単語をタップして追加しましょう。"
+    },
+    "weak": {
+      "title": "練習したい弱点",
+      "count": "{count, plural, other {2週間で#回}}",
+      "practise": "今すぐ練習",
+      "details": "分析を見る",
+      "none": "この2週間ミスはありません。その調子！"
+    }
+  },
+  "languages": {
+    "ja": "日本語",
+    "en": "英語",
+    "vi": "ベトナム語"
+  },
+  "levels": {
+    "N5": "初級 — あいさつ・簡単な文",
+    "N4": "初級 — 基本的な日常会話",
+    "N3": "中級 — 身近な文章の読解",
+    "N2": "中上級 — 新聞・ニュース",
+    "N1": "上級 — 複雑で抽象的な文章",
+    "A1": "入門",
+    "A2": "初級",
+    "B1": "中級",
+    "B2": "中上級",
+    "C1": "上級",
+    "C2": "熟達"
+  },
+  "onboarding": {
+    "stepOf": "ステップ {current}/{total}",
+    "back": "戻る",
+    "next": "次へ",
+    "finish": "学習をはじめる",
+    "languageHint": {
+      "ja": "JLPT N5 → N1",
+      "en": "CEFR A1 → C2"
+    },
+    "language": {
+      "title": "どの言語を学びますか？",
+      "description": "あとから設定で変更できます。"
+    },
+    "level": {
+      "title": "現在のレベルは？",
+      "description": "レッスンとAI採点がこのレベルに合わせて調整されます。"
+    },
+    "display": {
+      "title": "表示言語",
+      "description": "画面とAIフィードバックの言語です。"
+    }
+  },
+  "nav": {
+    "label": "メインナビゲーション",
+    "dashboard": "ホーム",
+    "lessons": "レッスン",
+    "notebook": "単語帳",
+    "review": "復習",
+    "pomodoro": "ポモドーロ"
+  },
+  "theme": {
+    "toLight": "ライトテーマに切り替え",
+    "toDark": "ダークテーマに切り替え",
+    "toggle": "ライト/ダークを切り替え"
+  },
+  "userMenu": {
+    "open": "アカウントメニューを開く",
+    "language": "表示言語",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "shop": "ショップ",
+    "skills": "スキルツリー"
+  },
+  "lessons": {
+    "title": "レッスン",
+    "description": "文章を貼り付けて一文ずつ翻訳し、AIのフィードバックを受けましょう。",
+    "new": "新しいレッスン",
+    "newTitle": "新しいレッスン",
+    "newDescription": "練習したい文章を貼り付けてください。自動で一文ずつに分割されます。",
+    "empty": "レッスンはまだありません。",
+    "emptyHint": "まずは3〜5文の短い文章から始めましょう。",
+    "completed": "完了",
+    "progress": "{total}文中{done}文を翻訳済み",
+    "delete": "削除",
+    "deleteAria": "レッスン「{title}」を削除",
+    "deleteTitle": "レッスンを削除しますか？",
+    "deleteDescription": "「{title}」とすべての解答履歴が完全に削除されます。",
+    "deleted": "レッスンを削除しました。",
+    "form": {
+      "title": "タイトル",
+      "titlePlaceholder": "例：スーパーで買い物",
+      "language": "言語",
+      "level": "レベル",
+      "text": "文章",
+      "textHint": "一文ごとに翻訳ステップになります。改行も文の区切りとして扱われます。",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "作成して翻訳をはじめる",
+      "titleTooLong": "タイトルは120文字以内にしてください。",
+      "textTooLong": "文章は5000文字以内にしてください。",
+      "tooManySentences": "文章は200文以内にしてください。"
+    },
+    "preview": {
+      "title": "{count, plural, =0 {プレビュー} other {プレビュー · #文}}",
+      "empty": "文章を貼り付けると、ここに文が表示されます。",
+      "tooMany": "使えるのは最初の{max}文までです。文章を短くしてください。"
+    },
+    "dictationAria": "「{title}」のディクテーション",
+    "clozeAria": "「{title}」の穴埋め",
+    "news": "ニュース",
+    "generate": "AIで作成",
+    "source": {
+      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成"
+    },
+    "newsRewrite": {
+      "writing": "AIがこのニュースをあなたのレベルに書き直しています…",
+      "ready": "文章ができました。作成前に編集もできます。",
+      "retry": "再試行",
+      "failed": "AIが文章を作れませんでした。もう一度お試しください。",
+      "unreadable": "このニュースの本文を読み込めませんでした。別のニュースを選んでください。",
+      "tooClose": "書き直しが原文に近すぎました。再試行するか別のニュースを選んでください。",
+      "rateLimited": "今日のAI利用回数を使い切りました。また明日お試しください。"
+    }
+  },
+  "translate": {
+    "sourceLabel": "原文",
+    "feedbackLabel": "AIフィードバック",
+    "progress": "{done}/{total}文",
+    "status": {
+      "done": "翻訳済み",
+      "current": "翻訳中の文",
+      "locked": "未解放"
+    },
+    "yourTranslation": "あなたの翻訳",
+    "placeholder": "ハイライトされた文の翻訳を入力...",
+    "keyboardHint": "Enterで判定 · Shift+Enterで改行",
+    "attempts": "{count}回目の挑戦",
+    "check": "判定する",
+    "next": "次の文へ",
+    "hint": "ヒント",
+    "reference": "参考訳",
+    "verdict": {
+      "exact": "正確",
+      "acceptable": "許容範囲",
+      "incorrect": "もう一歩"
+    },
+    "allDoneTitle": "文章をすべて翻訳しました！",
+    "allDoneDescription": "報酬を受け取って結果を確認しましょう。",
+    "finish": "報酬を受け取って結果を見る",
+    "errors": {
+      "rateLimited": "今日のAI判定回数を使い切りました。また明日どうぞ。",
+      "notConfigured": "AIが設定されていません（GEMINI_API_KEY がありません）。",
+      "unavailable": "AIが混み合っていて判定できませんでした。今回はカウントされません。もう一度お試しください。",
+      "network": "接続が切れました。ネットワークを確認して再度お試しください。"
+    }
+  },
+  "result": {
+    "title": "レッスン完了",
+    "titlePerfect": "パーフェクト！すべて一回で正解",
+    "statsLabel": "結果",
+    "score": "スコア",
+    "xp": "XP",
+    "coins": "コイン",
+    "details": "文ごとの詳細",
+    "sentenceSummary": "{attempts}回 · {points}点",
+    "newLesson": "新しいレッスン",
+    "backHome": "ダッシュボードへ戻る",
+    "publish": "コミュニティに共有",
+    "publishing": "共有中…",
+    "publishFailed": "共有できませんでした。もう一度お試しください。"
+  },
+  "dictionary": {
+    "explain": "AIで解説",
+    "save": "単語帳に追加",
+    "inNotebook": "単語帳に追加済み",
+    "saved": "単語帳に追加し、フラッシュカードを作成しました。",
+    "noEntry": "オフライン辞書にありません。「AIで解説」を押してください。",
+    "attribution": "辞書：JMdict © EDRDG（CC BY-SA 4.0）",
+    "pos": {
+      "noun": "名詞",
+      "verb": "動詞",
+      "i-adjective": "い形容詞",
+      "na-adjective": "な形容詞",
+      "adjective": "形容詞",
+      "adverb": "副詞",
+      "particle": "助詞",
+      "auxiliary": "助動詞",
+      "conjunction": "接続詞",
+      "interjection": "感動詞",
+      "prenoun": "連体詞",
+      "pronoun": "代名詞",
+      "symbol": "記号",
+      "other": "語"
+    }
+  },
+  "notebook": {
+    "title": "単語帳",
+    "description": "保存した単語と、その例文です。",
+    "empty": "単語帳は空です。",
+    "emptyHint": "翻訳中に単語をタップして「単語帳に追加」を選んでください。",
+    "search": "単語・読み・意味で検索",
+    "filterLabel": "言語で絞り込み",
+    "all": "すべて",
+    "count": "{count}語",
+    "noMatch": "一致する単語はありません。",
+    "noMeaning": "意味が未入力です。鉛筆アイコンから追加できます。",
+    "alreadySaved": "この単語はすでに単語帳にあります。",
+    "deleted": "単語を削除しました。",
+    "updated": "意味を保存しました。",
+    "delete": "削除",
+    "deleteTitle": "この単語を削除しますか？",
+    "deleteDescription": "「{term}」とそのフラッシュカードが削除されます。",
+    "deleteAria": "{term}を削除",
+    "editAria": "{term}の意味を編集",
+    "editDescription": "自分が覚えやすい言葉で意味を書きましょう。",
+    "meaning": "意味",
+    "save": "保存",
+    "quiz": "クイズで練習"
+  },
+  "review": {
+    "remaining": "残り{count}枚",
+    "flip": "カードをめくって意味を見る",
+    "flipBack": "表に戻す",
+    "tapToFlip": "カードをタップするかSpaceキーでめくる",
+    "showAnswer": "答えを見る",
+    "noMeaning": "（意味が未入力）",
+    "rateLabel": "どのくらい覚えていましたか？",
+    "rating": {
+      "again": "もう一度",
+      "hard": "難しい",
+      "good": "正解",
+      "easy": "簡単"
+    },
+    "doneTitle": "復習完了！",
+    "doneDescription": "{count}枚を復習しました。",
+    "nothingDue": "復習するカードはありません",
+    "nothingDueHint": "新しいレッスンを翻訳して、単語帳に単語を保存しましょう。",
+    "toLessons": "レッスンを始める",
+    "toDashboard": "ダッシュボードへ",
+    "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
+    "saving": "結果を保存しています...",
+    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}"
+  },
+  "pomodoro": {
+    "ready": "準備OK",
+    "focus": "集中",
+    "break": "休憩",
+    "timeLeft": "残り時間",
+    "startMinutes": "{minutes}分スタート",
+    "giveUp": "やめる（報酬なし）",
+    "skipBreak": "休憩をスキップ",
+    "focusHint": "ページを離れても再読み込みしても大丈夫。タイマーはサーバー時刻で動きます。",
+    "idleHint": "セッションを完了すると、知識の庭に木が植えられます。",
+    "toGarden": "庭を見る",
+    "rewardToast": "セッション完了！+{coins}コイン、新しい木が植えられました。",
+    "focusDoneTitle": "集中時間が終わりました",
+    "breakDoneTitle": "休憩が終わりました",
+    "breakDoneBody": "次のセッションを始めますか？",
+    "startFailed": "セッションを開始できませんでした。もう一度お試しください。",
+    "claimFailed": "このセッションの報酬を受け取れませんでした。"
+  },
+  "garden": {
+    "title": "知識の庭",
+    "description": "集中セッションを1回完了するごとに木が1本育ちます。",
+    "plant": "木を植える",
+    "statsLabel": "庭の統計",
+    "trees": "木の数",
+    "focusTime": "集中時間",
+    "minutes": "{count}分",
+    "empty": "庭はまだ空です。",
+    "emptyHint": "ポモドーロを1回完了して最初の木を植えましょう。",
+    "treeLabel": "{minutes}分セッションの木",
+    "decorations": "飾り"
+  },
+  "audio": {
+    "play": "聞く",
+    "stop": "止める",
+    "speed": "読み上げ速度",
+    "noVoice": "この端末にはこの言語の音声がありません"
+  },
+  "quiz": {
+    "title": "単語クイズ",
+    "description": "単語帳の単語を3つの方法で練習します。",
+    "modeLabel": "モード",
+    "mode": {
+      "choice": "選択",
+      "fill": "穴埋め",
+      "match": "マッチング"
+    },
+    "progress": "問題 {current}/{total}",
+    "chooseMeaning": "正しい意味を選ぶ",
+    "correct": "正解！",
+    "wrong": "不正解",
+    "next": "次へ",
+    "check": "判定",
+    "typeWord": "抜けている単語を入力（読みでも可）",
+    "answerWas": "正解：",
+    "matched": "{done}/{total} 組",
+    "words": "単語",
+    "meanings": "意味",
+    "matchTime": "タイム {time}",
+    "resultLabel": "結果",
+    "resultSummary": "{total}問中{correct}問正解",
+    "restart": "もう一度",
+    "notEnough": "意味のある単語が{min}語以上必要です",
+    "notEnoughHint": "翻訳しながら単語を保存しましょう。",
+    "toLessons": "レッスンへ"
+  },
+  "practice": {
+    "score": "スコア",
+    "backToLesson": "レッスンに戻る",
+    "allLessons": "すべてのレッスン"
+  },
+  "dictation": {
+    "title": "ディクテーション",
+    "description": "一文ずつ聞いて書き取りましょう。",
+    "progress": "{current}/{total}文目",
+    "placeholder": "聞こえた文を入力...",
+    "check": "判定",
+    "next": "次の文へ",
+    "result": "結果",
+    "summary": "{count}文の平均",
+    "legend": {
+      "equal": "正しい",
+      "missing": "抜け",
+      "extra": "余分 / 誤り"
+    }
+  },
+  "cloze": {
+    "title": "穴埋め（クローズ）",
+    "description": "選んだレベルの単語を聞いて埋めましょう。",
+    "levelLabel": "レベル",
+    "blankLabel": "空欄",
+    "check": "判定",
+    "finish": "スコアを見る",
+    "summary": "{total}問中{correct}問正解",
+    "noBlanks": "このレッスンには{level}の単語がありません。",
+    "noBlanksHint": "別のレベルを試してください。"
+  },
+  "generate": {
+    "title": "AIでレッスン作成",
+    "description": "トピックを入力すると、AIがあなたのレベルに合った文章を書きます。",
+    "topic": "トピック",
+    "topicPlaceholder": "例：AI技術",
+    "levelNote": "文章のレベルは{level}です。",
+    "suggestions": "トピック例",
+    "submit": "作成する",
+    "generating": "AIが執筆中...",
+    "suggestion": {
+      "travel": "旅行",
+      "food": "食べ物",
+      "work": "仕事",
+      "technology": "AI技術",
+      "health": "健康",
+      "anime": "アニメ",
+      "manga": "マンガ",
+      "game": "ゲーム",
+      "meeting": "会議",
+      "email": "ビジネスメール",
+      "interview": "面接"
+    }
+  },
+  "analytics": {
+    "title": "ミス分析",
+    "description": "直近{weeks}週間にAIが見つけたミスです。",
+    "empty": "まだミスの記録はありません。",
+    "emptyHint": "レッスンを翻訳すると、間違いがここで分類されます。",
+    "byTypeTitle": "種類別",
+    "byWeekTitle": "週別",
+    "barTooltip": "{label}：{count}回",
+    "weekTooltip": "{week}の週：{count}件",
+    "weakTitle": "苦手トップ3",
+    "times": "{count}回",
+    "practise": "苦手を練習（3〜5分）",
+    "generating": "AIが準備中...",
+    "tags": {
+      "particle": "助詞（は/が、を/に…）",
+      "verb_form": "動詞の活用",
+      "tense": "時制",
+      "politeness": "敬語 / くだけた表現",
+      "word_choice": "語の選択",
+      "word_order": "語順",
+      "omission": "訳し漏れ",
+      "addition": "余分な訳",
+      "meaning": "意味の誤り",
+      "grammar": "文法",
+      "spelling": "表記",
+      "article": "冠詞",
+      "preposition": "前置詞",
+      "plural": "単数 / 複数",
+      "naturalness": "自然さ"
+    }
+  },
+  "news": {
+    "title": "今日のニュース",
+    "description": "オープンライセンスのニュースをもとに、AIがあなたのレベルに合わせて書き直した翻訳練習用の文章です。",
+    "read": "記事を読む",
+    "makeLesson": "教材を作る",
+    "empty": "ニュースを読み込めませんでした。",
+    "emptyHint": "接続を確認して、後でもう一度お試しください。",
+    "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。",
+    "open": {
+      "title": "オープンソースの読み物",
+      "description": "{source}（{license}）のニュースです。ライセンス上、編集・加工が認められています。「教材を作る」を押すと、AIが原文をコピーせずにあなたのレベルで書き直します。"
+    },
+    "headlines": {
+      "title": "{source}の最新見出し"
+    }
+  },
+  "shop": {
+    "title": "ショップ",
+    "description": "学習で貯めたコインで、テーマ・庭の飾り・トピックパックを購入できます。",
+    "balance": "所持コイン",
+    "buy": "購入",
+    "notEnough": "コイン不足",
+    "use": "使う",
+    "stopUsing": "使用をやめる",
+    "owned": "所持済み",
+    "bought": "購入しました！",
+    "applied": "テーマを変更しました。",
+    "sections": {
+      "theme": "アクセントカラー",
+      "decoration": "庭の飾り",
+      "topic_pack": "AIレッスン用トピックパック"
+    },
+    "errors": {
+      "notEnoughCoins": "コインが足りません。",
+      "alreadyOwned": "すでに所持しています。"
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "桜",
+        "description": "桜色のピンク。"
+      },
+      "theme-matcha": {
+        "name": "抹茶",
+        "description": "抹茶のグリーン。"
+      },
+      "theme-ocean": {
+        "name": "オーシャン",
+        "description": "深い海のブルー。"
+      },
+      "deco-pond": {
+        "name": "蓮の池",
+        "description": "庭に小さな蓮の池を。"
+      },
+      "deco-lantern": {
+        "name": "提灯",
+        "description": "夜を照らす赤い提灯。"
+      },
+      "deco-bench": {
+        "name": "石のベンチ",
+        "description": "セッションの合間の休憩に。"
+      },
+      "topics-anime": {
+        "name": "アニメ・ゲームパック",
+        "description": "アニメ・マンガ・ゲームのトピックを追加。"
+      },
+      "topics-business": {
+        "name": "ビジネスパック",
+        "description": "会議・メール・面接のトピックを追加。"
+      }
+    }
+  },
+  "skills": {
+    "title": "スキルツリー",
+    "description": "目標を達成すると、各ブランチの次のステップが解放されます。",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "達成",
+      "open": "挑戦中",
+      "locked": "未解放"
+    },
+    "branches": {
+      "translate": {
+        "title": "翻訳",
+        "goal": "レッスンを{count}回完了"
+      },
+      "vocabulary": {
+        "title": "語彙",
+        "goal": "単語を{count}語保存"
+      },
+      "review": {
+        "title": "復習",
+        "goal": "カードを{count}回復習"
+      },
+      "focus": {
+        "title": "集中",
+        "goal": "ポモドーロ{count}回"
+      }
+    }
+  },
+  "profile": {
+    "title": "プロフィール",
+    "displayName": "表示名",
+    "save": "保存",
+    "saved": "保存しました。",
+    "avatarAlt": "プロフィール画像",
+    "avatarChange": "画像を変更",
+    "avatarSaved": "プロフィール画像を更新しました。",
+    "avatarFailed": "画像をアップロードできませんでした。",
+    "avatarType": "PNG・JPG・WebPのみ対応しています。",
+    "avatarSize": "画像は1MBまでです。",
+    "statsLabel": "統計",
+    "streak": "連続日数",
+    "best": "最高：{count}",
+    "lessons": "完了レッスン",
+    "words": "保存した単語",
+    "reviews": "復習回数",
+    "focus": "集中セッション"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "学習言語・レベル・表示・アカウント。",
+    "learning": "学習",
+    "learningLanguage": "学習言語",
+    "level": "レベル",
+    "displayLanguage": "表示言語",
+    "timeZone": "タイムゾーン",
+    "save": "設定を保存",
+    "saved": "設定を保存しました。",
+    "dangerZone": "危険な操作",
+    "deleteDescription": "アカウントを削除すると、レッスン・単語・ポイント・コインがすべて完全に削除されます。",
+    "deleteTitle": "アカウントを削除しますか？",
+    "deleteConfirm": "この操作は取り消せません。",
+    "deleteButton": "アカウントを削除"
+  },
+  "community": {
+    "title": "コミュニティ",
+    "description": "ほかの学習者が共有した翻訳です。いいねやコメントで学び合いましょう。",
+    "anonymous": "匿名の学習者",
+    "failed": "エラーが発生しました。もう一度お試しください。",
+    "delete": "投稿を削除",
+    "deleteTitle": "この投稿を削除しますか？",
+    "deleteDescription": "投稿とすべてのコメントが完全に削除されます。",
+    "report": "報告",
+    "reported": "報告を送信しました。ありがとうございます！",
+    "like": "いいね",
+    "comments": "{count, plural, other {コメント#件}}",
+    "commentPlaceholder": "コメントを書く…",
+    "send": "送信",
+    "empty": "まだ投稿がありません",
+    "emptyHint": "翻訳を終えたら、結果画面の「コミュニティに共有」を押してください。",
+    "older": "以前の投稿",
+    "newest": "最新"
+  },
+  "leaderboard": {
+    "title": "ランキング",
+    "description": "XP・連続日数・集中時間の上位50人。",
+    "metricLabel": "指標",
+    "periodLabel": "期間",
+    "metric": {
+      "xp": "XP",
+      "streak": "連続日数",
+      "focus": "集中"
+    },
+    "period": {
+      "week": "今週",
+      "month": "今月"
+    },
+    "unit": {
+      "xp": "{count} XP",
+      "streak": "{count, plural, other {#日}}",
+      "focus": "{count, plural, other {#分}}"
+    },
+    "empty": "まだランキングに誰もいません",
+    "anonymous": "匿名の学習者",
+    "you": "あなた",
+    "notRanked": "まだトップ50に入っていません。学習を続けて上位を目指しましょう！"
+  },
+  "battle": {
+    "title": "1対1翻訳バトル",
+    "description": "ほかの学習者と同じ5文を翻訳します。正確さが第一、次に速さ。",
+    "find": "対戦相手を探す",
+    "finding": "検索中…",
+    "failed": "エラーが発生しました。もう一度お試しください。",
+    "history": "最近のバトル",
+    "noHistory": "まだバトルをしていません",
+    "outcome": {
+      "won": "勝ち",
+      "lost": "負け",
+      "draw": "引き分け",
+      "waiting": "相手を待っています",
+      "active": "対戦中",
+      "cancelled": "キャンセル"
+    },
+    "notFound": "バトルが見つかりません",
+    "backToLobby": "ロビーに戻る",
+    "cancelled": "このバトルはキャンセルされました",
+    "waiting": "対戦相手を待っています…",
+    "waitingHint": "このページを開いたままにしてください。同じ言語の学習者が参加するとすぐに始まります。",
+    "cancel": "検索をやめる",
+    "forfeit": "棄権",
+    "forfeitTitle": "このバトルを棄権しますか？",
+    "forfeitDescription": "相手の勝ちになります。",
+    "scoreboard": "スコアボード",
+    "progress": "{answered}/{total}文",
+    "offline": "切断",
+    "you": "あなた",
+    "opponent": "相手",
+    "noOpponent": "まだ相手がいません",
+    "sentence": "{index}/{total}文目",
+    "yourTranslation": "あなたの翻訳",
+    "keyboardHint": "Enterで提出 · Shift+Enterで改行",
+    "submit": "提出",
+    "grading": "採点中…",
+    "gradeFailed": "採点できませんでした。もう一度提出してください。",
+    "waitingOpponentFinish": "完了しました！相手が終わるのを待っています…"
+  },
+  "offline": {
+    "title": "オフラインです",
+    "description": "このページには接続が必要です。以前に開いたノートと復習はオフラインでも使えます。",
+    "review": "復習",
+    "notebook": "ノート"
+  }
+}

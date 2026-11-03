@@ -1,0 +1,743 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "Learn languages through contextual translation, SRS and AI feedback.",
+    "loading": "Loading...",
+    "or": "or",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "getStarted": "Get started free",
+    "signIn": "Sign in",
+    "healthOk": "Database connected",
+    "healthError": "Cannot reach Supabase"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "newPassword": "New password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": {
+      "title": "Welcome back",
+      "description": "Sign in to continue your learning path.",
+      "submit": "Sign in",
+      "forgot": "Forgot password?",
+      "noAccount": "No account yet?",
+      "toSignUp": "Sign up"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "description": "Free. Just an email and a password.",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "toSignIn": "Sign in",
+      "passwordHint": "At least 8 characters."
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "description": "We sent a confirmation link to {email}. Open it to finish signing up.",
+      "back": "Back to sign in"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "description": "Enter your email and we will send a reset link.",
+      "submit": "Send link",
+      "sent": "If the email exists, a reset link has been sent. Check your inbox.",
+      "back": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "description": "Your new password must be at least 8 characters.",
+      "submit": "Save password",
+      "success": "Password updated."
+    },
+    "signOut": "Sign out",
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotConfirmed": "Email not confirmed yet. Open the link in your inbox.",
+      "weakPassword": "Password is too weak. Choose a longer one.",
+      "samePassword": "The new password must differ from the old one.",
+      "rateLimited": "Too many attempts. Please try again in a few minutes.",
+      "linkInvalid": "The link is invalid or has expired. Please try again.",
+      "sessionMissing": "Your reset session expired. Request a new link."
+    }
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Invalid email address.",
+    "passwordMin": "Password must be at least 8 characters.",
+    "passwordMax": "Password must be at most 72 characters.",
+    "passwordMismatch": "Passwords do not match.",
+    "level_mismatch": "Level does not match the language."
+  },
+  "errors": {
+    "unexpected": "Something went wrong. Please try again."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Hi, {name}!",
+    "welcomeNoName": "Hi there!",
+    "subtitle": "What shall we learn today?",
+    "statsLabel": "Statistics",
+    "xp": "XP",
+    "coins": "Coins",
+    "streak": "Streak",
+    "streakBest": "Best: {count, plural, one {# day} other {# days}}",
+    "reviewTitle": "Cards due today",
+    "reviewDue": "{count, plural, one {# card is waiting} other {# cards are waiting}}",
+    "reviewNone": "Nothing due. Nice work!",
+    "reviewCta": "Review now",
+    "continueTitle": "Continue learning",
+    "continueEmpty": "No lessons in progress yet.",
+    "newLesson": "New lesson",
+    "progress": "Translated {done} of {total} sentences",
+    "quick": {
+      "label": "Shortcuts",
+      "analytics": "Mistake analytics",
+      "quiz": "Quiz",
+      "news": "News",
+      "skills": "Skills",
+      "shop": "Shop",
+      "community": "Community",
+      "leaderboard": "Leaderboard",
+      "battle": "1v1 battle"
+    },
+    "goals": {
+      "title": "Today's goals",
+      "progress": "{done}/{total}",
+      "translate": "Finish 1 translation",
+      "translateDetail": "{count, plural, =0 {None yet today} one {# done today} other {# done today}}",
+      "review": "Clear your due cards",
+      "reviewLeft": "{count, plural, one {# card left} other {# cards left}}",
+      "reviewDetail": "{count, plural, =0 {Nothing due} one {# card reviewed today} other {# cards reviewed today}}",
+      "focus": "Focus for 1 Pomodoro",
+      "focusDetail": "{count, plural, =0 {No sessions yet} one {# session done} other {# sessions done}}",
+      "done": "done",
+      "todo": "to do"
+    },
+    "activity": {
+      "title": "XP, last 7 days · {total} total",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "No activity this week yet — translate a lesson to get started!"
+    },
+    "words": {
+      "title": "Recent words",
+      "all": "Open notebook",
+      "empty": "No words saved yet. Tap a word while translating to add it."
+    },
+    "weak": {
+      "title": "Weak spot to practise",
+      "count": "{count, plural, one {# time in 2 weeks} other {# times in 2 weeks}}",
+      "practise": "Practise now",
+      "details": "See analytics",
+      "none": "No mistakes in the last 2 weeks. Keep it up!"
+    }
+  },
+  "languages": {
+    "ja": "Japanese",
+    "en": "English",
+    "vi": "Vietnamese"
+  },
+  "levels": {
+    "N5": "Beginner — greetings, simple sentences",
+    "N4": "Beginner — basic daily conversation",
+    "N3": "Intermediate — familiar everyday texts",
+    "N2": "Upper intermediate — newspapers, news",
+    "N1": "Advanced — complex, abstract texts",
+    "A1": "Starter",
+    "A2": "Elementary",
+    "B1": "Intermediate",
+    "B2": "Upper intermediate",
+    "C1": "Advanced",
+    "C2": "Proficient"
+  },
+  "onboarding": {
+    "stepOf": "Step {current} of {total}",
+    "back": "Back",
+    "next": "Continue",
+    "finish": "Start learning",
+    "languageHint": {
+      "ja": "JLPT levels N5 → N1",
+      "en": "CEFR levels A1 → C2"
+    },
+    "language": {
+      "title": "Which language do you want to learn?",
+      "description": "You can change this later in Settings."
+    },
+    "level": {
+      "title": "What is your current level?",
+      "description": "Lessons and AI grading adapt to this level."
+    },
+    "display": {
+      "title": "Display language",
+      "description": "Language of the interface and AI feedback."
+    }
+  },
+  "nav": {
+    "label": "Main navigation",
+    "dashboard": "Home",
+    "lessons": "Lessons",
+    "notebook": "Notebook",
+    "review": "Review",
+    "pomodoro": "Pomodoro"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme",
+    "toggle": "Toggle light/dark theme"
+  },
+  "userMenu": {
+    "open": "Open account menu",
+    "language": "Display language",
+    "profile": "Profile",
+    "settings": "Settings",
+    "shop": "Shop",
+    "skills": "Skill tree"
+  },
+  "lessons": {
+    "title": "Lessons",
+    "description": "Paste a passage, translate it sentence by sentence and get AI feedback.",
+    "new": "New lesson",
+    "newTitle": "New lesson",
+    "newDescription": "Paste the passage you want to practise. It is split into sentences automatically.",
+    "empty": "You have no lessons yet.",
+    "emptyHint": "Start with a short passage of 3–5 sentences.",
+    "completed": "Completed",
+    "progress": "Translated {done} of {total} sentences",
+    "delete": "Delete",
+    "deleteAria": "Delete lesson {title}",
+    "deleteTitle": "Delete lesson?",
+    "deleteDescription": "\"{title}\" and all of its attempts will be permanently deleted.",
+    "deleted": "Lesson deleted.",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. At the supermarket",
+      "language": "Language",
+      "level": "Level",
+      "text": "Passage",
+      "textHint": "Each sentence becomes one translation step. A line break also ends a sentence.",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "Create and start translating",
+      "titleTooLong": "Title must be at most 120 characters.",
+      "textTooLong": "Passage must be at most 5000 characters.",
+      "tooManySentences": "Passage must be at most 200 sentences."
+    },
+    "preview": {
+      "title": "{count, plural, =0 {Preview} one {Preview · # sentence} other {Preview · # sentences}}",
+      "empty": "Sentences appear here once you paste a passage.",
+      "tooMany": "Only the first {max} sentences can be used. Please shorten the passage."
+    },
+    "dictationAria": "Dictation for {title}",
+    "clozeAria": "Cloze test for {title}",
+    "news": "News",
+    "generate": "Generate with AI",
+    "source": {
+      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence."
+    },
+    "newsRewrite": {
+      "writing": "The AI is rewriting this story at your level…",
+      "ready": "Your passage is ready — edit it before creating the lesson if you like.",
+      "retry": "Try again",
+      "failed": "The AI couldn't write this one. Please try again.",
+      "unreadable": "This article couldn't be read. Please pick another one.",
+      "tooClose": "The rewrite was still too close to the original. Try again or pick another story.",
+      "rateLimited": "You've used today's AI allowance. Come back tomorrow."
+    }
+  },
+  "translate": {
+    "sourceLabel": "Source text",
+    "feedbackLabel": "AI feedback",
+    "progress": "{done}/{total} sentences",
+    "status": {
+      "done": "Translated",
+      "current": "Current sentence",
+      "locked": "Locked"
+    },
+    "yourTranslation": "Your translation",
+    "placeholder": "Type the translation of the highlighted sentence...",
+    "keyboardHint": "Enter to check · Shift+Enter for a new line",
+    "attempts": "Attempt {count}",
+    "check": "Check",
+    "next": "Next sentence",
+    "hint": "Hint",
+    "reference": "Reference translation",
+    "verdict": {
+      "exact": "Exact",
+      "acceptable": "Acceptable",
+      "incorrect": "Not quite"
+    },
+    "allDoneTitle": "You translated the whole passage!",
+    "allDoneDescription": "Claim your reward and see the summary.",
+    "finish": "Claim reward & see results",
+    "errors": {
+      "rateLimited": "You have used today's AI checks. Come back tomorrow.",
+      "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
+      "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
+      "network": "Connection lost. Check your network and try again."
+    }
+  },
+  "result": {
+    "title": "Lesson complete",
+    "titlePerfect": "Perfect! All correct on the first try",
+    "statsLabel": "Results",
+    "score": "Score",
+    "xp": "XP",
+    "coins": "Coins",
+    "details": "Sentence details",
+    "sentenceSummary": "{attempts, plural, one {# attempt} other {# attempts}} · {points} points",
+    "newLesson": "New lesson",
+    "backHome": "Back to dashboard",
+    "publish": "Share to community",
+    "publishing": "Sharing…",
+    "publishFailed": "Couldn't share it, please try again."
+  },
+  "dictionary": {
+    "explain": "Explain (AI)",
+    "save": "Add to notebook",
+    "inNotebook": "In notebook",
+    "saved": "Added to your notebook with a flashcard.",
+    "noEntry": "Not in the offline dictionary. Tap \"Explain\" to ask the AI.",
+    "attribution": "Dictionary: JMdict © EDRDG (CC BY-SA 4.0)",
+    "pos": {
+      "noun": "Noun",
+      "verb": "Verb",
+      "i-adjective": "i-adjective",
+      "na-adjective": "na-adjective",
+      "adjective": "Adjective",
+      "adverb": "Adverb",
+      "particle": "Particle",
+      "auxiliary": "Auxiliary verb",
+      "conjunction": "Conjunction",
+      "interjection": "Interjection",
+      "prenoun": "Pre-noun adjectival",
+      "pronoun": "Pronoun",
+      "symbol": "Symbol",
+      "other": "Word"
+    }
+  },
+  "notebook": {
+    "title": "Notebook",
+    "description": "Words you saved, with the sentence they came from.",
+    "empty": "Your notebook is empty.",
+    "emptyHint": "While translating, tap a word and choose \"Add to notebook\".",
+    "search": "Search by word, reading or meaning",
+    "filterLabel": "Filter by language",
+    "all": "All",
+    "count": "{count, plural, one {# word} other {# words}}",
+    "noMatch": "No words match.",
+    "noMeaning": "No meaning yet — tap the pencil to add one.",
+    "alreadySaved": "This word is already in your notebook.",
+    "deleted": "Word deleted.",
+    "updated": "Meaning saved.",
+    "delete": "Delete",
+    "deleteTitle": "Delete this word?",
+    "deleteDescription": "\"{term}\" and its flashcard will be deleted.",
+    "deleteAria": "Delete {term}",
+    "editAria": "Edit meaning of {term}",
+    "editDescription": "Write the meaning in the way you remember best.",
+    "meaning": "Meaning",
+    "save": "Save",
+    "quiz": "Practice quiz"
+  },
+  "review": {
+    "remaining": "{count, plural, one {# card left} other {# cards left}}",
+    "flip": "Flip to see the meaning",
+    "flipBack": "Flip back to the front",
+    "tapToFlip": "Tap the card or press Space to flip",
+    "showAnswer": "Show answer",
+    "noMeaning": "(no meaning yet)",
+    "rateLabel": "How well did you remember it?",
+    "rating": {
+      "again": "Again",
+      "hard": "Hard",
+      "good": "Good",
+      "easy": "Easy"
+    },
+    "doneTitle": "Session complete!",
+    "doneDescription": "{count, plural, one {You reviewed # card.} other {You reviewed # cards.}}",
+    "nothingDue": "Nothing to review",
+    "nothingDueHint": "Translate a new lesson and save words to your notebook.",
+    "toLessons": "Start a lesson",
+    "toDashboard": "Back to dashboard",
+    "saveFailed": "Some reviews could not be saved. Please reload the page.",
+    "saving": "Saving your results...",
+    "offlineQueued": "{count, plural, one {# review will be saved when you're back online} other {# reviews will be saved when you're back online}}"
+  },
+  "pomodoro": {
+    "ready": "Ready",
+    "focus": "Focus",
+    "break": "Break",
+    "timeLeft": "Time left",
+    "startMinutes": "Start {minutes} min",
+    "giveUp": "Give up (no reward)",
+    "skipBreak": "Skip break",
+    "focusHint": "You can leave or reload — the timer runs on server time.",
+    "idleHint": "Finish a session to plant a tree in your Knowledge Garden.",
+    "toGarden": "See the garden",
+    "rewardToast": "Session done! +{coins} coins and a new tree.",
+    "focusDoneTitle": "Focus time is over",
+    "breakDoneTitle": "Break is over",
+    "breakDoneBody": "Ready for the next session?",
+    "startFailed": "Could not start the session. Please try again.",
+    "claimFailed": "Could not claim the reward for this session."
+  },
+  "garden": {
+    "title": "Knowledge Garden",
+    "description": "Every completed focus session grows a tree.",
+    "plant": "Plant a tree",
+    "statsLabel": "Garden stats",
+    "trees": "Trees",
+    "focusTime": "Focus time",
+    "minutes": "{count, plural, one {# min} other {# min}}",
+    "empty": "Your garden is empty.",
+    "emptyHint": "Finish a Pomodoro session to plant your first tree.",
+    "treeLabel": "Tree from a {minutes}-minute session",
+    "decorations": "Decorations"
+  },
+  "audio": {
+    "play": "Listen",
+    "stop": "Stop",
+    "speed": "Speaking rate",
+    "noVoice": "No voice for this language on this device"
+  },
+  "quiz": {
+    "title": "Vocabulary quiz",
+    "description": "Practise your notebook words three ways.",
+    "modeLabel": "Mode",
+    "mode": {
+      "choice": "Multiple choice",
+      "fill": "Fill in",
+      "match": "Match"
+    },
+    "progress": "Question {current}/{total}",
+    "chooseMeaning": "Pick the right meaning",
+    "correct": "Correct!",
+    "wrong": "Not quite",
+    "next": "Next",
+    "check": "Check",
+    "typeWord": "Type the missing word (reading is fine)",
+    "answerWas": "Answer:",
+    "matched": "Matched {done}/{total}",
+    "words": "Words",
+    "meanings": "Meanings",
+    "matchTime": "Time {time}",
+    "resultLabel": "Result",
+    "resultSummary": "{correct} of {total} correct",
+    "restart": "Play again",
+    "notEnough": "You need at least {min} words with meanings",
+    "notEnoughHint": "Save more words while translating.",
+    "toLessons": "Go to lessons"
+  },
+  "practice": {
+    "score": "Score",
+    "backToLesson": "Back to lesson",
+    "allLessons": "All lessons"
+  },
+  "dictation": {
+    "title": "Dictation",
+    "description": "Listen to each sentence and type it.",
+    "progress": "Sentence {current}/{total}",
+    "placeholder": "Type what you heard...",
+    "check": "Check",
+    "next": "Next sentence",
+    "result": "Result",
+    "summary": "{count, plural, one {Average of # sentence} other {Average of # sentences}}",
+    "legend": {
+      "equal": "Correct",
+      "missing": "Missing",
+      "extra": "Extra / wrong"
+    }
+  },
+  "cloze": {
+    "title": "Cloze test",
+    "description": "Listen and fill in the words of the chosen level.",
+    "levelLabel": "Level",
+    "blankLabel": "Blank",
+    "check": "Check",
+    "finish": "See score",
+    "summary": "{correct} of {total} blanks correct",
+    "noBlanks": "No {level} words in this lesson.",
+    "noBlanksHint": "Try another level."
+  },
+  "generate": {
+    "title": "Generate a lesson",
+    "description": "Enter a topic and the AI writes a passage at your level to translate.",
+    "topic": "Topic",
+    "topicPlaceholder": "e.g. AI technology",
+    "levelNote": "The passage will be at level {level}.",
+    "suggestions": "Topic ideas",
+    "submit": "Generate",
+    "generating": "The AI is writing...",
+    "suggestion": {
+      "travel": "Travel",
+      "food": "Food",
+      "work": "Work",
+      "technology": "AI technology",
+      "health": "Health",
+      "anime": "Anime",
+      "manga": "Manga",
+      "game": "Video games",
+      "meeting": "Meetings",
+      "email": "Work emails",
+      "interview": "Job interviews"
+    }
+  },
+  "analytics": {
+    "title": "Mistake analytics",
+    "description": "Mistakes the AI found in the last {weeks} weeks.",
+    "empty": "No mistakes recorded yet.",
+    "emptyHint": "Translate a few lessons — every wrong answer is categorised here.",
+    "byTypeTitle": "By type",
+    "byWeekTitle": "By week",
+    "barTooltip": "{label}: {count} times",
+    "weekTooltip": "Week of {week}: {count} mistakes",
+    "weakTitle": "Top 3 weak points",
+    "times": "{count}×",
+    "practise": "Practise weak points (3–5 min)",
+    "generating": "The AI is preparing...",
+    "tags": {
+      "particle": "Particles (は/が, を/に…)",
+      "verb_form": "Verb forms",
+      "tense": "Tense",
+      "politeness": "Politeness / register",
+      "word_choice": "Word choice",
+      "word_order": "Word order",
+      "omission": "Missing meaning",
+      "addition": "Added meaning",
+      "meaning": "Wrong meaning",
+      "grammar": "Grammar",
+      "spelling": "Spelling",
+      "article": "Articles",
+      "preposition": "Prepositions",
+      "plural": "Singular / plural",
+      "naturalness": "Naturalness"
+    }
+  },
+  "news": {
+    "title": "Today's news",
+    "description": "Practice passages rewritten by AI from openly licensed news, at your level.",
+    "read": "Read article",
+    "makeLesson": "Make a lesson",
+    "empty": "Could not load the news.",
+    "emptyHint": "Check your connection and try again later.",
+    "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher.",
+    "open": {
+      "title": "Readings from open sources",
+      "description": "News from {source} ({license}) — the licence allows adaptation. Press “Make a lesson” and the AI rewrites it at your level, without copying the original."
+    },
+    "headlines": {
+      "title": "Headlines from {source}"
+    }
+  },
+  "shop": {
+    "title": "Shop",
+    "description": "Spend the coins you earn by studying on themes, garden decorations and topic packs.",
+    "balance": "Your coins",
+    "buy": "Buy",
+    "notEnough": "Not enough coins",
+    "use": "Use",
+    "stopUsing": "Stop using",
+    "owned": "Owned",
+    "bought": "Purchased!",
+    "applied": "Theme updated.",
+    "sections": {
+      "theme": "Accent colours",
+      "decoration": "Garden decorations",
+      "topic_pack": "Topic packs for AI lessons"
+    },
+    "errors": {
+      "notEnoughCoins": "Not enough coins.",
+      "alreadyOwned": "You already own this item."
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "Sakura",
+        "description": "Cherry-blossom pink."
+      },
+      "theme-matcha": {
+        "name": "Matcha",
+        "description": "Green-tea green."
+      },
+      "theme-ocean": {
+        "name": "Ocean",
+        "description": "Deep-sea blue."
+      },
+      "deco-pond": {
+        "name": "Lotus pond",
+        "description": "A small lotus pond for your garden."
+      },
+      "deco-lantern": {
+        "name": "Lantern",
+        "description": "A red lantern for the evening."
+      },
+      "deco-bench": {
+        "name": "Stone bench",
+        "description": "A place to rest between sessions."
+      },
+      "topics-anime": {
+        "name": "Anime & Games pack",
+        "description": "Adds anime, manga and game topics."
+      },
+      "topics-business": {
+        "name": "Work pack",
+        "description": "Adds meeting, email and interview topics."
+      }
+    }
+  },
+  "skills": {
+    "title": "Skill tree",
+    "description": "Reach goals to unlock the next step of each branch.",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "completed",
+      "open": "in progress",
+      "locked": "locked"
+    },
+    "branches": {
+      "translate": {
+        "title": "Translation",
+        "goal": "{count, plural, one {Complete # lesson} other {Complete # lessons}}"
+      },
+      "vocabulary": {
+        "title": "Vocabulary",
+        "goal": "{count, plural, one {Save # word} other {Save # words}}"
+      },
+      "review": {
+        "title": "Review",
+        "goal": "{count, plural, one {# card review} other {# card reviews}}"
+      },
+      "focus": {
+        "title": "Focus",
+        "goal": "{count, plural, one {# Pomodoro session} other {# Pomodoro sessions}}"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "displayName": "Display name",
+    "save": "Save",
+    "saved": "Saved.",
+    "avatarAlt": "Avatar",
+    "avatarChange": "Change photo",
+    "avatarSaved": "Avatar updated.",
+    "avatarFailed": "Could not upload the picture.",
+    "avatarType": "Only PNG, JPG or WebP images.",
+    "avatarSize": "Images up to 1 MB.",
+    "statsLabel": "Statistics",
+    "streak": "Streak",
+    "best": "Best: {count}",
+    "lessons": "Lessons done",
+    "words": "Words saved",
+    "reviews": "Reviews",
+    "focus": "Focus sessions"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Learning language, level, interface and account.",
+    "learning": "Learning",
+    "learningLanguage": "Learning language",
+    "level": "Level",
+    "displayLanguage": "Display language",
+    "timeZone": "Time zone",
+    "save": "Save settings",
+    "saved": "Settings saved.",
+    "dangerZone": "Danger zone",
+    "deleteDescription": "Deleting your account permanently removes all lessons, words, points and coins.",
+    "deleteTitle": "Delete account?",
+    "deleteConfirm": "This cannot be undone.",
+    "deleteButton": "Delete account"
+  },
+  "community": {
+    "title": "Community",
+    "description": "Translations other learners have shared. Like, comment and learn from each other.",
+    "anonymous": "Anonymous learner",
+    "failed": "Something went wrong, please try again.",
+    "delete": "Delete post",
+    "deleteTitle": "Delete this post?",
+    "deleteDescription": "The post and all its comments will be removed for good.",
+    "report": "Report",
+    "reported": "Report sent. Thank you!",
+    "like": "Like",
+    "comments": "{count, plural, one {# comment} other {# comments}}",
+    "commentPlaceholder": "Write a comment…",
+    "send": "Send",
+    "empty": "No posts yet",
+    "emptyHint": "Finish a translation, then press “Share to community” on the summary screen.",
+    "older": "Older posts",
+    "newest": "Newest"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "description": "Top 50 learners by XP, streak and focus time.",
+    "metricLabel": "Metric",
+    "periodLabel": "Period",
+    "metric": {
+      "xp": "XP",
+      "streak": "Streak",
+      "focus": "Focus"
+    },
+    "period": {
+      "week": "This week",
+      "month": "This month"
+    },
+    "unit": {
+      "xp": "{count} XP",
+      "streak": "{count, plural, one {# day} other {# days}}",
+      "focus": "{count, plural, one {# min} other {# min}}"
+    },
+    "empty": "Nobody on the board yet",
+    "anonymous": "Anonymous learner",
+    "you": "You",
+    "notRanked": "You're not in the top 50 yet — keep learning to climb!"
+  },
+  "battle": {
+    "title": "1v1 translation battle",
+    "description": "Translate the same five sentences as another learner. Accuracy first, then speed.",
+    "find": "Find an opponent",
+    "finding": "Searching…",
+    "failed": "Something went wrong, please try again.",
+    "history": "Recent battles",
+    "noHistory": "You haven't played any battles yet",
+    "outcome": {
+      "won": "Won",
+      "lost": "Lost",
+      "draw": "Draw",
+      "waiting": "Waiting for opponent",
+      "active": "In progress",
+      "cancelled": "Cancelled"
+    },
+    "notFound": "Battle not found",
+    "backToLobby": "Back to lobby",
+    "cancelled": "This battle was cancelled",
+    "waiting": "Waiting for an opponent…",
+    "waitingHint": "Keep this page open. The battle starts as soon as someone learning the same language joins.",
+    "cancel": "Stop searching",
+    "forfeit": "Forfeit",
+    "forfeitTitle": "Forfeit this battle?",
+    "forfeitDescription": "Your opponent will be awarded the win.",
+    "scoreboard": "Scoreboard",
+    "progress": "{answered}/{total} sentences",
+    "offline": "disconnected",
+    "you": "You",
+    "opponent": "Opponent",
+    "noOpponent": "No opponent yet",
+    "sentence": "Sentence {index}/{total}",
+    "yourTranslation": "Your translation",
+    "keyboardHint": "Enter to submit · Shift+Enter for a new line",
+    "submit": "Submit",
+    "grading": "Grading…",
+    "gradeFailed": "Couldn't grade this one, please submit again.",
+    "waitingOpponentFinish": "You're done! Waiting for your opponent to finish…"
+  },
+  "offline": {
+    "title": "You're offline",
+    "description": "This page needs a connection. Notebook and Review still open if you've visited them before.",
+    "review": "Review",
+    "notebook": "Notebook"
+  }
+}

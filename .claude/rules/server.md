@@ -2,16 +2,16 @@
 paths:
   - "app/api/**"
   - "server/**"
-  - "middleware.ts"
+  - "proxy.ts"
 ---
 
 # Server Rules (Route Handlers + server-only code)
 
 ## Ranh giới
 
-- Code dùng secret (Gemini key, `SUPABASE_SERVICE_ROLE_KEY`) chỉ nằm trong `server/`, file đầu tiên dòng `import "server-only"`.
+- Code dùng secret (Gemini key, `SUPABASE_SECRET_KEY`) chỉ nằm trong `server/`, file đầu tiên dòng `import "server-only"`.
 - Biến môi trường bí mật **không** có tiền tố `NEXT_PUBLIC_`. Đọc env qua `server/env.ts` (parse bằng Zod, fail sớm khi thiếu).
-- Admin client (service role) chỉ dùng khi bắt buộc (xoá tài khoản, cron); mặc định dùng server client theo session user để RLS vẫn áp dụng.
+- Admin client (secret key) chỉ dùng khi bắt buộc (xoá tài khoản, cron); mặc định dùng server client theo session user để RLS vẫn áp dụng.
 
 ## Khi nào dùng Route Handler
 

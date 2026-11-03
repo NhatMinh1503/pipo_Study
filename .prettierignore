@@ -1,0 +1,7 @@
+.next/
+.next-e2e/
+node_modules/
+coverage/
+package-lock.json
+types/database.ts
+supabase/.temp/

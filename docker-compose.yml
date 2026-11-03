@@ -1,0 +1,27 @@
+# Production build of the app on your machine, talking to the local Supabase.
+#   1. supabase start
+#   2. docker compose --env-file .env.local up --build
+#   3. open http://localhost:3000
+# Values come from .env.local (passed with --env-file); nothing secret is baked into the image.
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: pipo-study:latest
+    ports:
+      - "3000:3000"
+    environment:
+      SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
+      AI_DAILY_LIMIT: ${AI_DAILY_LIMIT:-150}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      # Inside the container 127.0.0.1 is the container; reach Supabase on the host instead
+      SUPABASE_INTERNAL_URL: ${SUPABASE_INTERNAL_URL:-http://host.docker.internal:55421}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
