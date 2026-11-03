@@ -5,6 +5,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { battlePoints, decideWinner } from "@/lib/battle/scoring";
 import type { BattleAnswerResponse } from "@/lib/schemas/battle";
 import type { Grader } from "@/server/ai/grader";
+import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { Database } from "@/types/database";
 
 type Client = SupabaseClient<Database>;
@@ -55,7 +56,7 @@ export async function submitBattleAnswer(
     throw new BattleError("CONFLICT");
   }
 
-  const [previous, profile, limit] = await Promise.all([
+  const [previous, profile] = await Promise.all([
     sentenceIndex === 0
       ? Promise.resolve(null)
       : userClient
@@ -67,12 +68,9 @@ export async function submitBattleAnswer(
           .maybeSingle()
           .then(({ data }) => data?.created_at ?? null),
     userClient.from("profiles").select("display_language").eq("user_id", userId).maybeSingle(),
-    userClient.rpc("rate_limit_hit", { p_key: "ai", p_limit: params.dailyLimit }),
   ]);
-  if (limit.error) throw new BattleError("INTERNAL");
-  if (!limit.data) throw new BattleError("RATE_LIMITED");
 
-  const result = await grade({
+  const gradeInput = {
     source,
     userTranslation: translation,
     sourceLanguage: battle.language,
@@ -81,7 +79,19 @@ export async function submitBattleAnswer(
     contextBefore: battle.sentences[sentenceIndex - 1] ?? null,
     contextAfter: battle.sentences[sentenceIndex + 1] ?? null,
     referenceTranslation: null,
-  });
+  };
+
+  const cached = await readCachedGrade(adminClient, gradeInput);
+  if (!cached) {
+    const limit = await userClient.rpc("rate_limit_hit", {
+      p_key: "ai",
+      p_limit: params.dailyLimit,
+    });
+    if (limit.error) throw new BattleError("INTERNAL");
+    if (!limit.data) throw new BattleError("RATE_LIMITED");
+  }
+  const result = cached ?? (await grade(gradeInput));
+  if (!cached) await storeGrade(adminClient, grade, gradeInput, result);
 
   // Timed from the server's own clock: battle start, or this player's previous answer
   const answeredAt = now();

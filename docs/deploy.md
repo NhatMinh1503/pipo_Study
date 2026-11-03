@@ -38,6 +38,9 @@ Dashboard → Authentication → Emails → SMTP Settings (Brevo):
 | `SUPABASE_SECRET_KEY`                  | Project Settings → API Keys → secret      | **yes** |
 | `GEMINI_API_KEY`                       | a key created for production only         | **yes** |
 | `GEMINI_MODEL`                         | `gemini-3.5-flash-lite`                   | no      |
+| `GROQ_API_KEY`                         | console.groq.com → API Keys (free)        | **yes** |
+| `GROQ_MODEL`                           | `qwen/qwen3.8-27b`                        | no      |
+| `AI_PRIMARY`                           | `groq` (Gemini becomes the fallback)      | no      |
 | `AI_DAILY_LIMIT`                       | `150`                                     | no      |
 
 Never set `AI_PROVIDER` in production (the fake AI is refused there anyway).

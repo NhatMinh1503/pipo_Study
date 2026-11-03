@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getServerEnv } from "@/server/env";
-import { generateStructured } from "@/server/gemini";
+import { generateWithFallback } from "@/server/ai/llm";
 import {
   buildGradePrompt,
   gradeResponseSchema,
@@ -12,21 +12,24 @@ import {
   type GradeResponse,
 } from "@/server/prompts/grade-translation.v1";
 
-export type Grader = (input: GradeInput) => Promise<GradeResponse>;
-
-/** Grades with Gemini. */
-export const geminiGrader: Grader = async (input) => {
-  const env = getServerEnv();
-  const { data } = await generateStructured({
-    apiKey: env.GEMINI_API_KEY,
-    model: env.GEMINI_MODEL,
-    systemInstruction: SYSTEM_INSTRUCTION,
-    prompt: buildGradePrompt(input),
-    schema: gradeResponseSchema,
-    promptVersion: PROMPT_VERSION,
-  });
-  return sanitizeGrade(data);
+export type Grader = ((input: GradeInput) => Promise<GradeResponse>) & {
+  /** Only real AI verdicts may enter the shared grading cache. */
+  cacheable?: boolean;
 };
+
+/** Grades with the configured AI providers (primary first, then fallback). */
+export const aiGrader: Grader = Object.assign(
+  async (input: GradeInput) => {
+    const { data } = await generateWithFallback({
+      systemInstruction: SYSTEM_INSTRUCTION,
+      prompt: buildGradePrompt(input),
+      schema: gradeResponseSchema,
+      promptVersion: PROMPT_VERSION,
+    });
+    return sanitizeGrade(data);
+  },
+  { cacheable: true },
+);
 
 const normalize = (text: string) =>
   text
@@ -69,5 +72,5 @@ export const fakeGrader: Grader = async (input) => {
 
 export function getGrader(): Grader {
   const useFake = process.env.AI_PROVIDER === "fake" && getServerEnv().NODE_ENV !== "production";
-  return useFake ? fakeGrader : geminiGrader;
+  return useFake ? fakeGrader : aiGrader;
 }

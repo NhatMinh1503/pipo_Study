@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getServerEnv } from "@/server/env";
-import { generateStructured } from "@/server/gemini";
+import { generateWithFallback } from "@/server/ai/llm";
 import {
   buildGenerateLessonPrompt,
   generatedLessonSchema,
@@ -14,10 +14,7 @@ import {
 export type LessonGenerator = (input: GenerateLessonInput) => Promise<GeneratedLesson>;
 
 export const geminiLessonGenerator: LessonGenerator = async (input) => {
-  const env = getServerEnv();
-  const { data } = await generateStructured({
-    apiKey: env.GEMINI_API_KEY,
-    model: env.GEMINI_MODEL,
+  const { data } = await generateWithFallback({
     systemInstruction: SYSTEM_INSTRUCTION,
     prompt: buildGenerateLessonPrompt(input),
     schema: generatedLessonSchema,

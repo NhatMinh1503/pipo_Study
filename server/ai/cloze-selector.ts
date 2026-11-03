@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getServerEnv } from "@/server/env";
-import { generateStructured } from "@/server/gemini";
+import { generateWithFallback } from "@/server/ai/llm";
 import {
   buildSelectClozePrompt,
   PROMPT_VERSION,
@@ -18,10 +18,7 @@ export type ClozeSelector = ((input: SelectClozeInput) => Promise<SelectClozeRes
 
 export const geminiClozeSelector: ClozeSelector = Object.assign(
   async (input: SelectClozeInput) => {
-    const env = getServerEnv();
-    const { data } = await generateStructured({
-      apiKey: env.GEMINI_API_KEY,
-      model: env.GEMINI_MODEL,
+    const { data } = await generateWithFallback({
       systemInstruction: SYSTEM_INSTRUCTION,
       prompt: buildSelectClozePrompt(input),
       schema: selectClozeResponseSchema,
