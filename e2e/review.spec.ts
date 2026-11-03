@@ -29,6 +29,8 @@ test.describe("flashcard review", () => {
 
     await page.goto("/review");
     await expect(page.getByText("Còn 2 thẻ")).toBeVisible();
+    // Keyboard shortcuts attach on hydration; a key pressed before that is lost
+    await expect(page.locator("[data-ready='true']")).toBeVisible();
 
     // Front: the word is hidden in its sentence
     await expect(
@@ -68,6 +70,8 @@ test.describe("flashcard review", () => {
 
     await page.goto("/review");
     await expect(page.getByText("Còn 1 thẻ")).toBeVisible();
+    // Only meaningful once the shortcuts are attached
+    await expect(page.locator("[data-ready='true']")).toBeVisible();
     await page.keyboard.press("3");
     await expect(page.getByText("Còn 1 thẻ")).toBeVisible();
     await expect(page.getByRole("button", { name: "Xem đáp án" })).toBeVisible();

@@ -6,6 +6,7 @@ import { FormAlert } from "@/components/common/form-alert";
 import { PlayButton } from "@/components/audio/play-button";
 import { Flashcard } from "@/components/flashcard/flashcard";
 import { Button } from "@/components/ui/button";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { useHotkeys } from "@/hooks/use-hotkeys";
 import { RATINGS, type Rating } from "@/lib/srs/schedule";
 import type { ReviewCard } from "@/lib/srs/types";
@@ -26,6 +27,8 @@ const RATING_STYLES: Record<Rating, string> = {
 export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
   const t = useTranslations("review");
   const session = useReviewSession(cards);
+  // Keys only work once hydrated; tests (and nothing else) wait for this marker
+  const ready = useIsMounted();
 
   useHotkeys(
     {
@@ -45,7 +48,7 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-xl space-y-6">
+    <div className="mx-auto w-full max-w-xl space-y-6" data-ready={ready}>
       <p className="mono-label text-center" aria-live="polite">
         {t("remaining", { count: session.remaining })}
       </p>

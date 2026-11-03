@@ -3,18 +3,9 @@
 import { Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
-
-// The theme is only known in the browser; until hydration, use a neutral label
-const subscribeNothing = () => () => {};
-const useIsMounted = () =>
-  useSyncExternalStore(
-    subscribeNothing,
-    () => true,
-    () => false,
-  );
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 export function ThemeToggle() {
   const t = useTranslations("theme");
