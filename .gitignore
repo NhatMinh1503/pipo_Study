@@ -32,3 +32,6 @@ CLAUDE.local.md
 .DS_Store
 *.log
 *.dump
+
+# iCloud Drive conflict copies ("file 2.ts"): never commit them
+* 2.*
