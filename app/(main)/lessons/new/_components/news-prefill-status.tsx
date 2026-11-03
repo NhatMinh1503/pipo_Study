@@ -17,14 +17,14 @@ interface NewsPrefillStatusProps {
 }
 
 const ERROR_KEYS: Record<string, string> = {
-  RATE_LIMITED: "lessons.news.rateLimited",
-  NOT_FOUND: "lessons.news.unreadable",
-  AI_BAD_REQUEST: "lessons.news.tooClose",
+  RATE_LIMITED: "lessons.newsRewrite.rateLimited",
+  NOT_FOUND: "lessons.newsRewrite.unreadable",
+  AI_BAD_REQUEST: "lessons.newsRewrite.tooClose",
 };
 
 /** What happens to the news passage: being written, failed (with retry), or done (credit line). */
 export function NewsPrefillStatus({ isPending, error, data, onRetry }: NewsPrefillStatusProps) {
-  const t = useTranslations("lessons.news");
+  const t = useTranslations("lessons.newsRewrite");
 
   if (isPending) {
     return (
@@ -35,7 +35,8 @@ export function NewsPrefillStatus({ isPending, error, data, onRetry }: NewsPrefi
     );
   }
   if (error) {
-    const key = (error instanceof ApiError && ERROR_KEYS[error.code]) || "lessons.news.failed";
+    const key =
+      (error instanceof ApiError && ERROR_KEYS[error.code]) || "lessons.newsRewrite.failed";
     return (
       <div className="space-y-2">
         <FormAlert messageKey={key} />

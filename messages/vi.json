@@ -234,7 +234,12 @@
     },
     "dictationAria": "Chép chính tả bài {title}",
     "clozeAria": "Điền từ (Cloze) bài {title}",
-    "news": {
+    "news": "Tin tức",
+    "generate": "Tạo bằng AI",
+    "source": {
+      "adapted": "Bài đọc do pipo biên tập lại cho người học từ <source></source>, theo giấy phép <license></license>."
+    },
+    "newsRewrite": {
       "writing": "AI đang viết lại tin này thành bài đọc đúng trình độ của bạn…",
       "ready": "Đoạn văn đã sẵn sàng — bạn có thể sửa trước khi tạo bài.",
       "retry": "Thử lại",
@@ -242,10 +247,6 @@
       "unreadable": "Không đọc được nội dung tin này. Hãy chọn tin khác.",
       "tooClose": "Bản viết lại còn giống nguyên văn quá. Hãy thử lại hoặc chọn tin khác.",
       "rateLimited": "Bạn đã dùng hết lượt AI hôm nay. Hãy quay lại vào ngày mai."
-    },
-    "generate": "Tạo bằng AI",
-    "source": {
-      "adapted": "Bài đọc do pipo biên tập lại cho người học từ <source></source>, theo giấy phép <license></license>."
     }
   },
   "translate": {

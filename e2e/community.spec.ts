@@ -22,7 +22,8 @@ test.describe("community", () => {
     await finishOneLesson(page, title);
 
     await page.getByRole("button", { name: "Chia sẻ lên cộng đồng" }).click();
-    await expect(page).toHaveURL(/\/community$/);
+    // The action saves, then redirects to a page that may still need compiling
+    await expect(page).toHaveURL(/\/community$/, { timeout: 30_000 });
 
     const post = page.getByRole("article").filter({ hasText: title });
     await expect(post).toContainText("Tôi đi ga.");

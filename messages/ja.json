@@ -234,7 +234,12 @@
     },
     "dictationAria": "「{title}」のディクテーション",
     "clozeAria": "「{title}」の穴埋め",
-    "news": {
+    "news": "ニュース",
+    "generate": "AIで作成",
+    "source": {
+      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成"
+    },
+    "newsRewrite": {
       "writing": "AIがこのニュースをあなたのレベルに書き直しています…",
       "ready": "文章ができました。作成前に編集もできます。",
       "retry": "再試行",
@@ -242,10 +247,6 @@
       "unreadable": "このニュースの本文を読み込めませんでした。別のニュースを選んでください。",
       "tooClose": "書き直しが原文に近すぎました。再試行するか別のニュースを選んでください。",
       "rateLimited": "今日のAI利用回数を使い切りました。また明日お試しください。"
-    },
-    "generate": "AIで作成",
-    "source": {
-      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成"
     }
   },
   "translate": {

@@ -11,7 +11,9 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
-  // The dev server compiles routes on first hit; 5 s is too tight with two workers
+  // The dev server compiles each route on its first hit, and CI always starts cold:
+  // long flows (sign-up + email + lesson + review) need more than the 30 s default
+  timeout: 60_000,
   expect: { timeout: 10_000 },
   use: {
     baseURL: BASE_URL,

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { signIn } from "./helpers/auth";
+import { createOnboardedUser, signIn } from "./helpers/auth";
 
 test.describe("dashboard", () => {
   test("shows the seeded user's stats, due cards and lesson in progress", async ({ page }) => {
@@ -16,20 +16,19 @@ test.describe("dashboard", () => {
     await expect(page.getByRole("link", { name: /スーパーで買い物/ })).toBeVisible();
   });
 
-  test("switching the display language updates the whole UI", async ({ page }) => {
-    await signIn(page);
+  test("switching the display language updates the whole UI", async ({ page }, testInfo) => {
+    // A fresh user: changing the shared demo user's language would break parallel tests
+    await createOnboardedUser(page, testInfo);
 
     await page.getByRole("button", { name: "Mở menu tài khoản" }).click();
     await page.getByRole("menuitem", { name: "Ngôn ngữ hiển thị" }).click();
     await page.getByRole("menuitemradio", { name: "Tiếng Nhật" }).click();
+    await expect(page.getByRole("heading", { name: "こんにちは！" })).toBeVisible();
 
-    await expect(page.getByRole("heading", { name: "こんにちは、Minh Demoさん！" })).toBeVisible();
-
-    // Restore Vietnamese so other tests keep their labels
     await page.getByRole("button", { name: "アカウントメニューを開く" }).click();
     await page.getByRole("menuitem", { name: "表示言語" }).click();
     await page.getByRole("menuitemradio", { name: "ベトナム語" }).click();
-    await expect(page.getByRole("heading", { name: "Xin chào, Minh Demo!" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Xin chào!" })).toBeVisible();
   });
 
   test("navigation highlights the current page", async ({ page }) => {

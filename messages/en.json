@@ -234,7 +234,12 @@
     },
     "dictationAria": "Dictation for {title}",
     "clozeAria": "Cloze test for {title}",
-    "news": {
+    "news": "News",
+    "generate": "Generate with AI",
+    "source": {
+      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence."
+    },
+    "newsRewrite": {
       "writing": "The AI is rewriting this story at your level…",
       "ready": "Your passage is ready — edit it before creating the lesson if you like.",
       "retry": "Try again",
@@ -242,10 +247,6 @@
       "unreadable": "This article couldn't be read. Please pick another one.",
       "tooClose": "The rewrite was still too close to the original. Try again or pick another story.",
       "rateLimited": "You've used today's AI allowance. Come back tomorrow."
-    },
-    "generate": "Generate with AI",
-    "source": {
-      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence."
     }
   },
   "translate": {
