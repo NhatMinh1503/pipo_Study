@@ -9,7 +9,7 @@ export async function RecentWords({ words }: { words: RecentWord[] }) {
   const t = await getTranslations("dashboard.words");
 
   return (
-    <section className="sheet-flat flex flex-col" aria-labelledby="recent-words-heading">
+    <section className="sheet flex flex-col" aria-labelledby="recent-words-heading">
       <header className="flex items-center justify-between gap-3 border-b border-dashed border-border/40 px-5 py-3.5">
         <div className="flex items-center gap-2 text-muted-foreground">
           <NotebookPen className="size-3.5" aria-hidden />

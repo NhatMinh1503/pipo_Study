@@ -36,7 +36,7 @@ export function AppSidebar() {
               className={cn(
                 "flex items-center gap-2.5 border-2 px-2.5 py-2 text-sm transition-colors",
                 active
-                  ? "border-border bg-card font-semibold text-foreground shadow-[2px_2px_0_0_var(--shadow-ink)]"
+                  ? "border-border bg-tint-blush font-semibold text-foreground shadow-[2px_2px_0_0_var(--shadow-ink)]"
                   : "border-transparent text-muted-foreground hover:border-border/20 hover:bg-sidebar-accent hover:text-foreground",
               )}
             >

@@ -3,12 +3,19 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export async function ReviewDueCard({ count }: { count: number }) {
   const t = await getTranslations("dashboard");
 
   return (
-    <section className="flex flex-col gap-4 border-2 border-border bg-card p-5 shadow-[4px_4px_0_0_var(--shadow-ink)]">
+    <section
+      className={cn(
+        "sheet flex flex-col gap-4 p-5",
+        // Cards waiting read as a to-do (sand); an empty queue reads as done (mint)
+        count > 0 ? "bg-tint-sand" : "bg-tint-mint",
+      )}
+    >
       <div className="flex items-center gap-2 text-muted-foreground">
         <Brain className="size-3.5 shrink-0" aria-hidden />
         <h2 className="mono-label">{t("reviewTitle")}</h2>

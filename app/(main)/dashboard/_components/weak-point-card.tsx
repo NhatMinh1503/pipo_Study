@@ -19,7 +19,10 @@ export function WeakPointCard({ weakPoint }: WeakPointCardProps) {
   const { practise, isPending, error } = usePractiseWeakPoints(weakPoint ? [weakPoint.tag] : []);
 
   return (
-    <section className="sheet-flat flex flex-col gap-3 p-5" aria-labelledby="weak-point-heading">
+    <section
+      className="sheet flex flex-col gap-3 bg-tint-blush p-5"
+      aria-labelledby="weak-point-heading"
+    >
       <div className="flex items-center gap-2 text-muted-foreground">
         <Crosshair className="size-3.5" aria-hidden />
         <h2 id="weak-point-heading" className="mono-label">

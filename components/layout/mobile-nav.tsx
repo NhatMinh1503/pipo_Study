@@ -29,7 +29,7 @@ export function MobileNav() {
                 className={cn(
                   "flex flex-col items-center gap-1 border-t-2 py-2 transition-colors",
                   active
-                    ? "border-primary text-foreground"
+                    ? "border-primary bg-tint-blush text-foreground"
                     : "border-transparent text-muted-foreground hover:text-foreground",
                 )}
               >
