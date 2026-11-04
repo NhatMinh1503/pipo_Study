@@ -133,6 +133,12 @@
       "practise": "Luyện ngay",
       "details": "Xem phân tích",
       "none": "Chưa có lỗi nào trong 2 tuần qua. Tiếp tục phát huy!"
+    },
+    "band": {
+      "label": "Trạng thái hôm nay",
+      "streak": "Chuỗi {count} ngày",
+      "due": "{count} thẻ cần ôn",
+      "goals": "Hôm nay · {done}/{total} mục tiêu"
     }
   },
   "languages": {

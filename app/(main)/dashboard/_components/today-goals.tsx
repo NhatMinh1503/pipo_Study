@@ -9,6 +9,12 @@ interface TodayGoalsProps {
   dueCards: number;
 }
 
+/** How many of today's three habits are already done. */
+export function countGoalsDone(today: TodayGoalsData, dueCards: number): number {
+  return [today.lessonsCompleted > 0, dueCards === 0, today.focusSessions > 0].filter(Boolean)
+    .length;
+}
+
 /** Three small daily habits (PRD engagement goal): translate, review, focus. */
 export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
   const t = await getTranslations("dashboard.goals");
@@ -38,7 +44,7 @@ export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
   const doneCount = goals.filter((goal) => goal.done).length;
 
   return (
-    <section className="sheet-flat flex flex-col" aria-labelledby="today-goals-heading">
+    <section className="sheet flex flex-col bg-tint-mint" aria-labelledby="today-goals-heading">
       <header className="flex items-center justify-between gap-3 border-b border-dashed border-border/40 px-5 py-3.5">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Target className="size-3.5" aria-hidden />
@@ -46,7 +52,7 @@ export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
             {t("title")}
           </h2>
         </div>
-        <span className="mono-value text-sm font-semibold">
+        <span className={doneCount === goals.length ? "pill text-success" : "pill text-foreground"}>
           {t("progress", { done: doneCount, total: goals.length })}
         </span>
       </header>
@@ -55,10 +61,7 @@ export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
           const Icon = goal.done ? CircleCheck : Circle;
           return (
             <li key={goal.key}>
-              <Link
-                href={goal.href}
-                className="flex items-center gap-3 px-5 py-3 hover:bg-muted/40"
-              >
+              <Link href={goal.href} className="flex items-center gap-3 px-5 py-3 hover:bg-card/50">
                 <Icon
                   className={
                     goal.done

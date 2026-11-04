@@ -29,7 +29,7 @@ export async function QuickLinks() {
   return (
     <nav
       aria-label={t("label")}
-      className="sheet-flat grid grid-cols-2 divide-x divide-y divide-dashed divide-border/30 sm:grid-cols-4"
+      className="sheet grid grid-cols-2 divide-x divide-y divide-dashed divide-border/30 sm:grid-cols-4"
     >
       {LINKS.map(({ href, key, icon: Icon }) => (
         <Link

@@ -133,6 +133,12 @@
       "practise": "今すぐ練習",
       "details": "分析を見る",
       "none": "この2週間ミスはありません。その調子！"
+    },
+    "band": {
+      "label": "今日の状況",
+      "streak": "{count}日連続",
+      "due": "復習 {count}枚",
+      "goals": "今日 · {done}/{total} 目標"
     }
   },
   "languages": {

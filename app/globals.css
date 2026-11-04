@@ -43,6 +43,12 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-tint-mint: var(--tint-mint);
+  --color-tint-sand: var(--tint-sand);
+  --color-tint-slate: var(--tint-slate);
+  --color-tint-blush: var(--tint-blush);
+  --color-band: var(--band);
+  --color-band-foreground: var(--band-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -96,6 +102,14 @@
   --paper-well: #e7ddc7;
   --primary-press: #2a3a63;
   --destructive-press: #8a1f18;
+
+  /* Tinted sheets: a pale wash per kind of card, the ink edge stays */
+  --tint-mint: #e2ebe2;
+  --tint-sand: #ece0c6;
+  --tint-slate: #d9e2e2;
+  --tint-blush: #e8c8b9;
+  --band: #2b4a4f;
+  --band-foreground: #e6eeec;
 }
 
 /* Carbon copy — the same document read under a desk lamp */
@@ -140,6 +154,13 @@
   --paper-well: #191811;
   --primary-press: #a9baea;
   --destructive-press: #f08c80;
+
+  --tint-mint: #1b261f;
+  --tint-sand: #2a2417;
+  --tint-slate: #1a2325;
+  --tint-blush: #34241e;
+  --band: #1f3a3e;
+  --band-foreground: #d5e4e1;
 }
 
 @layer base {
@@ -199,6 +220,22 @@
   }
   .rule-dotted {
     border-top: 1px dotted var(--rule);
+  }
+
+  /* Outlined status pill, e.g. "2/3" or a category tag */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border: 1.5px solid currentColor;
+    border-radius: 9999px;
+    padding: 0.125rem 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
   }
 
   /* A recessed field of paper, used for read-only passages */

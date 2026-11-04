@@ -14,6 +14,7 @@ export async function ActivityChart({ activity }: { activity: DayTotal[] }) {
 
   return (
     <ColumnChart
+      className="sheet bg-tint-slate"
       caption={t("title", { total })}
       emptyMessage={t("empty")}
       highlightKey={activity.at(-1)?.day}

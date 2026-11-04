@@ -24,7 +24,7 @@ export async function ContinueLessons({ lessons }: { lessons: LessonSummary[] })
           }
         />
       ) : (
-        <ul className="sheet-flat divide-y divide-dashed divide-border/30">
+        <ul className="sheet divide-y divide-dashed divide-border/30">
           {lessons.map((lesson) => (
             <li key={lesson.id}>
               <LessonProgressCard lesson={lesson} />

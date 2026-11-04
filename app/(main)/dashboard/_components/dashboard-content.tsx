@@ -9,8 +9,9 @@ import { ActivityChart } from "./activity-chart";
 import { ContinueLessons } from "./continue-lessons";
 import { QuickLinks } from "./quick-links";
 import { RecentWords } from "./recent-words";
+import { StatusBand } from "./status-band";
 import { ReviewDueCard } from "./review-due-card";
-import { TodayGoals } from "./today-goals";
+import { countGoalsDone, TodayGoals } from "./today-goals";
 import { WeakPointCard } from "./weak-point-card";
 
 export async function DashboardContent() {
@@ -18,17 +19,23 @@ export async function DashboardContent() {
 
   return (
     <>
+      <StatusBand
+        streak={data.streakCurrent}
+        dueCards={data.dueCards}
+        goalsDone={countGoalsDone(data.today, data.dueCards)}
+      />
       {/* One ruled strip, three figures — not three separate tiles */}
       <section
         aria-label={t("statsLabel")}
-        className="sheet-flat grid grid-cols-3 divide-x divide-dashed divide-border/30"
+        className="sheet grid grid-cols-3 divide-x divide-dashed divide-border/30"
       >
-        <StatCard label={t("xp")} value={data.xp} icon={Sparkles} />
-        <StatCard label={t("coins")} value={data.coins} icon={Coins} />
+        <StatCard label={t("xp")} value={data.xp} icon={Sparkles} className="bg-tint-mint" />
+        <StatCard label={t("coins")} value={data.coins} icon={Coins} className="bg-tint-sand" />
         <StatCard
           label={t("streak")}
           value={data.streakCurrent}
           icon={Flame}
+          className="bg-tint-blush"
           hint={t("streakBest", { count: data.streakBest })}
         />
       </section>

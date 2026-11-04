@@ -133,6 +133,12 @@
       "practise": "Practise now",
       "details": "See analytics",
       "none": "No mistakes in the last 2 weeks. Keep it up!"
+    },
+    "band": {
+      "label": "Today's status",
+      "streak": "{count, plural, one {# day} other {# days}} streak",
+      "due": "{count, plural, one {# card} other {# cards}} due",
+      "goals": "Today · {done}/{total} goals"
     }
   },
   "languages": {
