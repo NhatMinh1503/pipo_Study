@@ -66,18 +66,18 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 
 ## Faucets & sinks (summary)
 
-| Source / Sink                       | Currency | Rate / Price               | Daily cap                                                 | Source doc           |
-| ----------------------------------- | -------- | -------------------------- | --------------------------------------------------------- | -------------------- |
-| Unlocked sentence                   | XP       | 2–10 per sentence          | 300 combined for `manual` lessons; none for `ai` / `news` | xp-levels §3.1, §3.6 |
-| Lesson completion (≥ 3 sentences)   | XP       | 5                          | counts toward the 300 cap if `manual`                     | xp-levels §3.2       |
-| Lesson completion (≥ 3 sentences)   | Coins    | floor(P/10) + 3 if perfect | none (open question Q-A)                                  | xp-levels §3.2       |
-| Rewarded review (due, seen before)  | XP       | 1 per card                 | once per card per local day                               | xp-levels §3.3       |
-| Review queue cleared (≥ 5 rewarded) | XP       | 5                          | once per local day                                        | xp-levels §3.4       |
-| Pomodoro session                    | Coins    | 1 per 5 minutes            | none                                                      | S21                  |
-| Pomodoro session                    | XP       | 0                          | —                                                         | xp-levels §3.7       |
-| Shop: themes                        | Coins    | 60 each                    | —                                                         | S23 (DB)             |
-| Shop: decorations                   | Coins    | 25–40                      | —                                                         | S23 (DB)             |
-| Shop: topic packs                   | Coins    | 80 each                    | —                                                         | S23 (DB)             |
+| Source / Sink                       | Currency | Rate / Price               | Daily cap                                                       | Source doc           |
+| ----------------------------------- | -------- | -------------------------- | --------------------------------------------------------------- | -------------------- |
+| Unlocked sentence                   | XP       | 2–10 per sentence          | 300 combined for `manual` lessons; none for `ai` / `news`       | xp-levels §3.1, §3.6 |
+| Lesson completion (≥ 3 sentences)   | XP       | 5                          | counts toward the 300 cap if `manual`                           | xp-levels §3.2       |
+| Lesson completion (≥ 3 sentences)   | Coins    | floor(P/10) + 3 if perfect | 0 for a `manual` lesson whose completion bonus was capped (Q-A) | xp-levels §3.2       |
+| Rewarded review (due, seen before)  | XP       | 1 per card                 | once per card per local day                                     | xp-levels §3.3       |
+| Review queue cleared (≥ 5 rewarded) | XP       | 5                          | once per local day                                              | xp-levels §3.4       |
+| Pomodoro session                    | Coins    | 1 per 5 minutes            | none                                                            | S21                  |
+| Pomodoro session                    | XP       | 0                          | —                                                               | xp-levels §3.7       |
+| Shop: themes                        | Coins    | 60 each                    | —                                                               | S23 (DB)             |
+| Shop: decorations                   | Coins    | 25–40                      | —                                                               | S23 (DB)             |
+| Shop: topic packs                   | Coins    | 80 each                    | —                                                               | S23 (DB)             |
 
 ## Systems and their docs
 

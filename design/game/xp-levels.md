@@ -98,8 +98,9 @@ Hệ quả: lưu thêm từ sau khi đã nhận bonus không làm mất bonus; n
 3. Câu làm vượt giới hạn được trả `min(sentence_xp, phần còn lại)` (có thể là 0).
 4. **Không âm thầm cho 0 XP [Chốt].** Khi câu bị cắt (`awarded < sentence_xp`), màn dịch hiện rõ: **"Đã đạt giới hạn XP hôm nay cho bài tự tạo"**, kèm phần đã nhận (nếu > 0).
 5. Người học **vẫn dịch được**, câu **vẫn mở khoá**, và **vẫn tính là hoạt động học** (giữ streak) **[Chốt]**.
-6. Coins của bài tự tạo không bị giới hạn này (xem §8 – câu hỏi mở Q-A).
-7. ⚠️ **Điều kiện tiên quyết bảo mật:** `source` phải do server quyết định. Xem §9 và task T0.
+6. **Coins của bài tự tạo cũng dừng khi đã chạm giới hạn [Chốt — Q-A]:** khi một bài `manual` hoàn thành mà **bonus hoàn thành không được trả đủ** (giới hạn 300 đã đầy trước hoặc trong lúc trả bonus), bài đó **không có Coins**. Màn kết quả ghi rõ: **"Đã đạt giới hạn XP hôm nay cho bài tự tạo nên bài này không có thưởng hoàn thành"**.
+7. **Bài AI nằm ngoài giới hạn [Chốt — Q-B]:** micro-lesson và bài AI theo chủ đề (`source = 'ai'`) không bị giới hạn, vì rate limit AI (150 lượt/ngày) đã chặn gián tiếp.
+8. ⚠️ **Điều kiện tiên quyết bảo mật:** `source` phải do server quyết định. Xem §9 và task T0.
 
 ### 3.7 Pomodoro **[Chốt]**
 
@@ -297,7 +298,7 @@ Không có vòng lặp tự khuếch đại: level không nhân XP, không mở 
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
 | Gửi lại request chấm câu đã mở khoá              | Key `sentence:<id>` → không trả 2 lần                                                       |
 | Bài 1–2 câu "siêu dễ" để farm                    | Không bonus, không Coins; XP câu tính vào giới hạn 300 (nếu `manual`)                       |
-| Nhiều bài 3 câu "siêu dễ" (`manual`)             | Giới hạn 300 XP/ngày. Coins vẫn chảy: xem **Q-A**                                           |
+| Nhiều bài 3 câu "siêu dễ" (`manual`)             | Giới hạn 300 XP/ngày; chạm giới hạn thì bài `manual` cũng hết Coins (§3.6 mục 6)            |
 | Khai báo `source = 'ai'` cho bài tự tạo          | Chặn bằng T0: chỉ server (service role) tạo được bài `ai`/`news`                            |
 | Chèn thêm câu vào bài `ai` bằng INSERT trực tiếp | Chặn bằng T0: thu hồi INSERT trực tiếp vào `lessons`/`sentences` của `authenticated`        |
 | Dán bản dịch máy                                 | Không chặn được ở hệ này; ghi nhận ở audit §15b                                             |
@@ -313,10 +314,10 @@ Không có vòng lặp tự khuếch đại: level không nhân XP, không mở 
 | Bài đang dở lúc deploy                           | Câu cũ 0 XP (không trả bù); câu mới trả theo câu; khi xong chỉ còn bonus 5 + Coins          |
 | AI chấm lỗi / timeout                            | Không attempt, không XP, không tính lần thử                                                 |
 
-**Câu hỏi mở (không chặn việc code, cần Minh quyết khi làm task tương ứng):**
+**Câu hỏi đã chốt (2026-11-05):**
 
-- **Q-A:** Coins từ bài `manual` có nên dừng khi đã chạm giới hạn 300 XP trong ngày không? _(Đề xuất: có. Nếu không, bài 3 câu dễ vẫn là nguồn Coins không giới hạn.)_
-- **Q-B:** Micro-lesson (AI) và bài AI theo chủ đề do user chọn đều là `source = 'ai'` nên không bị giới hạn. Rate limit AI 150 lượt/ngày đã giới hạn gián tiếp. _(Đề xuất: giữ nguyên.)_
+- **Q-A — Có:** chạm giới hạn 300 XP thì bài `manual` cũng không còn Coins (§3.6 mục 6), có ghi rõ trên màn hình.
+- **Q-B — Đồng ý:** micro-lesson và bài AI theo chủ đề nằm ngoài giới hạn (§3.6 mục 7).
 
 ---
 
@@ -376,16 +377,17 @@ Mọi giá trị nằm ở **một module config** phía TypeScript (`lib/game/c
 8. Hoàn thành Pomodoro → 0 XP, Coins như cũ, 1 cây; streak **không** đổi.
 9. Bài `manual`: tổng XP trong ngày dừng ở **300**; câu tiếp theo mở khoá, hiện thông báo giới hạn, streak vẫn tăng.
 10. Bài `ai` / `news` không bị giới hạn 300.
-11. User không thể tạo bài `ai`/`news`, cũng không thể thêm câu vào bài có sẵn bằng gọi trực tiếp Supabase (T0).
-12. `level(xp)` đúng tại biên: 49 → Lv1, 50 → Lv2, 439 → Lv4, 440 → Lv5, 49.489 → Lv49, 49.490 → Lv50, 51.490 → Lv50 + 1 ★.
-13. Một lần cộng XP vượt 2 level → đúng 1 dòng `level_ups` (from → to).
-14. Deploy (chạy migration) không tạo dòng `level_ups` nào.
-15. Sự kiện lên cấp hiện đúng 1 lần dù mở 2 thiết bị; user không đọc được sự kiện của người khác.
+11. Bài `manual` hoàn thành khi giới hạn đã đầy → 0 bonus XP, **0 Coins**, màn kết quả hiện câu thông báo giới hạn.
+12. User không thể tạo bài `ai`/`news`, cũng không thể thêm câu vào bài có sẵn bằng gọi trực tiếp Supabase (T0).
+13. `level(xp)` đúng tại biên: 49 → Lv1, 50 → Lv2, 439 → Lv4, 440 → Lv5, 49.489 → Lv49, 49.490 → Lv50, 51.490 → Lv50 + 1 ★.
+14. Một lần cộng XP vượt 2 level → đúng 1 dòng `level_ups` (from → to).
+15. Deploy (chạy migration) không tạo dòng `level_ups` nào.
+16. Sự kiện lên cấp hiện đúng 1 lần dù mở 2 thiết bị; user không đọc được sự kiện của người khác.
 
 **Trải nghiệm:**
 
-16. Sau mỗi câu đúng, người học thấy XP vừa nhận trong ≤ 1 giây sau kết quả AI. Không có trạng thái "đúng mà 0 XP" mà không giải thích.
-17. Thông báo giới hạn dùng đúng câu chữ **"Đã đạt giới hạn XP hôm nay cho bài tự tạo"**.
+17. Sau mỗi câu đúng, người học thấy XP vừa nhận trong ≤ 1 giây sau kết quả AI. Không có trạng thái "đúng mà 0 XP" mà không giải thích.
+18. Thông báo giới hạn dùng đúng câu chữ **"Đã đạt giới hạn XP hôm nay cho bài tự tạo"**.
 
 **Chỉ số theo dõi (sau deploy):**
 
@@ -433,6 +435,7 @@ Mọi giá trị nằm ở **một module config** phía TypeScript (`lib/game/c
 | 5   | pgTAP      | `award_sentence_xp` 2 lần cùng câu                           | Lần 2 không cộng                                |
 | 6   | pgTAP      | Bài `manual`, XP hôm nay 296, câu 10 điểm                    | awarded = 4, capped = true; câu tiếp: 0, capped |
 | 7   | pgTAP      | Bài `ai`, XP `manual` hôm nay đã 300                         | Trả đủ điểm                                     |
+| 7b  | pgTAP      | Bài `manual` ≥ 3 câu hoàn thành khi giới hạn đã đầy          | bonus = 0, Coins = 0, capped = true             |
 | 8   | pgTAP      | Hai câu `manual` đồng thời quanh mốc 300                     | Tổng không vượt 300                             |
 | 9   | pgTAP      | Câu bị capped → streak                                       | Streak vẫn tăng (hoạt động học)                 |
 | 10  | pgTAP      | Pomodoro hoàn thành                                          | xp_delta = 0, streak không đổi, Coins đúng      |
