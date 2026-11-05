@@ -980,7 +980,6 @@ export type Database = {
           p_language: Database["public"]["Enums"]["learning_language"]
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
-          p_source?: Database["public"]["Enums"]["lesson_source"]
           p_source_license?: string
           p_source_name?: string
           p_source_url?: string
@@ -988,9 +987,37 @@ export type Database = {
         }
         Returns: string
       }
+      create_lesson_for_user: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+          p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_license?: string
+          p_source_name?: string
+          p_source_url?: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       effective_streak: {
         Args: { w: Database["public"]["Tables"]["wallets"]["Row"] }
         Returns: number
+      }
+      insert_lesson_rows: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+          p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_license: string
+          p_source_name: string
+          p_source_url: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
       }
       is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
       join_battle: {
