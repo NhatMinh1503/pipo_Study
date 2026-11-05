@@ -703,6 +703,53 @@ export type Database = {
           },
         ]
       }
+      reward_claims: {
+        Row: {
+          capped: boolean
+          claim_key: string
+          coins: number
+          created_at: string
+          kind: string
+          lesson_id: string | null
+          points: number
+          source: Database["public"]["Enums"]["lesson_source"]
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          capped?: boolean
+          claim_key: string
+          coins?: number
+          created_at?: string
+          kind: string
+          lesson_id?: string | null
+          points?: number
+          source: Database["public"]["Enums"]["lesson_source"]
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          capped?: boolean
+          claim_key?: string
+          coins?: number
+          created_at?: string
+          kind?: string
+          lesson_id?: string | null
+          points?: number
+          source?: Database["public"]["Enums"]["lesson_source"]
+          user_id?: string
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_claims_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sentences: {
         Row: {
           completed_at: string | null
@@ -982,6 +1029,19 @@ export type Database = {
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      award_lesson_completion: {
+        Args: {
+          p_bonus_xp: number
+          p_coins: number
+          p_lesson_id: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
+      award_sentence_xp: {
+        Args: { p_points: number; p_sentence_id: string; p_user_id: string }
+        Returns: Json
+      }
       battle_heartbeat: { Args: { p_battle_id: string }; Returns: undefined }
       buy_item: { Args: { p_item_id: string }; Returns: number }
       claim_battle_timeout: { Args: { p_battle_id: string }; Returns: boolean }
@@ -1059,6 +1119,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      manual_xp_today: { Args: { p_user_id: string }; Returns: number }
       pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }

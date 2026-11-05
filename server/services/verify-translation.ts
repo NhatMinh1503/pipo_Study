@@ -2,6 +2,8 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import { sentenceXpSchema, type SentenceXp } from "@/lib/schemas/translation";
+import { scoreSentence } from "@/lib/scoring";
 import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { GradeResponse } from "@/server/prompts/grade-translation.v1";
@@ -30,6 +32,8 @@ export interface VerifyTranslationParams {
 export interface VerifyTranslationResult extends GradeResponse {
   attemptId: string;
   sentenceCompleted: boolean;
+  /** XP paid for this sentence; null unless it was unlocked by this attempt. */
+  xp: SentenceXp | null;
 }
 
 /**
@@ -115,10 +119,6 @@ export async function verifyTranslation(
   }
 
   const sentenceCompleted = result.verdict !== "incorrect";
-  // Unlocking a sentence for the first time is study activity: it keeps the streak (§3.5)
-  if (sentenceCompleted && !sentence.completed_at) {
-    followUps.push(adminClient.rpc("record_study_activity", { p_user_id: userId }));
-  }
   if (sentenceCompleted) {
     followUps.push(
       adminClient
@@ -134,6 +134,12 @@ export async function verifyTranslation(
   }
   await Promise.all(followUps);
 
+  // First unlock: pay the sentence (xp-levels §3.1). This also records study activity.
+  const xp =
+    sentenceCompleted && !sentence.completed_at
+      ? await awardSentence(adminClient, userId, sentence.id)
+      : null;
+
   return {
     ...result,
     referenceTranslation: sentenceCompleted
@@ -141,5 +147,31 @@ export async function verifyTranslation(
       : null,
     attemptId: attempt.id,
     sentenceCompleted,
+    xp,
   };
+}
+
+/** Scores the sentence from its stored attempts and lets the database apply cap and idempotency. */
+async function awardSentence(
+  adminClient: Client,
+  userId: string,
+  sentenceId: string,
+): Promise<SentenceXp> {
+  const { data: attempts, error: attemptsError } = await adminClient
+    .from("attempts")
+    .select("verdict")
+    .eq("sentence_id", sentenceId)
+    .eq("user_id", userId)
+    .order("created_at");
+  if (attemptsError) throw new ServiceError("INTERNAL");
+
+  const { points } = scoreSentence({ verdicts: (attempts ?? []).map((row) => row.verdict) });
+  const { data, error } = await adminClient.rpc("award_sentence_xp", {
+    p_user_id: userId,
+    p_sentence_id: sentenceId,
+    p_points: points,
+  });
+  const parsed = sentenceXpSchema.safeParse(data);
+  if (error || !parsed.success) throw new ServiceError("INTERNAL");
+  return parsed.data;
 }

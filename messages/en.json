@@ -285,6 +285,11 @@
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
       "network": "Connection lost. Check your network and try again."
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "Today's XP limit for your own lessons is reached",
+      "streakKept": "Your study streak still counts"
     }
   },
   "result": {
@@ -300,7 +305,9 @@
     "backHome": "Back to dashboard",
     "publish": "Share to community",
     "publishing": "Sharing…",
-    "publishFailed": "Couldn't share it, please try again."
+    "publishFailed": "Couldn't share it, please try again.",
+    "capped": "Today's XP limit for your own lessons is reached, so this lesson has no completion reward",
+    "tooShort": "Lessons need at least 3 sentences for a completion reward"
   },
   "dictionary": {
     "explain": "Explain (AI)",

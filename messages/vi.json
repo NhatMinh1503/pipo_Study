@@ -285,6 +285,11 @@
       "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
       "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
       "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại."
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo",
+      "streakKept": "Bạn vẫn giữ chuỗi ngày học"
     }
   },
   "result": {
@@ -300,7 +305,9 @@
     "backHome": "Về trang tổng quan",
     "publish": "Chia sẻ lên cộng đồng",
     "publishing": "Đang chia sẻ…",
-    "publishFailed": "Chưa chia sẻ được, thử lại nhé."
+    "publishFailed": "Chưa chia sẻ được, thử lại nhé.",
+    "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo nên bài này không có thưởng hoàn thành",
+    "tooShort": "Bài từ 3 câu trở lên mới có thưởng hoàn thành"
   },
   "dictionary": {
     "explain": "Giải thích (AI)",
