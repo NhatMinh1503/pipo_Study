@@ -33,7 +33,8 @@ export const metadata: Metadata = {
   title: { default: "pipo", template: "%s · pipo" },
   description: "Học ngoại ngữ qua dịch thuật ngữ cảnh, SRS và AI.",
   appleWebApp: { capable: true, title: "pipo", statusBarStyle: "default" },
-  icons: { apple: "/icons/apple-touch-icon.png" },
+  // Declaring icons here replaces the app/icon.png convention, so the favicon is listed too
+  icons: { icon: "/icon.png", apple: "/icons/apple-touch-icon.png" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
