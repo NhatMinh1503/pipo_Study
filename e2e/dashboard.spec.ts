@@ -11,6 +11,11 @@ test.describe("dashboard", () => {
     await expect(stats).toContainText("120");
     await expect(stats).toContainText("35");
     await expect(stats).toContainText("Kỷ lục: 5 ngày");
+    // Seeded 120 XP is Lv2 (50 XP), 70 of the 90 XP needed for Lv3 (xp-levels §4.3)
+    await expect(
+      stats.getByRole("progressbar", { name: "Cấp 2: 70/90 XP tới mốc tiếp theo" }),
+    ).toBeVisible();
+    await expect(stats).toContainText("Lv2");
 
     await expect(page.getByText("3 thẻ đang chờ bạn")).toBeVisible();
     await expect(page.getByRole("link", { name: /スーパーで買い物/ })).toBeVisible();

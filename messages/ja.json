@@ -750,5 +750,13 @@
     "description": "このページには接続が必要です。以前に開いたノートと復習はオフラインでも使えます。",
     "review": "復習",
     "notebook": "ノート"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "レベル{level}：次の目標まで {into}/{next} XP"
+    }
   }
 }

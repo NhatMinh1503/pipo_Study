@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/common/page-header";
 import { StatCard } from "@/components/common/stat-card";
+import { LevelProgress } from "@/components/game/level-progress";
 import { avatarUrl as toAvatarUrl } from "@/lib/avatar";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
@@ -23,7 +24,7 @@ export async function ProfileContent() {
     await createClient()
   )
     .from("wallet_summaries")
-    .select("xp, coins, effective_streak, streak_best")
+    .select("xp, coins, effective_streak, streak_best, level, stars, xp_into_level, xp_to_next")
     .maybeSingle();
 
   const avatarUrl = toAvatarUrl(profile.avatar_path);
@@ -38,7 +39,19 @@ export async function ProfileContent() {
       <section aria-label={t("statsLabel")} className="space-y-3">
         <h2 className="mono-label">{t("statsLabel")}</h2>
         <div className="sheet-flat grid grid-cols-2 divide-x divide-y divide-dashed divide-border/30 sm:grid-cols-4">
-          <StatCard label="XP" value={wallet?.xp ?? 0} icon={Sparkles} />
+          <StatCard
+            label="XP"
+            value={wallet?.xp ?? 0}
+            icon={Sparkles}
+            footer={
+              <LevelProgress
+                level={wallet?.level ?? 1}
+                stars={wallet?.stars ?? 0}
+                xpIntoLevel={wallet?.xp_into_level ?? 0}
+                xpToNext={wallet?.xp_to_next ?? 50}
+              />
+            }
+          />
           <StatCard label="Coins" value={wallet?.coins ?? 0} icon={Coins} />
           <StatCard
             label={t("streak")}

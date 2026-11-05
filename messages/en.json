@@ -750,5 +750,13 @@
     "description": "This page needs a connection. Notebook and Review still open if you've visited them before.",
     "review": "Review",
     "notebook": "Notebook"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "Level {level}: {into}/{next} XP to the next milestone"
+    }
   }
 }

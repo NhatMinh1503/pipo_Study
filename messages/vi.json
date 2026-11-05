@@ -750,5 +750,13 @@
     "description": "Trang này cần kết nối mạng. Sổ tay và Ôn tập vẫn mở được nếu bạn đã mở chúng trước đó.",
     "review": "Ôn tập",
     "notebook": "Sổ tay"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "Cấp {level}: {into}/{next} XP tới mốc tiếp theo"
+    }
   }
 }

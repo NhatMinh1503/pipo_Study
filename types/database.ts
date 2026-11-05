@@ -947,23 +947,35 @@ export type Database = {
         Row: {
           coins: number | null
           effective_streak: number | null
+          level: number | null
+          stars: number | null
           streak_best: number | null
           user_id: string | null
           xp: number | null
+          xp_into_level: number | null
+          xp_to_next: number | null
         }
         Insert: {
           coins?: number | null
           effective_streak?: never
+          level?: never
+          stars?: never
           streak_best?: number | null
           user_id?: string | null
           xp?: number | null
+          xp_into_level?: never
+          xp_to_next?: never
         }
         Update: {
           coins?: number | null
           effective_streak?: never
+          level?: never
+          stars?: never
           streak_best?: number | null
           user_id?: string | null
           xp?: number | null
+          xp_into_level?: never
+          xp_to_next?: never
         }
         Relationships: []
       }
@@ -1039,6 +1051,7 @@ export type Database = {
         }[]
       }
       leave_battle: { Args: { p_battle_id: string }; Returns: undefined }
+      level_for_xp: { Args: { p_xp: number }; Returns: number }
       level_matches_language: {
         Args: {
           lang: Database["public"]["Enums"]["learning_language"]
@@ -1051,6 +1064,7 @@ export type Database = {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
+      stars_for_xp: { Args: { p_xp: number }; Returns: number }
       start_pomodoro: {
         Args: { p_planned_minutes?: number }
         Returns: {
@@ -1080,6 +1094,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      xp_into_level: { Args: { p_xp: number }; Returns: number }
+      xp_to_next_level: { Args: { p_xp: number }; Returns: number }
+      xp_to_reach: { Args: { p_level: number }; Returns: number }
     }
     Enums: {
       battle_status:
