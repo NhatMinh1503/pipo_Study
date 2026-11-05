@@ -1,3 +1,4 @@
+import { GAME } from "@/lib/game/config";
 import type { Verdict } from "@/lib/schemas/translation";
 
 export interface SentenceAttempts {
@@ -23,10 +24,10 @@ export interface LessonScore {
   perfect: boolean;
 }
 
-export const POINTS = { exact: 10, acceptable: 7 } as const;
-const RETRY_PENALTY = 2;
-const MIN_POINTS = 2;
-const PERFECT_BONUS_COINS = 3;
+export const POINTS = GAME.translation.points;
+const RETRY_PENALTY = GAME.translation.retryPenalty;
+const MIN_POINTS = GAME.translation.minPoints;
+const PERFECT_BONUS_COINS = GAME.translation.perfectBonusCoins;
 
 /**
  * Points for one sentence: 10 for exact, 7 for acceptable, minus 2 for every failed

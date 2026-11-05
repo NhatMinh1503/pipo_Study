@@ -1,7 +1,8 @@
 import { dayKey } from "@/lib/dashboard/days";
+import { GAME } from "@/lib/game/config";
 
 /** XP for one rewarded review. Mirrors the value in the review action's wallet call. */
-export const REVIEW_XP = 1;
+export const REVIEW_XP = GAME.review.xp;
 
 /**
  * Only a review of a card that was already due earns XP. Re-rating a card early
