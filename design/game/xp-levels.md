@@ -101,6 +101,7 @@ Hệ quả: lưu thêm từ sau khi đã nhận bonus không làm mất bonus; n
 6. **Coins của bài tự tạo cũng dừng khi đã chạm giới hạn [Chốt — Q-A]:** khi một bài `manual` hoàn thành mà **bonus hoàn thành không được trả đủ** (giới hạn 300 đã đầy trước hoặc trong lúc trả bonus), bài đó **không có Coins**. Màn kết quả ghi rõ: **"Đã đạt giới hạn XP hôm nay cho bài tự tạo nên bài này không có thưởng hoàn thành"**.
 7. **Bài AI nằm ngoài giới hạn [Chốt — Q-B]:** micro-lesson và bài AI theo chủ đề (`source = 'ai'`) không bị giới hạn, vì rate limit AI (150 lượt/ngày) đã chặn gián tiếp.
 8. ⚠️ **Điều kiện tiên quyết bảo mật:** `source` phải do server quyết định. Xem §9 và task T0.
+9. **Bài tin tức đã sửa là bài tự tạo [Chốt — 2026-11-05]:** khi tạo bài từ tin tức, server so đoạn văn gửi lên với bản viết lại trong `news_rewrites` (cùng URL, trình độ, phiên bản prompt). **Giống hệt** (sau khi chuẩn hoá xuống dòng và khoảng trắng đầu/cuối) → `source = 'news'`. **Đã sửa** hoặc không có bản cache → `source = 'manual'` (tính vào giới hạn 300), **vẫn giữ dòng ghi nguồn** (giấy phép yêu cầu ghi nguồn và ghi chú "đã biên tập").
 
 ### 3.7 Pomodoro **[Chốt]**
 
@@ -426,43 +427,45 @@ Mọi giá trị nằm ở **một module config** phía TypeScript (`lib/game/c
 
 ### 12.3 Bảng test case
 
-| #   | Lớp        | Kịch bản                                                     | Kỳ vọng                                         |
-| --- | ---------- | ------------------------------------------------------------ | ----------------------------------------------- |
-| 1   | unit       | `scoreSentence` không đổi (test cũ)                          | Pass nguyên trạng                               |
-| 2   | unit       | `lessonRewards(n=2/3, P, perfect)`                           | n=2 → 0/0; n=3 → 5 XP + Coins                   |
-| 3   | pgTAP      | `level_for_xp` tại 0, 49, 50, 439, 440, 49.489, 49.490, 10⁹  | 1, 1, 2, 4, 5, 49, 50, 50                       |
-| 4   | pgTAP      | `stars_for_xp` tại 49.489, 49.490, 51.489, 51.490            | 0, 0, 0, 1                                      |
-| 5   | pgTAP      | `award_sentence_xp` 2 lần cùng câu                           | Lần 2 không cộng                                |
-| 6   | pgTAP      | Bài `manual`, XP hôm nay 296, câu 10 điểm                    | awarded = 4, capped = true; câu tiếp: 0, capped |
-| 7   | pgTAP      | Bài `ai`, XP `manual` hôm nay đã 300                         | Trả đủ điểm                                     |
-| 7b  | pgTAP      | Bài `manual` ≥ 3 câu hoàn thành khi giới hạn đã đầy          | bonus = 0, Coins = 0, capped = true             |
-| 8   | pgTAP      | Hai câu `manual` đồng thời quanh mốc 300                     | Tổng không vượt 300                             |
-| 9   | pgTAP      | Câu bị capped → streak                                       | Streak vẫn tăng (hoạt động học)                 |
-| 10  | pgTAP      | Pomodoro hoàn thành                                          | xp_delta = 0, streak không đổi, Coins đúng      |
-| 11  | pgTAP      | Cộng XP vượt Lv4 → Lv6                                       | 1 dòng `level_ups` (4 → 6)                      |
-| 12  | pgTAP      | Cộng XP không vượt mốc                                       | 0 dòng `level_ups`                              |
-| 13  | pgTAP      | User B đọc / đánh dấu `level_ups` của A                      | Không thấy / không đổi                          |
-| 14  | pgTAP      | Migration trên ví có sẵn XP                                  | 0 dòng `level_ups`                              |
-| 15  | pgTAP      | `authenticated` gọi `create_lesson(p_source => 'ai')`        | Bị từ chối (T0)                                 |
-| 16  | pgTAP      | `authenticated` INSERT vào `sentences` của bài có sẵn        | Bị từ chối (T0)                                 |
-| 17  | unit/route | Ôn thẻ mới lần đầu                                           | 0 XP, không gọi hoạt động học                   |
-| 18  | unit/route | Ôn thẻ thứ 5 có thưởng, hàng đợi rỗng                        | +1 và +5 (key `review_clear:<ngày>`)            |
-| 19  | unit/route | Hàng đợi rỗng nhưng mới 4 lượt có thưởng                     | Không bonus                                     |
-| 20  | route      | `verify` trả về `xpAwarded`, `capped` cho UI                 | Đúng giá trị từ server                          |
-| 21  | E2E        | Dịch 1 câu → Dashboard XP tăng                               | Pass (lỗi #1)                                   |
-| 22  | E2E        | Bài `manual` chạm giới hạn → thấy thông báo                  | Có đúng câu chữ, câu vẫn mở khoá                |
-| 23  | E2E        | Lên cấp → thông báo hiện 1 lần, tải lại trang không hiện lại | Pass                                            |
+| #   | Lớp         | Kịch bản                                                     | Kỳ vọng                                         |
+| --- | ----------- | ------------------------------------------------------------ | ----------------------------------------------- |
+| 1   | unit        | `scoreSentence` không đổi (test cũ)                          | Pass nguyên trạng                               |
+| 2   | unit        | `lessonRewards(n=2/3, P, perfect)`                           | n=2 → 0/0; n=3 → 5 XP + Coins                   |
+| 3   | pgTAP       | `level_for_xp` tại 0, 49, 50, 439, 440, 49.489, 49.490, 10⁹  | 1, 1, 2, 4, 5, 49, 50, 50                       |
+| 4   | pgTAP       | `stars_for_xp` tại 49.489, 49.490, 51.489, 51.490            | 0, 0, 0, 1                                      |
+| 5   | pgTAP       | `award_sentence_xp` 2 lần cùng câu                           | Lần 2 không cộng                                |
+| 6   | pgTAP       | Bài `manual`, XP hôm nay 296, câu 10 điểm                    | awarded = 4, capped = true; câu tiếp: 0, capped |
+| 7   | pgTAP       | Bài `ai`, XP `manual` hôm nay đã 300                         | Trả đủ điểm                                     |
+| 7b  | pgTAP       | Bài `manual` ≥ 3 câu hoàn thành khi giới hạn đã đầy          | bonus = 0, Coins = 0, capped = true             |
+| 8   | pgTAP       | Hai câu `manual` đồng thời quanh mốc 300                     | Tổng không vượt 300                             |
+| 9   | pgTAP       | Câu bị capped → streak                                       | Streak vẫn tăng (hoạt động học)                 |
+| 10  | pgTAP       | Pomodoro hoàn thành                                          | xp_delta = 0, streak không đổi, Coins đúng      |
+| 11  | pgTAP       | Cộng XP vượt Lv4 → Lv6                                       | 1 dòng `level_ups` (4 → 6)                      |
+| 12  | pgTAP       | Cộng XP không vượt mốc                                       | 0 dòng `level_ups`                              |
+| 13  | pgTAP       | User B đọc / đánh dấu `level_ups` của A                      | Không thấy / không đổi                          |
+| 14  | pgTAP       | Migration trên ví có sẵn XP                                  | 0 dòng `level_ups`                              |
+| 15  | pgTAP       | `authenticated` gọi `create_lesson(p_source => 'ai')`        | Bị từ chối (T0)                                 |
+| 16  | pgTAP       | `authenticated` INSERT vào `sentences` của bài có sẵn        | Bị từ chối (T0)                                 |
+| 16b | integration | Tạo bài tin tức với đoạn văn **giống hệt** bản cache         | `source = 'news'`, có ghi nguồn                 |
+| 16c | integration | Tạo bài tin tức với đoạn văn **đã sửa**                      | `source = 'manual'`, vẫn có ghi nguồn           |
+| 17  | unit/route  | Ôn thẻ mới lần đầu                                           | 0 XP, không gọi hoạt động học                   |
+| 18  | unit/route  | Ôn thẻ thứ 5 có thưởng, hàng đợi rỗng                        | +1 và +5 (key `review_clear:<ngày>`)            |
+| 19  | unit/route  | Hàng đợi rỗng nhưng mới 4 lượt có thưởng                     | Không bonus                                     |
+| 20  | route       | `verify` trả về `xpAwarded`, `capped` cho UI                 | Đúng giá trị từ server                          |
+| 21  | E2E         | Dịch 1 câu → Dashboard XP tăng                               | Pass (lỗi #1)                                   |
+| 22  | E2E         | Bài `manual` chạm giới hạn → thấy thông báo                  | Có đúng câu chữ, câu vẫn mở khoá                |
+| 23  | E2E         | Lên cấp → thông báo hiện 1 lần, tải lại trang không hiện lại | Pass                                            |
 
 ### 12.4 Thứ tự task (mỗi task giao được độc lập)
 
-| Task | Nội dung                                                                                                                                             | Phụ thuộc  |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| T0   | Khoá `lessons.source`: `create_lesson` chỉ `manual` cho client, bài `ai`/`news` tạo bằng service role; thu hồi INSERT trực tiếp                      | —          |
-| T1   | Module config `lib/game/config.ts` + gom các con số hiện có (không đổi hành vi)                                                                      | —          |
-| T2   | Hàm level/sao trong SQL + mở rộng `wallet_summaries` + hiển thị Lv ở Dashboard/Hồ sơ                                                                 | T1         |
-| T3   | `record_study_activity` + bỏ streak theo `xp_delta` + Pomodoro 0 XP                                                                                  | —          |
-| T4   | XP theo câu (`award_sentence_xp`, key `sentence:<id>`), giới hạn 300, chip XP + thông báo giới hạn; `completeLesson` chỉ còn bonus + Coins (≥ 3 câu) | T0, T1, T3 |
-| T5   | Ôn thẻ: điều kiện "đã ôn trước đó" + bonus hết hàng đợi                                                                                              | T1, T3     |
-| T6   | `level_ups` + phát hiện trong `wallet_apply` + RPC đánh dấu đã xem + thông báo đơn giản (chưa hoạt hình)                                             | T2         |
+| Task | Nội dung                                                                                                                                                                    | Phụ thuộc  |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| T0   | Khoá `lessons.source`: `create_lesson` chỉ `manual` cho client, bài `ai`/`news` tạo bằng service role; thu hồi INSERT trực tiếp; bài tin tức đã sửa → `manual` (§3.6 mục 9) | —          |
+| T1   | Module config `lib/game/config.ts` + gom các con số hiện có (không đổi hành vi)                                                                                             | —          |
+| T2   | Hàm level/sao trong SQL + mở rộng `wallet_summaries` + hiển thị Lv ở Dashboard/Hồ sơ                                                                                        | T1         |
+| T3   | `record_study_activity` + bỏ streak theo `xp_delta` + Pomodoro 0 XP                                                                                                         | —          |
+| T4   | XP theo câu (`award_sentence_xp`, key `sentence:<id>`), giới hạn 300, chip XP + thông báo giới hạn; `completeLesson` chỉ còn bonus + Coins (≥ 3 câu)                        | T0, T1, T3 |
+| T5   | Ôn thẻ: điều kiện "đã ôn trước đó" + bonus hết hàng đợi                                                                                                                     | T1, T3     |
+| T6   | `level_ups` + phát hiện trong `wallet_apply` + RPC đánh dấu đã xem + thông báo đơn giản (chưa hoạt hình)                                                                    | T2         |
 
 Thứ tự deploy cho mỗi task có migration: `supabase db push` lên production trước, rồi mới merge PR (như hotfix).
