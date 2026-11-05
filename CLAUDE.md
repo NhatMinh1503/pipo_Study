@@ -84,3 +84,25 @@ npm run test:e2e                        # Playwright: server riêng port 3100, A
 npm run docker:up                       # Bản production trong Docker (localhost:3000), nối Supabase local qua host.docker.internal
 npm run icons                           # Sinh lại icon PWA + favicon từ public/icons/icon-source.png
 ```
+
+## Game design team (append this section to the existing CLAUDE.md)
+
+This repo has a game-design team for the gamification layer, adapted from
+Claude Code Game Studios (MIT).
+
+- Pillars, risks, ethics and the collaboration protocol:
+  `.claude/docs/game-pillars.md` — read before any game-layer work.
+- Registry of approved currencies, constants and formulas:
+  `design/game/registry.md`. Never hardcode a game number that is not there;
+  game numbers live in one config module, computed server-side.
+- Specs: `design/game/<system>.md` (write with `/game-spec`).
+- Agents: `game-designer`, `systems-designer`, `economy-designer`,
+  `live-ops-designer`, `ux-designer`, `accessibility-specialist`. They design and
+  review; they do not edit application code.
+- Skills: `/game-spec <system>`, `/balance-check <domain>`, `/ux-review <target>`.
+
+Workflow for a new game feature:
+
+1. `/game-spec <system>` → approved spec + registry entries
+2. Implement one task per session, following the spec
+3. `/balance-check <domain>` and `/ux-review <route>` before shipping
