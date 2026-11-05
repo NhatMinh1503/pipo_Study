@@ -715,7 +715,8 @@
       "draw": "Draw",
       "waiting": "Waiting for opponent",
       "active": "In progress",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "abandoned": "Abandoned"
     },
     "notFound": "Battle not found",
     "backToLobby": "Back to lobby",
@@ -738,7 +739,11 @@
     "submit": "Submit",
     "grading": "Grading…",
     "gradeFailed": "Couldn't grade this one, please submit again.",
-    "waitingOpponentFinish": "You're done! Waiting for your opponent to finish…"
+    "waitingOpponentFinish": "You're done! Waiting for your opponent to finish…",
+    "absenceRule": "Leaving the app for more than 90 seconds counts as a forfeit.",
+    "opponentAbsent": "Your opponent has lost connection. If they stay away for more than 90 seconds, you win.",
+    "abandoned": "This battle ended because both players were away",
+    "abandonedHint": "Nobody wins this battle."
   },
   "offline": {
     "title": "You're offline",

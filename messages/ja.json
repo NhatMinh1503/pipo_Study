@@ -715,7 +715,8 @@
       "draw": "引き分け",
       "waiting": "相手を待っています",
       "active": "対戦中",
-      "cancelled": "キャンセル"
+      "cancelled": "キャンセル",
+      "abandoned": "放棄"
     },
     "notFound": "バトルが見つかりません",
     "backToLobby": "ロビーに戻る",
@@ -738,7 +739,11 @@
     "submit": "提出",
     "grading": "採点中…",
     "gradeFailed": "採点できませんでした。もう一度提出してください。",
-    "waitingOpponentFinish": "完了しました！相手が終わるのを待っています…"
+    "waitingOpponentFinish": "完了しました！相手が終わるのを待っています…",
+    "absenceRule": "アプリを90秒以上離れると不戦敗になります。",
+    "opponentAbsent": "相手の接続が切れています。90秒以上戻らない場合、あなたの勝ちになります。",
+    "abandoned": "両方のプレイヤーが不在のため、対戦は終了しました",
+    "abandonedHint": "この対戦に勝者はいません。"
   },
   "offline": {
     "title": "オフラインです",

@@ -47,10 +47,13 @@ export function BattleRoom({ battleId, userId }: BattleRoomProps) {
 
   if (state.status === "finished") return <BattleResult state={state} userId={userId} />;
 
-  if (state.status === "cancelled") {
+  if (state.status === "cancelled" || state.status === "abandoned") {
     return (
       <div className="space-y-4">
-        <PageHeader title={t("cancelled")} />
+        <PageHeader
+          title={state.status === "abandoned" ? t("abandoned") : t("cancelled")}
+          description={state.status === "abandoned" ? t("abandonedHint") : undefined}
+        />
         <Button asChild>
           <Link href="/battle">{t("backToLobby")}</Link>
         </Button>
@@ -92,6 +95,14 @@ export function BattleRoom({ battleId, userId }: BattleRoomProps) {
           </ConfirmDialog>
         }
       />
+      <p className="mono-label" role="note">
+        {t("absenceRule")}
+      </p>
+      {room.opponentAbsent && (
+        <p className="sheet-flat bg-tint-sand p-3 text-sm" role="status">
+          {t("opponentAbsent")}
+        </p>
+      )}
       <Scoreboard
         me={me}
         opponent={room.opponent}
