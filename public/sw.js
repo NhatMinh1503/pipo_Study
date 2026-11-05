@@ -2,7 +2,7 @@
 // Notebook and Review stay readable offline: their pages are cached network-first, and the
 // build's static assets cache-first. Everything else goes to the network and falls back to
 // /offline. Bump VERSION to drop old caches after changing this file.
-const VERSION = "v1";
+const VERSION = "v2";
 const STATIC_CACHE = `pipo-static-${VERSION}`;
 // Must match PAGE_CACHE in lib/pwa/constants.ts (cleared on the login page)
 const PAGE_CACHE = "pipo-pages";
