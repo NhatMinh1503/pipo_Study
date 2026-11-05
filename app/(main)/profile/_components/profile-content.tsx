@@ -22,8 +22,8 @@ export async function ProfileContent() {
   const { data: wallet } = await (
     await createClient()
   )
-    .from("wallets")
-    .select("xp, coins, streak_current, streak_best")
+    .from("wallet_summaries")
+    .select("xp, coins, effective_streak, streak_best")
     .maybeSingle();
 
   const avatarUrl = toAvatarUrl(profile.avatar_path);
@@ -42,7 +42,7 @@ export async function ProfileContent() {
           <StatCard label="Coins" value={wallet?.coins ?? 0} icon={Coins} />
           <StatCard
             label={t("streak")}
-            value={wallet?.streak_current ?? 0}
+            value={wallet?.effective_streak ?? 0}
             icon={Flame}
             hint={t("best", { count: wallet?.streak_best ?? 0 })}
           />

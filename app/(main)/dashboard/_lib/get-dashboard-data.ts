@@ -59,7 +59,10 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   const [wallet, due, inProgress, xpRows, lessonsDone, focus, reviewed, words, errors] =
     await Promise.all([
-      supabase.from("wallets").select("xp, coins, streak_current, streak_best").maybeSingle(),
+      supabase
+        .from("wallet_summaries")
+        .select("xp, coins, effective_streak, streak_best")
+        .maybeSingle(),
       supabase
         .from("flashcards")
         .select("id", { count: "exact", head: true })
@@ -92,7 +95,8 @@ export async function getDashboardData(): Promise<DashboardData> {
   return {
     xp: wallet.data?.xp ?? 0,
     coins: wallet.data?.coins ?? 0,
-    streakCurrent: wallet.data?.streak_current ?? 0,
+    // effective_streak (SQL) is the single source: a broken streak reads as 0
+    streakCurrent: wallet.data?.effective_streak ?? 0,
     streakBest: wallet.data?.streak_best ?? 0,
     dueCards: due.count ?? 0,
     inProgress,

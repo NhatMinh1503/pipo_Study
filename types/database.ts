@@ -142,6 +142,7 @@ export type Database = {
           answered: number
           battle_id: string
           finished_at: string | null
+          last_seen_at: string
           score: number
           user_id: string
         }
@@ -149,6 +150,7 @@ export type Database = {
           answered?: number
           battle_id: string
           finished_at?: string | null
+          last_seen_at?: string
           score?: number
           user_id: string
         }
@@ -156,6 +158,7 @@ export type Database = {
           answered?: number
           battle_id?: string
           finished_at?: string | null
+          last_seen_at?: string
           score?: number
           user_id?: string
         }
@@ -940,10 +943,37 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_summaries: {
+        Row: {
+          coins: number | null
+          effective_streak: number | null
+          streak_best: number | null
+          user_id: string | null
+          xp: number | null
+        }
+        Insert: {
+          coins?: number | null
+          effective_streak?: never
+          streak_best?: number | null
+          user_id?: string | null
+          xp?: number | null
+        }
+        Update: {
+          coins?: number | null
+          effective_streak?: never
+          streak_best?: number | null
+          user_id?: string | null
+          xp?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      battle_heartbeat: { Args: { p_battle_id: string }; Returns: undefined }
       buy_item: { Args: { p_item_id: string }; Returns: number }
+      claim_battle_timeout: { Args: { p_battle_id: string }; Returns: boolean }
+      close_abandoned_battles: { Args: never; Returns: number }
       complete_pomodoro: { Args: { p_session_id: string }; Returns: number }
       create_lesson: {
         Args: {
@@ -957,6 +987,10 @@ export type Database = {
           p_title: string
         }
         Returns: string
+      }
+      effective_streak: {
+        Args: { w: Database["public"]["Tables"]["wallets"]["Row"] }
+        Returns: number
       }
       is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
       join_battle: {
@@ -1021,7 +1055,12 @@ export type Database = {
       }
     }
     Enums: {
-      battle_status: "waiting" | "active" | "finished" | "cancelled"
+      battle_status:
+        | "waiting"
+        | "active"
+        | "finished"
+        | "cancelled"
+        | "abandoned"
       display_language: "vi" | "en" | "ja"
       learning_language: "ja" | "en"
       lesson_source: "manual" | "ai" | "news"
@@ -1170,7 +1209,13 @@ export const Constants = {
   },
   public: {
     Enums: {
-      battle_status: ["waiting", "active", "finished", "cancelled"],
+      battle_status: [
+        "waiting",
+        "active",
+        "finished",
+        "cancelled",
+        "abandoned",
+      ],
       display_language: ["vi", "en", "ja"],
       learning_language: ["ja", "en"],
       lesson_source: ["manual", "ai", "news"],
