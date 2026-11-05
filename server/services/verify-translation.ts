@@ -115,6 +115,10 @@ export async function verifyTranslation(
   }
 
   const sentenceCompleted = result.verdict !== "incorrect";
+  // Unlocking a sentence for the first time is study activity: it keeps the streak (§3.5)
+  if (sentenceCompleted && !sentence.completed_at) {
+    followUps.push(adminClient.rpc("record_study_activity", { p_user_id: userId }));
+  }
   if (sentenceCompleted) {
     followUps.push(
       adminClient

@@ -1064,6 +1064,7 @@ export type Database = {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
+      record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
       start_pomodoro: {
         Args: { p_planned_minutes?: number }

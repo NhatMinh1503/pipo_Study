@@ -41,7 +41,7 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
       p_title: "verify-translation int test",
       p_language: "ja",
       p_level: "N5",
-      p_sentences: ["猫が寝ています。", "犬が走っています。"],
+      p_sentences: ["猫が寝ています。", "犬が走っています。", "鳥が歌っています。"],
     });
     if (error || !data) throw error ?? new Error("lesson not created");
     lessonId = data;
@@ -116,6 +116,43 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
       .eq("id", sentenceIds[1] ?? "")
       .single();
     expect(sentence?.completed_at).toBeNull();
+  });
+
+  it("counts a newly unlocked sentence as study activity (streak), not a wrong attempt", async () => {
+    const { data: before } = await admin
+      .from("wallets")
+      .select("streak_current, streak_best, last_active_date")
+      .eq("user_id", demo.userId)
+      .single();
+    if (!before) throw new Error("wallet missing");
+    // Pretend the streak broke three days ago
+    await admin
+      .from("wallets")
+      .update({ streak_current: 4, last_active_date: "2000-01-01" })
+      .eq("user_id", demo.userId);
+
+    try {
+      await verifyTranslation(
+        params({ sentenceId: sentenceIds[2] ?? "", userTranslation: "Sai.", grade: wrong }),
+      );
+      const afterWrong = await admin
+        .from("wallets")
+        .select("last_active_date")
+        .eq("user_id", demo.userId)
+        .single();
+      expect(afterWrong.data?.last_active_date).toBe("2000-01-01");
+
+      await verifyTranslation(params({ sentenceId: sentenceIds[2] ?? "" }));
+      const afterPass = await admin
+        .from("wallets")
+        .select("streak_current, last_active_date")
+        .eq("user_id", demo.userId)
+        .single();
+      expect(afterPass.data?.streak_current).toBe(1);
+      expect(afterPass.data?.last_active_date).not.toBe("2000-01-01");
+    } finally {
+      await admin.from("wallets").update(before).eq("user_id", demo.userId);
+    }
   });
 
   it("hides other users' sentences as NOT_FOUND", async () => {

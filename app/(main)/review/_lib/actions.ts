@@ -4,12 +4,12 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import type { ActionResult } from "@/lib/action-result";
-import { isReviewRewardable, REVIEW_XP, reviewRewardKey } from "@/lib/review/reward";
 import { ratingSchema, scheduleReview } from "@/lib/srs/schedule";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
 import { logger } from "@/server/logger";
 import { getCurrentProfile } from "@/server/profile";
+import { rewardReview } from "@/server/services/review-reward";
 import { createAdminClient } from "@/server/supabase-admin";
 
 const reviewSchema = z.object({ cardId: z.uuid(), rating: ratingSchema });
@@ -66,18 +66,16 @@ export async function reviewFlashcard(input: unknown): Promise<ActionResult> {
     return { ok: false, error: "errors.unexpected" };
   }
 
-  // A due card pays once per local day; this also counts as studying today (streak).
-  // The profile time zone is the same one wallet_apply uses for the streak day.
-  if (isReviewRewardable(card.due_date, now)) {
-    const profile = await getCurrentProfile();
-    await createAdminClient().rpc("wallet_apply", {
-      p_user_id: user.id,
-      p_xp_delta: REVIEW_XP,
-      p_coins_delta: 0,
-      p_reason: "flashcard_review",
-      p_idempotency_key: reviewRewardKey(card.id, now, profile?.timezone ?? "UTC"),
-    });
-  }
+  // A due card pays once per local day and keeps the streak. The profile time zone is the
+  // same one the streak uses.
+  const profile = await getCurrentProfile();
+  await rewardReview({
+    adminClient: createAdminClient(),
+    userId: user.id,
+    card: { id: card.id, dueDate: card.due_date },
+    now,
+    timeZone: profile?.timezone ?? "UTC",
+  });
 
   revalidatePath("/dashboard");
   return { ok: true };
