@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { LevelUpNotifier } from "@/components/game/level-up-notifier";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { QueryProvider } from "@/components/layout/query-provider";
@@ -38,6 +39,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
         <MobileNav />
+        <LevelUpNotifier />
       </div>
     </QueryProvider>
   );

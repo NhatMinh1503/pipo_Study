@@ -765,6 +765,16 @@
       "stars": "{count} ★",
       "progress": "{into}/{next} XP",
       "label": "レベル{level}：次の目標まで {into}/{next} XP"
+    },
+    "levelUp": {
+      "level": "Lv{level}に到達！",
+      "star": "継続スター ★ {stars}個目！",
+      "source": {
+        "sentence_passed": "今訳した文で新しい目標に到達しました。",
+        "lesson_bonus": "レッスン完了ボーナスで新しい目標に到達しました。",
+        "flashcard_review": "今の復習で新しい目標に到達しました。",
+        "review_clear": "今日の復習を終えて新しい目標に到達しました。"
+      }
     }
   }
 }

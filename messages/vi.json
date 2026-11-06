@@ -765,6 +765,16 @@
       "stars": "{count} ★",
       "progress": "{into}/{next} XP",
       "label": "Cấp {level}: {into}/{next} XP tới mốc tiếp theo"
+    },
+    "levelUp": {
+      "level": "Lên Lv{level}!",
+      "star": "Sao bền bỉ ★ thứ {stars}!",
+      "source": {
+        "sentence_passed": "Câu dịch vừa rồi đã giúp bạn lên mốc mới.",
+        "lesson_bonus": "Thưởng hoàn thành bài đã giúp bạn lên mốc mới.",
+        "flashcard_review": "Lượt ôn thẻ vừa rồi đã giúp bạn lên mốc mới.",
+        "review_clear": "Ôn hết thẻ hôm nay đã giúp bạn lên mốc mới."
+      }
     }
   }
 }

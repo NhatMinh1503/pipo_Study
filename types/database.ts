@@ -450,6 +450,57 @@ export type Database = {
         }
         Relationships: []
       }
+      level_ups: {
+        Row: {
+          created_at: string
+          from_level: number
+          from_stars: number
+          id: string
+          idempotency_key: string
+          kind: string
+          seen_at: string | null
+          source_reason: string
+          to_level: number
+          to_stars: number
+          user_id: string
+          xp_into_level: number
+          xp_to_next: number
+          xp_total: number
+        }
+        Insert: {
+          created_at?: string
+          from_level: number
+          from_stars: number
+          id?: string
+          idempotency_key: string
+          kind: string
+          seen_at?: string | null
+          source_reason: string
+          to_level: number
+          to_stars: number
+          user_id: string
+          xp_into_level: number
+          xp_to_next: number
+          xp_total: number
+        }
+        Update: {
+          created_at?: string
+          from_level?: number
+          from_stars?: number
+          id?: string
+          idempotency_key?: string
+          kind?: string
+          seen_at?: string | null
+          source_reason?: string
+          to_level?: number
+          to_stars?: number
+          user_id?: string
+          xp_into_level?: number
+          xp_to_next?: number
+          xp_total?: number
+        }
+        Relationships: []
+      }
       likes: {
         Row: {
           created_at: string
@@ -1121,6 +1172,7 @@ export type Database = {
         Returns: boolean
       }
       manual_xp_today: { Args: { p_user_id: string }; Returns: number }
+      mark_level_ups_seen: { Args: { p_ids: string[] }; Returns: number }
       pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }

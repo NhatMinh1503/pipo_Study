@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { markManualXpEarnedToday } from "./helpers/admin";
+import { grantXp, markManualXpEarnedToday } from "./helpers/admin";
 import { createOnboardedUser } from "./helpers/auth";
 
 // The E2E server uses the fake grader: an answer containing "sai" is incorrect,
@@ -112,5 +112,23 @@ test.describe("translate flow", () => {
     await expect(
       page.getByRole("progressbar", { name: "Cấp 1: 0/50 XP tới mốc tiếp theo" }),
     ).toBeVisible();
+  });
+
+  // xp-levels test case #23: the level-up moment shows once, then never again
+  test("crossing a level shows one level-up notice that does not come back", async ({
+    page,
+  }, testInfo) => {
+    const email = await createOnboardedUser(page, testInfo);
+    await grantXp(email, 45); // 5 XP short of Lv2
+    await createLesson(page, "Lên cấp", "一。二。三。");
+
+    await answerBox(page).fill("Một.");
+    await answerBox(page).press("Enter");
+    await expect(page.getByText("Lên Lv2!")).toBeVisible();
+    await expect(page.getByText("Câu dịch vừa rồi đã giúp bạn lên mốc mới.")).toBeVisible();
+
+    await page.reload();
+    await expect(page.getByText("1/3 câu")).toBeVisible();
+    await expect(page.getByText("Lên Lv2!")).toHaveCount(0);
   });
 });

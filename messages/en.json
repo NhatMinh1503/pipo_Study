@@ -765,6 +765,16 @@
       "stars": "{count} ★",
       "progress": "{into}/{next} XP",
       "label": "Level {level}: {into}/{next} XP to the next milestone"
+    },
+    "levelUp": {
+      "level": "Level {level}!",
+      "star": "Endurance star ★ #{stars}!",
+      "source": {
+        "sentence_passed": "The sentence you just translated took you to a new milestone.",
+        "lesson_bonus": "Your lesson completion bonus took you to a new milestone.",
+        "flashcard_review": "The review you just did took you to a new milestone.",
+        "review_clear": "Clearing today's reviews took you to a new milestone."
+      }
     }
   }
 }
