@@ -19,7 +19,11 @@ describe("rewardReview (local Supabase)", async () => {
   const NOW = new Date("2026-11-05T03:00:00.000Z");
   const PAST = "2026-11-04T00:00:00.000Z";
   const FUTURE = "2026-11-06T00:00:00.000Z";
-  const card = (id: string, dueDate: string) => ({ id, dueDate, reviewedBefore: true });
+  const card = (id: string, dueDate: string, reviewedBefore = true) => ({
+    id,
+    dueDate,
+    reviewedBefore,
+  });
 
   beforeAll(async () => {
     const { data } = await admin.from("wallets").select("*").eq("user_id", learner.userId).single();
@@ -35,7 +39,7 @@ describe("rewardReview (local Supabase)", async () => {
       .from("transactions")
       .delete()
       .eq("user_id", learner.userId)
-      .like("idempotency_key", "review:it-%");
+      .or("idempotency_key.like.review:it-%,idempotency_key.like.review_clear:%");
     if (walletBefore)
       await admin.from("wallets").update(walletBefore).eq("user_id", learner.userId);
   });
@@ -64,10 +68,25 @@ describe("rewardReview (local Supabase)", async () => {
     expect(await wallet()).toEqual(start);
   });
 
+  it("the first review of a new card pays nothing and is not study activity (#17)", async () => {
+    const start = await wallet();
+    expect(await reward(card("it-new", PAST, false))).toMatchObject({ xp: 0, clearBonusXp: 0 });
+    expect(await wallet()).toEqual(start);
+  });
+
   it("a due card pays 1 XP and counts as study activity", async () => {
     const start = await wallet();
-    expect(await reward(card("it-due", PAST))).toMatchObject({ xp: 1 });
+    expect(await reward(card("it-due", PAST))).toMatchObject({ xp: 1, clearBonusXp: 0 });
     expect(await wallet()).toEqual({ xp: (start?.xp ?? 0) + 1, streak_current: 1 });
+  });
+
+  it("the queue-clear bonus needs 5 rewarded reviews today (#19, #18)", async () => {
+    // demo2 has no flashcards, so its due queue is always empty
+    for (const id of ["it-q2", "it-q3", "it-q4"]) {
+      expect(await reward(card(id, PAST))).toMatchObject({ xp: 1, clearBonusXp: 0 });
+    }
+    expect(await reward(card("it-q5", PAST))).toMatchObject({ xp: 1, clearBonusXp: 5 });
+    expect(await reward(card("it-q6", PAST))).toMatchObject({ xp: 1, clearBonusXp: 0 });
   });
 
   it("the same card pays only once per local day", async () => {

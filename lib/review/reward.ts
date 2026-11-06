@@ -4,13 +4,22 @@ import { GAME } from "@/lib/game/config";
 /** XP for one rewarded review. Mirrors the value in the review action's wallet call. */
 export const REVIEW_XP = GAME.review.xp;
 
+/** The card's state before this review: was it ever reviewed? ("Again" counts a lapse.) */
+export function wasReviewedBefore(card: { repetitions: number; lapses: number }): boolean {
+  return card.repetitions + card.lapses > 0;
+}
+
 /**
- * Only a review of a card that was already due earns XP. Re-rating a card early
- * (e.g. pressing "Again" and seeing it again in the same session) still updates the
- * schedule but pays nothing, so rating choices cannot be farmed.
+ * Only a review of a card that was already due **and** reviewed before earns XP
+ * (xp-levels §3.3). Re-rating a card early (e.g. pressing "Again" and seeing it again in the
+ * same session) and the first review of a just-saved word still update the schedule but pay
+ * nothing, so neither rating choices nor saving words can be farmed.
  */
-export function isReviewRewardable(dueDate: string | Date, now: Date): boolean {
-  return new Date(dueDate).getTime() <= now.getTime();
+export function isReviewRewardable(
+  card: { dueDate: string | Date; reviewedBefore: boolean },
+  now: Date,
+): boolean {
+  return card.reviewedBefore && new Date(card.dueDate).getTime() <= now.getTime();
 }
 
 /**

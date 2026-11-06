@@ -11,6 +11,8 @@ type Client = SupabaseClient<Database>;
 export interface ReviewedCard {
   id: string;
   dueDate: string;
+  /** repetitions + lapses > 0 before this review (see wasReviewedBefore). */
+  reviewedBefore: boolean;
 }
 
 export interface RewardReviewParams {
@@ -24,15 +26,18 @@ export interface RewardReviewParams {
 
 export interface ReviewReward {
   xp: number;
+  /** +5 when this review emptied the due queue after 5+ rewarded reviews today (§3.4). */
+  clearBonusXp: number;
 }
 
 /**
- * Pays for one review (xp-levels §3.3): a due card earns REVIEW_XP once per local day,
- * and a rewarded review is study activity, so it keeps the streak (§3.5).
+ * Pays for one review (xp-levels §3.3–3.5): a due card reviewed before earns REVIEW_XP once
+ * per local day, keeps the streak, and may complete the daily queue-clear bonus.
  */
 export async function rewardReview(params: RewardReviewParams): Promise<ReviewReward> {
   const { adminClient, userId, card, now, timeZone } = params;
-  if (!isReviewRewardable(card.dueDate, now)) return { xp: 0 };
+  const none: ReviewReward = { xp: 0, clearBonusXp: 0 };
+  if (!isReviewRewardable(card, now)) return none;
 
   const { data: applied, error } = await adminClient.rpc("wallet_apply", {
     p_user_id: userId,
@@ -41,8 +46,11 @@ export async function rewardReview(params: RewardReviewParams): Promise<ReviewRe
     p_reason: "flashcard_review",
     p_idempotency_key: reviewRewardKey(card.id, now, timeZone),
   });
-  if (error || !applied) return { xp: 0 };
+  if (error || !applied) return none;
 
   await adminClient.rpc("record_study_activity", { p_user_id: userId });
-  return { xp: REVIEW_XP };
+  const { data: clearBonusXp } = await adminClient.rpc("award_review_clear", {
+    p_user_id: userId,
+  });
+  return { xp: REVIEW_XP, clearBonusXp: clearBonusXp ?? 0 };
 }

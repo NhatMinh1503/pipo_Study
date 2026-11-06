@@ -1038,6 +1038,7 @@ export type Database = {
         }
         Returns: Json
       }
+      award_review_clear: { Args: { p_user_id: string }; Returns: number }
       award_sentence_xp: {
         Args: { p_points: number; p_sentence_id: string; p_user_id: string }
         Returns: Json

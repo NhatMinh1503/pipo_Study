@@ -43,7 +43,12 @@ export function ReviewSession({ cards }: { cards: ReviewCard[] }) {
 
   if (session.isDone || !session.current) {
     return (
-      <ReviewSummary counts={session.counts} total={session.reviewed} isSaving={session.isSaving} />
+      <ReviewSummary
+        counts={session.counts}
+        total={session.reviewed}
+        isSaving={session.isSaving}
+        clearBonusXp={session.clearBonusXp}
+      />
     );
   }
 

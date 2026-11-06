@@ -29,6 +29,8 @@ export function useReviewSession(initialCards: ReviewCard[]) {
   const saveChain = useRef<Promise<void>>(Promise.resolve());
   const [pendingSaves, setPendingSaves] = useState(0);
   const [offlineQueued, setOfflineQueued] = useState(0);
+  // XP from the daily queue-clear bonus, if one of this session's reviews earned it
+  const [clearBonusXp, setClearBonusXp] = useState(0);
 
   // Warn before closing the tab while reviews are still being saved
   useEffect(() => {
@@ -91,6 +93,7 @@ export function useReviewSession(initialCards: ReviewCard[]) {
         );
         if (result === "unreachable") queueOffline();
         else if (!result.ok) setFailed(true);
+        else if (result.reward.clearBonusXp > 0) setClearBonusXp(result.reward.clearBonusXp);
       }
       setPendingSaves((count) => count - 1);
     });
@@ -104,6 +107,7 @@ export function useReviewSession(initialCards: ReviewCard[]) {
     flipped,
     failed,
     offlineQueued,
+    clearBonusXp,
     isSaving: pendingSaves > 0,
     isDone: queue.length === 0,
     flip,

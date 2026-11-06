@@ -379,7 +379,8 @@
     "toDashboard": "Về tổng quan",
     "saveFailed": "Một số lượt ôn chưa lưu được. Hãy tải lại trang.",
     "saving": "Đang lưu kết quả...",
-    "offlineQueued": "{count, plural, other {# lượt ôn sẽ được lưu khi có mạng}}"
+    "offlineQueued": "{count, plural, other {# lượt ôn sẽ được lưu khi có mạng}}",
+    "clearBonus": "+{xp} XP · Ôn hết thẻ hôm nay"
   },
   "pomodoro": {
     "ready": "Sẵn sàng",

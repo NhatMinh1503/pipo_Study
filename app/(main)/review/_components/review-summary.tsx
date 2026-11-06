@@ -14,10 +14,17 @@ interface ReviewSummaryProps {
   total: number;
   /** True while the last ratings are still being saved; leaving now would lose them. */
   isSaving?: boolean;
+  /** XP from clearing today's due queue, when this session earned it. */
+  clearBonusXp?: number;
 }
 
 /** End of a review session (or nothing due): how each card was rated. */
-export function ReviewSummary({ counts, total, isSaving = false }: ReviewSummaryProps) {
+export function ReviewSummary({
+  counts,
+  total,
+  isSaving = false,
+  clearBonusXp = 0,
+}: ReviewSummaryProps) {
   const t = useTranslations("review");
 
   return (
@@ -42,6 +49,11 @@ export function ReviewSummary({ counts, total, isSaving = false }: ReviewSummary
             </div>
           ))}
         </dl>
+      )}
+      {clearBonusXp > 0 && (
+        <p className="pill text-success" role="status">
+          {t("clearBonus", { xp: clearBonusXp })}
+        </p>
       )}
       {isSaving ? (
         <p className="mono-label" role="status">

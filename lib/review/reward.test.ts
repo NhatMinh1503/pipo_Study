@@ -1,22 +1,42 @@
 import { describe, expect, it } from "vitest";
 
-import { isReviewRewardable, reviewRewardKey } from "./reward";
+import { isReviewRewardable, reviewRewardKey, wasReviewedBefore } from "./reward";
 
 const CARD = "00000000-0000-4000-8000-000000000001";
 
 describe("isReviewRewardable", () => {
   const now = new Date("2026-11-05T09:00:00.000Z");
+  const seen = { reviewedBefore: true };
 
   it("pays for a card that is overdue", () => {
-    expect(isReviewRewardable("2026-11-04T09:00:00.000Z", now)).toBe(true);
+    expect(isReviewRewardable({ dueDate: "2026-11-04T09:00:00.000Z", ...seen }, now)).toBe(true);
   });
 
   it("pays for a card that became due exactly now", () => {
-    expect(isReviewRewardable(now.toISOString(), now)).toBe(true);
+    expect(isReviewRewardable({ dueDate: now.toISOString(), ...seen }, now)).toBe(true);
   });
 
   it("does not pay for a card that is not due yet (e.g. an 'Again' card seen early)", () => {
-    expect(isReviewRewardable("2026-11-05T09:10:00.000Z", now)).toBe(false);
+    expect(isReviewRewardable({ dueDate: "2026-11-05T09:10:00.000Z", ...seen }, now)).toBe(false);
+  });
+
+  // xp-levels §3.3, test case #17: a new card's first review pays nothing
+  it("does not pay for the first review of a new card, even when due", () => {
+    expect(
+      isReviewRewardable({ dueDate: "2026-11-04T09:00:00.000Z", reviewedBefore: false }, now),
+    ).toBe(false);
+  });
+});
+
+describe("wasReviewedBefore", () => {
+  it("is false for a card never reviewed", () => {
+    expect(wasReviewedBefore({ repetitions: 0, lapses: 0 })).toBe(false);
+  });
+
+  it("is true after a successful review or a lapse", () => {
+    expect(wasReviewedBefore({ repetitions: 1, lapses: 0 })).toBe(true);
+    // "Again" resets repetitions to 0 but counts a lapse: the card was still seen before
+    expect(wasReviewedBefore({ repetitions: 0, lapses: 1 })).toBe(true);
   });
 });
 

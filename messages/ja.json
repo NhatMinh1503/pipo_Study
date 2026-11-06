@@ -379,7 +379,8 @@
     "toDashboard": "ダッシュボードへ",
     "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
     "saving": "結果を保存しています...",
-    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}"
+    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}",
+    "clearBonus": "+{xp} XP · 今日の復習をすべて完了"
   },
   "pomodoro": {
     "ready": "準備OK",
