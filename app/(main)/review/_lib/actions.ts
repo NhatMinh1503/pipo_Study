@@ -42,7 +42,9 @@ export async function reviewFlashcard(input: unknown): Promise<ActionResult> {
     now,
   );
 
-  const { data: updated, error } = await supabase
+  // Learners cannot write the schedule (it decides review rewards), so the server does,
+  // scoped to the signed-in learner's own card
+  const { data: updated, error } = await createAdminClient()
     .from("flashcards")
     .update({
       interval_days: next.intervalDays,
