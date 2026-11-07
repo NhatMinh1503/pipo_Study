@@ -40,6 +40,16 @@ export const GAME = {
     focusOptions: [25, 50],
     breakMinutes: 5,
   },
+  garden: {
+    /** Tree stage by sessions tended (sprout from 1). Mirrors SQL tend_garden. */
+    saplingAtSessions: 2,
+    matureAtSessions: 4,
+    /** Species anyone can plant; the others need a seed item (seed-<species>). */
+    freeSpecies: ["pine", "bamboo"],
+    /** Mirrors the garden layout and SQL next_garden_plot. */
+    plotsPerGarden: 31,
+    decorSlots: 5,
+  },
   battle: {
     /** Speed bonus shrinks by one point every this many seconds. */
     fastAnswerSeconds: 20,

@@ -33,6 +33,16 @@ describe("GAME config matches design/game/registry.md", () => {
     expect(GAME.pomodoro).toEqual({ focusOptions: [25, 50], breakMinutes: 5 });
   });
 
+  it("garden", () => {
+    expect(GAME.garden).toEqual({
+      saplingAtSessions: 2,
+      matureAtSessions: 4,
+      freeSpecies: ["pine", "bamboo"],
+      plotsPerGarden: 31,
+      decorSlots: 5,
+    });
+  });
+
   it("battle", () => {
     expect(GAME.battle).toEqual({
       fastAnswerSeconds: 20,
