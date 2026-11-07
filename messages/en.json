@@ -438,6 +438,14 @@
       "bloom": "We studied today, the cherry tree is blooming!",
       "bloomHint": "Translate just one sentence and the cherry tree will bloom.",
       "treeCount": "Our garden has {count} trees now!"
+    },
+    "greet": "Say hi to Pipo",
+    "info": {
+      "sessions": "Tended",
+      "sessionsValue": "{sessions}/{total} sessions",
+      "planted": "Planted",
+      "matured": "Grew up",
+      "legacy": "This tree comes from focus sessions before the garden was redesigned."
     }
   },
   "audio": {

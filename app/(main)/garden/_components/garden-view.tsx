@@ -3,17 +3,18 @@
 import { useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import { sessionsToMature, stageFor } from "@/lib/garden/growth";
-import { SCENE_HEIGHT, SCENE_WIDTH, type Point } from "@/lib/garden/layout";
+import { stageFor } from "@/lib/garden/growth";
+import { SCENE_HEIGHT, SCENE_WIDTH } from "@/lib/garden/layout";
 import { buildSceneModel } from "@/lib/garden/scene-model";
-import { pickLine, type LineKey } from "@/lib/garden/speech";
 import type { GardenScene } from "@/server/queries/garden";
 
 import { useGardenScene } from "../_hooks/use-garden-scene";
+import { usePipoSpeech } from "../_hooks/use-pipo-speech";
 
-const BUBBLE_MS = 3500;
+import { TreeInfoDialog } from "./tree-info-dialog";
 
 interface GardenViewProps {
   scene: GardenScene;
@@ -24,9 +25,13 @@ export function GardenView({ scene }: GardenViewProps) {
   const t = useTranslations("garden");
   const reducedMotion = usePrefersReducedMotion();
   const host = useRef<HTMLDivElement>(null);
-  const [bubble, setBubble] = useState<({ text: string } & Point) | null>(null);
-  const lastLine = useRef<LineKey | null>(null);
-  const bubbleTimer = useRef<number | undefined>(undefined);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  const openTree = (treeId: string) => {
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setSelectedId(treeId);
+  };
+  const { bubble, announcement, speak } = usePipoSpeech(scene);
 
   const model = useMemo(
     () =>
@@ -39,36 +44,12 @@ export function GardenView({ scene }: GardenViewProps) {
     [scene],
   );
 
-  const speak = (position: Point) => {
-    const line = pickLine(
-      {
-        treeCount: scene.totalTrees,
-        growing: scene.growing
-          ? {
-              species: scene.growing.species,
-              sessionsLeft: sessionsToMature(scene.growing.sessions),
-            }
-          : null,
-        sakuraCount: scene.trees.filter(
-          (tree) => tree.species === "sakura" && stageFor(tree.sessions) === "mature",
-        ).length,
-        studiedToday: scene.studiedToday,
-      },
-      lastLine.current,
-    );
-    lastLine.current = line.key;
-    const values = { ...line.values };
-    if (typeof values.species === "string") values.species = t(`species.${values.species}`);
-    setBubble({ text: t(`pipo.${line.key}`, values), ...position });
-    window.clearTimeout(bubbleTimer.current);
-    bubbleTimer.current = window.setTimeout(() => setBubble(null), BUBBLE_MS);
-  };
-
-  const { status } = useGardenScene(host, model, {
+  const { status, greetPipo } = useGardenScene(host, model, {
     reducedMotion,
-    onTreeSelect: () => undefined,
+    onTreeSelect: openTree,
     onPipoSpeak: speak,
   });
+  const selected = scene.trees.find((tree) => tree.id === selectedId) ?? null;
 
   const growingHere = scene.trees.filter((tree) => stageFor(tree.sessions) !== "mature").length;
 
@@ -103,24 +84,47 @@ export function GardenView({ scene }: GardenViewProps) {
         )}
       </div>
 
+      <div className="flex flex-wrap items-center gap-3">
+        <Button variant="outline" size="sm" onClick={greetPipo} disabled={status !== "ready"}>
+          {t("greet")}
+        </Button>
+        <p role="status" className="sr-only">
+          {announcement}
+        </p>
+      </div>
+
       <section aria-labelledby="garden-tree-list" className="space-y-2">
         <h2 id="garden-tree-list" className="mono-label">
           {t("treeList")}
         </h2>
         {scene.trees.length > 0 && (
           <ul className="sheet-flat divide-y divide-dashed divide-border/30">
-            {scene.trees.map((tree) => (
-              <li
-                key={tree.id}
-                className="flex items-center justify-between gap-3 px-4 py-2 text-sm"
-              >
-                <span className="font-medium">{t(`species.${tree.species}`)}</span>
-                <span className="mono-label">{t(`stage.${stageFor(tree.sessions)}`)}</span>
-              </li>
-            ))}
+            {scene.trees.map((tree) => {
+              const species = t(`species.${tree.species}`);
+              const stage = t(`stage.${stageFor(tree.sessions)}`);
+              return (
+                <li key={tree.id}>
+                  <button
+                    type="button"
+                    aria-label={`${species} · ${stage}`}
+                    onClick={() => openTree(tree.id)}
+                    className="flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm hover:bg-tint-mint focus-visible:bg-tint-mint"
+                  >
+                    <span className="font-medium">{species}</span>
+                    <span className="mono-label">{stage}</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
+
+      <TreeInfoDialog
+        tree={selected}
+        onClose={() => setSelectedId(null)}
+        onRestoreFocus={() => opener.current?.focus()}
+      />
     </div>
   );
 }

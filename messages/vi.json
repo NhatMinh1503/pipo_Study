@@ -438,6 +438,14 @@
       "bloom": "Hôm nay mình học rồi, anh đào nở hoa kìa!",
       "bloomHint": "Dịch một câu thôi là anh đào sẽ nở đó.",
       "treeCount": "Vườn mình có {count} cây rồi!"
+    },
+    "greet": "Chào Pipo",
+    "info": {
+      "sessions": "Đã chăm",
+      "sessionsValue": "{sessions}/{total} phiên",
+      "planted": "Ngày trồng",
+      "matured": "Trưởng thành",
+      "legacy": "Cây này được trồng từ các phiên tập trung trước khi vườn được làm mới."
     }
   },
   "audio": {
