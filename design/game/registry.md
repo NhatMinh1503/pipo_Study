@@ -89,13 +89,13 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 
 ## Systems and their docs
 
-| System                 | Doc                         | Status                             |
-| ---------------------- | --------------------------- | ---------------------------------- |
-| Game audit             | design/game/audit.md        | approved                           |
-| XP & levels            | design/game/xp-levels.md    | **approved spec, not built**       |
-| Coins & shop           | design/game/shop.md         | not specced                        |
-| Streak & daily goals   | design/game/streak-goals.md | not specced (reuse xp-levels §3.5) |
-| Pomodoro garden        | design/game/garden.md       | not specced                        |
-| Skill tree             | design/game/skill-tree.md   | not specced                        |
-| Leaderboards / leagues | design/game/leagues.md      | not specced                        |
-| 1v1 translation battle | design/game/battle.md       | not specced                        |
+| System                  | Doc                         | Status                                                            |
+| ----------------------- | --------------------------- | ----------------------------------------------------------------- |
+| Game audit              | design/game/audit.md        | approved                                                          |
+| XP & levels             | design/game/xp-levels.md    | **approved spec, not built**                                      |
+| Coins & shop            | design/game/shop.md         | not specced                                                       |
+| Streak & daily goals    | design/game/streak-goals.md | not specced (reuse xp-levels §3.5)                                |
+| Pomodoro garden (scene) | design/game/garden-scene.md | **approved spec, building** (art: art-bible.md, asset-prompts.md) |
+| Skill tree              | design/game/skill-tree.md   | not specced                                                       |
+| Leaderboards / leagues  | design/game/leagues.md      | not specced                                                       |
+| 1v1 translation battle  | design/game/battle.md       | not specced                                                       |
