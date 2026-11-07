@@ -456,6 +456,12 @@
       "slotTakenBy": "区画 {slot}・{item}",
       "slotTaken": "そこには別の飾りがあります。",
       "failed": "置けませんでした。もう一度お試しください。"
+    },
+    "switcher": {
+      "label": "庭",
+      "previous": "前の庭",
+      "next": "次の庭",
+      "position": "庭 {index}/{count}"
     }
   },
   "audio": {

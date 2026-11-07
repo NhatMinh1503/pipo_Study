@@ -456,6 +456,12 @@
       "slotTakenBy": "Ô {slot} · {item}",
       "slotTaken": "Ô này đã có đồ trang trí khác.",
       "failed": "Chưa đặt được, thử lại nhé."
+    },
+    "switcher": {
+      "label": "Khu vườn",
+      "previous": "Khu vườn trước",
+      "next": "Khu vườn sau",
+      "position": "Khu vườn {index}/{count}"
     }
   },
   "audio": {

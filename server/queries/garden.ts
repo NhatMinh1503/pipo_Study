@@ -4,6 +4,7 @@ import { dayKey } from "@/lib/dashboard/days";
 import { GAME } from "@/lib/game/config";
 import type { TreeSpecies } from "@/lib/garden/growth";
 import { isSlotDecoration } from "@/lib/garden/decorations";
+import { resolveGardenIndex } from "@/lib/garden/gardens";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/server/profile";
 
@@ -81,8 +82,11 @@ export interface GardenScene {
   studiedToday: boolean;
 }
 
-/** Everything the garden scene needs for one garden. RLS scopes every query to the user. */
-export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
+/**
+ * Everything the garden scene needs for one garden: the one asked for (`khu` search param)
+ * or the newest. RLS scopes every query to the user.
+ */
+export async function getGardenScene(requested?: string | string[]): Promise<GardenScene> {
   const supabase = await createClient();
   const [trees, purchases, wallet, profile, placed] = await Promise.all([
     supabase
@@ -101,10 +105,12 @@ export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
   const growing = rows.find((row) => row.sessions < GAME.garden.matureAtSessions);
   // createClient() already opted out of prerendering, so reading the clock is safe here
   const today = dayKey(new Date(), profile?.timezone ?? "UTC");
+  const gardenCount = Math.max(1, ...rows.map((row) => row.garden_index));
+  const gardenIndex = resolveGardenIndex(requested, gardenCount);
 
   return {
     gardenIndex,
-    gardenCount: Math.max(1, ...rows.map((row) => row.garden_index)),
+    gardenCount,
     trees: rows
       .filter((row) => row.garden_index === gardenIndex)
       .map((row) => ({

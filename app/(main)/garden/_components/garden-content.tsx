@@ -8,11 +8,17 @@ import { StatCard } from "@/components/common/stat-card";
 import { Button } from "@/components/ui/button";
 import { getCompletedSessions, getGardenScene } from "@/server/queries/garden";
 
+import { GardenSwitcher } from "./garden-switcher";
 import { GardenView } from "./garden-view";
 
-export async function GardenContent() {
+interface GardenContentProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function GardenContent({ searchParams }: GardenContentProps) {
+  const { khu } = await searchParams;
   const [scene, sessions, t] = await Promise.all([
-    getGardenScene(),
+    getGardenScene(khu),
     getCompletedSessions(),
     getTranslations("garden"),
   ]);
@@ -41,7 +47,11 @@ export async function GardenContent() {
         />
       </section>
 
-      <GardenView scene={scene} />
+      {scene.gardenCount > 1 && (
+        <GardenSwitcher gardenIndex={scene.gardenIndex} gardenCount={scene.gardenCount} />
+      )}
+
+      <GardenView key={scene.gardenIndex} scene={scene} />
 
       {scene.totalTrees === 0 && (
         <EmptyState icon={Sprout} title={t("empty")} description={t("emptyHint")} />

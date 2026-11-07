@@ -456,6 +456,12 @@
       "slotTakenBy": "Spot {slot} · {item}",
       "slotTaken": "Another decoration is already there.",
       "failed": "Couldn't place it, please try again."
+    },
+    "switcher": {
+      "label": "Gardens",
+      "previous": "Previous garden",
+      "next": "Next garden",
+      "position": "Garden {index}/{count}"
     }
   },
   "audio": {

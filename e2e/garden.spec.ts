@@ -98,4 +98,23 @@ test.describe("garden scene", () => {
     await page.getByLabel("Vị trí của Đèn lồng").selectOption("storage");
     await expect(page.getByLabel("Vị trí của Đèn lồng")).toHaveValue("storage");
   });
+
+  // garden-scene spec §3.4: 31 plots per garden; more trees open garden 2
+  test("switches between gardens once the first one is full", async ({ page }, testInfo) => {
+    const email = await createOnboardedUser(page, testInfo);
+    for (let plot = 0; plot < 31; plot += 1) {
+      await plantTree(email, { species: "pine", sessions: 4, plot });
+    }
+    await plantTree(email, { species: "bamboo", sessions: 4, plot: 0, garden: 2 });
+    await page.goto("/garden");
+
+    const nav = page.getByRole("navigation", { name: "Khu vườn" });
+    await expect(nav).toContainText("Khu vườn 2/2");
+    await expect(page.getByRole("button", { name: "Tre · Trưởng thành" })).toHaveCount(1);
+
+    await nav.getByRole("link", { name: "Khu vườn trước" }).click();
+    await expect(nav).toContainText("Khu vườn 1/2");
+    await expect(page.getByRole("button", { name: "Thông Nhật · Trưởng thành" })).toHaveCount(31);
+    await expect(page.locator("[data-scene-ready='true']")).toHaveCount(1);
+  });
 });
