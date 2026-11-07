@@ -446,6 +446,16 @@
       "planted": "Planted",
       "matured": "Grew up",
       "legacy": "This tree comes from focus sessions before the garden was redesigned."
+    },
+    "decor": {
+      "title": "Arrange decorations",
+      "placeLabel": "Where to put the {item}",
+      "storage": "In storage",
+      "otherGarden": "In garden {garden}",
+      "slot": "Spot {slot}",
+      "slotTakenBy": "Spot {slot} · {item}",
+      "slotTaken": "Another decoration is already there.",
+      "failed": "Couldn't place it, please try again."
     }
   },
   "audio": {

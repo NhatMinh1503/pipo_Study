@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { plantTree } from "./helpers/admin";
+import { grantItem, plantTree } from "./helpers/admin";
 import { createOnboardedUser } from "./helpers/auth";
 
 test.describe("garden scene", () => {
@@ -72,5 +72,30 @@ test.describe("garden scene", () => {
     await expect(
       page.getByRole("status").filter({ hasText: "Mình trồng cây đầu tiên nhé?" }),
     ).toHaveCount(1);
+  });
+
+  // garden-scene test case #14: place, move and remove a decoration
+  test("places a decoration on a slot and puts it back in storage", async ({ page }, testInfo) => {
+    const email = await createOnboardedUser(page, testInfo);
+    await grantItem(email, "deco-lantern");
+    await grantItem(email, "deco-bench");
+    await page.goto("/garden");
+    await expect(page.locator("[data-scene-ready='true']")).toHaveCount(1);
+
+    const lantern = page.getByLabel("Vị trí của Đèn lồng");
+    await expect(lantern).toHaveValue("storage");
+    await lantern.selectOption({ label: "Ô 2" });
+    await expect(page.getByLabel("Vị trí của Đèn lồng")).toHaveValue("1");
+    await expect(page.locator("[data-scene-ready='true']")).toHaveCount(1);
+
+    // The bench cannot take the lantern's slot
+    await expect(
+      page.getByLabel("Vị trí của Ghế đá").locator("option", { hasText: "Ô 2 · Đèn lồng" }),
+    ).toBeDisabled();
+
+    await page.reload();
+    await expect(page.getByLabel("Vị trí của Đèn lồng")).toHaveValue("1");
+    await page.getByLabel("Vị trí của Đèn lồng").selectOption("storage");
+    await expect(page.getByLabel("Vị trí của Đèn lồng")).toHaveValue("storage");
   });
 });

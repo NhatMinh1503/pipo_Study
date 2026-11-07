@@ -3,6 +3,7 @@ import "server-only";
 import { dayKey } from "@/lib/dashboard/days";
 import { GAME } from "@/lib/game/config";
 import type { TreeSpecies } from "@/lib/garden/growth";
+import { isSlotDecoration } from "@/lib/garden/decorations";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/server/profile";
 
@@ -72,6 +73,10 @@ export interface GardenScene {
   growing: { species: TreeSpecies; sessions: number } | null;
   hasPond: boolean;
   hasCat: boolean;
+  /** Decorations placed in the garden shown. */
+  decorations: { itemId: string; slot: number }[];
+  /** Owned decorations that can go on a slot, with where they are now (null = storage). */
+  placeable: { itemId: string; garden: number | null; slot: number | null }[];
   /** Today had study activity, in the learner's time zone: mature sakura bloom. */
   studiedToday: boolean;
 }
@@ -79,7 +84,7 @@ export interface GardenScene {
 /** Everything the garden scene needs for one garden. RLS scopes every query to the user. */
 export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
   const supabase = await createClient();
-  const [trees, purchases, wallet, profile] = await Promise.all([
+  const [trees, purchases, wallet, profile, placed] = await Promise.all([
     supabase
       .from("garden_trees")
       .select("id, garden_index, plot_index, species, sessions, planted_at, matured_at, legacy")
@@ -88,7 +93,9 @@ export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
     supabase.from("purchases").select("item_id"),
     supabase.from("wallets").select("last_active_date").maybeSingle(),
     getCurrentProfile(),
+    supabase.from("garden_decorations").select("item_id, garden_index, slot_index"),
   ]);
+  const placements = placed.data ?? [];
   const rows = trees.data ?? [];
   const owned = new Set((purchases.data ?? []).map((row) => row.item_id));
   const growing = rows.find((row) => row.sessions < GAME.garden.matureAtSessions);
@@ -113,6 +120,13 @@ export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
     growing: growing ? { species: growing.species, sessions: growing.sessions } : null,
     hasPond: owned.has("deco-pond"),
     hasCat: owned.has("deco-cat"),
+    decorations: placements
+      .filter((row) => row.garden_index === gardenIndex)
+      .map((row) => ({ itemId: row.item_id, slot: row.slot_index })),
+    placeable: [...owned].filter(isSlotDecoration).map((itemId) => {
+      const at = placements.find((row) => row.item_id === itemId);
+      return { itemId, garden: at?.garden_index ?? null, slot: at?.slot_index ?? null };
+    }),
     studiedToday: wallet.data?.last_active_date === today,
   };
 }

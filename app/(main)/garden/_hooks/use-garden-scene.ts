@@ -65,5 +65,9 @@ export function useGardenScene(
     };
   }, [host, model, reducedMotion]);
 
-  return { status, greetPipo: () => renderer.current?.greetPipo() };
+  return {
+    status,
+    greetPipo: () => renderer.current?.greetPipo(),
+    highlightSlot: (slot: number | null) => renderer.current?.highlightSlot(slot),
+  };
 }

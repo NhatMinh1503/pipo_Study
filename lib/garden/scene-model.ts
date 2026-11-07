@@ -8,6 +8,7 @@ import {
   SCENE_HEIGHT,
   TILE_H,
   TILE_W,
+  decorTile,
   plotTile,
   pondCenter,
   tileBase,
@@ -23,8 +24,16 @@ export interface SceneTree {
   sessions: number;
 }
 
+export interface SceneDecoration {
+  /** Shop item id; the image has the same name (deco-lantern, deco-bench…). */
+  itemId: string;
+  slot: number;
+}
+
 export interface SceneInput {
   trees: readonly SceneTree[];
+  /** Decorations placed in this garden's slots (spec §3.5). */
+  decorations?: readonly SceneDecoration[];
   hasPond: boolean;
   hasCat: boolean;
   /** Today had study activity: mature sakura are in bloom. */
@@ -35,6 +44,7 @@ export interface SceneModel {
   tiles: { asset: string; x: number; y: number }[];
   /** Back to front (by anchor y), so later items are drawn on top. */
   trees: ({ id: string; asset: string } & Point)[];
+  decorations: ({ id: string; asset: string; slot: number } & Point)[];
   pond: Point | null;
   koi: boolean;
   cat: boolean;
@@ -77,9 +87,29 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     if (stageFor(tree.sessions) === "mature" && Math.abs(tile.y - PATH_ROW) === 1)
       stopColumns.add(tile.x);
   }
-  const stops: PipoStop[] = [...stopColumns]
-    .sort((a, b) => a - b)
-    .map((column) => ({ distance: waypointDistances[column + 1] ?? 0, kind: "view" }));
+  const decorations = (input.decorations ?? [])
+    .map((decoration) => ({
+      id: decoration.itemId,
+      asset: decoration.itemId,
+      slot: decoration.slot,
+      ...tileBase(decorTile(decoration.slot)),
+    }))
+    .sort((a, b) => a.slot - b.slot);
+
+  // Pipo sits on a bench placed right beside the path
+  const benchColumns = new Set<number>();
+  for (const decoration of input.decorations ?? []) {
+    const tile = decorTile(decoration.slot);
+    if (decoration.itemId === "deco-bench" && Math.abs(tile.y - PATH_ROW) === 1)
+      benchColumns.add(tile.x);
+  }
+
+  const stops: PipoStop[] = [
+    ...[...stopColumns].map((column) => ({ column, kind: "view" as const })),
+    ...[...benchColumns].map((column) => ({ column, kind: "bench" as const })),
+  ]
+    .sort((a, b) => a.column - b.column)
+    .map(({ column, kind }) => ({ distance: waypointDistances[column + 1] ?? 0, kind }));
 
   const petalSources = input.trees
     .filter((tree) => isBlooming(tree, input.studiedToday))
@@ -91,6 +121,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
   return {
     tiles,
     trees,
+    decorations,
     pond: input.hasPond ? pondCenter() : null,
     koi: input.hasPond,
     cat: input.hasCat,

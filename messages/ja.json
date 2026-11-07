@@ -446,6 +446,16 @@
       "planted": "植えた日",
       "matured": "成木になった日",
       "legacy": "この木は庭のリニューアル前の集中セッションから育ちました。"
+    },
+    "decor": {
+      "title": "飾りの配置",
+      "placeLabel": "{item}の場所",
+      "storage": "倉庫",
+      "otherGarden": "庭 {garden} にある",
+      "slot": "区画 {slot}",
+      "slotTakenBy": "区画 {slot}・{item}",
+      "slotTaken": "そこには別の飾りがあります。",
+      "failed": "置けませんでした。もう一度お試しください。"
     }
   },
   "audio": {

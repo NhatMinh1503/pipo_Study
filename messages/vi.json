@@ -446,6 +446,16 @@
       "planted": "Ngày trồng",
       "matured": "Trưởng thành",
       "legacy": "Cây này được trồng từ các phiên tập trung trước khi vườn được làm mới."
+    },
+    "decor": {
+      "title": "Sắp xếp đồ trang trí",
+      "placeLabel": "Vị trí của {item}",
+      "storage": "Trong kho",
+      "otherGarden": "Ở khu vườn {garden}",
+      "slot": "Ô {slot}",
+      "slotTakenBy": "Ô {slot} · {item}",
+      "slotTaken": "Ô này đã có đồ trang trí khác.",
+      "failed": "Chưa đặt được, thử lại nhé."
     }
   },
   "audio": {

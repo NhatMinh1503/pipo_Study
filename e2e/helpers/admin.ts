@@ -93,3 +93,11 @@ export async function plantTree(
   });
   if (error) throw error;
 }
+
+/** Gives the learner a shop item without spending coins (garden decoration tests). */
+export async function grantItem(email: string, itemId: string) {
+  const { error } = await admin
+    .from("purchases")
+    .insert({ user_id: await findUserId(email), item_id: itemId });
+  if (error) throw error;
+}

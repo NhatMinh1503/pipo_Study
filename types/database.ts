@@ -381,6 +381,38 @@ export type Database = {
           },
         ]
       }
+      garden_decorations: {
+        Row: {
+          created_at: string
+          garden_index: number
+          item_id: string
+          slot_index: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          garden_index: number
+          item_id: string
+          slot_index: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          garden_index?: number
+          item_id?: string
+          slot_index?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "garden_decorations_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "shop_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       garden_trees: {
         Row: {
           created_at: string
@@ -1238,12 +1270,21 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: Record<string, unknown>
       }
+      place_decoration: {
+        Args: {
+          p_garden_index: number
+          p_item_id: string
+          p_slot_index: number
+        }
+        Returns: undefined
+      }
       pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
       record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
+      remove_decoration: { Args: { p_item_id: string }; Returns: undefined }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
       start_pomodoro: {
         Args: {

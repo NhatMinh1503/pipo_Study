@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { plotTile, tileBase } from "./layout";
+import { decorTile, plotTile, tileBase } from "./layout";
 import { waypointDistances } from "./path";
 import { buildSceneModel, type SceneTree } from "./scene-model";
 
@@ -79,5 +79,23 @@ describe("garden scene model", () => {
       studiedToday: false,
     });
     expect(model.trees.map((item) => item.id)).toEqual(["high", "low"]);
+  });
+
+  it("stands placed decorations on their slots, with a sitting spot at a bench by the path", () => {
+    const model = buildSceneModel({
+      trees: [],
+      hasPond: false,
+      hasCat: false,
+      studiedToday: false,
+      decorations: [
+        { itemId: "deco-bench", slot: 2 }, // (1,3): just below the path
+        { itemId: "deco-lantern", slot: 4 }, // (5,4): two rows away
+      ],
+    });
+    expect(model.decorations).toEqual([
+      { id: "deco-bench", asset: "deco-bench", slot: 2, ...tileBase(decorTile(2)) },
+      { id: "deco-lantern", asset: "deco-lantern", slot: 4, ...tileBase(decorTile(4)) },
+    ]);
+    expect(model.stops).toEqual([{ distance: waypointDistances[2], kind: "bench" }]);
   });
 });

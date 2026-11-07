@@ -1,10 +1,18 @@
 // The PixiJS garden (garden-scene spec §3.6–3.8, §7). Imported only with import() from the
 // garden page, so pixi.js never reaches the bundles of other pages.
-import { Application, Assets, Container, Sprite, type Texture } from "pixi.js";
+import { Application, Assets, Container, Graphics, Sprite, type Texture } from "pixi.js";
 
 import { assetUrl, gardenAsset } from "@/lib/garden/assets";
 import { SCENE } from "@/lib/garden/config";
-import { SCENE_HEIGHT, SCENE_WIDTH, type Point } from "@/lib/garden/layout";
+import {
+  SCENE_HEIGHT,
+  SCENE_WIDTH,
+  TILE_H,
+  TILE_W,
+  decorTile,
+  tileCenter,
+  type Point,
+} from "@/lib/garden/layout";
 import { pathLength, pointAt } from "@/lib/garden/path";
 import {
   clickPipo,
@@ -26,6 +34,8 @@ export interface RendererOptions {
 export interface GardenRenderer {
   /** Same as clicking Pipo (keyboard "Chào Pipo" button). */
   greetPipo: () => void;
+  /** Outlines a decoration slot while the learner chooses where to put something. */
+  highlightSlot: (slot: number | null) => void;
   destroy: () => void;
 }
 
@@ -47,6 +57,7 @@ function neededAssets(model: SceneModel): string[] {
   const ids = new Set<string>(["bg-sky", "bg-fuji", "cloud-a", "cloud-b", ...PIPO_PARTS]);
   for (const tile of model.tiles) ids.add(tile.asset);
   for (const tree of model.trees) ids.add(tree.asset);
+  for (const decoration of model.decorations) ids.add(decoration.asset);
   if (model.pond) ids.add("deco-pond");
   if (model.koi) ids.add("koi-a").add("koi-b");
   if (model.cat) CAT_PARTS.forEach((id) => ids.add(id));
@@ -125,6 +136,9 @@ export async function createGardenRenderer(
       }
     }
   }
+  const highlight = new Graphics();
+  highlight.visible = false;
+  ground.addChild(highlight);
   app.stage.addChild(ground);
 
   // --- World: trees, Pipo, cat, drawn back to front by their feet ---------------------
@@ -148,6 +162,13 @@ export async function createGardenRenderer(
       halfWidth: info.width / 2 - 4,
       height: info.height - 8,
     });
+  }
+
+  for (const decoration of model.decorations) {
+    const piece = sprite(decoration.asset);
+    piece.position.set(decoration.x, decoration.y);
+    piece.zIndex = decoration.y;
+    world.addChild(piece);
   }
 
   const pipo = new Container();
@@ -315,8 +336,19 @@ export async function createGardenRenderer(
   };
   document.addEventListener("visibilitychange", onVisibility);
 
+  const highlightSlot = (slot: number | null) => {
+    highlight.clear();
+    highlight.visible = slot !== null;
+    if (slot === null) return;
+    const center = tileCenter(decorTile(slot));
+    highlight
+      .roundRect(center.x - TILE_W / 2 + 3, center.y - TILE_H / 2 + 3, TILE_W - 6, TILE_H - 6, 8)
+      .stroke({ width: 3, color: 0xfcf4ec });
+  };
+
   return {
     greetPipo,
+    highlightSlot,
     destroy: () => {
       document.removeEventListener("visibilitychange", onVisibility);
       app.destroy(true, { children: true });

@@ -14,6 +14,7 @@ import type { GardenScene } from "@/server/queries/garden";
 import { useGardenScene } from "../_hooks/use-garden-scene";
 import { usePipoSpeech } from "../_hooks/use-pipo-speech";
 
+import { DecorationsPanel } from "./decorations-panel";
 import { TreeInfoDialog } from "./tree-info-dialog";
 
 interface GardenViewProps {
@@ -40,11 +41,12 @@ export function GardenView({ scene }: GardenViewProps) {
         hasPond: scene.hasPond,
         hasCat: scene.hasCat,
         studiedToday: scene.studiedToday,
+        decorations: scene.decorations,
       }),
     [scene],
   );
 
-  const { status, greetPipo } = useGardenScene(host, model, {
+  const { status, greetPipo, highlightSlot } = useGardenScene(host, model, {
     reducedMotion,
     onTreeSelect: openTree,
     onPipoSpeak: speak,
@@ -119,6 +121,8 @@ export function GardenView({ scene }: GardenViewProps) {
           </ul>
         )}
       </section>
+
+      <DecorationsPanel scene={scene} onHighlight={highlightSlot} />
 
       <TreeInfoDialog
         tree={selected}
