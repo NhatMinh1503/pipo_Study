@@ -381,6 +381,45 @@ export type Database = {
           },
         ]
       }
+      garden_trees: {
+        Row: {
+          created_at: string
+          garden_index: number
+          id: string
+          legacy: boolean
+          matured_at: string | null
+          planted_at: string
+          plot_index: number
+          sessions: number
+          species: Database["public"]["Enums"]["tree_species"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          garden_index: number
+          id?: string
+          legacy?: boolean
+          matured_at?: string | null
+          planted_at?: string
+          plot_index: number
+          sessions?: number
+          species: Database["public"]["Enums"]["tree_species"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          garden_index?: number
+          id?: string
+          legacy?: boolean
+          matured_at?: string | null
+          planted_at?: string
+          plot_index?: number
+          sessions?: number
+          species?: Database["public"]["Enums"]["tree_species"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       grading_cache: {
         Row: {
           cache_key: string
@@ -558,8 +597,10 @@ export type Database = {
         Row: {
           created_at: string
           ended_at: string | null
+          garden_tree_id: string | null
           id: string
           planned_minutes: number
+          species: Database["public"]["Enums"]["tree_species"] | null
           started_at: string
           status: Database["public"]["Enums"]["pomodoro_status"]
           user_id: string
@@ -567,8 +608,10 @@ export type Database = {
         Insert: {
           created_at?: string
           ended_at?: string | null
+          garden_tree_id?: string | null
           id?: string
           planned_minutes?: number
+          species?: Database["public"]["Enums"]["tree_species"] | null
           started_at?: string
           status?: Database["public"]["Enums"]["pomodoro_status"]
           user_id: string
@@ -576,13 +619,23 @@ export type Database = {
         Update: {
           created_at?: string
           ended_at?: string | null
+          garden_tree_id?: string | null
           id?: string
           planned_minutes?: number
+          species?: Database["public"]["Enums"]["tree_species"] | null
           started_at?: string
           status?: Database["public"]["Enums"]["pomodoro_status"]
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "pomodoro_sessions_garden_tree_id_fkey"
+            columns: ["garden_tree_id"]
+            isOneToOne: false
+            referencedRelation: "garden_trees"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       posts: {
         Row: {
@@ -1094,8 +1147,16 @@ export type Database = {
         Args: { p_points: number; p_sentence_id: string; p_user_id: string }
         Returns: Json
       }
+      backfill_garden_trees: { Args: { p_user_id?: string }; Returns: number }
       battle_heartbeat: { Args: { p_battle_id: string }; Returns: undefined }
       buy_item: { Args: { p_item_id: string }; Returns: number }
+      can_plant_species: {
+        Args: {
+          p_species: Database["public"]["Enums"]["tree_species"]
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       claim_battle_timeout: { Args: { p_battle_id: string }; Returns: boolean }
       close_abandoned_battles: { Args: never; Returns: number }
       complete_pomodoro: { Args: { p_session_id: string }; Returns: number }
@@ -1173,6 +1234,10 @@ export type Database = {
       }
       manual_xp_today: { Args: { p_user_id: string }; Returns: number }
       mark_level_ups_seen: { Args: { p_ids: string[] }; Returns: number }
+      next_garden_plot: {
+        Args: { p_user_id: string }
+        Returns: Record<string, unknown>
+      }
       pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }
@@ -1181,12 +1246,17 @@ export type Database = {
       record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
       start_pomodoro: {
-        Args: { p_planned_minutes?: number }
+        Args: {
+          p_planned_minutes?: number
+          p_species?: Database["public"]["Enums"]["tree_species"]
+        }
         Returns: {
           created_at: string
           ended_at: string | null
+          garden_tree_id: string | null
           id: string
           planned_minutes: number
+          species: Database["public"]["Enums"]["tree_species"] | null
           started_at: string
           status: Database["public"]["Enums"]["pomodoro_status"]
           user_id: string
@@ -1197,6 +1267,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      tend_garden: {
+        Args: { p_session_id: string; p_user_id: string }
+        Returns: undefined
       }
       wallet_apply: {
         Args: {
@@ -1238,6 +1312,7 @@ export type Database = {
         | "C2"
       shop_item_kind: "theme" | "decoration" | "topic_pack"
       translation_verdict: "exact" | "acceptable" | "incorrect"
+      tree_species: "pine" | "bamboo" | "maple" | "sakura"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1394,6 +1469,7 @@ export const Constants = {
       ],
       shop_item_kind: ["theme", "decoration", "topic_pack"],
       translation_verdict: ["exact", "acceptable", "incorrect"],
+      tree_species: ["pine", "bamboo", "maple", "sakura"],
     },
   },
 } as const
