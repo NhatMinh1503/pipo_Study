@@ -8,6 +8,8 @@ import { VerdictBadge } from "@/components/lessons/verdict-badge";
 
 import type { Feedback } from "../_hooks/use-translate-session";
 
+import { SentenceXpNote } from "./sentence-xp-note";
+
 /** AI result for the current sentence: verdict, comment, hint (when wrong), reference (when right). */
 export function FeedbackPanel({ feedback }: { feedback: Feedback | null }) {
   const t = useTranslations("translate");
@@ -26,6 +28,7 @@ export function FeedbackPanel({ feedback }: { feedback: Feedback | null }) {
         <VerdictBadge verdict={result.verdict} />
         <span className="mono-label">{t("feedbackLabel")}</span>
       </div>
+      {result.xp && <SentenceXpNote xp={result.xp} />}
       <p className="text-sm leading-relaxed">{result.feedback}</p>
       {result.hint && (
         <p className="flex gap-2 bg-warning/[0.09] px-2.5 py-2 text-sm leading-relaxed">

@@ -2,7 +2,9 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { scoreLesson, type LessonScore } from "@/lib/scoring";
+import { z } from "zod";
+
+import { lessonRewards, scoreLesson, type LessonScore } from "@/lib/scoring";
 import { getLessonWorkspace, toSentenceAttempts } from "@/server/queries/lesson-workspace";
 import type { Database } from "@/types/database";
 
@@ -21,15 +23,26 @@ export interface CompleteLessonParams {
   lessonId: string;
 }
 
-export function lessonRewardKey(lessonId: string) {
-  return `lesson:${lessonId}`;
-}
+/** Result of award_lesson_completion (xp-levels §3.2, §3.6). */
+export const lessonRewardSchema = z.object({
+  xp: z.number().int().min(0),
+  coins: z.number().int().min(0),
+  /** The daily cap for the learner's own lessons stopped the bonus (and so the coins). */
+  capped: z.boolean(),
+  /** Rewarded by the old whole-lesson rule before per-sentence XP. */
+  legacy: z.boolean(),
+});
+
+export type LessonReward = z.infer<typeof lessonRewardSchema>;
 
 /**
- * Scores a finished lesson from its server-written attempts and pays the reward once.
- * Safe to call repeatedly: the wallet idempotency key blocks double payment.
+ * Scores a finished lesson from its server-written attempts and pays the completion reward
+ * once (bonus XP + coins for lessons of 3+ sentences; sentence XP was paid as each sentence
+ * was unlocked). Safe to call repeatedly: the database records the claim.
  */
-export async function completeLesson(params: CompleteLessonParams): Promise<LessonScore> {
+export async function completeLesson(
+  params: CompleteLessonParams,
+): Promise<{ score: LessonScore; reward: LessonReward }> {
   const { userClient, adminClient, userId, lessonId } = params;
 
   const workspace = await getLessonWorkspace(userClient, lessonId);
@@ -39,16 +52,20 @@ export async function completeLesson(params: CompleteLessonParams): Promise<Less
   }
 
   const score = scoreLesson(toSentenceAttempts(workspace));
-
-  const { error: rewardError } = await adminClient.rpc("wallet_apply", {
-    p_user_id: userId,
-    p_xp_delta: score.xp,
-    p_coins_delta: score.coins,
-    p_reason: "lesson_completed",
-    p_idempotency_key: lessonRewardKey(lessonId),
-    p_metadata: { lessonId, percent: score.percent },
+  const rewards = lessonRewards({
+    sentenceCount: workspace.sentences.length,
+    points: score.points,
+    perfect: score.perfect,
   });
-  if (rewardError) throw new CompleteLessonError("INTERNAL");
+
+  const { data, error: rewardError } = await adminClient.rpc("award_lesson_completion", {
+    p_user_id: userId,
+    p_lesson_id: lessonId,
+    p_bonus_xp: rewards.bonusXp,
+    p_coins: rewards.coins,
+  });
+  const reward = lessonRewardSchema.safeParse(data);
+  if (rewardError || !reward.success) throw new CompleteLessonError("INTERNAL");
 
   if (!workspace.completedAt) {
     await adminClient
@@ -58,5 +75,5 @@ export async function completeLesson(params: CompleteLessonParams): Promise<Less
       .eq("user_id", userId);
   }
 
-  return score;
+  return { score, reward: reward.data };
 }

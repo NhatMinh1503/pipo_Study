@@ -285,6 +285,11 @@
       "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
       "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
       "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại."
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo",
+      "streakKept": "Bạn vẫn giữ chuỗi ngày học"
     }
   },
   "result": {
@@ -300,7 +305,9 @@
     "backHome": "Về trang tổng quan",
     "publish": "Chia sẻ lên cộng đồng",
     "publishing": "Đang chia sẻ…",
-    "publishFailed": "Chưa chia sẻ được, thử lại nhé."
+    "publishFailed": "Chưa chia sẻ được, thử lại nhé.",
+    "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo nên bài này không có thưởng hoàn thành",
+    "tooShort": "Bài từ 3 câu trở lên mới có thưởng hoàn thành"
   },
   "dictionary": {
     "explain": "Giải thích (AI)",
@@ -372,7 +379,8 @@
     "toDashboard": "Về tổng quan",
     "saveFailed": "Một số lượt ôn chưa lưu được. Hãy tải lại trang.",
     "saving": "Đang lưu kết quả...",
-    "offlineQueued": "{count, plural, other {# lượt ôn sẽ được lưu khi có mạng}}"
+    "offlineQueued": "{count, plural, other {# lượt ôn sẽ được lưu khi có mạng}}",
+    "clearBonus": "+{xp} XP · Ôn hết thẻ hôm nay"
   },
   "pomodoro": {
     "ready": "Sẵn sàng",
@@ -750,5 +758,23 @@
     "description": "Trang này cần kết nối mạng. Sổ tay và Ôn tập vẫn mở được nếu bạn đã mở chúng trước đó.",
     "review": "Ôn tập",
     "notebook": "Sổ tay"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "Cấp {level}: {into}/{next} XP tới mốc tiếp theo"
+    },
+    "levelUp": {
+      "level": "Lên Lv{level}!",
+      "star": "Sao bền bỉ ★ thứ {stars}!",
+      "source": {
+        "sentence_passed": "Câu dịch vừa rồi đã giúp bạn lên mốc mới.",
+        "lesson_bonus": "Thưởng hoàn thành bài đã giúp bạn lên mốc mới.",
+        "flashcard_review": "Lượt ôn thẻ vừa rồi đã giúp bạn lên mốc mới.",
+        "review_clear": "Ôn hết thẻ hôm nay đã giúp bạn lên mốc mới."
+      }
+    }
   }
 }

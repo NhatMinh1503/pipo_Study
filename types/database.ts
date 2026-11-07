@@ -450,6 +450,57 @@ export type Database = {
         }
         Relationships: []
       }
+      level_ups: {
+        Row: {
+          created_at: string
+          from_level: number
+          from_stars: number
+          id: string
+          idempotency_key: string
+          kind: string
+          seen_at: string | null
+          source_reason: string
+          to_level: number
+          to_stars: number
+          user_id: string
+          xp_into_level: number
+          xp_to_next: number
+          xp_total: number
+        }
+        Insert: {
+          created_at?: string
+          from_level: number
+          from_stars: number
+          id?: string
+          idempotency_key: string
+          kind: string
+          seen_at?: string | null
+          source_reason: string
+          to_level: number
+          to_stars: number
+          user_id: string
+          xp_into_level: number
+          xp_to_next: number
+          xp_total: number
+        }
+        Update: {
+          created_at?: string
+          from_level?: number
+          from_stars?: number
+          id?: string
+          idempotency_key?: string
+          kind?: string
+          seen_at?: string | null
+          source_reason?: string
+          to_level?: number
+          to_stars?: number
+          user_id?: string
+          xp_into_level?: number
+          xp_to_next?: number
+          xp_total?: number
+        }
+        Relationships: []
+      }
       likes: {
         Row: {
           created_at: string
@@ -703,6 +754,53 @@ export type Database = {
           },
         ]
       }
+      reward_claims: {
+        Row: {
+          capped: boolean
+          claim_key: string
+          coins: number
+          created_at: string
+          kind: string
+          lesson_id: string | null
+          points: number
+          source: Database["public"]["Enums"]["lesson_source"]
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          capped?: boolean
+          claim_key: string
+          coins?: number
+          created_at?: string
+          kind: string
+          lesson_id?: string | null
+          points?: number
+          source: Database["public"]["Enums"]["lesson_source"]
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          capped?: boolean
+          claim_key?: string
+          coins?: number
+          created_at?: string
+          kind?: string
+          lesson_id?: string | null
+          points?: number
+          source?: Database["public"]["Enums"]["lesson_source"]
+          user_id?: string
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_claims_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sentences: {
         Row: {
           completed_at: string | null
@@ -947,29 +1045,55 @@ export type Database = {
         Row: {
           coins: number | null
           effective_streak: number | null
+          level: number | null
+          stars: number | null
           streak_best: number | null
           user_id: string | null
           xp: number | null
+          xp_into_level: number | null
+          xp_to_next: number | null
         }
         Insert: {
           coins?: number | null
           effective_streak?: never
+          level?: never
+          stars?: never
           streak_best?: number | null
           user_id?: string | null
           xp?: number | null
+          xp_into_level?: never
+          xp_to_next?: never
         }
         Update: {
           coins?: number | null
           effective_streak?: never
+          level?: never
+          stars?: never
           streak_best?: number | null
           user_id?: string | null
           xp?: number | null
+          xp_into_level?: never
+          xp_to_next?: never
         }
         Relationships: []
       }
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      award_lesson_completion: {
+        Args: {
+          p_bonus_xp: number
+          p_coins: number
+          p_lesson_id: string
+          p_user_id: string
+        }
+        Returns: Json
+      }
+      award_review_clear: { Args: { p_user_id: string }; Returns: number }
+      award_sentence_xp: {
+        Args: { p_points: number; p_sentence_id: string; p_user_id: string }
+        Returns: Json
+      }
       battle_heartbeat: { Args: { p_battle_id: string }; Returns: undefined }
       buy_item: { Args: { p_item_id: string }; Returns: number }
       claim_battle_timeout: { Args: { p_battle_id: string }; Returns: boolean }
@@ -980,7 +1104,6 @@ export type Database = {
           p_language: Database["public"]["Enums"]["learning_language"]
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
-          p_source?: Database["public"]["Enums"]["lesson_source"]
           p_source_license?: string
           p_source_name?: string
           p_source_url?: string
@@ -988,9 +1111,37 @@ export type Database = {
         }
         Returns: string
       }
+      create_lesson_for_user: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+          p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_license?: string
+          p_source_name?: string
+          p_source_url?: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       effective_streak: {
         Args: { w: Database["public"]["Tables"]["wallets"]["Row"] }
         Returns: number
+      }
+      insert_lesson_rows: {
+        Args: {
+          p_language: Database["public"]["Enums"]["learning_language"]
+          p_level: Database["public"]["Enums"]["proficiency_level"]
+          p_sentences: string[]
+          p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_license: string
+          p_source_name: string
+          p_source_url: string
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
       }
       is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
       join_battle: {
@@ -1012,6 +1163,7 @@ export type Database = {
         }[]
       }
       leave_battle: { Args: { p_battle_id: string }; Returns: undefined }
+      level_for_xp: { Args: { p_xp: number }; Returns: number }
       level_matches_language: {
         Args: {
           lang: Database["public"]["Enums"]["learning_language"]
@@ -1019,11 +1171,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      manual_xp_today: { Args: { p_user_id: string }; Returns: number }
+      mark_level_ups_seen: { Args: { p_ids: string[] }; Returns: number }
       pomodoro_reward_coins: { Args: { p_minutes: number }; Returns: number }
       rate_limit_hit: {
         Args: { p_key: string; p_limit: number }
         Returns: boolean
       }
+      record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
+      stars_for_xp: { Args: { p_xp: number }; Returns: number }
       start_pomodoro: {
         Args: { p_planned_minutes?: number }
         Returns: {
@@ -1053,6 +1209,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      xp_into_level: { Args: { p_xp: number }; Returns: number }
+      xp_to_next_level: { Args: { p_xp: number }; Returns: number }
+      xp_to_reach: { Args: { p_level: number }; Returns: number }
     }
     Enums: {
       battle_status:

@@ -18,10 +18,13 @@ select throws_ok(
   '42501', null, 'learners cannot write the rewrite cache'
 );
 
+-- Since T0 a learner's lesson is always manual; attribution is still kept (edited rewrite).
+-- Unchanged news lessons are created by the server: see lesson_source_guard.test.sql.
 select lives_ok(
-  $$ select public.create_lesson('ニュース', 'ja', 'N4', array['一。', '二。'], 'news',
-       '首相官邸', 'https://www.kantei.go.jp/jp/a.html', 'PDL1.0') $$,
-  'a news lesson keeps its attribution'
+  $$ select public.create_lesson('ニュース', 'ja', 'N4', array['一。', '二。'],
+       p_source_name => '首相官邸', p_source_url => 'https://www.kantei.go.jp/jp/a.html',
+       p_source_license => 'PDL1.0') $$,
+  'a learner lesson rewritten from news keeps its attribution'
 );
 select is(
   (select source_license from public.lessons where title = 'ニュース'),

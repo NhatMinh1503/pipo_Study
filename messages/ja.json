@@ -285,6 +285,11 @@
       "notConfigured": "AIが設定されていません（GEMINI_API_KEY がありません）。",
       "unavailable": "AIが混み合っていて判定できませんでした。今回はカウントされません。もう一度お試しください。",
       "network": "接続が切れました。ネットワークを確認して再度お試しください。"
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "自作レッスンの今日のXP上限に達しました",
+      "streakKept": "連続学習日数はそのまま続きます"
     }
   },
   "result": {
@@ -300,7 +305,9 @@
     "backHome": "ダッシュボードへ戻る",
     "publish": "コミュニティに共有",
     "publishing": "共有中…",
-    "publishFailed": "共有できませんでした。もう一度お試しください。"
+    "publishFailed": "共有できませんでした。もう一度お試しください。",
+    "capped": "自作レッスンの今日のXP上限に達したため、このレッスンには完了ボーナスがありません",
+    "tooShort": "完了ボーナスは3文以上のレッスンが対象です"
   },
   "dictionary": {
     "explain": "AIで解説",
@@ -372,7 +379,8 @@
     "toDashboard": "ダッシュボードへ",
     "saveFailed": "一部の復習が保存できませんでした。ページを再読み込みしてください。",
     "saving": "結果を保存しています...",
-    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}"
+    "offlineQueued": "{count, plural, other {#件の復習はオンラインに戻ると保存されます}}",
+    "clearBonus": "+{xp} XP · 今日の復習をすべて完了"
   },
   "pomodoro": {
     "ready": "準備OK",
@@ -750,5 +758,23 @@
     "description": "このページには接続が必要です。以前に開いたノートと復習はオフラインでも使えます。",
     "review": "復習",
     "notebook": "ノート"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "レベル{level}：次の目標まで {into}/{next} XP"
+    },
+    "levelUp": {
+      "level": "Lv{level}に到達！",
+      "star": "継続スター ★ {stars}個目！",
+      "source": {
+        "sentence_passed": "今訳した文で新しい目標に到達しました。",
+        "lesson_bonus": "レッスン完了ボーナスで新しい目標に到達しました。",
+        "flashcard_review": "今の復習で新しい目標に到達しました。",
+        "review_clear": "今日の復習を終えて新しい目標に到達しました。"
+      }
+    }
   }
 }

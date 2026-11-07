@@ -35,13 +35,17 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
   const other = await signInAs("demo2@pipo.local");
   let lessonId = "";
   let sentenceIds: string[] = [];
+  // Unlocking sentences pays real XP: put the shared demo wallet back afterwards
+  let walletBefore: Database["public"]["Tables"]["wallets"]["Row"] | null = null;
 
   beforeAll(async () => {
+    walletBefore = (await admin.from("wallets").select("*").eq("user_id", demo.userId).single())
+      .data;
     const { data, error } = await demo.client.rpc("create_lesson", {
       p_title: "verify-translation int test",
       p_language: "ja",
       p_level: "N5",
-      p_sentences: ["猫が寝ています。", "犬が走っています。"],
+      p_sentences: ["猫が寝ています。", "犬が走っています。", "鳥が歌っています。"],
     });
     if (error || !data) throw error ?? new Error("lesson not created");
     lessonId = data;
@@ -55,6 +59,15 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
 
   afterAll(async () => {
     await demo.client.from("lessons").delete().eq("id", lessonId);
+    // Keep the demo account's XP, ledger and daily manual XP as they were
+    const keys = sentenceIds.map((id) => `sentence:${id}`);
+    await admin.from("reward_claims").delete().eq("user_id", demo.userId).in("claim_key", keys);
+    await admin
+      .from("transactions")
+      .delete()
+      .eq("user_id", demo.userId)
+      .in("idempotency_key", keys);
+    if (walletBefore) await admin.from("wallets").update(walletBefore).eq("user_id", demo.userId);
   });
 
   const params = (overrides: Partial<Parameters<typeof verifyTranslation>[0]> = {}) => ({
@@ -83,6 +96,8 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
       }),
     );
     expect(result).toMatchObject({ verdict: "exact", sentenceCompleted: true });
+    // xp-levels test case #20: the route tells the UI what the server paid for this sentence
+    expect(result.xp).toEqual({ points: 10, awarded: 10, capped: false });
 
     const { data: sentence } = await demo.client
       .from("sentences")
@@ -102,6 +117,7 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
       verdict: "incorrect",
       sentenceCompleted: false,
       referenceTranslation: null,
+      xp: null,
     });
 
     const { data: logs } = await demo.client
@@ -116,6 +132,43 @@ describe("verifyTranslation (local Supabase, fake grader)", async () => {
       .eq("id", sentenceIds[1] ?? "")
       .single();
     expect(sentence?.completed_at).toBeNull();
+  });
+
+  it("counts a newly unlocked sentence as study activity (streak), not a wrong attempt", async () => {
+    const { data: before } = await admin
+      .from("wallets")
+      .select("streak_current, streak_best, last_active_date")
+      .eq("user_id", demo.userId)
+      .single();
+    if (!before) throw new Error("wallet missing");
+    // Pretend the streak broke three days ago
+    await admin
+      .from("wallets")
+      .update({ streak_current: 4, last_active_date: "2000-01-01" })
+      .eq("user_id", demo.userId);
+
+    try {
+      await verifyTranslation(
+        params({ sentenceId: sentenceIds[2] ?? "", userTranslation: "Sai.", grade: wrong }),
+      );
+      const afterWrong = await admin
+        .from("wallets")
+        .select("last_active_date")
+        .eq("user_id", demo.userId)
+        .single();
+      expect(afterWrong.data?.last_active_date).toBe("2000-01-01");
+
+      await verifyTranslation(params({ sentenceId: sentenceIds[2] ?? "" }));
+      const afterPass = await admin
+        .from("wallets")
+        .select("streak_current, last_active_date")
+        .eq("user_id", demo.userId)
+        .single();
+      expect(afterPass.data?.streak_current).toBe(1);
+      expect(afterPass.data?.last_active_date).not.toBe("2000-01-01");
+    } finally {
+      await admin.from("wallets").update(before).eq("user_id", demo.userId);
+    }
   });
 
   it("hides other users' sentences as NOT_FOUND", async () => {

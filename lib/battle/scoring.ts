@@ -1,10 +1,11 @@
+import { GAME } from "@/lib/game/config";
 import type { Verdict } from "@/lib/schemas/translation";
 
-const BASE_POINTS: Record<Verdict, number> = { exact: 10, acceptable: 7, incorrect: 0 };
+const BASE_POINTS: Record<Verdict, number> = { ...GAME.translation.points, incorrect: 0 };
 
 /** Seconds within which a correct answer earns the full speed bonus. */
-export const FAST_ANSWER_SECONDS = 20;
-export const MAX_SPEED_BONUS = 5;
+export const FAST_ANSWER_SECONDS = GAME.battle.fastAnswerSeconds;
+export const MAX_SPEED_BONUS = GAME.battle.maxSpeedBonus;
 
 /**
  * Points for one battle answer: accuracy first, plus a speed bonus that shrinks by one point

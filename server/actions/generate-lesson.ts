@@ -12,6 +12,8 @@ import { getServerEnv } from "@/server/env";
 import { AiError } from "@/server/gemini";
 import { logger } from "@/server/logger";
 import { requireOnboardedProfile } from "@/server/profile";
+import { CreateLessonError, createGeneratedLesson } from "@/server/services/create-lesson";
+import { createAdminClient } from "@/server/supabase-admin";
 
 const generateSchema = z
   .object({
@@ -53,15 +55,21 @@ export async function generateLesson(input: unknown): Promise<ActionResult> {
     return { ok: false, error: "translate.errors.unavailable" };
   }
 
-  const { data: lessonId, error } = await supabase.rpc("create_lesson", {
-    p_title: lesson.title,
-    p_language: language,
-    p_level: level,
-    p_sentences: lesson.sentences,
-    p_source: "ai",
-  });
-  if (error || !lessonId) {
-    logger.error("saving generated lesson failed", { code: error?.code });
+  let lessonId: string;
+  try {
+    // Only the server creates ai lessons (they are outside the daily XP cap for manual ones)
+    lessonId = await createGeneratedLesson({
+      adminClient: createAdminClient(),
+      userId: profile.user_id,
+      title: lesson.title,
+      language,
+      level,
+      sentences: lesson.sentences,
+    });
+  } catch (error) {
+    logger.error("saving generated lesson failed", {
+      code: error instanceof CreateLessonError ? error.code : "INTERNAL",
+    });
     return { ok: false, error: "errors.unexpected" };
   }
 

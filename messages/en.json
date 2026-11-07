@@ -285,6 +285,11 @@
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
       "network": "Connection lost. Check your network and try again."
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "Today's XP limit for your own lessons is reached",
+      "streakKept": "Your study streak still counts"
     }
   },
   "result": {
@@ -300,7 +305,9 @@
     "backHome": "Back to dashboard",
     "publish": "Share to community",
     "publishing": "Sharing…",
-    "publishFailed": "Couldn't share it, please try again."
+    "publishFailed": "Couldn't share it, please try again.",
+    "capped": "Today's XP limit for your own lessons is reached, so this lesson has no completion reward",
+    "tooShort": "Lessons need at least 3 sentences for a completion reward"
   },
   "dictionary": {
     "explain": "Explain (AI)",
@@ -372,7 +379,8 @@
     "toDashboard": "Back to dashboard",
     "saveFailed": "Some reviews could not be saved. Please reload the page.",
     "saving": "Saving your results...",
-    "offlineQueued": "{count, plural, one {# review will be saved when you're back online} other {# reviews will be saved when you're back online}}"
+    "offlineQueued": "{count, plural, one {# review will be saved when you're back online} other {# reviews will be saved when you're back online}}",
+    "clearBonus": "+{xp} XP · Today's reviews all done"
   },
   "pomodoro": {
     "ready": "Ready",
@@ -750,5 +758,23 @@
     "description": "This page needs a connection. Notebook and Review still open if you've visited them before.",
     "review": "Review",
     "notebook": "Notebook"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "Level {level}: {into}/{next} XP to the next milestone"
+    },
+    "levelUp": {
+      "level": "Level {level}!",
+      "star": "Endurance star ★ #{stars}!",
+      "source": {
+        "sentence_passed": "The sentence you just translated took you to a new milestone.",
+        "lesson_bonus": "Your lesson completion bonus took you to a new milestone.",
+        "flashcard_review": "The review you just did took you to a new milestone.",
+        "review_clear": "Clearing today's reviews took you to a new milestone."
+      }
+    }
   }
 }
