@@ -391,18 +391,24 @@
     "giveUp": "Give up (no reward)",
     "skipBreak": "Skip break",
     "focusHint": "You can leave or reload — the timer runs on server time.",
-    "idleHint": "Finish a session to plant a tree in your Knowledge Garden.",
+    "idleHint": "Finish a session to tend a tree in your Knowledge Garden.",
     "toGarden": "See the garden",
-    "rewardToast": "Session done! +{coins} coins and a new tree.",
+    "rewardToast": "Session done! +{coins} Coins, your garden grew.",
     "focusDoneTitle": "Focus time is over",
     "breakDoneTitle": "Break is over",
     "breakDoneBody": "Ready for the next session?",
     "startFailed": "Could not start the session. Please try again.",
-    "claimFailed": "Could not claim the reward for this session."
+    "claimFailed": "Could not claim the reward for this session.",
+    "tree": {
+      "title": "Tree to plant",
+      "growing": "Tending: {species} · {sessions}/{total} sessions",
+      "needsSeed": "Needs a seed",
+      "lockedError": "This tree needs a seed."
+    }
   },
   "garden": {
     "title": "Knowledge Garden",
-    "description": "Every completed focus session grows a tree.",
+    "description": "Each focus session helps a tree grow: sprout, sapling, then mature.",
     "plant": "Plant a tree",
     "statsLabel": "Garden stats",
     "trees": "Trees",
@@ -411,7 +417,52 @@
     "empty": "Your garden is empty.",
     "emptyHint": "Finish a Pomodoro session to plant your first tree.",
     "treeLabel": "Tree from a {minutes}-minute session",
-    "decorations": "Decorations"
+    "decorations": "Decorations",
+    "species": {
+      "pine": "Japanese pine",
+      "bamboo": "Bamboo",
+      "maple": "Red maple",
+      "sakura": "Cherry"
+    },
+    "sceneLabel": "Knowledge garden: {count} trees, {growing} growing",
+    "sceneError": "The garden can't be shown on this device. The tree list is below.",
+    "treeList": "Trees in the garden",
+    "stage": {
+      "sprout": "Sprout",
+      "sapling": "Sapling",
+      "mature": "Mature"
+    },
+    "pipo": {
+      "firstTree": "Shall we plant our first tree? One focus session is enough.",
+      "growing": "The {species} needs {count} more sessions to grow up!",
+      "bloom": "We studied today, the cherry tree is blooming!",
+      "bloomHint": "Translate just one sentence and the cherry tree will bloom.",
+      "treeCount": "Our garden has {count} trees now!"
+    },
+    "greet": "Say hi to Pipo",
+    "info": {
+      "sessions": "Tended",
+      "sessionsValue": "{sessions}/{total} sessions",
+      "planted": "Planted",
+      "matured": "Grew up",
+      "legacy": "This tree comes from focus sessions before the garden was redesigned."
+    },
+    "decor": {
+      "title": "Arrange decorations",
+      "placeLabel": "Where to put the {item}",
+      "storage": "In storage",
+      "otherGarden": "In garden {garden}",
+      "slot": "Spot {slot}",
+      "slotTakenBy": "Spot {slot} · {item}",
+      "slotTaken": "Another decoration is already there.",
+      "failed": "Couldn't place it, please try again."
+    },
+    "switcher": {
+      "label": "Gardens",
+      "previous": "Previous garden",
+      "next": "Next garden",
+      "position": "Garden {index}/{count}"
+    }
   },
   "audio": {
     "play": "Listen",

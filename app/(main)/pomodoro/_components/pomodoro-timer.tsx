@@ -5,16 +5,26 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+import type { TreeSpecies } from "@/lib/garden/growth";
 import { FOCUS_OPTIONS } from "@/lib/pomodoro/timer";
+import type { GardenStatus } from "@/server/queries/garden";
 
 import { usePomodoro } from "../_hooks/use-pomodoro";
 
 import { ProgressRing } from "./progress-ring";
+import { TreePicker } from "./tree-picker";
 
-export function PomodoroTimer() {
+interface PomodoroTimerProps {
+  garden: GardenStatus;
+}
+
+export function PomodoroTimer({ garden }: PomodoroTimerProps) {
   const t = useTranslations("pomodoro");
   const pomodoro = usePomodoro();
   const { phase } = pomodoro;
+  const [species, setSpecies] = useState<TreeSpecies>("pine");
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col items-center gap-8">
@@ -43,6 +53,15 @@ export function PomodoroTimer() {
       )}
 
       {phase === "idle" && (
+        <TreePicker
+          growing={garden.growing}
+          ownedItemIds={garden.ownedItemIds}
+          value={species}
+          onChange={setSpecies}
+        />
+      )}
+
+      {phase === "idle" && (
         <div className="grid w-full grid-cols-2 gap-3">
           {FOCUS_OPTIONS.map((minutes) => (
             <Button
@@ -50,7 +69,7 @@ export function PomodoroTimer() {
               size="lg"
               variant={minutes === 25 ? "default" : "outline"}
               disabled={pomodoro.isPending}
-              onClick={() => pomodoro.start(minutes)}
+              onClick={() => pomodoro.start(minutes, garden.growing ? undefined : species)}
             >
               {t("startMinutes", { minutes })}
             </Button>

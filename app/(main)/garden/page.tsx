@@ -8,11 +8,11 @@ import { GardenContent } from "./_components/garden-content";
 
 export const metadata: Metadata = { title: "Garden" };
 
-export default function GardenPage() {
+export default function GardenPage({ searchParams }: PageProps<"/garden">) {
   return (
     <PageContainer>
       <Suspense fallback={<Skeleton className="h-64 rounded-2xl" />}>
-        <GardenContent />
+        <GardenContent searchParams={searchParams} />
       </Suspense>
     </PageContainer>
   );

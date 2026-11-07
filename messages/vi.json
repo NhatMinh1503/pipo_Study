@@ -391,18 +391,24 @@
     "giveUp": "Bỏ cuộc (không nhận thưởng)",
     "skipBreak": "Bỏ qua giờ nghỉ",
     "focusHint": "Rời trang hay tải lại vẫn được — đồng hồ chạy theo giờ máy chủ.",
-    "idleHint": "Hoàn thành một phiên để trồng một cây trong Vườn tri thức.",
+    "idleHint": "Hoàn thành một phiên để chăm cây trong Vườn tri thức.",
     "toGarden": "Xem Vườn tri thức",
-    "rewardToast": "Xong phiên! +{coins} Coins, một cây mới đã được trồng.",
+    "rewardToast": "Xong phiên! +{coins} Coins, cây trong vườn đã lớn thêm.",
     "focusDoneTitle": "Hết giờ tập trung",
     "breakDoneTitle": "Hết giờ nghỉ",
     "breakDoneBody": "Sẵn sàng cho phiên tiếp theo?",
     "startFailed": "Không bắt đầu được phiên. Hãy thử lại.",
-    "claimFailed": "Không nhận được thưởng cho phiên này."
+    "claimFailed": "Không nhận được thưởng cho phiên này.",
+    "tree": {
+      "title": "Cây sẽ trồng",
+      "growing": "Đang chăm: {species} · {sessions}/{total} phiên",
+      "needsSeed": "Cần hạt giống",
+      "lockedError": "Loài cây này cần hạt giống."
+    }
   },
   "garden": {
     "title": "Vườn tri thức",
-    "description": "Mỗi phiên tập trung trọn vẹn là một cái cây.",
+    "description": "Mỗi phiên tập trung giúp cây lớn thêm: mầm, cây con, rồi trưởng thành.",
     "plant": "Trồng cây mới",
     "statsLabel": "Thống kê vườn",
     "trees": "Số cây",
@@ -411,7 +417,52 @@
     "empty": "Vườn còn trống.",
     "emptyHint": "Hoàn thành một phiên Pomodoro để trồng cây đầu tiên.",
     "treeLabel": "Cây từ phiên {minutes} phút",
-    "decorations": "Đồ trang trí"
+    "decorations": "Đồ trang trí",
+    "species": {
+      "pine": "Thông Nhật",
+      "bamboo": "Tre",
+      "maple": "Phong đỏ",
+      "sakura": "Anh đào"
+    },
+    "sceneLabel": "Vườn tri thức: {count} cây, {growing} cây đang lớn",
+    "sceneError": "Không hiển thị được khu vườn trên thiết bị này. Danh sách cây vẫn ở bên dưới.",
+    "treeList": "Cây trong vườn",
+    "stage": {
+      "sprout": "Mầm",
+      "sapling": "Cây con",
+      "mature": "Trưởng thành"
+    },
+    "pipo": {
+      "firstTree": "Mình trồng cây đầu tiên nhé? Một phiên tập trung là đủ.",
+      "growing": "Cây {species} còn {count} phiên nữa là trưởng thành!",
+      "bloom": "Hôm nay mình học rồi, anh đào nở hoa kìa!",
+      "bloomHint": "Dịch một câu thôi là anh đào sẽ nở đó.",
+      "treeCount": "Vườn mình có {count} cây rồi!"
+    },
+    "greet": "Chào Pipo",
+    "info": {
+      "sessions": "Đã chăm",
+      "sessionsValue": "{sessions}/{total} phiên",
+      "planted": "Ngày trồng",
+      "matured": "Trưởng thành",
+      "legacy": "Cây này được trồng từ các phiên tập trung trước khi vườn được làm mới."
+    },
+    "decor": {
+      "title": "Sắp xếp đồ trang trí",
+      "placeLabel": "Vị trí của {item}",
+      "storage": "Trong kho",
+      "otherGarden": "Ở khu vườn {garden}",
+      "slot": "Ô {slot}",
+      "slotTakenBy": "Ô {slot} · {item}",
+      "slotTaken": "Ô này đã có đồ trang trí khác.",
+      "failed": "Chưa đặt được, thử lại nhé."
+    },
+    "switcher": {
+      "label": "Khu vườn",
+      "previous": "Khu vườn trước",
+      "next": "Khu vườn sau",
+      "position": "Khu vườn {index}/{count}"
+    }
   },
   "audio": {
     "play": "Nghe",

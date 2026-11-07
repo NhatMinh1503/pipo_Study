@@ -72,3 +72,32 @@ export async function markManualXpEarnedToday(email: string, xp: number) {
   });
   if (error) throw error;
 }
+
+/** Puts a tree in the learner's garden directly (garden tests). */
+export async function plantTree(
+  email: string,
+  tree: {
+    species: "pine" | "bamboo" | "maple" | "sakura";
+    sessions: number;
+    plot?: number;
+    garden?: number;
+  },
+) {
+  const { error } = await admin.from("garden_trees").insert({
+    user_id: await findUserId(email),
+    garden_index: tree.garden ?? 1,
+    plot_index: tree.plot ?? 0,
+    species: tree.species,
+    sessions: tree.sessions,
+    matured_at: tree.sessions >= 4 ? new Date().toISOString() : null,
+  });
+  if (error) throw error;
+}
+
+/** Gives the learner a shop item without spending coins (garden decoration tests). */
+export async function grantItem(email: string, itemId: string) {
+  const { error } = await admin
+    .from("purchases")
+    .insert({ user_id: await findUserId(email), item_id: itemId });
+  if (error) throw error;
+}
