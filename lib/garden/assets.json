@@ -1,0 +1,454 @@
+{
+  "$comment": "Garden art manifest: logical px (files are @2x). Source of truth for design/game/art-bible.md and asset-prompts.md.",
+  "assets": {
+    "pipo-body": {
+      "width": 40,
+      "height": 40,
+      "anchor": {
+        "x": 20,
+        "y": 38
+      },
+      "kind": "part"
+    },
+    "pipo-eyes-open": {
+      "width": 16,
+      "height": 10,
+      "anchor": {
+        "x": 8,
+        "y": 5
+      },
+      "kind": "part",
+      "attach": {
+        "x": 25,
+        "y": 14
+      }
+    },
+    "pipo-eyes-closed": {
+      "width": 16,
+      "height": 10,
+      "anchor": {
+        "x": 8,
+        "y": 5
+      },
+      "kind": "part",
+      "attach": {
+        "x": 25,
+        "y": 14
+      }
+    },
+    "pipo-wing-front": {
+      "width": 14,
+      "height": 16,
+      "anchor": {
+        "x": 3,
+        "y": 3
+      },
+      "kind": "part",
+      "attach": {
+        "x": 13,
+        "y": 21
+      }
+    },
+    "pipo-wing-back": {
+      "width": 12,
+      "height": 14,
+      "anchor": {
+        "x": 9,
+        "y": 3
+      },
+      "kind": "part",
+      "attach": {
+        "x": 29,
+        "y": 19
+      }
+    },
+    "pipo-leg-front": {
+      "width": 8,
+      "height": 10,
+      "anchor": {
+        "x": 4,
+        "y": 1
+      },
+      "kind": "part",
+      "attach": {
+        "x": 16,
+        "y": 36
+      }
+    },
+    "pipo-leg-back": {
+      "width": 8,
+      "height": 10,
+      "anchor": {
+        "x": 4,
+        "y": 1
+      },
+      "kind": "part",
+      "attach": {
+        "x": 24,
+        "y": 36
+      }
+    },
+    "pipo-shadow": {
+      "width": 32,
+      "height": 10,
+      "anchor": {
+        "x": 16,
+        "y": 5
+      },
+      "kind": "shadow",
+      "attach": {
+        "x": 20,
+        "y": 40
+      }
+    },
+    "tree-pine-sprout": {
+      "width": 32,
+      "height": 32,
+      "anchor": {
+        "x": 16,
+        "y": 30
+      },
+      "kind": "sprite"
+    },
+    "tree-pine-sapling": {
+      "width": 48,
+      "height": 64,
+      "anchor": {
+        "x": 24,
+        "y": 60
+      },
+      "kind": "sprite"
+    },
+    "tree-pine-mature": {
+      "width": 80,
+      "height": 112,
+      "anchor": {
+        "x": 40,
+        "y": 108
+      },
+      "kind": "sprite"
+    },
+    "tree-bamboo-sprout": {
+      "width": 32,
+      "height": 32,
+      "anchor": {
+        "x": 16,
+        "y": 30
+      },
+      "kind": "sprite"
+    },
+    "tree-bamboo-sapling": {
+      "width": 48,
+      "height": 64,
+      "anchor": {
+        "x": 24,
+        "y": 60
+      },
+      "kind": "sprite"
+    },
+    "tree-bamboo-mature": {
+      "width": 80,
+      "height": 112,
+      "anchor": {
+        "x": 40,
+        "y": 108
+      },
+      "kind": "sprite"
+    },
+    "tree-maple-sprout": {
+      "width": 32,
+      "height": 32,
+      "anchor": {
+        "x": 16,
+        "y": 30
+      },
+      "kind": "sprite"
+    },
+    "tree-maple-sapling": {
+      "width": 48,
+      "height": 64,
+      "anchor": {
+        "x": 24,
+        "y": 60
+      },
+      "kind": "sprite"
+    },
+    "tree-maple-mature": {
+      "width": 80,
+      "height": 112,
+      "anchor": {
+        "x": 40,
+        "y": 108
+      },
+      "kind": "sprite"
+    },
+    "tree-sakura-sprout": {
+      "width": 32,
+      "height": 32,
+      "anchor": {
+        "x": 16,
+        "y": 30
+      },
+      "kind": "sprite"
+    },
+    "tree-sakura-sapling": {
+      "width": 48,
+      "height": 64,
+      "anchor": {
+        "x": 24,
+        "y": 60
+      },
+      "kind": "sprite"
+    },
+    "tree-sakura-mature": {
+      "width": 80,
+      "height": 112,
+      "anchor": {
+        "x": 40,
+        "y": 108
+      },
+      "kind": "sprite"
+    },
+    "tree-sakura-mature-bloom": {
+      "width": 80,
+      "height": 112,
+      "anchor": {
+        "x": 40,
+        "y": 108
+      },
+      "kind": "sprite"
+    },
+    "tile-grass-a": {
+      "width": 64,
+      "height": 48,
+      "anchor": {
+        "x": 32,
+        "y": 24
+      },
+      "kind": "tile"
+    },
+    "tile-grass-b": {
+      "width": 64,
+      "height": 48,
+      "anchor": {
+        "x": 32,
+        "y": 24
+      },
+      "kind": "tile"
+    },
+    "tile-path": {
+      "width": 64,
+      "height": 48,
+      "anchor": {
+        "x": 32,
+        "y": 24
+      },
+      "kind": "tile"
+    },
+    "deco-pond": {
+      "width": 128,
+      "height": 96,
+      "anchor": {
+        "x": 64,
+        "y": 48
+      },
+      "kind": "sprite"
+    },
+    "deco-lantern": {
+      "width": 32,
+      "height": 56,
+      "anchor": {
+        "x": 16,
+        "y": 54
+      },
+      "kind": "sprite"
+    },
+    "deco-bench": {
+      "width": 64,
+      "height": 40,
+      "anchor": {
+        "x": 32,
+        "y": 38
+      },
+      "kind": "sprite"
+    },
+    "deco-torii": {
+      "width": 96,
+      "height": 96,
+      "anchor": {
+        "x": 48,
+        "y": 94
+      },
+      "kind": "sprite"
+    },
+    "deco-bridge": {
+      "width": 96,
+      "height": 56,
+      "anchor": {
+        "x": 48,
+        "y": 40
+      },
+      "kind": "sprite"
+    },
+    "koi-a": {
+      "width": 20,
+      "height": 10,
+      "anchor": {
+        "x": 10,
+        "y": 5
+      },
+      "kind": "sprite"
+    },
+    "koi-b": {
+      "width": 20,
+      "height": 10,
+      "anchor": {
+        "x": 10,
+        "y": 5
+      },
+      "kind": "sprite"
+    },
+    "cat-body": {
+      "width": 36,
+      "height": 24,
+      "anchor": {
+        "x": 18,
+        "y": 22
+      },
+      "kind": "part"
+    },
+    "cat-leg-front": {
+      "width": 6,
+      "height": 9,
+      "anchor": {
+        "x": 3,
+        "y": 1
+      },
+      "kind": "part",
+      "attach": {
+        "x": 24,
+        "y": 20
+      }
+    },
+    "cat-leg-back": {
+      "width": 6,
+      "height": 9,
+      "anchor": {
+        "x": 3,
+        "y": 1
+      },
+      "kind": "part",
+      "attach": {
+        "x": 10,
+        "y": 20
+      }
+    },
+    "cat-tail": {
+      "width": 16,
+      "height": 14,
+      "anchor": {
+        "x": 2,
+        "y": 12
+      },
+      "kind": "part",
+      "attach": {
+        "x": 4,
+        "y": 8
+      }
+    },
+    "cat-shadow": {
+      "width": 30,
+      "height": 8,
+      "anchor": {
+        "x": 15,
+        "y": 4
+      },
+      "kind": "shadow",
+      "attach": {
+        "x": 18,
+        "y": 24
+      }
+    },
+    "bg-sky": {
+      "width": 640,
+      "height": 432,
+      "anchor": {
+        "x": 0,
+        "y": 0
+      },
+      "kind": "background"
+    },
+    "bg-fuji": {
+      "width": 320,
+      "height": 96,
+      "anchor": {
+        "x": 160,
+        "y": 96
+      },
+      "kind": "sprite"
+    },
+    "cloud-a": {
+      "width": 96,
+      "height": 40,
+      "anchor": {
+        "x": 48,
+        "y": 20
+      },
+      "kind": "sprite"
+    },
+    "cloud-b": {
+      "width": 64,
+      "height": 28,
+      "anchor": {
+        "x": 32,
+        "y": 14
+      },
+      "kind": "sprite"
+    },
+    "petal": {
+      "width": 8,
+      "height": 8,
+      "anchor": {
+        "x": 4,
+        "y": 4
+      },
+      "kind": "sprite"
+    },
+    "ui-coin": {
+      "width": 48,
+      "height": 48,
+      "anchor": {
+        "x": 24,
+        "y": 24
+      },
+      "kind": "ui"
+    },
+    "ui-streak": {
+      "width": 48,
+      "height": 48,
+      "anchor": {
+        "x": 24,
+        "y": 24
+      },
+      "kind": "ui"
+    },
+    "ui-shield": {
+      "width": 48,
+      "height": 48,
+      "anchor": {
+        "x": 24,
+        "y": 24
+      },
+      "kind": "ui"
+    },
+    "ui-chest": {
+      "width": 48,
+      "height": 48,
+      "anchor": {
+        "x": 24,
+        "y": 24
+      },
+      "kind": "ui"
+    }
+  }
+}
