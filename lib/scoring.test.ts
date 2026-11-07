@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { scoreLesson, scoreSentence } from "./scoring";
+import { lessonRewards, scoreLesson, scoreSentence } from "./scoring";
 
 describe("scoreSentence", () => {
   it.each([
@@ -36,36 +36,53 @@ describe("scoreSentence", () => {
 });
 
 describe("scoreLesson", () => {
-  it("adds a perfect bonus when every sentence is exact on the first try", () => {
+  it("marks a lesson perfect when every sentence is exact on the first try", () => {
     const result = scoreLesson([{ verdicts: ["exact"] }, { verdicts: ["exact"] }]);
-    expect(result).toMatchObject({
-      points: 20,
-      maxPoints: 20,
-      percent: 100,
-      xp: 20,
-      coins: 2 + 3,
-      perfect: true,
-    });
+    expect(result).toMatchObject({ points: 20, maxPoints: 20, percent: 100, perfect: true });
   });
 
-  it("computes percent, XP and coins for a mixed lesson", () => {
+  it("computes points and percent for a mixed lesson", () => {
     const result = scoreLesson([
       { verdicts: ["exact"] },
       { verdicts: ["incorrect", "acceptable"] },
       { verdicts: ["acceptable"] },
     ]);
     // 10 + 5 + 7 = 22 of 30
-    expect(result).toMatchObject({
-      points: 22,
-      maxPoints: 30,
-      percent: 73,
-      xp: 22,
-      coins: 2,
-      perfect: false,
-    });
+    expect(result).toMatchObject({ points: 22, maxPoints: 30, percent: 73, perfect: false });
   });
 
   it("handles an empty lesson", () => {
-    expect(scoreLesson([])).toMatchObject({ points: 0, percent: 0, coins: 0, perfect: false });
+    expect(scoreLesson([])).toMatchObject({ points: 0, percent: 0, perfect: false });
+  });
+});
+
+// xp-levels §4.2 (test case #2): completion rewards need at least 3 sentences
+describe("lessonRewards", () => {
+  it("pays nothing for a lesson shorter than 3 sentences", () => {
+    expect(lessonRewards({ sentenceCount: 2, points: 20, perfect: true })).toEqual({
+      bonusXp: 0,
+      coins: 0,
+    });
+  });
+
+  it("pays the bonus and one coin per 10 points from 3 sentences", () => {
+    expect(lessonRewards({ sentenceCount: 3, points: 22, perfect: false })).toEqual({
+      bonusXp: 5,
+      coins: 2,
+    });
+  });
+
+  it("adds the perfect coins bonus", () => {
+    expect(lessonRewards({ sentenceCount: 5, points: 50, perfect: true })).toEqual({
+      bonusXp: 5,
+      coins: 5 + 3,
+    });
+  });
+
+  it("matches the spec example: 5 sentences, 42 points, not perfect", () => {
+    expect(lessonRewards({ sentenceCount: 5, points: 42, perfect: false })).toEqual({
+      bonusXp: 5,
+      coins: 4,
+    });
   });
 });

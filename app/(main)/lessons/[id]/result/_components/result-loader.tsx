@@ -9,21 +9,24 @@ import { VerdictBadge } from "@/components/lessons/verdict-badge";
 import { Button } from "@/components/ui/button";
 import { scoreLesson } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/server";
+import { getLessonRewardSummary } from "@/server/queries/lesson-reward";
 import { getLessonWorkspace, toSentenceAttempts } from "@/server/queries/lesson-workspace";
 
 import { PublishButton } from "./publish-button";
 
 export async function ResultLoader({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const client = await createClient();
   const [workspace, t] = await Promise.all([
-    getLessonWorkspace(await createClient(), id),
+    getLessonWorkspace(client, id),
     getTranslations("result"),
   ]);
   if (!workspace) notFound();
   if (!workspace.completedAt) redirect(`/lessons/${id}/translate`);
 
-  // Same function the server used to pay the reward, so the numbers always match
+  // Points and verdicts per sentence; the rewards shown are what the server actually paid
   const score = scoreLesson(toSentenceAttempts(workspace));
+  const reward = await getLessonRewardSummary(client, workspace.id, workspace.sentences.length);
 
   return (
     <>
@@ -36,9 +39,14 @@ export async function ResultLoader({ params }: { params: Promise<{ id: string }>
         className="grid grid-cols-3 border-2 border-border bg-card sm:divide-x sm:divide-dashed sm:divide-border/30"
       >
         <StatCard label={t("score")} value={`${score.percent}%`} icon={Target} />
-        <StatCard label={t("xp")} value={`+${score.xp}`} icon={Sparkles} />
-        <StatCard label={t("coins")} value={`+${score.coins}`} icon={Coins} />
+        <StatCard label={t("xp")} value={`+${reward.xp}`} icon={Sparkles} />
+        <StatCard label={t("coins")} value={`+${reward.coins}`} icon={Coins} />
       </section>
+      {(reward.capped || reward.tooShort) && (
+        <p role="status" className="sheet-flat bg-tint-sand p-3 text-sm">
+          {reward.capped ? t("capped") : t("tooShort")}
+        </p>
+      )}
 
       <section className="space-y-3">
         <h2 className="mono-label">{t("details")}</h2>

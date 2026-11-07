@@ -19,13 +19,16 @@ export async function grantXp(email: string, xp: number) {
   await grantRewards(email, { xp, coins: 0 });
 }
 
-async function grantRewards(email: string, { xp, coins }: { xp: number; coins: number }) {
+async function findUserId(email: string): Promise<string> {
   const { data } = await admin.auth.admin.listUsers({ perPage: 1000 });
   const user = data.users.find((candidate) => candidate.email === email);
   if (!user) throw new Error(`No user ${email}`);
+  return user.id;
+}
 
+async function grantRewards(email: string, { xp, coins }: { xp: number; coins: number }) {
   const { error } = await admin.rpc("wallet_apply", {
-    p_user_id: user.id,
+    p_user_id: await findUserId(email),
     p_xp_delta: xp,
     p_coins_delta: coins,
     p_reason: "e2e_grant",
@@ -40,5 +43,32 @@ export async function cancelWaitingBattles() {
     .from("battles")
     .update({ status: "cancelled", finished_at: new Date().toISOString() })
     .eq("status", "waiting");
+  if (error) throw error;
+}
+
+/**
+ * Teardown for tests that create lessons on the shared demo account: deletes exactly the
+ * lesson with this title, so a test that fails half-way leaves nothing behind (leftover
+ * lessons would push the seeded lesson out of the dashboard's "in progress" list).
+ */
+export async function deleteLessonByTitle(email: string, title: string) {
+  const { error } = await admin
+    .from("lessons")
+    .delete()
+    .eq("user_id", await findUserId(email))
+    .eq("title", title);
+  if (error) throw error;
+}
+
+/** Pretends the learner already earned `xp` today from their own lessons (daily cap tests). */
+export async function markManualXpEarnedToday(email: string, xp: number) {
+  const { error } = await admin.from("reward_claims").insert({
+    user_id: await findUserId(email),
+    claim_key: `e2e:${crypto.randomUUID()}`,
+    kind: "sentence",
+    source: "manual",
+    points: xp,
+    xp,
+  });
   if (error) throw error;
 }

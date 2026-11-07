@@ -2,8 +2,10 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
+import { logger } from "@/server/logger";
 
-export type BattleOutcome = "won" | "lost" | "draw" | "waiting" | "active" | "cancelled";
+export type BattleOutcome =
+  "won" | "lost" | "draw" | "waiting" | "active" | "cancelled" | "abandoned";
 
 export interface BattleSummary {
   id: string;
@@ -12,9 +14,20 @@ export interface BattleSummary {
   opponentName: string | null;
 }
 
+/**
+ * Closes rooms nobody keeps open any more (stale waiting rooms, battles both players left).
+ * Runs on demand instead of a scheduled job: here, in the battle room and in join_battle.
+ */
+export async function closeAbandonedBattles(): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("close_abandoned_battles");
+  if (error) logger.warn("close abandoned battles failed", { code: error.code, module: "battle" });
+}
+
 /** The current user's latest battles, newest first. */
 export async function listRecentBattles(limit = 10): Promise<BattleSummary[]> {
   const user = await requireUser();
+  await closeAbandonedBattles();
   const supabase = await createClient();
   const { data: battles } = await supabase
     .from("battles")

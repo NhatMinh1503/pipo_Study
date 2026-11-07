@@ -31,3 +31,27 @@ export async function leaveBattle(battleId: unknown): Promise<ActionResult> {
   const { error } = await supabase.rpc("leave_battle", { p_battle_id: id.data });
   return error ? { ok: false, error: "errors.unexpected" } : { ok: true };
 }
+
+/** "I still have this battle open." Sent about every 15 s by the battle room. */
+export async function sendBattleHeartbeat(battleId: unknown): Promise<ActionResult> {
+  const id = z.uuid().safeParse(battleId);
+  if (!id.success) return { ok: false, error: "errors.unexpected" };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("battle_heartbeat", { p_battle_id: id.data });
+  return error ? { ok: false, error: "errors.unexpected" } : { ok: true };
+}
+
+/**
+ * Asks the server to close the battle because the opponent has been absent too long.
+ * `ok: true` only when the battle was closed in the caller's favour.
+ */
+export async function claimBattleTimeout(battleId: unknown): Promise<ActionResult> {
+  const id = z.uuid().safeParse(battleId);
+  if (!id.success) return { ok: false, error: "errors.unexpected" };
+  const supabase = await createClient();
+  const { data: claimed, error } = await supabase.rpc("claim_battle_timeout", {
+    p_battle_id: id.data,
+  });
+  if (error) return { ok: false, error: "errors.unexpected" };
+  return claimed ? { ok: true } : { ok: false };
+}

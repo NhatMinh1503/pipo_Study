@@ -2,6 +2,7 @@ import { Coins, Flame, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { StatCard } from "@/components/common/stat-card";
+import { LevelProgress } from "@/components/game/level-progress";
 
 import { getDashboardData } from "../_lib/get-dashboard-data";
 
@@ -29,7 +30,13 @@ export async function DashboardContent() {
         aria-label={t("statsLabel")}
         className="sheet grid grid-cols-3 divide-x divide-dashed divide-border/30"
       >
-        <StatCard label={t("xp")} value={data.xp} icon={Sparkles} className="bg-tint-mint" />
+        <StatCard
+          label={t("xp")}
+          value={data.xp}
+          icon={Sparkles}
+          className="bg-tint-mint"
+          footer={<LevelProgress {...data.level} />}
+        />
         <StatCard label={t("coins")} value={data.coins} icon={Coins} className="bg-tint-sand" />
         <StatCard
           label={t("streak")}

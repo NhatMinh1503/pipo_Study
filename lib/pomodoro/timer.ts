@@ -1,6 +1,8 @@
-export const FOCUS_OPTIONS = [25, 50] as const;
+import { GAME } from "@/lib/game/config";
+
+export const FOCUS_OPTIONS = GAME.pomodoro.focusOptions;
 export type FocusMinutes = (typeof FOCUS_OPTIONS)[number];
-export const BREAK_MINUTES = 5;
+export const BREAK_MINUTES = GAME.pomodoro.breakMinutes;
 
 const MINUTE_MS = 60_000;
 

@@ -45,9 +45,9 @@ select is(
   5, 'a full 25-minute session pays 5 coins'
 );
 select results_eq(
-  $$ select xp, coins from public.wallets $$,
-  $$ values (25, 5) $$,
-  'wallet credited with XP = minutes and coins'
+  $$ select xp, coins, streak_current from public.wallets $$,
+  $$ values (0, 5, 0) $$,
+  'Pomodoro pays coins only: no XP, and it is not study activity (xp-levels §3.7)'
 );
 select throws_ok(
   format('select public.complete_pomodoro(%L)', (select id from ids where name = 'second')),

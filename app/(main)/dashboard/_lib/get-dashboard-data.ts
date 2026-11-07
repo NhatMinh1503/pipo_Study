@@ -28,6 +28,8 @@ export interface TodayGoals {
 
 export interface DashboardData {
   xp: number;
+  /** Level and progress, computed by the database (wallet_summaries). */
+  level: { level: number; stars: number; xpIntoLevel: number; xpToNext: number };
   coins: number;
   streakCurrent: number;
   streakBest: number;
@@ -59,7 +61,10 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   const [wallet, due, inProgress, xpRows, lessonsDone, focus, reviewed, words, errors] =
     await Promise.all([
-      supabase.from("wallets").select("xp, coins, streak_current, streak_best").maybeSingle(),
+      supabase
+        .from("wallet_summaries")
+        .select("xp, coins, effective_streak, streak_best, level, stars, xp_into_level, xp_to_next")
+        .maybeSingle(),
       supabase
         .from("flashcards")
         .select("id", { count: "exact", head: true })
@@ -91,8 +96,15 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   return {
     xp: wallet.data?.xp ?? 0,
+    level: {
+      level: wallet.data?.level ?? 1,
+      stars: wallet.data?.stars ?? 0,
+      xpIntoLevel: wallet.data?.xp_into_level ?? 0,
+      xpToNext: wallet.data?.xp_to_next ?? 50,
+    },
     coins: wallet.data?.coins ?? 0,
-    streakCurrent: wallet.data?.streak_current ?? 0,
+    // effective_streak (SQL) is the single source: a broken streak reads as 0
+    streakCurrent: wallet.data?.effective_streak ?? 0,
     streakBest: wallet.data?.streak_best ?? 0,
     dueCards: due.count ?? 0,
     inProgress,

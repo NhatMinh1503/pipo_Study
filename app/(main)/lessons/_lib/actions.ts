@@ -5,11 +5,13 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import type { ActionResult } from "@/lib/action-result";
-import { findOpenSource } from "@/lib/news/open-sources";
 import { splitSentences } from "@/lib/nlp/split-sentences";
 import { createLessonSchema, MAX_SENTENCES } from "@/lib/schemas/lesson";
 import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/server/auth";
 import { logger } from "@/server/logger";
+import { CreateLessonError, createLessonForLearner } from "@/server/services/create-lesson";
+import { createAdminClient } from "@/server/supabase-admin";
 
 const log = logger.child({ module: "lessons-actions" });
 
@@ -18,8 +20,6 @@ export async function createLesson(input: unknown): Promise<ActionResult> {
   if (!parsed.success) return { ok: false, error: "errors.unexpected" };
 
   const { title, language, level, text, newsUrl } = parsed.data;
-  // Attribution comes from the allow-list, never from what the client sends
-  const source = newsUrl ? findOpenSource(newsUrl) : null;
   const sentences = splitSentences(text, language);
   if (sentences.length === 0) {
     return { ok: false, fieldErrors: { text: "validation.required" } };
@@ -28,24 +28,24 @@ export async function createLesson(input: unknown): Promise<ActionResult> {
     return { ok: false, fieldErrors: { text: "lessons.form.tooManySentences" } };
   }
 
-  const supabase = await createClient();
-  const { data: lessonId, error } = await supabase.rpc("create_lesson", {
-    p_title: title,
-    p_language: language,
-    p_level: level,
-    p_sentences: sentences,
-    ...(source && newsUrl
-      ? {
-          p_source: "news",
-          p_source_name: source.name,
-          p_source_url: newsUrl,
-          p_source_license: source.license,
-        }
-      : {}),
-  });
-
-  if (error || !lessonId) {
-    log.error("create lesson failed", { code: error?.code });
+  let lessonId: string;
+  try {
+    // The server decides the source: only an unchanged news rewrite is a news lesson
+    lessonId = await createLessonForLearner({
+      userClient: await createClient(),
+      adminClient: createAdminClient(),
+      userId: (await requireUser()).id,
+      title,
+      language,
+      level,
+      text,
+      sentences,
+      ...(newsUrl ? { newsUrl } : {}),
+    });
+  } catch (error) {
+    log.error("create lesson failed", {
+      code: error instanceof CreateLessonError ? error.code : "INTERNAL",
+    });
     return { ok: false, error: "errors.unexpected" };
   }
 

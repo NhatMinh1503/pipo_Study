@@ -87,9 +87,9 @@ select is((select count(*)::int from public.sentences), 1, 'A sees own sentences
 select is((select count(*)::int from public.attempts), 1, 'A sees own attempts');
 select is((select count(*)::int from public.wallets), 1, 'A sees own wallet');
 
+-- Lessons are created through create_lesson only (T0: no direct inserts)
 select lives_ok(
-  $$ insert into public.lessons (user_id, title, language, level)
-     values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Second', 'en', 'B1') $$,
+  $$ select public.create_lesson('Second', 'en', 'B1', array['Hello.']) $$,
   'A can create own lesson'
 );
 select lives_ok(
