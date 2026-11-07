@@ -391,14 +391,20 @@
     "giveUp": "やめる（報酬なし）",
     "skipBreak": "休憩をスキップ",
     "focusHint": "ページを離れても再読み込みしても大丈夫。タイマーはサーバー時刻で動きます。",
-    "idleHint": "セッションを完了すると、知識の庭に木が植えられます。",
+    "idleHint": "セッションを完了すると、知識の庭の木が育ちます。",
     "toGarden": "庭を見る",
-    "rewardToast": "セッション完了！+{coins}コイン、新しい木が植えられました。",
+    "rewardToast": "セッション完了！+{coins} コイン、庭の木が育ちました。",
     "focusDoneTitle": "集中時間が終わりました",
     "breakDoneTitle": "休憩が終わりました",
     "breakDoneBody": "次のセッションを始めますか？",
     "startFailed": "セッションを開始できませんでした。もう一度お試しください。",
-    "claimFailed": "このセッションの報酬を受け取れませんでした。"
+    "claimFailed": "このセッションの報酬を受け取れませんでした。",
+    "tree": {
+      "title": "植える木",
+      "growing": "育成中：{species}・{sessions}/{total} セッション",
+      "needsSeed": "種が必要",
+      "lockedError": "この木には種が必要です。"
+    }
   },
   "garden": {
     "title": "知識の庭",
@@ -411,7 +417,13 @@
     "empty": "庭はまだ空です。",
     "emptyHint": "ポモドーロを1回完了して最初の木を植えましょう。",
     "treeLabel": "{minutes}分セッションの木",
-    "decorations": "飾り"
+    "decorations": "飾り",
+    "species": {
+      "pine": "黒松",
+      "bamboo": "竹",
+      "maple": "紅葉",
+      "sakura": "桜"
+    }
   },
   "audio": {
     "play": "聞く",

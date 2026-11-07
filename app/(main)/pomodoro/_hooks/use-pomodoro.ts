@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ import {
   remainingMs,
   type FocusMinutes,
 } from "@/lib/pomodoro/timer";
+import type { TreeSpecies } from "@/lib/garden/growth";
 import { usePomodoroStore } from "@/lib/stores/pomodoro";
 
 import { abandonFocus, completeFocus, startFocus } from "../_lib/actions";
@@ -30,6 +32,7 @@ function notify(title: string, body: string) {
  */
 export function usePomodoro() {
   const t = useTranslations("pomodoro");
+  const router = useRouter();
   const store = usePomodoroStore();
   const now = useNow();
   const [isPending, startTransition] = useTransition();
@@ -59,6 +62,8 @@ export function usePomodoro() {
         toast.success(t("rewardToast", { coins: result.coins }));
         notify(t("focusDoneTitle"), t("rewardToast", { coins: result.coins }));
         usePomodoroStore.getState().startBreak(BREAK_MINUTES);
+        // The garden changed: refresh the tree shown on this page
+        router.refresh();
       } else if (result.status === "too_early") {
         // Device clock ahead of the server: try again shortly
         setTimeout(() => {
@@ -69,7 +74,7 @@ export function usePomodoro() {
         usePomodoroStore.getState().reset();
       }
     });
-  }, [store.phase, store.sessionId, left, t]);
+  }, [store.phase, store.sessionId, left, t, router]);
 
   // Break finished: back to idle
   useEffect(() => {
@@ -89,17 +94,17 @@ export function usePomodoro() {
     };
   }, [store.phase, left, t]);
 
-  const start = (minutes: FocusMinutes) =>
+  const start = (minutes: FocusMinutes, species?: TreeSpecies) =>
     startTransition(async () => {
       if (typeof Notification !== "undefined" && Notification.permission === "default") {
         void Notification.requestPermission();
       }
-      const result = await startFocus(minutes);
+      const result = await startFocus({ minutes, species });
       if (result.ok) {
         setLastReward(null);
         store.startFocus(result);
       } else {
-        toast.error(t("startFailed"));
+        toast.error(t(result.reason === "locked" ? "tree.lockedError" : "startFailed"));
       }
     });
 

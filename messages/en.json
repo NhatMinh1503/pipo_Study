@@ -391,14 +391,20 @@
     "giveUp": "Give up (no reward)",
     "skipBreak": "Skip break",
     "focusHint": "You can leave or reload — the timer runs on server time.",
-    "idleHint": "Finish a session to plant a tree in your Knowledge Garden.",
+    "idleHint": "Finish a session to tend a tree in your Knowledge Garden.",
     "toGarden": "See the garden",
-    "rewardToast": "Session done! +{coins} coins and a new tree.",
+    "rewardToast": "Session done! +{coins} Coins, your garden grew.",
     "focusDoneTitle": "Focus time is over",
     "breakDoneTitle": "Break is over",
     "breakDoneBody": "Ready for the next session?",
     "startFailed": "Could not start the session. Please try again.",
-    "claimFailed": "Could not claim the reward for this session."
+    "claimFailed": "Could not claim the reward for this session.",
+    "tree": {
+      "title": "Tree to plant",
+      "growing": "Tending: {species} · {sessions}/{total} sessions",
+      "needsSeed": "Needs a seed",
+      "lockedError": "This tree needs a seed."
+    }
   },
   "garden": {
     "title": "Knowledge Garden",
@@ -411,7 +417,13 @@
     "empty": "Your garden is empty.",
     "emptyHint": "Finish a Pomodoro session to plant your first tree.",
     "treeLabel": "Tree from a {minutes}-minute session",
-    "decorations": "Decorations"
+    "decorations": "Decorations",
+    "species": {
+      "pine": "Japanese pine",
+      "bamboo": "Bamboo",
+      "maple": "Red maple",
+      "sakura": "Cherry"
+    }
   },
   "audio": {
     "play": "Listen",

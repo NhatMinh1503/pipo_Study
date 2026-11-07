@@ -3,27 +3,39 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
+import { TREE_SPECIES } from "@/lib/garden/growth";
 import { FOCUS_OPTIONS } from "@/lib/pomodoro/timer";
 import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/server/logger";
 
 const log = logger.child({ module: "pomodoro" });
 
-const startSchema = z.union(FOCUS_OPTIONS.map((minutes) => z.literal(minutes)));
+const startSchema = z.object({
+  minutes: z.union(FOCUS_OPTIONS.map((minutes) => z.literal(minutes))),
+  species: z.enum(TREE_SPECIES).optional(),
+});
 
 export type StartFocusResult =
-  { ok: true; id: string; startedAt: string; minutes: number } | { ok: false };
+  | { ok: true; id: string; startedAt: string; minutes: number }
+  | { ok: false; reason: "locked" | "failed" };
 
-/** Starts a focus session; the server records the start time. */
-export async function startFocus(minutes: unknown): Promise<StartFocusResult> {
-  const parsed = startSchema.safeParse(minutes);
-  if (!parsed.success) return { ok: false };
+/**
+ * Starts a focus session; the server records the start time. `species` picks a new tree;
+ * the server ignores it while a tree is growing and refuses a species without its seed.
+ */
+export async function startFocus(input: unknown): Promise<StartFocusResult> {
+  const parsed = startSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, reason: "failed" };
 
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("start_pomodoro", { p_planned_minutes: parsed.data });
+  const { data, error } = await supabase.rpc("start_pomodoro", {
+    p_planned_minutes: parsed.data.minutes,
+    ...(parsed.data.species ? { p_species: parsed.data.species } : {}),
+  });
+  if (error?.code === "42501") return { ok: false, reason: "locked" };
   if (error || !data) {
     log.error("start failed", { code: error?.code });
-    return { ok: false };
+    return { ok: false, reason: "failed" };
   }
   return { ok: true, id: data.id, startedAt: data.started_at, minutes: data.planned_minutes };
 }
