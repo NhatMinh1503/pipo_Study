@@ -408,7 +408,7 @@
   },
   "garden": {
     "title": "Vườn tri thức",
-    "description": "Mỗi phiên tập trung trọn vẹn là một cái cây.",
+    "description": "Mỗi phiên tập trung giúp cây lớn thêm: mầm, cây con, rồi trưởng thành.",
     "plant": "Trồng cây mới",
     "statsLabel": "Thống kê vườn",
     "trees": "Số cây",
@@ -423,6 +423,21 @@
       "bamboo": "Tre",
       "maple": "Phong đỏ",
       "sakura": "Anh đào"
+    },
+    "sceneLabel": "Vườn tri thức: {count} cây, {growing} cây đang lớn",
+    "sceneError": "Không hiển thị được khu vườn trên thiết bị này. Danh sách cây vẫn ở bên dưới.",
+    "treeList": "Cây trong vườn",
+    "stage": {
+      "sprout": "Mầm",
+      "sapling": "Cây con",
+      "mature": "Trưởng thành"
+    },
+    "pipo": {
+      "firstTree": "Mình trồng cây đầu tiên nhé? Một phiên tập trung là đủ.",
+      "growing": "Cây {species} còn {count} phiên nữa là trưởng thành!",
+      "bloom": "Hôm nay mình học rồi, anh đào nở hoa kìa!",
+      "bloomHint": "Dịch một câu thôi là anh đào sẽ nở đó.",
+      "treeCount": "Vườn mình có {count} cây rồi!"
     }
   },
   "audio": {

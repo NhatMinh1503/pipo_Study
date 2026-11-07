@@ -1,16 +1,19 @@
 import "server-only";
 
+import { dayKey } from "@/lib/dashboard/days";
+import { GAME } from "@/lib/game/config";
 import type { TreeSpecies } from "@/lib/garden/growth";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentProfile } from "@/server/profile";
 
-export interface GardenTree {
+export interface CompletedSession {
   id: string;
   minutes: number;
-  plantedAt: string;
+  endedAt: string;
 }
 
-/** One tree per completed focus session, oldest first. RLS scopes rows to the user. */
-export async function getGardenTrees(): Promise<GardenTree[]> {
+/** Completed focus sessions, oldest first (focus time stats). RLS scopes rows to the user. */
+export async function getCompletedSessions(): Promise<CompletedSession[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("pomodoro_sessions")
@@ -22,7 +25,7 @@ export async function getGardenTrees(): Promise<GardenTree[]> {
   return data.map((session) => ({
     id: session.id,
     minutes: session.planned_minutes,
-    plantedAt: session.ended_at ?? "",
+    endedAt: session.ended_at ?? "",
   }));
 }
 
@@ -45,5 +48,71 @@ export async function getGardenStatus(): Promise<GardenStatus> {
       ? { species: growing.data.species, sessions: growing.data.sessions }
       : null,
     ownedItemIds: (purchases.data ?? []).map((row) => row.item_id),
+  };
+}
+
+export interface GardenTree {
+  id: string;
+  plot: number;
+  species: TreeSpecies;
+  sessions: number;
+  plantedAt: string;
+  maturedAt: string | null;
+  legacy: boolean;
+}
+
+export interface GardenScene {
+  gardenIndex: number;
+  /** How many gardens the learner has (a full garden opens the next one). */
+  gardenCount: number;
+  /** Trees of the garden shown. */
+  trees: GardenTree[];
+  /** Trees across every garden. */
+  totalTrees: number;
+  growing: { species: TreeSpecies; sessions: number } | null;
+  hasPond: boolean;
+  hasCat: boolean;
+  /** Today had study activity, in the learner's time zone: mature sakura bloom. */
+  studiedToday: boolean;
+}
+
+/** Everything the garden scene needs for one garden. RLS scopes every query to the user. */
+export async function getGardenScene(gardenIndex = 1): Promise<GardenScene> {
+  const supabase = await createClient();
+  const [trees, purchases, wallet, profile] = await Promise.all([
+    supabase
+      .from("garden_trees")
+      .select("id, garden_index, plot_index, species, sessions, planted_at, matured_at, legacy")
+      .order("garden_index")
+      .order("plot_index"),
+    supabase.from("purchases").select("item_id"),
+    supabase.from("wallets").select("last_active_date").maybeSingle(),
+    getCurrentProfile(),
+  ]);
+  const rows = trees.data ?? [];
+  const owned = new Set((purchases.data ?? []).map((row) => row.item_id));
+  const growing = rows.find((row) => row.sessions < GAME.garden.matureAtSessions);
+  // createClient() already opted out of prerendering, so reading the clock is safe here
+  const today = dayKey(new Date(), profile?.timezone ?? "UTC");
+
+  return {
+    gardenIndex,
+    gardenCount: Math.max(1, ...rows.map((row) => row.garden_index)),
+    trees: rows
+      .filter((row) => row.garden_index === gardenIndex)
+      .map((row) => ({
+        id: row.id,
+        plot: row.plot_index,
+        species: row.species,
+        sessions: row.sessions,
+        plantedAt: row.planted_at,
+        maturedAt: row.matured_at,
+        legacy: row.legacy,
+      })),
+    totalTrees: rows.length,
+    growing: growing ? { species: growing.species, sessions: growing.sessions } : null,
+    hasPond: owned.has("deco-pond"),
+    hasCat: owned.has("deco-cat"),
+    studiedToday: wallet.data?.last_active_date === today,
   };
 }

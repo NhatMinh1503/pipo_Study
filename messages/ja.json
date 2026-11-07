@@ -408,7 +408,7 @@
   },
   "garden": {
     "title": "知識の庭",
-    "description": "集中セッションを1回完了するごとに木が1本育ちます。",
+    "description": "集中セッションごとに木が育ちます：芽、若木、そして成木へ。",
     "plant": "木を植える",
     "statsLabel": "庭の統計",
     "trees": "木の数",
@@ -423,6 +423,21 @@
       "bamboo": "竹",
       "maple": "紅葉",
       "sakura": "桜"
+    },
+    "sceneLabel": "知識の庭：木 {count} 本、育成中 {growing} 本",
+    "sceneError": "この端末では庭を表示できません。木の一覧は下にあります。",
+    "treeList": "庭の木",
+    "stage": {
+      "sprout": "芽",
+      "sapling": "若木",
+      "mature": "成木"
+    },
+    "pipo": {
+      "firstTree": "最初の木を植えようか？集中セッション1回でいいよ。",
+      "growing": "{species}はあと{count}セッションで大きくなるよ！",
+      "bloom": "今日は勉強したから、桜が咲いてるね！",
+      "bloomHint": "一文訳すだけで桜が咲くよ。",
+      "treeCount": "庭の木が{count}本になったよ！"
     }
   },
   "audio": {

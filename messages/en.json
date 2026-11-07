@@ -408,7 +408,7 @@
   },
   "garden": {
     "title": "Knowledge Garden",
-    "description": "Every completed focus session grows a tree.",
+    "description": "Each focus session helps a tree grow: sprout, sapling, then mature.",
     "plant": "Plant a tree",
     "statsLabel": "Garden stats",
     "trees": "Trees",
@@ -423,6 +423,21 @@
       "bamboo": "Bamboo",
       "maple": "Red maple",
       "sakura": "Cherry"
+    },
+    "sceneLabel": "Knowledge garden: {count} trees, {growing} growing",
+    "sceneError": "The garden can't be shown on this device. The tree list is below.",
+    "treeList": "Trees in the garden",
+    "stage": {
+      "sprout": "Sprout",
+      "sapling": "Sapling",
+      "mature": "Mature"
+    },
+    "pipo": {
+      "firstTree": "Shall we plant our first tree? One focus session is enough.",
+      "growing": "The {species} needs {count} more sessions to grow up!",
+      "bloom": "We studied today, the cherry tree is blooming!",
+      "bloomHint": "Translate just one sentence and the cherry tree will bloom.",
+      "treeCount": "Our garden has {count} trees now!"
     }
   },
   "audio": {
