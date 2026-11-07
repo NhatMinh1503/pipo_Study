@@ -1,6 +1,9 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+
+import { levelUpsKey } from "@/lib/api/use-level-ups";
 
 import {
   enqueueReview,
@@ -20,6 +23,7 @@ export type RatingCounts = Record<Rating, number>;
  * to the end of the queue so they are seen once more in the same session.
  */
 export function useReviewSession(initialCards: ReviewCard[]) {
+  const queryClient = useQueryClient();
   const [queue, setQueue] = useState(initialCards);
   const [flipped, setFlipped] = useState(false);
   const [counts, setCounts] = useState<RatingCounts>({ again: 0, hard: 0, good: 0, easy: 0 });
@@ -29,6 +33,8 @@ export function useReviewSession(initialCards: ReviewCard[]) {
   const saveChain = useRef<Promise<void>>(Promise.resolve());
   const [pendingSaves, setPendingSaves] = useState(0);
   const [offlineQueued, setOfflineQueued] = useState(0);
+  // XP from the daily queue-clear bonus, if one of this session's reviews earned it
+  const [clearBonusXp, setClearBonusXp] = useState(0);
 
   // Warn before closing the tab while reviews are still being saved
   useEffect(() => {
@@ -91,6 +97,11 @@ export function useReviewSession(initialCards: ReviewCard[]) {
         );
         if (result === "unreachable") queueOffline();
         else if (!result.ok) setFailed(true);
+        else {
+          if (result.reward.clearBonusXp > 0) setClearBonusXp(result.reward.clearBonusXp);
+          // A rewarded review may have crossed a level boundary
+          if (result.reward.xp > 0) void queryClient.invalidateQueries({ queryKey: levelUpsKey });
+        }
       }
       setPendingSaves((count) => count - 1);
     });
@@ -104,6 +115,7 @@ export function useReviewSession(initialCards: ReviewCard[]) {
     flipped,
     failed,
     offlineQueued,
+    clearBonusXp,
     isSaving: pendingSaves > 0,
     isDone: queue.length === 0,
     flip,

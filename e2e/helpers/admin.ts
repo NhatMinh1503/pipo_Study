@@ -59,3 +59,16 @@ export async function deleteLessonByTitle(email: string, title: string) {
     .eq("title", title);
   if (error) throw error;
 }
+
+/** Pretends the learner already earned `xp` today from their own lessons (daily cap tests). */
+export async function markManualXpEarnedToday(email: string, xp: number) {
+  const { error } = await admin.from("reward_claims").insert({
+    user_id: await findUserId(email),
+    claim_key: `e2e:${crypto.randomUUID()}`,
+    kind: "sentence",
+    source: "manual",
+    points: xp,
+    xp,
+  });
+  if (error) throw error;
+}
