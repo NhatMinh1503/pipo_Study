@@ -1,19 +1,17 @@
-import { COLS, MAP_LEFT, MAP_TOP, TILE_H, TILE_W, type Point } from "./layout";
+import { COLS, project, type Point } from "./layout";
 
-/** Path row centre line (row 2 of the layout). */
-const PATH_Y = MAP_TOP + 2.5 * TILE_H;
-/** Small vertical offsets make the stone path wander instead of running ruler-straight. */
-const WOBBLE = [0, -5, 4, -4, 6, -3, 5, -2, 4, 0];
+/** Path row (row 2 of the layout), crossing the map diagonally down-right. */
+const PATH_ROW = 2.5;
 
 /**
- * Waypoints: both ends of the path plus the centre of each path tile, so stop k + 1 sits in
- * column k (next to the plots and slots above and below it).
+ * Waypoints: both ends of the path (just outside the map, where the path tiles continue)
+ * plus the centre of each path tile, so stop k + 1 sits in column k.
  */
 export const PATH_WAYPOINTS: Point[] = [
-  MAP_LEFT + 8,
-  ...Array.from({ length: COLS }, (_, column) => MAP_LEFT + (column + 0.5) * TILE_W),
-  MAP_LEFT + COLS * TILE_W - 8,
-].map((x, index) => ({ x, y: PATH_Y + (WOBBLE[index] ?? 0) }));
+  -0.6,
+  ...Array.from({ length: COLS }, (_, column) => column + 0.5),
+  COLS + 0.6,
+].map((gridX) => project(gridX, PATH_ROW));
 
 const SAMPLES_PER_SEGMENT = 24;
 

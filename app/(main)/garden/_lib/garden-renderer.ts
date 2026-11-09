@@ -1,16 +1,23 @@
 // The PixiJS garden (garden-scene spec §3.6–3.8, §7). Imported only with import() from the
 // garden page, so pixi.js never reaches the bundles of other pages.
-import { Application, Assets, Container, Graphics, Sprite, type Texture } from "pixi.js";
+import {
+  Application,
+  Assets,
+  Container,
+  Graphics,
+  Sprite,
+  TilingSprite,
+  type Texture,
+} from "pixi.js";
 
 import { assetUrl, gardenAsset } from "@/lib/garden/assets";
 import { SCENE } from "@/lib/garden/config";
 import {
+  HORIZON_Y,
   SCENE_HEIGHT,
   SCENE_WIDTH,
-  TILE_H,
-  TILE_W,
   decorTile,
-  tileCenter,
+  tileCorners,
   type Point,
 } from "@/lib/garden/layout";
 import { pathLength, pointAt } from "@/lib/garden/path";
@@ -50,11 +57,22 @@ const PIPO_PARTS = [
   "pipo-eyes-closed",
 ];
 const CAT_PARTS = ["cat-shadow", "cat-tail", "cat-leg-back", "cat-leg-front", "cat-body"];
+/** The cat's far-side legs reuse the leg images, shifted and shaded darker. */
+const FAR_LEG_TINT = 0xb9a48f;
+const FAR_LEG_OFFSET = { x: 3, y: -1 };
 /** Opacity of a tree while Pipo walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
 
 function neededAssets(model: SceneModel): string[] {
-  const ids = new Set<string>(["bg-sky", "bg-fuji", "cloud-a", "cloud-b", ...PIPO_PARTS]);
+  const ids = new Set<string>([
+    "bg-sky",
+    "bg-fuji",
+    "bg-hills",
+    "tile-grass-a",
+    "cloud-a",
+    "cloud-b",
+    ...PIPO_PARTS,
+  ]);
   for (const tile of model.tiles) ids.add(tile.asset);
   for (const tree of model.trees) ids.add(tree.asset);
   for (const decoration of model.decorations) ids.add(decoration.asset);
@@ -105,16 +123,24 @@ export async function createGardenRenderer(
     return piece;
   };
 
-  // --- Background: sky, Mount Fuji, clouds -------------------------------------------
+  // --- Background: sky, Mount Fuji, clouds, grass, distant trees ---------------------
   const sky = sprite("bg-sky");
   const fuji = sprite("bg-fuji");
-  fuji.position.set(468, 96);
+  fuji.position.set(150, HORIZON_Y + 4);
   const clouds = Array.from({ length: SCENE.clouds }, (_, index) => {
     const cloud = sprite(index % 2 === 0 ? "cloud-a" : "cloud-b");
-    cloud.position.set(80 + index * 210, 26 + (index % 2) * 26);
+    cloud.position.set(80 + index * 210, 22 + (index % 2) * 22);
     return { sprite: cloud, speed: 4 + index * 1.5 };
   });
-  app.stage.addChild(sky, fuji, ...clouds.map((cloud) => cloud.sprite));
+  const grass = new TilingSprite({
+    texture: texture("tile-grass-a"),
+    width: SCENE_WIDTH,
+    height: SCENE_HEIGHT - HORIZON_Y,
+  });
+  grass.position.set(0, HORIZON_Y);
+  const hills = sprite("bg-hills");
+  hills.position.set(0, HORIZON_Y + 10);
+  app.stage.addChild(sky, fuji, ...clouds.map((cloud) => cloud.sprite), grass, hills);
 
   // --- Ground: tiles, pond, koi -----------------------------------------------------
   const ground = new Container();
@@ -189,8 +215,27 @@ export async function createGardenRenderer(
   if (model.cat) {
     const root = new Container();
     const tail = part("cat-tail", "cat-body");
-    const legs = [part("cat-leg-back", "cat-body"), part("cat-leg-front", "cat-body")];
-    root.addChild(part("cat-shadow", "cat-body"), tail, ...legs, sprite("cat-body"));
+    const farLeg = (id: string) => {
+      const leg = part(id, "cat-body");
+      leg.position.set(leg.x + FAR_LEG_OFFSET.x, leg.y + FAR_LEG_OFFSET.y);
+      leg.tint = FAR_LEG_TINT;
+      return leg;
+    };
+    const nearBack = part("cat-leg-back", "cat-body");
+    const nearFront = part("cat-leg-front", "cat-body");
+    const farBack = farLeg("cat-leg-back");
+    const farFront = farLeg("cat-leg-front");
+    // Order matters for the gait: near back, near front, far back, far front
+    const legs = [nearBack, nearFront, farBack, farFront];
+    root.addChild(
+      part("cat-shadow", "cat-body"),
+      farBack,
+      farFront,
+      tail,
+      nearBack,
+      nearFront,
+      sprite("cat-body"),
+    );
     world.addChild(root);
     cat = { root, legs, tail };
   }
@@ -274,7 +319,10 @@ export async function createGardenRenderer(
       cat.root.zIndex = catAt.y + 6;
       cat.root.scale.x = catDirection;
       const catSwing = moving ? Math.sin(elapsed * 8) * 0.3 : 0;
-      cat.legs.forEach((leg, index) => (leg.rotation = index === 0 ? catSwing : -catSwing));
+      // Diagonal pairs move together, like a real walking cat
+      cat.legs.forEach(
+        (leg, index) => (leg.rotation = index === 0 || index === 3 ? catSwing : -catSwing),
+      );
       cat.tail.rotation = moving ? Math.sin(elapsed * 2) * 0.2 : 0;
     }
 
@@ -282,7 +330,7 @@ export async function createGardenRenderer(
     koi.forEach((fish, index) => {
       if (!model.pond) return;
       const angle = (moving ? elapsed * 0.5 : 0) + index * Math.PI;
-      fish.position.set(model.pond.x + Math.cos(angle) * 30, model.pond.y + Math.sin(angle) * 14);
+      fish.position.set(model.pond.x + Math.cos(angle) * 38, model.pond.y + Math.sin(angle) * 16);
       fish.rotation = angle + Math.PI / 2;
     });
 
@@ -340,10 +388,9 @@ export async function createGardenRenderer(
     highlight.clear();
     highlight.visible = slot !== null;
     if (slot === null) return;
-    const center = tileCenter(decorTile(slot));
     highlight
-      .roundRect(center.x - TILE_W / 2 + 3, center.y - TILE_H / 2 + 3, TILE_W - 6, TILE_H - 6, 8)
-      .stroke({ width: 3, color: 0xfcf4ec });
+      .poly(tileCorners(decorTile(slot)).flatMap((corner) => [corner.x, corner.y]))
+      .stroke({ width: 3, color: 0xfcf4ec, alignment: 1 });
   };
 
   return {

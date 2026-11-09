@@ -16,11 +16,13 @@ export const GRID = [
 
 export const COLS = 8;
 export const ROWS = 6;
-export const TILE_W = 64;
-export const TILE_H = 48;
-/** Left margin of the map inside the 640 px scene, and the sky band above it. */
-export const MAP_LEFT = 64;
-export const MAP_TOP = 96;
+/** Isometric diamond tile, 2:1 like farm games (garden-scene spec §4.2). */
+export const TILE_W = 80;
+export const TILE_H = 40;
+/** Screen position of the map's top corner (grid point 0,0). */
+export const ISO_ORIGIN = { x: 280, y: 136 } as const;
+/** Where the grass meets the distant hills. */
+export const HORIZON_Y = 118;
 export const SCENE_WIDTH = 640;
 export const SCENE_HEIGHT = 432;
 
@@ -61,19 +63,36 @@ export function decorTile(index: number): Tile {
   return tile;
 }
 
+/**
+ * Projects a point of the grid (in tile units, may be fractional) to scene coordinates:
+ * +x runs down-right, +y runs down-left, like the plots of a farm game.
+ */
+export function project(gridX: number, gridY: number): Point {
+  return {
+    x: ISO_ORIGIN.x + ((gridX - gridY) * TILE_W) / 2,
+    y: ISO_ORIGIN.y + ((gridX + gridY) * TILE_H) / 2,
+  };
+}
+
 /** Centre of a tile in scene coordinates (spec §4.2). */
 export function tileCenter({ x, y }: Tile): Point {
-  return { x: MAP_LEFT + (x + 0.5) * TILE_W, y: MAP_TOP + (y + 0.5) * TILE_H };
+  return project(x + 0.5, y + 0.5);
 }
 
 /** Where a standing object's anchor (trunk base, feet) sits on a tile. */
-export function tileBase({ x, y }: Tile): Point {
-  return { x: MAP_LEFT + (x + 0.5) * TILE_W, y: MAP_TOP + (y + 1) * TILE_H - 6 };
+export function tileBase(tile: Tile): Point {
+  const center = tileCenter(tile);
+  return { x: center.x, y: center.y + 3 };
 }
 
-/** Top-left of the 2×2 pond area, or null if the layout has none. */
+/** The four corners of a tile (top, right, bottom, left), for outlines. */
+export function tileCorners({ x, y }: Tile): Point[] {
+  return [project(x, y), project(x + 1, y), project(x + 1, y + 1), project(x, y + 1)];
+}
+
+/** Centre of the 2×2 pond area, or null if the layout has none. */
 export function pondCenter(): Point | null {
   const [first] = POND_TILES;
   if (!first) return null;
-  return { x: MAP_LEFT + (first.x + 1) * TILE_W, y: MAP_TOP + (first.y + 1) * TILE_H };
+  return project(first.x + 1, first.y + 1);
 }

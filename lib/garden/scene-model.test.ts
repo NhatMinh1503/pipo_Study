@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { decorTile, plotTile, tileBase } from "./layout";
+import { decorTile, plotTile, project, tileBase, tileCenter } from "./layout";
 import { waypointDistances } from "./path";
 import { buildSceneModel, type SceneTree } from "./scene-model";
 
@@ -13,22 +13,27 @@ const tree = (overrides: Partial<SceneTree>): SceneTree => ({
 });
 
 describe("garden scene model", () => {
-  it("covers the whole ground with tiles, path tiles on the path row", () => {
+  it("draws a tilled plot on every plot tile and a path that runs past both map edges", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: false,
       hasCat: false,
       studiedToday: false,
     });
-    // 10 columns (map + one margin column each side) × 7 rows down to the bottom edge
-    expect(model.tiles).toHaveLength(70);
-    expect(model.tiles.filter((tile) => tile.asset === "tile-path")).toHaveLength(8);
+    expect(model.tiles.filter((tile) => tile.asset === "plot-soil")).toHaveLength(31);
+    // 8 path tiles in the map plus one outside each end
+    expect(model.tiles.filter((tile) => tile.asset === "tile-path")).toHaveLength(10);
+    expect(model.tiles).toHaveLength(41);
+    expect(model.tiles).toContainEqual({ asset: "plot-soil", ...tileCenter(plotTile(0)) });
+    // Back to front
+    const ys = model.tiles.map((tile) => tile.y);
+    expect(ys).toEqual([...ys].sort((a, b) => a - b));
     expect(model.pond).toBeNull();
   });
 
   it("draws the pond over its four tiles only when the learner owns one", () => {
     const model = buildSceneModel({ trees: [], hasPond: true, hasCat: false, studiedToday: false });
-    expect(model.pond).toEqual({ x: 256, y: 288 });
+    expect(model.pond).toEqual(project(3, 4));
     expect(model.koi).toBe(true);
   });
 

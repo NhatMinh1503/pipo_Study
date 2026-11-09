@@ -6,8 +6,8 @@ const ids = Object.keys(GARDEN_ASSETS);
 
 // design/game/asset-prompts.md §7 and art-bible.md §6
 describe("garden asset manifest", () => {
-  it("lists exactly the 45 files of the asset prompts", () => {
-    expect(ids).toHaveLength(45);
+  it("lists exactly the 46 files of the asset prompts", () => {
+    expect(ids).toHaveLength(46);
     for (const species of ["pine", "bamboo", "maple", "sakura"]) {
       for (const stage of ["sprout", "sapling", "mature"]) {
         expect(ids).toContain(`tree-${species}-${stage}`);
@@ -40,10 +40,11 @@ describe("garden asset manifest", () => {
   });
 
   it("uses the art bible sizes for tiles and tree stages", () => {
-    expect(gardenAsset("tile-grass-a")).toMatchObject({ width: 64, height: 48 });
-    expect(gardenAsset("tree-pine-sprout")).toMatchObject({ width: 32, height: 32 });
-    expect(gardenAsset("tree-pine-sapling")).toMatchObject({ width: 48, height: 64 });
-    expect(gardenAsset("tree-pine-mature")).toMatchObject({ width: 80, height: 112 });
+    expect(gardenAsset("tile-path")).toMatchObject({ width: 80, height: 40 });
+    expect(gardenAsset("plot-soil")).toMatchObject({ width: 76, height: 42 });
+    expect(gardenAsset("tree-pine-sprout")).toMatchObject({ width: 28, height: 28 });
+    expect(gardenAsset("tree-pine-sapling")).toMatchObject({ width: 48, height: 58 });
+    expect(gardenAsset("tree-pine-mature")).toMatchObject({ width: 80, height: 96 });
     expect(gardenAsset("bg-sky")).toMatchObject({ width: 640, height: 432 });
   });
 

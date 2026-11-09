@@ -1,14 +1,21 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  COLS,
   DECOR_SLOTS,
+  HORIZON_Y,
+  ROWS,
+  SCENE_HEIGHT,
+  SCENE_WIDTH,
   PLOTS,
   POND_TILES,
   PATH_TILES,
   decorTile,
   plotTile,
+  project,
   tileBase,
   tileCenter,
+  tileCorners,
 } from "./layout";
 
 // garden-scene spec §3.4 (test case #2)
@@ -34,10 +41,32 @@ describe("garden layout", () => {
     expect(decorTile(4)).toEqual({ x: 5, y: 4 });
   });
 
-  it("maps tiles to scene coordinates (spec §4.2)", () => {
-    expect(tileCenter({ x: 0, y: 0 })).toEqual({ x: 96, y: 120 });
-    expect(tileCenter({ x: 7, y: 5 })).toEqual({ x: 544, y: 360 });
-    expect(tileBase({ x: 0, y: 0 })).toEqual({ x: 96, y: 138 });
+  it("maps tiles to isometric scene coordinates (spec §4.2)", () => {
+    expect(tileCenter({ x: 0, y: 0 })).toEqual({ x: 280, y: 156 });
+    // +x goes down-right, +y goes down-left
+    expect(tileCenter({ x: 1, y: 0 })).toEqual({ x: 320, y: 176 });
+    expect(tileCenter({ x: 0, y: 1 })).toEqual({ x: 240, y: 176 });
+    expect(tileCenter({ x: 7, y: 5 })).toEqual({ x: 360, y: 396 });
+    expect(tileBase({ x: 0, y: 0 })).toEqual({ x: 280, y: 159 });
+  });
+
+  it("keeps the whole map inside the scene, below the horizon", () => {
+    const corners = [project(0, 0), project(COLS, 0), project(COLS, ROWS), project(0, ROWS)];
+    for (const corner of corners) {
+      expect(corner.x).toBeGreaterThanOrEqual(0);
+      expect(corner.x).toBeLessThanOrEqual(SCENE_WIDTH);
+      expect(corner.y).toBeGreaterThan(HORIZON_Y);
+      expect(corner.y).toBeLessThanOrEqual(SCENE_HEIGHT);
+    }
+  });
+
+  it("outlines a tile with its four diamond corners", () => {
+    expect(tileCorners({ x: 0, y: 0 })).toEqual([
+      { x: 280, y: 136 },
+      { x: 320, y: 156 },
+      { x: 280, y: 176 },
+      { x: 240, y: 156 },
+    ]);
   });
 
   it("rejects indexes outside the layout", () => {
