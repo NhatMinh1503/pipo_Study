@@ -57,9 +57,12 @@ const PIPO_PARTS = [
   "pipo-eyes-closed",
 ];
 const CAT_PARTS = ["cat-shadow", "cat-tail", "cat-leg-back", "cat-leg-front", "cat-body"];
-/** The cat's far-side legs reuse the leg images, shifted and shaded darker. */
-const FAR_LEG_TINT = 0xb9a48f;
-const FAR_LEG_OFFSET = { x: 3, y: -1 };
+/**
+ * The cat's far-side legs reuse the leg images, shaded darker and moved in between the near
+ * legs so all four read clearly from the side (garden-scene spec §3.6).
+ */
+const FAR_LEG_TINT = 0x9e9e9e;
+const FAR_LEG_OFFSET = { front: { x: -6, y: -2 }, back: { x: 7, y: -2 } } as const;
 /** Opacity of a tree while Pipo walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
 
@@ -223,16 +226,16 @@ export async function createGardenRenderer(
   if (model.cat) {
     const root = new Container();
     const tail = part("cat-tail", "cat-body");
-    const farLeg = (id: string) => {
+    const farLeg = (id: string, offset: { x: number; y: number }) => {
       const leg = part(id, "cat-body");
-      leg.position.set(leg.x + FAR_LEG_OFFSET.x, leg.y + FAR_LEG_OFFSET.y);
+      leg.position.set(leg.x + offset.x, leg.y + offset.y);
       leg.tint = FAR_LEG_TINT;
       return leg;
     };
     const nearBack = part("cat-leg-back", "cat-body");
     const nearFront = part("cat-leg-front", "cat-body");
-    const farBack = farLeg("cat-leg-back");
-    const farFront = farLeg("cat-leg-front");
+    const farBack = farLeg("cat-leg-back", FAR_LEG_OFFSET.back);
+    const farFront = farLeg("cat-leg-front", FAR_LEG_OFFSET.front);
     // Order matters for the gait: near back, near front, far back, far front
     const legs = [nearBack, nearFront, farBack, farFront];
     root.addChild(

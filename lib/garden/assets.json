@@ -301,10 +301,10 @@
     },
     "cat-body": {
       "width": 32,
-      "height": 33,
+      "height": 36,
       "anchor": {
         "x": 16.5,
-        "y": 32.7
+        "y": 35.7
       },
       "kind": "part"
     },
@@ -318,7 +318,7 @@
       "kind": "part",
       "attach": {
         "x": 25.4,
-        "y": 13.1
+        "y": 16.1
       }
     },
     "cat-leg-back": {
@@ -331,7 +331,7 @@
       "kind": "part",
       "attach": {
         "x": 8.6,
-        "y": 10.8
+        "y": 13.8
       }
     },
     "cat-tail": {
@@ -357,7 +357,7 @@
       "kind": "shadow",
       "attach": {
         "x": 16.5,
-        "y": 32.7
+        "y": 35.7
       }
     },
     "bg-sky": {

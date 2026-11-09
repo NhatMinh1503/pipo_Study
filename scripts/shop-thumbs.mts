@@ -26,8 +26,8 @@ const OUT = join(root, "public/shop");
 /** Thumbnails are shown at 64 px; 160 px covers 2× screens with room to spare. */
 const SIZE = 160;
 /** Matches FAR_LEG_OFFSET / FAR_LEG_TINT in the garden renderer. */
-const FAR_LEG_OFFSET = { x: 3, y: -1 };
-const FAR_LEG_BRIGHTNESS = 0.72;
+const FAR_LEG_OFFSET = { front: { x: -6, y: -2 }, back: { x: 7, y: -2 } };
+const FAR_LEG_BRIGHTNESS = 0.62;
 
 /** Shop item → the garden image that represents it. */
 const SINGLE: Record<string, string> = {
@@ -77,8 +77,8 @@ async function cat(): Promise<Buffer> {
     } satisfies OverlayOptions;
   };
   const layers: OverlayOptions[] = [
-    await place("cat-leg-back", FAR_LEG_OFFSET, true),
-    await place("cat-leg-front", FAR_LEG_OFFSET, true),
+    await place("cat-leg-back", FAR_LEG_OFFSET.back, true),
+    await place("cat-leg-front", FAR_LEG_OFFSET.front, true),
     await place("cat-tail"),
     await place("cat-leg-back"),
     await place("cat-leg-front"),
