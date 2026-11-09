@@ -12,7 +12,7 @@ import { ShopItemCard } from "./_components/shop-item-card";
 
 export const metadata: Metadata = { title: "Shop" };
 
-const SECTIONS = ["theme", "decoration", "topic_pack"] as const;
+const SECTIONS = ["seed", "decoration", "theme", "topic_pack"] as const;
 
 async function ShopContent() {
   const [state, t] = await Promise.all([getShopState(), getTranslations("shop")]);

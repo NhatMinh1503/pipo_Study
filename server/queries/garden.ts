@@ -74,6 +74,7 @@ export interface GardenScene {
   growing: { species: TreeSpecies; sessions: number } | null;
   hasPond: boolean;
   hasCat: boolean;
+  hasBridge: boolean;
   /** Decorations placed in the garden shown. */
   decorations: { itemId: string; slot: number }[];
   /** Owned decorations that can go on a slot, with where they are now (null = storage). */
@@ -126,6 +127,7 @@ export async function getGardenScene(requested?: string | string[]): Promise<Gar
     growing: growing ? { species: growing.species, sessions: growing.sessions } : null,
     hasPond: owned.has("deco-pond"),
     hasCat: owned.has("deco-cat"),
+    hasBridge: owned.has("deco-bridge"),
     decorations: placements
       .filter((row) => row.garden_index === gardenIndex)
       .map((row) => ({ itemId: row.item_id, slot: row.slot_index })),

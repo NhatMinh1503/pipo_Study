@@ -613,7 +613,8 @@
     "sections": {
       "theme": "アクセントカラー",
       "decoration": "庭の飾り",
-      "topic_pack": "AIレッスン用トピックパック"
+      "topic_pack": "AIレッスン用トピックパック",
+      "seed": "木の種"
     },
     "errors": {
       "notEnoughCoins": "コインが足りません。",
@@ -633,16 +634,16 @@
         "description": "深い海のブルー。"
       },
       "deco-pond": {
-        "name": "蓮の池",
-        "description": "庭に小さな蓮の池を。"
+        "name": "鯉の池",
+        "description": "庭の真ん中に、鯉が泳ぐ小さな池を。"
       },
       "deco-lantern": {
-        "name": "提灯",
-        "description": "夜を照らす赤い提灯。"
+        "name": "石灯籠",
+        "description": "あたたかい光がともる石灯籠。"
       },
       "deco-bench": {
-        "name": "石のベンチ",
-        "description": "セッションの合間の休憩に。"
+        "name": "木のベンチ",
+        "description": "小道のそばに置くと、Pipoがひと休みします。"
       },
       "topics-anime": {
         "name": "アニメ・ゲームパック",
@@ -651,6 +652,26 @@
       "topics-business": {
         "name": "ビジネスパック",
         "description": "会議・メール・面接のトピックを追加。"
+      },
+      "seed-maple": {
+        "name": "もみじの種",
+        "description": "ポモドーロで植えられる木にもみじが加わります。"
+      },
+      "seed-sakura": {
+        "name": "桜の種",
+        "description": "桜が植えられるように。育った桜は勉強した日に花が咲きます。"
+      },
+      "deco-torii": {
+        "name": "鳥居",
+        "description": "庭の飾りスペースに置ける赤い鳥居。"
+      },
+      "deco-bridge": {
+        "name": "赤い橋",
+        "description": "鯉の池にかかる橋。池があると見えます。"
+      },
+      "deco-cat": {
+        "name": "ねこ",
+        "description": "Pipoと反対向きに小道を散歩するねこ。"
       }
     }
   },

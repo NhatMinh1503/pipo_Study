@@ -613,7 +613,8 @@
     "sections": {
       "theme": "Màu chủ đạo",
       "decoration": "Trang trí Vườn tri thức",
-      "topic_pack": "Gói chủ đề cho bài AI"
+      "topic_pack": "Gói chủ đề cho bài AI",
+      "seed": "Hạt giống cây"
     },
     "errors": {
       "notEnoughCoins": "Không đủ Coins.",
@@ -633,16 +634,16 @@
         "description": "Màu xanh biển sâu."
       },
       "deco-pond": {
-        "name": "Hồ sen",
-        "description": "Một hồ sen nhỏ trong vườn."
+        "name": "Hồ cá koi",
+        "description": "Một hồ nhỏ giữa vườn, có cá koi bơi."
       },
       "deco-lantern": {
-        "name": "Đèn lồng",
-        "description": "Đèn lồng đỏ cho buổi tối."
+        "name": "Đèn lồng đá",
+        "description": "Đèn đá kiểu Nhật, ô cửa toả ánh vàng ấm."
       },
       "deco-bench": {
-        "name": "Ghế đá",
-        "description": "Chỗ ngồi nghỉ giữa các phiên."
+        "name": "Ghế gỗ",
+        "description": "Đặt cạnh lối đi, Pipo sẽ ngồi nghỉ ở đây."
       },
       "topics-anime": {
         "name": "Gói Anime & Game",
@@ -651,6 +652,26 @@
       "topics-business": {
         "name": "Gói Công việc",
         "description": "Thêm chủ đề họp, email, phỏng vấn."
+      },
+      "seed-maple": {
+        "name": "Hạt phong đỏ",
+        "description": "Mở khoá cây phong đỏ để trồng trong các phiên Pomodoro."
+      },
+      "seed-sakura": {
+        "name": "Hạt anh đào",
+        "description": "Mở khoá cây anh đào. Cây trưởng thành nở hoa vào những ngày bạn học."
+      },
+      "deco-torii": {
+        "name": "Cổng torii",
+        "description": "Cổng đỏ đặt vào một ô trang trí trong vườn."
+      },
+      "deco-bridge": {
+        "name": "Cầu gỗ đỏ",
+        "description": "Bắc ngang hồ cá koi. Cần có hồ để thấy cầu."
+      },
+      "deco-cat": {
+        "name": "Bạn mèo",
+        "description": "Một chú mèo đi dạo ngược chiều Pipo trên lối đi."
       }
     }
   },

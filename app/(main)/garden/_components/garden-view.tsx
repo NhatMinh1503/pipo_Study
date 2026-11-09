@@ -40,6 +40,7 @@ export function GardenView({ scene }: GardenViewProps) {
         trees: scene.trees,
         hasPond: scene.hasPond,
         hasCat: scene.hasCat,
+        hasBridge: scene.hasBridge,
         studiedToday: scene.studiedToday,
         decorations: scene.decorations,
       }),

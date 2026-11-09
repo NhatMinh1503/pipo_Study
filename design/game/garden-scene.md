@@ -58,7 +58,7 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 | Anh đào    | `sakura` | Cần sở hữu `seed-sakura` |
 
 - Server kiểm tra quyền dùng loài khi bắt đầu phiên; client chỉ hiển thị.
-- Hai món `seed-maple`, `seed-sakura` **chưa có trong shop**: giá và cách nhận làm phần thưởng thuộc spec shop. Giá đề xuất **[Đề xuất]**: 120 Coins mỗi hạt. Code đã sẵn sàng đọc quyền sở hữu; khi thêm hai món vào bảng `shop_items`, loài sẽ tự mở.
+- Hai món `seed-maple`, `seed-sakura` có trong shop từ 09/11/2026 (loại `seed`, 120 Coins mỗi hạt, migration `20261109070100_shop_garden_items.sql`). Mua hạt là loài tự mở.
 
 ### 3.3 Anh đào nở hoa **[Chốt]**
 
@@ -89,7 +89,7 @@ Lưới **8×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ t
 
 - Món đã mua có thể đặt vào **1 trong 5 ô `D`** của một khu vườn; mỗi món đặt một chỗ, mỗi ô một món. Gỡ ra thì món về kho.
 - Hồ (`deco-pond`) không đặt vào ô `D`: có hồ thì ô `W` thành hồ, kèm **2 cá koi**.
-- Món mới Minh nêu (cầu gỗ đỏ, cổng torii, mèo) **chưa có trong shop**; khi được thêm sẽ dùng cùng cơ chế. Cầu gỗ đặt trên hồ, mèo đi dạo, không chiếm ô. Giá thuộc spec shop.
+- Cầu gỗ đỏ (50), cổng torii (60), mèo (90) có trong shop từ 09/11/2026, giá **[Đề xuất]**. Torii đặt vào ô trang trí; cầu bắc ngang hồ (cần có hồ); mèo đi dạo, không chiếm ô.
 
 ### 3.6 Pipo — máy trạng thái
 

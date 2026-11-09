@@ -35,6 +35,26 @@ describe("garden scene model", () => {
     const model = buildSceneModel({ trees: [], hasPond: true, hasCat: false, studiedToday: false });
     expect(model.pond).toEqual(project(3, 4));
     expect(model.koi).toBe(true);
+    expect(model.bridge).toBeNull();
+  });
+
+  it("puts the bridge across the pond, and only when there is a pond", () => {
+    const withPond = buildSceneModel({
+      trees: [],
+      hasPond: true,
+      hasCat: false,
+      hasBridge: true,
+      studiedToday: false,
+    });
+    expect(withPond.bridge?.x).toBe(project(3, 4).x);
+    const noPond = buildSceneModel({
+      trees: [],
+      hasPond: false,
+      hasCat: false,
+      hasBridge: true,
+      studiedToday: false,
+    });
+    expect(noPond.bridge).toBeNull();
   });
 
   it("stands each tree on its plot with the right image", () => {

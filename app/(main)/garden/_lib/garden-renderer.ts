@@ -77,6 +77,7 @@ function neededAssets(model: SceneModel): string[] {
   for (const tree of model.trees) ids.add(tree.asset);
   for (const decoration of model.decorations) ids.add(decoration.asset);
   if (model.pond) ids.add("deco-pond");
+  if (model.bridge) ids.add("deco-bridge");
   if (model.koi) ids.add("koi-a").add("koi-b");
   if (model.cat) CAT_PARTS.forEach((id) => ids.add(id));
   if (model.petalSources.length > 0) ids.add("petal");
@@ -188,6 +189,13 @@ export async function createGardenRenderer(
       halfWidth: info.width / 2 - 4,
       height: info.height - 8,
     });
+  }
+
+  if (model.bridge) {
+    const bridge = sprite("deco-bridge");
+    bridge.position.set(model.bridge.x, model.bridge.y);
+    bridge.zIndex = model.bridge.y;
+    world.addChild(bridge);
   }
 
   for (const decoration of model.decorations) {

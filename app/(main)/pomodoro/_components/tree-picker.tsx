@@ -1,6 +1,7 @@
 "use client";
 
 import { Lock } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { canPlant, TREE_SPECIES, type TreeSpecies } from "@/lib/garden/growth";
@@ -57,6 +58,13 @@ export function TreePicker({ growing, ownedItemIds, value, onChange }: TreePicke
                 disabled={!unlocked}
                 onChange={() => onChange(option)}
                 className="accent-[var(--success)]"
+              />
+              <Image
+                src={`/garden/tree-${option}-mature@2x.png`}
+                alt=""
+                width={28}
+                height={34}
+                className={cn("h-8 w-auto shrink-0", !unlocked && "opacity-40 grayscale")}
               />
               <span className="flex-1">{species(option)}</span>
               {!unlocked && (

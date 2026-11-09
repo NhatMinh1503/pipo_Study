@@ -32,6 +32,8 @@ export interface SceneInput {
   decorations?: readonly SceneDecoration[];
   hasPond: boolean;
   hasCat: boolean;
+  /** Owns the red bridge; it is drawn across the pond, so it needs the pond too. */
+  hasBridge?: boolean;
   /** Today had study activity: mature sakura are in bloom. */
   studiedToday: boolean;
 }
@@ -43,6 +45,8 @@ export interface SceneModel {
   trees: ({ id: string; asset: string } & Point)[];
   decorations: ({ id: string; asset: string; slot: number } & Point)[];
   pond: Point | null;
+  /** Where the bridge stands across the pond, or null. */
+  bridge: Point | null;
   koi: boolean;
   cat: boolean;
   /** Places Pipo may stop: viewing spots next to mature trees beside the path. */
@@ -52,6 +56,12 @@ export interface SceneModel {
 }
 
 const PATH_ROW = GRID.findIndex((row) => row.startsWith("="));
+
+/** The bridge stands on the near half of the pond so it reads as crossing the water. */
+function bridgeOverPond(): Point | null {
+  const center = pondCenter();
+  return center ? { x: center.x, y: center.y + 14 } : null;
+}
 
 /**
  * Everything the garden scene draws, computed from real data without touching PixiJS
@@ -121,6 +131,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     trees,
     decorations,
     pond: input.hasPond ? pondCenter() : null,
+    bridge: input.hasPond && input.hasBridge ? bridgeOverPond() : null,
     koi: input.hasPond,
     cat: input.hasCat,
     stops,

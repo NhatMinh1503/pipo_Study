@@ -1351,7 +1351,7 @@ export type Database = {
         | "B2"
         | "C1"
         | "C2"
-      shop_item_kind: "theme" | "decoration" | "topic_pack"
+      shop_item_kind: "theme" | "decoration" | "topic_pack" | "seed"
       translation_verdict: "exact" | "acceptable" | "incorrect"
       tree_species: "pine" | "bamboo" | "maple" | "sakura"
     }
@@ -1508,7 +1508,7 @@ export const Constants = {
         "C1",
         "C2",
       ],
-      shop_item_kind: ["theme", "decoration", "topic_pack"],
+      shop_item_kind: ["theme", "decoration", "topic_pack", "seed"],
       translation_verdict: ["exact", "acceptable", "incorrect"],
       tree_species: ["pine", "bamboo", "maple", "sakura"],
     },
