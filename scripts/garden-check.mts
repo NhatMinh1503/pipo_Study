@@ -1,5 +1,6 @@
 // Checks every garden image against the manifest and the art bible:
-// file exists, exact @2x size, transparent background (sprites), share of off-palette colours.
+// file exists, exact @2x size, transparent background (sprites). The share of off-palette
+// colours is only reported: finished art keeps its painted shading (art bible §3).
 //   npm run garden:check
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -14,8 +15,8 @@ interface Asset {
   kind: string;
 }
 
-/** Above this share of off-palette pixels the image was not reduced to the palette. */
-const MAX_OFF_PALETTE = 0.05;
+/** Above this share of off-palette pixels the image is listed as a note, not a failure. */
+const NOTE_OFF_PALETTE = 0.05;
 
 const root = process.cwd();
 const { assets } = JSON.parse(readFileSync(join(root, "lib/garden/assets.json"), "utf8")) as {
@@ -23,6 +24,7 @@ const { assets } = JSON.parse(readFileSync(join(root, "lib/garden/assets.json"),
 };
 
 const problems: string[] = [];
+const notes: string[] = [];
 for (const [id, asset] of Object.entries(assets)) {
   const name = `${id}@2x.png`;
   const file = join(root, "public/garden", name);
@@ -42,13 +44,14 @@ for (const [id, asset] of Object.entries(assets)) {
   if (asset.kind === "shadow") continue;
   const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const ratio = offPaletteRatio(new Uint8Array(data), info.channels);
-  if (ratio > MAX_OFF_PALETTE) {
-    problems.push(
-      `${name}: ${(ratio * 100).toFixed(1)}% of pixels are outside the 16-colour palette`,
-    );
+  if (ratio > NOTE_OFF_PALETTE) {
+    notes.push(`${name}: ${(ratio * 100).toFixed(0)}% off-palette`);
   }
 }
 
+if (notes.length > 0) {
+  console.log(`palette notes (not errors):\n  ${notes.join("\n  ")}`);
+}
 if (problems.length > 0) {
   console.error(problems.map((problem) => `✗ ${problem}`).join("\n"));
   process.exit(1);

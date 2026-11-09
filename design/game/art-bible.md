@@ -21,7 +21,7 @@
 
 ## 3. Bảng màu cố định — 16 màu **[Chốt]**
 
-12 màu lấy từ icon + 3 xanh lá + 1 xám đá. Đã bỏ 2 màu gần trùng của icon (`#FCB444`, `#FCECBC`). **Ảnh cuối chỉ được dùng đúng 16 màu này** (bóng đổ dưới chân là ngoại lệ duy nhất, xem §5).
+12 màu lấy từ icon + 3 xanh lá + 1 xám đá. Đã bỏ 2 màu gần trùng của icon (`#FCB444`, `#FCECBC`). 16 màu này là **màu gốc khi ra đề cho AI vẽ** (ghi mã hex vào prompt). Ảnh cuối giữ nguyên các sắc độ đổ bóng của bản vẽ, **không ép về đúng 16 màu**: thử nghiệm ngày 09/11/2026 cho thấy ép màu làm cây phong ngả nâu và tán thông lốm đốm. `garden:check` chỉ ghi chú tỷ lệ màu ngoài bảng, không báo lỗi.
 
 | #   | Tên            | Hex       | Dùng cho                                                 |
 | --- | -------------- | --------- | -------------------------------------------------------- |
@@ -105,20 +105,20 @@ Kích thước và điểm neo của **từng bộ phận** Pipo và mèo ghi tr
 ## 8. Quy trình hậu kỳ bắt buộc (cho mọi ảnh)
 
 1. **Tách nền** → PNG trong suốt. Không còn quầng màu nền ở mép.
-2. **Giảm màu về đúng 16 màu** của §3 (posterize/indexed theo bảng, tắt dithering). Ngoại lệ duy nhất: file bóng đổ `*-shadow`.
+2. **Giữ màu gốc của bản vẽ** (không posterize). Chỉ chỉnh màu khi một ảnh lệch hẳn tông so với cả bộ.
 3. **Làm sạch / vẽ lại viền**: viền ngoài 4 px, nét trong 2 px, màu `#542414`, khép kín.
 4. **Xoá chi tiết thừa** (§7) và sửa đối xứng.
 5. **Tô lại bóng** đúng 1 tông, ánh sáng từ trên-trái.
 6. **Căn tâm & kích thước**: đặt hình vào canvas đúng kích thước @2x ở §6; điểm neo đúng toạ độ (gốc cây chạm đáy theo bảng); chừa lề trong suốt tối thiểu 4 px.
 7. **Đặt tên** đúng như `asset-prompts.md`, chép vào `public/garden/`, đè lên ảnh placeholder cùng tên.
-8. **Kiểm tra tự động**: `npm run garden:check` (kích thước, nền trong, số màu ngoài bảng).
+8. **Kiểm tra tự động**: `npm run garden:check` (kích thước, nền trong; tỷ lệ màu ngoài bảng chỉ là ghi chú).
 9. **Duyệt bằng mắt** theo §9 trong cảnh thật (`/garden`) ở cả light và dark mode.
 
 ## 9. Checklist duyệt từng ảnh
 
 - [ ] Đúng kích thước file @2x và đúng điểm neo (không "bay" khỏi ô, gốc cây chạm đất).
 - [ ] Nền trong suốt, không quầng.
-- [ ] Chỉ 16 màu (trừ file bóng đổ). `npm run garden:check` không báo lỗi.
+- [ ] Tông màu khớp với cả bộ (cùng độ bão hoà, cùng màu viền). `npm run garden:check` không báo lỗi.
 - [ ] Viền `#542414` đều, khép kín.
 - [ ] Bóng 1 tông, sáng từ trên-trái; nhân vật lật gương không sai bóng.
 - [ ] Không có dấu hiệu nào ở §7.
