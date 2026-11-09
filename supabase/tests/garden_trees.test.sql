@@ -79,8 +79,7 @@ select throws_ok($$ select public.start_pomodoro(25, 'maple') $$, '42501', null,
 select lives_ok($$ select public.start_pomodoro(25, 'pine') $$, 'pine is free');
 select lives_ok($$ select public.start_pomodoro(25) $$, 'no species asked: defaults to a free one');
 reset role;
--- The seed item is not in the shop yet; add it here only to prove ownership unlocks it
-insert into public.shop_items (id, kind, price) values ('seed-sakura', 'decoration', 1);
+-- seed-sakura is a shop item (migration 20261109070100); owning it unlocks sakura
 insert into public.purchases (user_id, item_id) values ('a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2', 'seed-sakura');
 select pg_temp.focus('a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2', 'sakura');
 select results_eq($$ select species from pg_temp.trees('a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2') $$,
