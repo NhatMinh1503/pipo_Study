@@ -138,20 +138,25 @@ stage(sessions) = sessions ≥ 4 ? "mature" : sessions ≥ 2 ? "sapling" : "spro
 
 Ví dụ: 3 phiên → `sapling`, còn 1 phiên nữa là trưởng thành.
 
-### 4.2 Vị trí ô → toạ độ cảnh
+### 4.2 Vị trí ô → toạ độ cảnh (isometric, đổi ngày 09/11/2026)
+
+Minh chọn kiểu vườn nông trại (giống Hay Day): ô đất hình thoi, cây trồng trong từng luống có viền gỗ.
 
 ```
-x_px = MAP_LEFT + (x + 0.5) × TILE_W        y_px = MAP_TOP + (y + 0.5) × TILE_H
+project(gx, gy) = (ISO_X + (gx − gy) × TILE_W / 2,  ISO_Y + (gx + gy) × TILE_H / 2)
+tâm ô (x, y)    = project(x + 0.5, y + 0.5)
 ```
 
-| Ký hiệu  | Giá trị | Mô tả                              |
-| -------- | ------- | ---------------------------------- |
-| TILE_W   | 64      | Rộng một ô (logical px)            |
-| TILE_H   | 48      | Cao một ô                          |
-| MAP_LEFT | 64      | Lề trái của lưới trong cảnh 640 px |
-| MAP_TOP  | 96      | Dải trời phía trên lưới            |
+| Ký hiệu   | Giá trị | Mô tả                                    |
+| --------- | ------- | ---------------------------------------- |
+| TILE_W    | 80      | Rộng một ô hình thoi (logical px)        |
+| TILE_H    | 40      | Cao một ô (tỉ lệ 2:1)                    |
+| ISO_X/Y   | 280/136 | Góc trên cùng của bản đồ (điểm lưới 0,0) |
+| HORIZON_Y | 118     | Nơi cỏ gặp rặng cây xa                   |
 
-Gốc cây đặt tại tâm dưới của ô: `(x_px, MAP_TOP + (y + 1) × TILE_H − 6)`. Thứ tự vẽ theo `y` của điểm neo (vật thấp hơn vẽ sau).
+- +x đi xuống-phải, +y đi xuống-trái. Lối đi (hàng 2) chạy chéo xuống-phải và kéo dài thêm 1 ô ra ngoài mỗi đầu bản đồ.
+- Cỏ là một texture lặp (TilingSprite) phủ từ đường chân trời xuống; ô `T` vẽ luống đất `plot-soil`, ô `=` vẽ `tile-path`.
+- Gốc cây và chân vật đứng đặt tại tâm ô + 3 px. Thứ tự vẽ theo `y` của điểm neo (vật thấp hơn vẽ sau).
 
 ## 5. Economy impact
 

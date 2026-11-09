@@ -2,16 +2,12 @@ import { isBlooming, stageFor, treeAssetId, type TreeSpecies } from "./growth";
 import {
   COLS,
   GRID,
-  MAP_LEFT,
-  MAP_TOP,
   ROWS,
-  SCENE_HEIGHT,
-  TILE_H,
-  TILE_W,
   decorTile,
   plotTile,
   pondCenter,
   tileBase,
+  tileCenter,
   type Point,
 } from "./layout";
 import { waypointDistances } from "./path";
@@ -41,6 +37,7 @@ export interface SceneInput {
 }
 
 export interface SceneModel {
+  /** Tilled plots and path tiles, back to front, positioned at their tile centre. */
   tiles: { asset: string; x: number; y: number }[];
   /** Back to front (by anchor y), so later items are drawn on top. */
   trees: ({ id: string; asset: string } & Point)[];
@@ -61,17 +58,18 @@ const PATH_ROW = GRID.findIndex((row) => row.startsWith("="));
  * (garden-scene spec §3.3–3.4, §4.2). The renderer only turns this into sprites.
  */
 export function buildSceneModel(input: SceneInput): SceneModel {
+  // Grass is one tiled texture under everything; only plots and the path are tiles.
+  // The path continues one tile past each end of the map so it leads somewhere.
   const tiles: SceneModel["tiles"] = [];
-  // The ground continues one column past each side of the map and down to the bottom edge
-  const groundRows = Math.ceil((SCENE_HEIGHT - MAP_TOP) / TILE_H);
-  for (let y = 0; y < groundRows; y += 1) {
+  for (let y = 0; y < ROWS; y += 1) {
     for (let x = -1; x <= COLS; x += 1) {
-      const cell = y < ROWS && x >= 0 && x < COLS ? GRID[y]?.[x] : undefined;
-      const asset =
-        cell === "=" ? "tile-path" : (x * 7 + y * 3) % 5 === 0 ? "tile-grass-b" : "tile-grass-a";
-      tiles.push({ asset, x: MAP_LEFT + (x + 0.5) * TILE_W, y: MAP_TOP + (y + 0.5) * TILE_H });
+      const inside = x >= 0 && x < COLS;
+      const cell = inside ? GRID[y]?.[x] : y === PATH_ROW ? "=" : undefined;
+      const asset = cell === "=" ? "tile-path" : cell === "T" ? "plot-soil" : null;
+      if (asset) tiles.push({ asset, ...tileCenter({ x, y }) });
     }
   }
+  tiles.sort((a, b) => a.y - b.y || a.x - b.x);
 
   const trees = input.trees
     .map((tree) => ({
@@ -115,7 +113,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     .filter((tree) => isBlooming(tree, input.studiedToday))
     .map((tree) => {
       const base = tileBase(plotTile(tree.plot));
-      return { x: base.x, y: base.y - 72 };
+      return { x: base.x, y: base.y - 64 };
     });
 
   return {
