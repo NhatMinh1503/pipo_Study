@@ -669,9 +669,9 @@
         "name": "Red bridge",
         "description": "Spans the koi pond. You need the pond to see it."
       },
-      "deco-cat": {
-        "name": "Cat friend",
-        "description": "A cat that strolls the path the other way from Pipo."
+      "deco-slime": {
+        "name": "Garden slime",
+        "description": "A squishy slime that bounces along the path."
       }
     }
   },

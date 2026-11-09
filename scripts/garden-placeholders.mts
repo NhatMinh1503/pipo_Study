@@ -39,7 +39,7 @@ function fillFor(id: string): string {
     [/^deco-(torii|bridge)/, "#FC5C44"],
     [/^koi-a/, "#FC5C44"],
     [/^koi-b/, "#FCB41C"],
-    [/^cat-/, "#FCF4EC"],
+    [/^slime/, "#F48C9C"],
     [/^bg-sky/, "#84C4FC"],
     [/^bg-fuji/, "#6CA4EC"],
     [/^cloud/, "#FCF4EC"],

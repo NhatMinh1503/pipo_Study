@@ -11,7 +11,7 @@
 Biến trang `/garden` từ lưới icon thành **một khu vườn sống động** vẽ tay theo art bible:
 
 - Pipo đi dạo theo lối đi cong, dừng ngắm cây, ngồi ghế, phản ứng khi được bấm và nói câu ngắn **dựa trên dữ liệu thật**.
-- Mèo đi ngược chiều, cá koi bơi trong hồ, cánh hoa anh đào rơi, mây trôi.
+- Bé slime nhún nhảy ngược chiều Pipo, cá koi bơi trong hồ, cánh hoa anh đào rơi, mây trôi.
 - Bấm vào cây để xem thông tin cây.
 - Cây **lớn dần theo số phiên Pomodoro thật**.
 
@@ -89,7 +89,7 @@ Lưới **8×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ t
 
 - Món đã mua có thể đặt vào **1 trong 5 ô `D`** của một khu vườn; mỗi món đặt một chỗ, mỗi ô một món. Gỡ ra thì món về kho.
 - Hồ (`deco-pond`) không đặt vào ô `D`: có hồ thì ô `W` thành hồ, kèm **2 cá koi**.
-- Cầu gỗ đỏ (50), cổng torii (60), mèo (90) có trong shop từ 09/11/2026, giá **[Đề xuất]**. Torii đặt vào ô trang trí; cầu bắc ngang hồ (cần có hồ); mèo đi dạo, không chiếm ô.
+- Cầu gỗ đỏ (50), cổng torii (60), bé slime (90) có trong shop từ 09/11/2026, giá **[Đề xuất]**. Torii đặt vào ô trang trí; cầu bắc ngang hồ (cần có hồ); slime nhún nhảy dọc lối đi, không chiếm ô. (Slime thay cho con mèo theo yêu cầu của Minh ngày 09/11/2026.)
 
 ### 3.6 Pipo — máy trạng thái
 
@@ -119,7 +119,7 @@ Câu nói hiện trong bong bóng trên đầu Pipo và đồng thời trong vù
 
 ### 3.8 Sinh vật và hiệu ứng
 
-- **Mèo:** khi có món mèo, đi lối ngược chiều Pipo, thỉnh thoảng ngồi liếm chân.
+- **Slime:** khi có món slime, nhún nhảy dọc lối ngược chiều Pipo, co lại khi chạm đất (squash & stretch).
 - **Koi:** 2 con, bơi vòng elip trong hồ, xoay theo hướng bơi.
 - **Mây:** 3 đám, trôi chậm sang phải, quay vòng.
 - **Cánh hoa:** tối đa 20 cánh cùng lúc, rơi từ tán anh đào đang nở, lắc nhẹ rồi mờ dần.
@@ -184,7 +184,7 @@ Không có faucet hay sink mới trong spec này. Coins của Pomodoro giữ ngu
 - **Danh sách cây dạng văn bản** ngay dưới cảnh, mỗi cây là một nút mở cùng hộp thoại thông tin. Đây là đường chính cho trình đọc màn hình và bàn phím.
 - Nút "Chào Pipo" (DOM) cho người dùng bàn phím, tương đương bấm vào Pipo.
 - Câu nói của Pipo đọc qua `aria-live="polite"`, có giới hạn tần suất.
-- **`prefers-reduced-motion` [Chốt]:** cảnh tĩnh; Pipo đứng yên và chỉ chớp mắt; mèo ngồi; koi đứng yên; không có cánh hoa rơi và mây không trôi.
+- **`prefers-reduced-motion` [Chốt]:** cảnh tĩnh; Pipo đứng yên và chỉ chớp mắt; slime đứng yên; koi đứng yên; không có cánh hoa rơi và mây không trôi.
 - Mọi text qua next-intl (VI/EN/JA).
 
 ## 8. Edge cases & degenerate strategies

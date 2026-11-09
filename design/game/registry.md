@@ -85,7 +85,7 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 | Pomodoro session                    | XP       | 0                          | —                                                               | xp-levels §3.7       |
 | Shop: themes                        | Coins    | 60 each                    | —                                                               | S23 (DB)             |
 | Shop: decorations                   | Coins    | 25–40                      | —                                                               | S23 (DB)             |
-| Shop: torii / bridge / cat          | Coins    | 60 / 50 / 90               | — (**[Đề xuất]**, Minh có thể chỉnh trong migration)            | garden-scene §3.5    |
+| Shop: torii / bridge / slime        | Coins    | 60 / 50 / 90               | — (**[Đề xuất]**, Minh có thể chỉnh trong migration)            | garden-scene §3.5    |
 | Shop: tree seeds (maple, sakura)    | Coins    | 120 each                   | —                                                               | garden-scene §3.2    |
 | Shop: topic packs                   | Coins    | 80 each                    | —                                                               | S23 (DB)             |
 

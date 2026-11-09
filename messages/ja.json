@@ -669,9 +669,9 @@
         "name": "赤い橋",
         "description": "鯉の池にかかる橋。池があると見えます。"
       },
-      "deco-cat": {
-        "name": "ねこ",
-        "description": "Pipoと反対向きに小道を散歩するねこ。"
+      "deco-slime": {
+        "name": "スライム",
+        "description": "小道をぴょんぴょん跳ねる、ぷにぷにのスライム。"
       }
     }
   },

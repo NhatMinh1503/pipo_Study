@@ -669,9 +669,9 @@
         "name": "Cầu gỗ đỏ",
         "description": "Bắc ngang hồ cá koi. Cần có hồ để thấy cầu."
       },
-      "deco-cat": {
-        "name": "Bạn mèo",
-        "description": "Một chú mèo đi dạo ngược chiều Pipo trên lối đi."
+      "deco-slime": {
+        "name": "Bé slime",
+        "description": "Một bé slime mềm mềm nhún nhảy dọc lối đi."
       }
     }
   },

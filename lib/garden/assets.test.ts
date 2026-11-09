@@ -6,8 +6,8 @@ const ids = Object.keys(GARDEN_ASSETS);
 
 // design/game/asset-prompts.md §7 and art-bible.md §6
 describe("garden asset manifest", () => {
-  it("lists exactly the 46 files of the asset prompts", () => {
-    expect(ids).toHaveLength(46);
+  it("lists exactly the 43 files of the asset prompts", () => {
+    expect(ids).toHaveLength(43);
     for (const species of ["pine", "bamboo", "maple", "sakura"]) {
       for (const stage of ["sprout", "sapling", "mature"]) {
         expect(ids).toContain(`tree-${species}-${stage}`);
@@ -29,7 +29,7 @@ describe("garden asset manifest", () => {
     }
   });
 
-  it("attaches Pipo's and the cat's parts inside their body", () => {
+  it("attaches Pipo's parts inside its body", () => {
     const body = gardenAsset("pipo-body");
     for (const id of ids.filter((name) => name.startsWith("pipo-") && name !== "pipo-body")) {
       const attach = gardenAsset(id).attach;

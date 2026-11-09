@@ -17,7 +17,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       studiedToday: false,
     });
     expect(model.tiles.filter((tile) => tile.asset === "plot-soil")).toHaveLength(31);
@@ -32,7 +32,12 @@ describe("garden scene model", () => {
   });
 
   it("draws the pond over its four tiles only when the learner owns one", () => {
-    const model = buildSceneModel({ trees: [], hasPond: true, hasCat: false, studiedToday: false });
+    const model = buildSceneModel({
+      trees: [],
+      hasPond: true,
+      hasSlime: false,
+      studiedToday: false,
+    });
     expect(model.pond).toEqual(project(3, 4));
     expect(model.koi).toBe(true);
     expect(model.bridge).toBeNull();
@@ -42,7 +47,7 @@ describe("garden scene model", () => {
     const withPond = buildSceneModel({
       trees: [],
       hasPond: true,
-      hasCat: false,
+      hasSlime: false,
       hasBridge: true,
       studiedToday: false,
     });
@@ -50,7 +55,7 @@ describe("garden scene model", () => {
     const noPond = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       hasBridge: true,
       studiedToday: false,
     });
@@ -61,7 +66,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [tree({ id: "a", plot: 9, species: "bamboo", sessions: 2 })],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       studiedToday: false,
     });
     expect(model.trees).toEqual([
@@ -73,7 +78,7 @@ describe("garden scene model", () => {
     const input = {
       trees: [tree({ id: "s", plot: 3, species: "sakura" })],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
     };
     expect(buildSceneModel({ ...input, studiedToday: true }).trees[0]?.asset).toBe(
       "tree-sakura-mature-bloom",
@@ -90,7 +95,7 @@ describe("garden scene model", () => {
         tree({ id: "far", plot: 0 }), // (0,0): two rows away
       ],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       studiedToday: false,
     });
     expect(model.stops).toEqual([{ distance: waypointDistances[3], kind: "view" }]);
@@ -100,7 +105,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [tree({ id: "low", plot: 30 }), tree({ id: "high", plot: 0 })],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       studiedToday: false,
     });
     expect(model.trees.map((item) => item.id)).toEqual(["high", "low"]);
@@ -110,7 +115,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasCat: false,
+      hasSlime: false,
       studiedToday: false,
       decorations: [
         { itemId: "deco-bench", slot: 2 }, // (1,3): just below the path

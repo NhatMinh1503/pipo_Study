@@ -299,67 +299,6 @@
       },
       "kind": "sprite"
     },
-    "cat-body": {
-      "width": 32,
-      "height": 36,
-      "anchor": {
-        "x": 16.5,
-        "y": 35.7
-      },
-      "kind": "part"
-    },
-    "cat-leg-front": {
-      "width": 8,
-      "height": 20,
-      "anchor": {
-        "x": 4.1,
-        "y": 0.6
-      },
-      "kind": "part",
-      "attach": {
-        "x": 25.4,
-        "y": 16.1
-      }
-    },
-    "cat-leg-back": {
-      "width": 11,
-      "height": 22,
-      "anchor": {
-        "x": 5.7,
-        "y": 0.6
-      },
-      "kind": "part",
-      "attach": {
-        "x": 8.6,
-        "y": 13.8
-      }
-    },
-    "cat-tail": {
-      "width": 11,
-      "height": 22,
-      "anchor": {
-        "x": 6.2,
-        "y": 21.5
-      },
-      "kind": "part",
-      "attach": {
-        "x": 1.9,
-        "y": 14.8
-      }
-    },
-    "cat-shadow": {
-      "width": 30,
-      "height": 8,
-      "anchor": {
-        "x": 15.0,
-        "y": 4.0
-      },
-      "kind": "shadow",
-      "attach": {
-        "x": 16.5,
-        "y": 35.7
-      }
-    },
     "bg-sky": {
       "width": 640,
       "height": 432,
@@ -458,6 +397,24 @@
         "y": 48
       },
       "kind": "background"
+    },
+    "slime": {
+      "width": 36,
+      "height": 31,
+      "anchor": {
+        "x": 18,
+        "y": 30
+      },
+      "kind": "sprite"
+    },
+    "slime-shadow": {
+      "width": 30,
+      "height": 9,
+      "anchor": {
+        "x": 15,
+        "y": 4.5
+      },
+      "kind": "shadow"
     }
   }
 }

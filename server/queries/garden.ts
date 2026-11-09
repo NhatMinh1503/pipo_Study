@@ -73,7 +73,7 @@ export interface GardenScene {
   totalTrees: number;
   growing: { species: TreeSpecies; sessions: number } | null;
   hasPond: boolean;
-  hasCat: boolean;
+  hasSlime: boolean;
   hasBridge: boolean;
   /** Decorations placed in the garden shown. */
   decorations: { itemId: string; slot: number }[];
@@ -126,7 +126,7 @@ export async function getGardenScene(requested?: string | string[]): Promise<Gar
     totalTrees: rows.length,
     growing: growing ? { species: growing.species, sessions: growing.sessions } : null,
     hasPond: owned.has("deco-pond"),
-    hasCat: owned.has("deco-cat"),
+    hasSlime: owned.has("deco-slime"),
     hasBridge: owned.has("deco-bridge"),
     decorations: placements
       .filter((row) => row.garden_index === gardenIndex)

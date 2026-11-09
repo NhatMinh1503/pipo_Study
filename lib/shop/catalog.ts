@@ -17,7 +17,7 @@ export const SHOP_ITEMS = {
   "deco-bench": { kind: "decoration", image: "/shop/deco-bench.png" },
   "deco-torii": { kind: "decoration", image: "/shop/deco-torii.png" },
   "deco-bridge": { kind: "decoration", image: "/shop/deco-bridge.png" },
-  "deco-cat": { kind: "decoration", image: "/shop/deco-cat.png" },
+  "deco-slime": { kind: "decoration", image: "/shop/deco-slime.png" },
   "topics-anime": { kind: "topic_pack", topics: ["anime", "manga", "game"] },
   "topics-business": { kind: "topic_pack", topics: ["meeting", "email", "interview"] },
 } as const satisfies Record<string, { kind: ShopItemKind } & Record<string, unknown>>;

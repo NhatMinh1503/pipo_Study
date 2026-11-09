@@ -39,7 +39,7 @@ export function GardenView({ scene }: GardenViewProps) {
       buildSceneModel({
         trees: scene.trees,
         hasPond: scene.hasPond,
-        hasCat: scene.hasCat,
+        hasSlime: scene.hasSlime,
         hasBridge: scene.hasBridge,
         studiedToday: scene.studiedToday,
         decorations: scene.decorations,
