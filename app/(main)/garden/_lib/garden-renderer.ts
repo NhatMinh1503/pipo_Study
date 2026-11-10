@@ -49,8 +49,6 @@ export interface GardenRenderer {
 const PIPO_PARTS = [
   "pipo-shadow",
   "pipo-wing-back",
-  "pipo-leg-back",
-  "pipo-leg-front",
   "pipo-body",
   "pipo-wing-front",
   "pipo-eyes-open",
@@ -58,6 +56,10 @@ const PIPO_PARTS = [
 ];
 /** How much the slime squashes when it lands (fraction of its size). */
 const SLIME_SQUASH = 0.16;
+/** Pipo squashes a little less than the slime. */
+const PIPO_SQUASH = 0.12;
+/** Empty rows under the chick in pipo-body (where legs used to attach), in logical px. */
+const PIPO_BODY_GAP = 9;
 /** Opacity of a tree while Pipo walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
 
@@ -206,13 +208,13 @@ export async function createGardenRenderer(
   const pipo = new Container();
   const torso = new Container();
   const pipoShadow = part("pipo-shadow", "pipo-body");
-  const legBack = part("pipo-leg-back", "pipo-body");
-  const legFront = part("pipo-leg-front", "pipo-body");
   const wingBack = part("pipo-wing-back", "pipo-body");
   const wingFront = part("pipo-wing-front", "pipo-body");
   const eyes = part("pipo-eyes-open", "pipo-body");
   torso.addChild(wingBack, sprite("pipo-body"), wingFront, eyes);
-  pipo.addChild(pipoShadow, legBack, legFront, torso);
+  // No legs: the round body sits on the ground and squashes from its bottom when it lands
+  torso.pivot.set(0, -PIPO_BODY_GAP);
+  pipo.addChild(pipoShadow, torso);
   pipo.eventMode = "static";
   pipo.cursor = "pointer";
   world.addChild(pipo);
@@ -268,22 +270,29 @@ export async function createGardenRenderer(
     pipo.scale.x = pipoState.direction;
     eyes.texture = texture(pipoState.blinking > 0 ? "pipo-eyes-closed" : "pipo-eyes-open");
     const walking = pipoState.mode === "walking";
-    const swing = walking ? Math.sin(elapsed * 10) * 0.35 : 0;
-    legFront.rotation = swing;
-    legBack.rotation = -swing;
     const sitting = pipoState.mode === "sitting";
-    legFront.visible = !sitting;
-    legBack.visible = !sitting;
+    // 0 on the ground, 1 at the top of a hop (same bounce as the slime)
+    const lift =
+      walking && moving ? Math.abs(Math.sin(elapsed * SCENE.pipoHopsPerSecond * Math.PI)) : 0;
+    const squash = walking && moving ? (1 - lift) ** 3 * PIPO_SQUASH : 0;
+    // Standing still, Pipo breathes: a slow, slight squash
+    const breath = !walking && moving ? Math.sin(elapsed * 2.2) * 0.025 : 0;
     if (pipoState.mode === "reacting") {
       const progress = 1 - pipoState.timer / SCENE.reactSeconds;
-      torso.y = -Math.sin(progress * Math.PI) * 8;
+      torso.y = -Math.sin(progress * Math.PI) * 10;
+      torso.scale.set(1, 1);
       wingFront.rotation = Math.sin(elapsed * 30) * 0.6;
       wingBack.rotation = -wingFront.rotation;
     } else {
-      torso.y = sitting ? 4 : walking ? -Math.abs(Math.sin(elapsed * 10)) * 2 : 0;
-      wingFront.rotation = 0;
-      wingBack.rotation = 0;
+      torso.y = -lift * SCENE.pipoHopHeight;
+      const sit = sitting ? 0.06 : 0;
+      torso.scale.set(1 + squash + sit + breath, 1 - squash - sit - breath + lift * 0.06);
+      // Wings lift a little at the top of each hop
+      wingFront.rotation = -lift * 0.35;
+      wingBack.rotation = lift * 0.35;
     }
+    pipoShadow.scale.set(1 - lift * 0.35);
+    pipoShadow.alpha = 1 - lift * 0.4;
 
     // A tree standing in front of Pipo fades so Pipo stays visible behind its canopy
     for (const tree of treeSprites) {

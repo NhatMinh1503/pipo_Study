@@ -4,15 +4,15 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { TREE_SPECIES } from "@/lib/garden/growth";
-import { FOCUS_OPTIONS } from "@/lib/pomodoro/timer";
+import { isFocusMinutes } from "@/lib/pomodoro/timer";
 import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/server/logger";
 
 const log = logger.child({ module: "pomodoro" });
 
 const startSchema = z.object({
-  minutes: z.union(FOCUS_OPTIONS.map((minutes) => z.literal(minutes))),
-  species: z.enum(TREE_SPECIES).optional(),
+  minutes: z.number().refine(isFocusMinutes),
+  species: z.enum(TREE_SPECIES),
 });
 
 export type StartFocusResult =
@@ -20,8 +20,8 @@ export type StartFocusResult =
   | { ok: false; reason: "locked" | "failed" };
 
 /**
- * Starts a focus session; the server records the start time. `species` picks a new tree;
- * the server ignores it while a tree is growing and refuses a species without its seed.
+ * Starts a focus session of the learner's chosen length; the server records the start
+ * time. `species` is the tree it plants; the server refuses a species without its seed.
  */
 export async function startFocus(input: unknown): Promise<StartFocusResult> {
   const parsed = startSchema.safeParse(input);
@@ -30,7 +30,7 @@ export async function startFocus(input: unknown): Promise<StartFocusResult> {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("start_pomodoro", {
     p_planned_minutes: parsed.data.minutes,
-    ...(parsed.data.species ? { p_species: parsed.data.species } : {}),
+    p_species: parsed.data.species,
   });
   if (error?.code === "42501") return { ok: false, reason: "locked" };
   if (error || !data) {

@@ -144,7 +144,9 @@
   "languages": {
     "ja": "Japanese",
     "en": "English",
-    "vi": "Vietnamese"
+    "vi": "Vietnamese",
+    "my": "Burmese (မြန်မာ)",
+    "id": "Indonesian (Bahasa Indonesia)"
   },
   "levels": {
     "N5": "Beginner — greetings, simple sentences",
@@ -391,7 +393,7 @@
     "giveUp": "Give up (no reward)",
     "skipBreak": "Skip break",
     "focusHint": "You can leave or reload — the timer runs on server time.",
-    "idleHint": "Finish a session to tend a tree in your Knowledge Garden.",
+    "idleHint": "Each finished session plants one tree in your Knowledge Garden. Leave early and it wilts.",
     "toGarden": "See the garden",
     "rewardToast": "Session done! +{coins} Coins, your garden grew.",
     "focusDoneTitle": "Focus time is over",
@@ -401,27 +403,30 @@
     "claimFailed": "Could not claim the reward for this session.",
     "tree": {
       "title": "Tree to plant",
-      "growing": "Tending: {species} · {sessions}/{total} sessions",
       "needsSeed": "Needs a seed",
       "lockedError": "This tree needs a seed."
     },
     "scene": {
-      "seed": "A {species} seed is waiting for its first session",
-      "growing": "{species} growing · {sessions}/{total} sessions",
-      "focus": "{species} is growing in session {session}/{total}",
-      "break": "{species} just grew · {sessions}/{total} sessions",
-      "sessions": "{sessions} of {total} sessions tended",
+      "seed": "A {species} seed is ready: it grows into a tree in {minutes} min",
+      "focus": "{species} is growing · {stage}",
+      "break": "The {species} grew up and was planted in your garden!",
       "stagesLabel": "How the tree grows",
       "stages": {
         "sprout": "Sprout",
         "sapling": "Young tree",
         "mature": "Mature"
-      }
+      },
+      "withered": "The {species} wilted: the session ended early, so nothing was planted."
+    },
+    "length": {
+      "title": "Session length",
+      "minutes": "{minutes} min",
+      "slider": "Session length in minutes"
     }
   },
   "garden": {
     "title": "Knowledge Garden",
-    "description": "Each focus session helps a tree grow: sprout, sapling, then mature.",
+    "description": "Every focus session grows one tree, from sprout to full tree, and plants it here.",
     "plant": "Plant a tree",
     "statsLabel": "Garden stats",
     "trees": "Trees",
@@ -614,7 +619,7 @@
   },
   "shop": {
     "title": "Shop",
-    "description": "Spend the coins you earn by studying on themes, garden decorations and topic packs.",
+    "description": "Spend the coins you earn by studying on tree seeds and garden decorations.",
     "balance": "Your coins",
     "buy": "Buy",
     "notEnough": "Not enough coins",

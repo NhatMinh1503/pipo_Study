@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatClock, progress, remainingMs } from "./timer";
+import { clampFocusMinutes, formatClock, isFocusMinutes, progress, remainingMs } from "./timer";
 
 const START = "2026-11-02T09:00:00.000Z";
 const at = (iso: string) => new Date(iso).getTime();
@@ -35,5 +35,33 @@ describe("formatClock", () => {
     [0, "00:00"],
   ])("%i ms → %s", (ms, expected) => {
     expect(formatClock(ms)).toBe(expected);
+  });
+});
+
+describe("isFocusMinutes", () => {
+  it("accepts lengths from 10 to 120 minutes in 5-minute steps", () => {
+    expect(isFocusMinutes(10)).toBe(true);
+    expect(isFocusMinutes(25)).toBe(true);
+    expect(isFocusMinutes(120)).toBe(true);
+  });
+
+  it("rejects lengths outside the range or off a step", () => {
+    expect(isFocusMinutes(5)).toBe(false);
+    expect(isFocusMinutes(125)).toBe(false);
+    expect(isFocusMinutes(27)).toBe(false);
+    expect(isFocusMinutes(25.5)).toBe(false);
+  });
+});
+
+describe("clampFocusMinutes", () => {
+  it("snaps to the nearest step inside the range", () => {
+    expect(clampFocusMinutes(27)).toBe(25);
+    expect(clampFocusMinutes(28)).toBe(30);
+    expect(clampFocusMinutes(1)).toBe(10);
+    expect(clampFocusMinutes(500)).toBe(120);
+  });
+
+  it("falls back to the default for a value that is not a number", () => {
+    expect(clampFocusMinutes(Number.NaN)).toBe(25);
   });
 });

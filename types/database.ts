@@ -1361,7 +1361,7 @@ export type Database = {
         | "finished"
         | "cancelled"
         | "abandoned"
-      display_language: "vi" | "en" | "ja"
+      display_language: "vi" | "en" | "ja" | "my" | "id"
       learning_language: "ja" | "en"
       lesson_source: "manual" | "ai" | "news"
       pomodoro_status: "running" | "completed" | "abandoned"
@@ -1517,7 +1517,7 @@ export const Constants = {
         "cancelled",
         "abandoned",
       ],
-      display_language: ["vi", "en", "ja"],
+      display_language: ["vi", "en", "ja", "my", "id"],
       learning_language: ["ja", "en"],
       lesson_source: ["manual", "ai", "news"],
       pomodoro_status: ["running", "completed", "abandoned"],

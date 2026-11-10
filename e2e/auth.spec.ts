@@ -11,8 +11,8 @@ test.describe("authentication", () => {
     await expect(page).toHaveURL(/\/login\?next=%2Fdashboard/);
 
     await page.getByLabel("Email").fill(DEMO.email);
-    await page.getByLabel("Mật khẩu", { exact: true }).fill(DEMO.password);
-    await page.getByRole("button", { name: "Đăng nhập" }).click();
+    await page.getByLabel("Password", { exact: true }).fill(DEMO.password);
+    await page.getByRole("button", { name: "Sign in" }).click();
 
     await expect(page).toHaveURL(/\/dashboard$/);
   });
@@ -20,18 +20,18 @@ test.describe("authentication", () => {
   test("shows an error for wrong credentials", async ({ page }) => {
     await signIn(page, DEMO.email, "wrong-password", { expectSuccess: false });
     await expect(page.locator("form").getByRole("alert")).toHaveText(
-      "Email hoặc mật khẩu không đúng.",
+      "Incorrect email or password.",
     );
   });
 
   test("validates the form on the client before calling the server", async ({ page }) => {
     await page.goto("/signup");
     await page.getByLabel("Email").fill("not-an-email");
-    await page.getByLabel("Mật khẩu", { exact: true }).fill("short");
-    await page.getByRole("button", { name: "Đăng ký" }).click();
+    await page.getByLabel("Password", { exact: true }).fill("short");
+    await page.getByRole("button", { name: "Sign up" }).click();
 
-    await expect(page.getByText("Email không hợp lệ.")).toBeVisible();
-    await expect(page.getByText("Mật khẩu cần ít nhất 8 ký tự.")).toBeVisible();
+    await expect(page.getByText("Invalid email address.")).toBeVisible();
+    await expect(page.getByText("Password must be at least 8 characters.")).toBeVisible();
   });
 
   test("an unconfirmed account cannot sign in until the email link is opened", async ({
@@ -41,13 +41,13 @@ test.describe("authentication", () => {
 
     await page.goto("/signup");
     await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Mật khẩu", { exact: true }).fill("password123");
-    await page.getByLabel("Nhập lại mật khẩu").fill("password123");
-    await page.getByRole("button", { name: "Đăng ký" }).click();
-    await expect(page.getByText("Kiểm tra email của bạn")).toBeVisible();
+    await page.getByLabel("Password", { exact: true }).fill("password123");
+    await page.getByLabel("Confirm password").fill("password123");
+    await page.getByRole("button", { name: "Sign up" }).click();
+    await expect(page.getByText("Check your email")).toBeVisible();
 
     await signIn(page, email, "password123", { expectSuccess: false });
-    await expect(page.locator("form").getByRole("alert")).toContainText("chưa được xác thực");
+    await expect(page.locator("form").getByRole("alert")).toContainText("not confirmed");
 
     await page.goto(await waitForEmailLink(email));
     await expect(page).toHaveURL(/\/onboarding$/);

@@ -6,13 +6,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { useNow } from "@/hooks/use-now";
-import {
-  BREAK_MINUTES,
-  formatClock,
-  progress,
-  remainingMs,
-  type FocusMinutes,
-} from "@/lib/pomodoro/timer";
+import { BREAK_MINUTES, formatClock, progress, remainingMs } from "@/lib/pomodoro/timer";
 import type { TreeSpecies } from "@/lib/garden/growth";
 import type { SessionTree } from "@/lib/pomodoro/grow";
 import { usePomodoroStore } from "@/lib/stores/pomodoro";
@@ -95,8 +89,8 @@ export function usePomodoro() {
     };
   }, [store.phase, left, t]);
 
-  /** `tree` is what the session will tend, for the growing picture; `species` goes to the server. */
-  const start = (minutes: FocusMinutes, species: TreeSpecies | undefined, tree: SessionTree) =>
+  /** Starts a session of `minutes` that plants a tree of `species`. */
+  const start = (minutes: number, species: TreeSpecies) =>
     startTransition(async () => {
       if (typeof Notification !== "undefined" && Notification.permission === "default") {
         void Notification.requestPermission();
@@ -104,21 +98,27 @@ export function usePomodoro() {
       const result = await startFocus({ minutes, species });
       if (result.ok) {
         setLastReward(null);
-        store.startFocus({ ...result, tree });
+        store.setPreferredMinutes(minutes);
+        store.startFocus({ ...result, tree: { species } });
       } else {
         toast.error(t(result.reason === "locked" ? "tree.lockedError" : "startFailed"));
       }
     });
 
-  const giveUp = () =>
+  /** Leaving early plants nothing; `onWithered` gets the species to show the tree wilting. */
+  const giveUp = (onWithered?: (tree: SessionTree) => void) =>
     startTransition(async () => {
+      const tree = store.tree;
       if (store.sessionId) await abandonFocus(store.sessionId);
       store.reset();
+      if (tree) onWithered?.(tree);
     });
 
   return {
     phase: store.phase,
     minutes: store.minutes,
+    preferredMinutes: store.preferredMinutes,
+    setPreferredMinutes: store.setPreferredMinutes,
     tree: store.tree,
     /** null until the clock is available on the client. */
     clock: left === null ? null : formatClock(left),

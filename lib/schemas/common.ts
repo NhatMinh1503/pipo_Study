@@ -10,9 +10,11 @@ export const LEARNING_LANGUAGES = [
   "en",
 ] as const satisfies readonly DbEnums["learning_language"][];
 export const DISPLAY_LANGUAGES = [
-  "vi",
   "en",
+  "vi",
   "ja",
+  "my",
+  "id",
 ] as const satisfies readonly DbEnums["display_language"][];
 
 export const JLPT_LEVELS = [

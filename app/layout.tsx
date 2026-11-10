@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
-import { Dela_Gothic_One, IBM_Plex_Mono, Inter, Noto_Sans_JP } from "next/font/google";
+import {
+  Dela_Gothic_One,
+  IBM_Plex_Mono,
+  Inter,
+  Noto_Sans_JP,
+  Noto_Sans_Myanmar,
+} from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { Suspense } from "react";
 
+import { HtmlLang } from "@/components/layout/html-lang";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { ServiceWorkerRegistrar } from "@/components/pwa/service-worker-registrar";
 import { Toaster } from "@/components/ui/sonner";
@@ -18,6 +25,14 @@ const inter = Inter({
 const notoSansJp = Noto_Sans_JP({
   variable: "--font-jp",
   // Japanese glyphs are split into many unicode-range files; let the browser fetch on demand
+  preload: false,
+});
+
+// Burmese script for the Myanmar display language; fetched only when the glyphs are used
+const notoSansMyanmar = Noto_Sans_Myanmar({
+  variable: "--font-my",
+  subsets: ["myanmar"],
+  weight: ["400", "600", "700"],
   preload: false,
 });
 
@@ -48,8 +63,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="vi"
-      className={`${inter.variable} ${notoSansJp.variable} ${plexMono.variable} ${delaGothic.variable} h-full antialiased`}
+      lang="en"
+      className={`${inter.variable} ${notoSansJp.variable} ${notoSansMyanmar.variable} ${plexMono.variable} ${delaGothic.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
@@ -57,6 +72,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {/* The UI language comes from a cookie, so everything below renders per request */}
           <Suspense fallback={null}>
             <NextIntlClientProvider>
+              <HtmlLang />
               {children}
               <Toaster position="top-center" />
             </NextIntlClientProvider>

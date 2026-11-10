@@ -33,25 +33,22 @@ test.describe("gamification and account", () => {
     await expect(page.getByLabel("Hoàn thành 3 bài — đang thực hiện")).toBeVisible();
   });
 
-  test("buy a theme with coins, apply it, and the balance goes down", async ({
-    page,
-  }, testInfo) => {
+  test("buy a decoration with coins and the balance goes down", async ({ page }, testInfo) => {
     const email = await createOnboardedUser(page, testInfo);
 
     await page.goto("/shop");
     await expect(page.getByRole("button", { name: "Chưa đủ Coins" }).first()).toBeDisabled();
+    // Placeholder accent colours and topic packs are no longer sold
+    await expect(page.getByRole("article").filter({ hasText: "Sakura" })).toHaveCount(0);
 
     await grantCoins(email, 100);
     await page.reload();
     await expect(page.getByLabel("Số Coins hiện có")).toHaveText("100");
 
-    const sakura = page.getByRole("article").filter({ hasText: "Sakura" });
-    await sakura.getByRole("button", { name: "Mua" }).click();
+    const bench = page.getByRole("article").filter({ hasText: "Ghế gỗ" });
+    await bench.getByRole("button", { name: "Mua" }).click();
     await expect(page.getByText("Đã mua!")).toBeVisible();
-    await expect(page.getByLabel("Số Coins hiện có")).toHaveText("40");
-
-    await sakura.getByRole("button", { name: "Dùng" }).click();
-    await expect(page.locator("html")).toHaveAttribute("data-accent", "theme-sakura");
+    await expect(page.getByLabel("Số Coins hiện có")).toHaveText("75");
   });
 
   test("edit profile and settings, then delete the account", async ({ page }, testInfo) => {

@@ -144,7 +144,9 @@
   "languages": {
     "ja": "日本語",
     "en": "英語",
-    "vi": "ベトナム語"
+    "vi": "ベトナム語",
+    "my": "ミャンマー語 (မြန်မာ)",
+    "id": "インドネシア語 (Bahasa Indonesia)"
   },
   "levels": {
     "N5": "初級 — あいさつ・簡単な文",
@@ -391,7 +393,7 @@
     "giveUp": "やめる（報酬なし）",
     "skipBreak": "休憩をスキップ",
     "focusHint": "ページを離れても再読み込みしても大丈夫。タイマーはサーバー時刻で動きます。",
-    "idleHint": "セッションを完了すると、知識の庭の木が育ちます。",
+    "idleHint": "セッションを1回終えるたびに、知識の庭に木が1本植えられます。途中でやめると枯れてしまいます。",
     "toGarden": "庭を見る",
     "rewardToast": "セッション完了！+{coins} コイン、庭の木が育ちました。",
     "focusDoneTitle": "集中時間が終わりました",
@@ -401,27 +403,30 @@
     "claimFailed": "このセッションの報酬を受け取れませんでした。",
     "tree": {
       "title": "植える木",
-      "growing": "育成中：{species}・{sessions}/{total} セッション",
       "needsSeed": "種が必要",
       "lockedError": "この木には種が必要です。"
     },
     "scene": {
-      "seed": "{species}の種が最初のセッションを待っています",
-      "growing": "{species}が成長中 · {sessions}/{total} セッション",
-      "focus": "セッション {session}/{total} で{species}が成長中",
-      "break": "{species}が少し大きくなりました · {sessions}/{total} セッション",
-      "sessions": "{total} セッション中 {sessions} 回お世話しました",
+      "seed": "{species}の種の準備ができました。{minutes}分で木に育ちます",
+      "focus": "{species}が育っています · {stage}",
+      "break": "{species}が育って、庭に植えられました！",
       "stagesLabel": "木の成長段階",
       "stages": {
         "sprout": "芽",
         "sapling": "若木",
         "mature": "成木"
-      }
+      },
+      "withered": "{species}は枯れてしまいました。途中でやめたので、木は植えられません。"
+    },
+    "length": {
+      "title": "1セッションの時間",
+      "minutes": "{minutes}分",
+      "slider": "1セッションの時間（分）"
     }
   },
   "garden": {
     "title": "知識の庭",
-    "description": "集中セッションごとに木が育ちます：芽、若木、そして成木へ。",
+    "description": "集中セッションごとに、芽から立派な木まで1本育ってここに植えられます。",
     "plant": "木を植える",
     "statsLabel": "庭の統計",
     "trees": "木の数",
@@ -614,7 +619,7 @@
   },
   "shop": {
     "title": "ショップ",
-    "description": "学習で貯めたコインで、テーマ・庭の飾り・トピックパックを購入できます。",
+    "description": "学習で貯めたコインで、木の種や庭の飾りを購入できます。",
     "balance": "所持コイン",
     "buy": "購入",
     "notEnough": "コイン不足",

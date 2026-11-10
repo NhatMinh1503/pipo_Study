@@ -37,7 +37,13 @@ export const GAME = {
     starXp: 2000,
   },
   pomodoro: {
-    focusOptions: [25, 50],
+    /** The learner sets each session's length (Forest style): min–max in steps. */
+    focusMinMinutes: 10,
+    focusMaxMinutes: 120,
+    focusStepMinutes: 5,
+    /** Quick picks shown next to the slider; 25 is the default. */
+    focusPresets: [15, 25, 45, 60],
+    defaultFocusMinutes: 25,
     breakMinutes: 5,
   },
   garden: {

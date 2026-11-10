@@ -3,7 +3,8 @@
 -- What it adds (all dated in the past, in the learner's own time zone):
 --   * ~60 days of study: a completed lesson or two per study day (5 sentences each, with
 --     wrong first tries, hints and error tags), Pomodoro sessions and the trees they grew,
---     flashcard reviews, and the matching XP / Coins ledger rows
+--     flashcard reviews, and the matching XP / Coins ledger rows (one grown tree per
+--     completed session, Forest style, filling several gardens)
 --   * a current streak of 21 days ending yesterday (study today to make it 22)
 --   * flashcards from the lessons' words, about a third due now
 --   * 50,000 Coins, and XP set 6 short of the next level, so the next passed sentence
@@ -38,15 +39,12 @@ declare
   v_attempt uuid;
   v_session uuid;
   v_tree uuid;
-  v_tree_sessions integer := 4;
   v_trees integer := 0;
   v_garden integer;
   v_plot integer;
   v_species public.tree_species;
   v_vocab_id uuid;
   v_studied boolean;
-  v_has_growing boolean;
-  v_last_end timestamptz;
   v_wrong boolean;
   v_points integer;
   v_lessons_today integer;
@@ -73,8 +71,6 @@ begin
     raise notice 'Demo data was already added for %; nothing changed.', v_email;
     return;
   end if;
-  -- A tree the learner is growing now stays the growing one; demo trees all come out grown
-  v_has_growing := exists (select 1 from public.garden_trees where user_id = v_uid and sessions < 4);
 
   select coalesce(timezone, 'Asia/Tokyo'), coalesce(learning_language, 'ja'), level
   into v_tz, v_lang, v_level
@@ -168,25 +164,18 @@ begin
     v_best := greatest(v_best, v_run);
     v_base := (v_day::timestamp + interval '7 hours') at time zone v_tz;
 
-    -- Pomodoro: 1–3 sessions in the morning, each tending the garden like complete_pomodoro
+    -- Pomodoro: 1–3 sessions in the morning, each planting a tree like complete_pomodoro
     for i in 1..(1 + floor(random() * 3))::integer loop
       v_at := v_base + make_interval(mins => (i - 1) * 35 + floor(random() * 10)::integer);
-      if v_tree_sessions >= 4 then
-        v_species := case when v_trees % 2 = 0 then 'pine' else 'bamboo' end;
-        select o_garden, o_plot into v_garden, v_plot from public.next_garden_plot(v_uid);
-        -- Stored as grown right away (only one tree may be growing); the last one is fixed below
-        insert into public.garden_trees (user_id, garden_index, plot_index, species, sessions, planted_at, created_at)
-        values (v_uid, v_garden, v_plot, v_species, 4, v_at + interval '25 minutes', v_at + interval '25 minutes')
-        returning id into v_tree;
-        v_tree_sessions := 1;
-        v_trees := v_trees + 1;
-      else
-        v_tree_sessions := v_tree_sessions + 1;
-        if v_tree_sessions >= 4 then
-          update public.garden_trees set matured_at = v_at + interval '25 minutes' where id = v_tree;
-        end if;
-      end if;
-      v_last_end := v_at + interval '25 minutes';
+      -- Forest style: every completed session plants one grown tree
+      v_species := (array['pine', 'bamboo']::public.tree_species[])[v_trees % 2 + 1];
+      select o_garden, o_plot into v_garden, v_plot from public.next_garden_plot(v_uid);
+      insert into public.garden_trees
+        (user_id, garden_index, plot_index, species, sessions, planted_at, matured_at, created_at)
+      values (v_uid, v_garden, v_plot, v_species, 4, v_at, v_at + interval '25 minutes',
+        v_at + interval '25 minutes')
+      returning id into v_tree;
+      v_trees := v_trees + 1;
       insert into public.pomodoro_sessions (user_id, planned_minutes, status, started_at, ended_at, created_at, species, garden_tree_id)
       values (v_uid, 25, 'completed', v_at, v_at + interval '25 minutes', v_at, v_species, v_tree)
       returning id into v_session;
@@ -269,15 +258,6 @@ begin
       v_xp := v_xp + 5;
     end if;
   end loop;
-
-  -- The last demo tree: still growing, unless the learner already grows one
-  if v_tree is not null and v_tree_sessions < 4 then
-    if v_has_growing then
-      update public.garden_trees set matured_at = v_last_end where id = v_tree;
-    else
-      update public.garden_trees set sessions = v_tree_sessions where id = v_tree;
-    end if;
-  end if;
 
   -- Notebook: one card per word, linked to a demo sentence; about a third due now
   for i in 0..jsonb_array_length(v_vocab) - 1 loop

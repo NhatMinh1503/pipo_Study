@@ -20,6 +20,9 @@ export const SCENE = {
   slimeSpeed: 16,
   slimeHopsPerSecond: 1.6,
   slimeHopHeight: 7,
+  /** Pipo has no legs: it bounces along like the slime, a little quicker and lower. */
+  pipoHopsPerSecond: 2.4,
+  pipoHopHeight: 6,
   maxPetals: 20,
   clouds: 3,
   koi: 2,

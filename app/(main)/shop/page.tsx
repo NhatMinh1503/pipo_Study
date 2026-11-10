@@ -12,7 +12,8 @@ import { ShopItemCard } from "./_components/shop-item-card";
 
 export const metadata: Metadata = { title: "Shop" };
 
-const SECTIONS = ["seed", "decoration", "theme", "topic_pack"] as const;
+// Accent colours and topic packs were placeholders and are no longer sold; owners keep them
+const SECTIONS = ["seed", "decoration"] as const;
 
 async function ShopContent() {
   const [state, t] = await Promise.all([getShopState(), getTranslations("shop")]);

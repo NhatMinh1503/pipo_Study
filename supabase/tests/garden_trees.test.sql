@@ -1,9 +1,9 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(20);
+select plan(19);
 
--- Trees grow with completed Pomodoro sessions (garden-scene spec §3.1–3.4, §12.2).
--- Session 1 sprout, 2 sapling, 4 mature; one growing tree at a time; then a new tree.
+-- Forest-style garden (migration 20261110040100): each completed Pomodoro session plants
+-- one whole (mature) tree of the species it was started with; an abandoned one plants none.
 
 insert into auth.users (id, email, aud, role) values
   ('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1', 'garden@test.local', 'authenticated', 'authenticated'),
@@ -31,43 +31,39 @@ language sql as $$
   select garden_index, plot_index, species::text, sessions from public.garden_trees
   where user_id = p_user order by garden_index, plot_index $$;
 
--- #7: the first session plants a sprout of the chosen species in the first plot
+-- #7: a completed session plants a whole tree of the chosen species in the first plot
 select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1', 'bamboo');
 select results_eq($$ select * from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
-  $$ values (1, 0, 'bamboo', 1) $$, 'session 1: a bamboo sprout in garden 1, plot 0');
-
--- While a tree grows, the species asked for is ignored: the session tends that tree
-select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1', 'pine');
-select results_eq($$ select * from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
-  $$ values (1, 0, 'bamboo', 2) $$, 'session 2: the same tree becomes a sapling');
-select is(
-  (select species::text from public.pomodoro_sessions
-   where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' order by started_at desc limit 1),
-  'bamboo', 'the session records the species of the tree it tended');
-
-select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1');
-select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1');
-select results_eq($$ select * from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
-  $$ values (1, 0, 'bamboo', 4) $$, 'session 4: the tree is mature');
+  $$ values (1, 0, 'bamboo', 4) $$, 'session 1: a grown bamboo in garden 1, plot 0');
 select isnt((select matured_at from public.garden_trees where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1'),
-  null, 'maturity time is recorded');
+  null, 'the tree is grown when the session ends');
 
+-- Every session picks its own seed: the next one plants a new tree in the next plot
 select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1', 'pine');
 select results_eq($$ select * from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
-  $$ values (1, 0, 'bamboo', 4), (1, 1, 'pine', 1) $$, 'session 5: a new pine sprout in the next plot');
+  $$ values (1, 0, 'bamboo', 4), (1, 1, 'pine', 4) $$, 'session 2: a new pine in plot 1');
+select is(
+  -- now() is frozen inside the test transaction, so find the session by the tree it planted
+  (select s.species::text from public.pomodoro_sessions s
+   join public.garden_trees t on t.id = s.garden_tree_id
+   where s.user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' and t.plot_index = 1),
+  'pine', 'the session records the species it planted');
+
+select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1');
+select results_eq($$ select species from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
+  $$ values ('bamboo'), ('pine'), ('pine') $$, 'no species asked: a free pine');
 select is(
   (select count(*)::int from public.pomodoro_sessions
    where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' and garden_tree_id is null),
-  0, 'every completed session points at the tree it tended');
+  0, 'every completed session points at the tree it planted');
 
--- An abandoned session tends nothing
+-- An abandoned session plants nothing
 set local request.jwt.claims = '{"sub":"a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1","role":"authenticated"}';
 set local role authenticated;
 select public.abandon_pomodoro((public.start_pomodoro(25)).id);
 reset role;
-select results_eq($$ select sessions from public.garden_trees
-  where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' and species = 'pine' $$,
-  $$ values (1) $$, 'an abandoned session does not grow the tree');
+select is((select count(*)::int from public.garden_trees
+  where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1'), 3, 'an abandoned session plants no tree');
 
 -- #8: locked species need their seed
 set local request.jwt.claims = '{"sub":"a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2","role":"authenticated"}';
@@ -102,9 +98,9 @@ select results_eq($$ select garden, plot, species from pg_temp.trees('a3a3a3a3-a
 select is(public.backfill_garden_trees('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3'), 0, 'running it again adds nothing');
 
 select pg_temp.focus('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3', 'bamboo');
-select results_eq($$ select garden, plot, sessions from pg_temp.trees('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3')
-  where species = 'bamboo' and sessions = 1 $$,
-  $$ values (2, 2, 1) $$, 'a new tree after the old ones goes to the next free plot');
+select results_eq($$ select garden_index, plot_index from public.garden_trees
+  where user_id = 'a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3' and not legacy $$,
+  $$ values (2, 2) $$, 'a new tree after the old ones goes to the next free plot');
 
 -- Access: own trees only, no direct writes
 set local request.jwt.claims = '{"sub":"a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2","role":"authenticated"}';

@@ -39,13 +39,13 @@ value is approved but not implemented yet.
 | level_cap                    | 50                                       | fixed     | curve    | _(planned)_ SQL `level_for_xp`                                       | xp-levels §4.3    | 2026-11-05 |
 | star_xp                      | 2000                                     | 1500–3000 | curve    | _(planned)_ SQL `stars_for_xp`                                       | xp-levels §4.4    | 2026-11-05 |
 | pomodoro_xp                  | 0                                        | fixed     | gate     | _(planned)_ `complete_pomodoro` (today: XP = minutes)                | xp-levels §3.7    | 2026-11-05 |
-| pomodoro_focus_minutes       | 25 / 50                                  | —         | gate     | `lib/pomodoro/timer.ts` (`FOCUS_OPTIONS`)                            | PRD F             | 2026-11-05 |
+| pomodoro_focus_minutes       | 10–120, step 5 (default 25)              | —         | gate     | `lib/game/config.ts` (`GAME.pomodoro`) + `isFocusMinutes`            | PRD F             | 2026-11-10 |
 | pomodoro_break_minutes       | 5                                        | —         | gate     | `lib/pomodoro/timer.ts` (`BREAK_MINUTES`)                            | PRD F             | 2026-11-05 |
 | battle_heartbeat_seconds     | 15                                       | 10–30     | gate     | `lib/battle/presence.ts`                                             | audit §17 (c)     | 2026-11-05 |
 | battle_opponent_timeout_s    | 90                                       | 60–180    | gate     | migration `…_battle_presence_timeout.sql` + `lib/battle/presence.ts` | audit §17 (c)     | 2026-11-05 |
 | battle_waiting_room_idle_s   | 45                                       | 30–90     | gate     | migration `…_battle_presence_timeout.sql`                            | audit §17 (c)     | 2026-11-05 |
 | battle_abandon_after_minutes | 15                                       | 10–30     | gate     | migration `…_battle_presence_timeout.sql`                            | audit §17 (c)     | 2026-11-05 |
-| tree_stage_sessions          | 1 / 2 / 4                                | fixed     | gate     | _(planned)_ lib/game/config.ts + SQL `complete_pomodoro`             | garden-scene §3.1 | 2026-11-07 |
+| tree_per_session             | 1 whole tree per completed session       | fixed     | gate     | SQL `tend_garden` (migration 20261110040100)                         | Forest style      | 2026-11-10 |
 | garden_grid                  | 8 × 6 tiles                              | fixed     | gate     | _(planned)_ lib/garden/layout.ts                                     | garden-scene §3.4 | 2026-11-07 |
 | plots_per_garden             | 31                                       | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.4 | 2026-11-07 |
 | decor_slots_per_garden       | 5                                        | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.5 | 2026-11-07 |
@@ -64,9 +64,9 @@ value is approved but not implemented yet.
 | level(xp)        | `min(level_cap, max L with xp_to_reach(L) ≤ xp)`                                     | [1, 50]       | xp-levels §4.3 | 2026-11-05 |
 | stars(xp)        | `xp ≥ 49 490 ? floor((xp − 49 490) / star_xp) : 0`                                   | [0, ∞)        | xp-levels §4.4 | 2026-11-05 |
 | effective_streak | `streak_current` if `last_active_date ≥ today_local − 1`, else 0                     | [0, ∞)        | audit §17 (b)  | 2026-11-05 |
-| pomodoro_coins   | `max(1, minutes / 5)`                                                                | 5 or 10       | S21 (existing) | 2026-11-05 |
+| pomodoro_coins   | `max(1, minutes / 5)`                                                                | 2–24          | S21 (existing) | 2026-11-10 |
 
-**Tree stage** (garden-scene §4.1): `sessions ≥ 4 → mature, ≥ 2 → sapling, else sprout`. One growing tree per learner; the next completed session after maturity plants a new tree.
+**Tree per session** (Forest style, 2026-11-10): every completed focus session plants one mature tree of the species picked for it; on the Pomodoro page it grows sprout → young → mature at ⅓ and ⅔ of the session. A session left early plants nothing (the page shows it wilting). Trees from the older 4-session rule were all marked mature.
 
 **Study activity** (what keeps a streak, xp-levels §3.5, reused by streak-goals): an unlocked
 sentence (even at 0 XP because of the daily cap) or a rewarded review of a due card. Not:

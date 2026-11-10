@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { BREAK_MINUTES, FOCUS_OPTIONS } from "@/lib/pomodoro/timer";
+import { BREAK_MINUTES, FOCUS_PRESETS } from "@/lib/pomodoro/timer";
 import { REVIEW_XP } from "@/lib/review/reward";
 import { POINTS } from "@/lib/scoring";
 
@@ -30,7 +30,14 @@ describe("GAME config matches design/game/registry.md", () => {
   });
 
   it("pomodoro", () => {
-    expect(GAME.pomodoro).toEqual({ focusOptions: [25, 50], breakMinutes: 5 });
+    expect(GAME.pomodoro).toEqual({
+      focusMinMinutes: 10,
+      focusMaxMinutes: 120,
+      focusStepMinutes: 5,
+      focusPresets: [15, 25, 45, 60],
+      defaultFocusMinutes: 25,
+      breakMinutes: 5,
+    });
   });
 
   it("garden", () => {
@@ -57,7 +64,7 @@ describe("existing modules read their numbers from GAME", () => {
   it("keeps the public constants they already exported", () => {
     expect(POINTS).toBe(GAME.translation.points);
     expect(REVIEW_XP).toBe(GAME.review.xp);
-    expect(FOCUS_OPTIONS).toBe(GAME.pomodoro.focusOptions);
+    expect(FOCUS_PRESETS).toBe(GAME.pomodoro.focusPresets);
     expect(BREAK_MINUTES).toBe(GAME.pomodoro.breakMinutes);
   });
 });
