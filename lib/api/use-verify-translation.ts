@@ -8,6 +8,7 @@ import {
 } from "@/lib/schemas/translation";
 
 import { postJson } from "./http";
+import { levelSummaryKey } from "./use-level-summary";
 import { levelUpsKey } from "./use-level-ups";
 
 /** Sends one sentence translation for AI grading. */
@@ -20,6 +21,7 @@ export function useVerifyTranslation() {
     onSuccess: (result) => {
       if (result.xp && result.xp.awarded > 0) {
         void queryClient.invalidateQueries({ queryKey: levelUpsKey });
+        void queryClient.invalidateQueries({ queryKey: levelSummaryKey });
       }
     },
   });

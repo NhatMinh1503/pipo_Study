@@ -124,11 +124,14 @@ test.describe("translate flow", () => {
 
     await answerBox(page).fill("Một.");
     await answerBox(page).press("Enter");
-    await expect(page.getByText("Lên Lv2!")).toBeVisible();
-    await expect(page.getByText("Câu dịch vừa rồi đã giúp bạn lên mốc mới.")).toBeVisible();
+    const moment = page.getByRole("dialog", { name: "Lv 1 → Lv 2. Giỏi lắm!" });
+    await expect(moment).toBeVisible();
+    await expect(moment.getByText("Câu dịch vừa rồi đã giúp bạn lên mốc mới.")).toBeVisible();
+    await moment.getByRole("button", { name: "Tiếp tục" }).click();
+    await expect(moment).toHaveCount(0);
 
     await page.reload();
     await expect(page.getByText("1/3 câu")).toBeVisible();
-    await expect(page.getByText("Lên Lv2!")).toHaveCount(0);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
   });
 });

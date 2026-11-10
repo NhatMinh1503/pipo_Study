@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Noto_Sans_JP } from "next/font/google";
+import { Dela_Gothic_One, IBM_Plex_Mono, Inter, Noto_Sans_JP } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { Suspense } from "react";
 
@@ -29,6 +29,14 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
+// Chunky display face for game moments only (XP badge, level stamp), as in the game-layer design
+const delaGothic = Dela_Gothic_One({
+  variable: "--font-dela",
+  subsets: ["latin", "vietnamese"],
+  weight: "400",
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: { default: "pipo", template: "%s · pipo" },
   description: "Học ngoại ngữ qua dịch thuật ngữ cảnh, SRS và AI.",
@@ -41,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="vi"
-      className={`${inter.variable} ${notoSansJp.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${notoSansJp.variable} ${plexMono.variable} ${delaGothic.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-background font-sans text-foreground">

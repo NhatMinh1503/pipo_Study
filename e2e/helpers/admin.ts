@@ -96,8 +96,12 @@ export async function plantTree(
 
 /** Gives the learner a shop item without spending coins (garden decoration tests). */
 export async function grantItem(email: string, itemId: string) {
+  // New accounts may already own some items (welcome gifts), so granting is idempotent
   const { error } = await admin
     .from("purchases")
-    .insert({ user_id: await findUserId(email), item_id: itemId });
+    .upsert(
+      { user_id: await findUserId(email), item_id: itemId },
+      { onConflict: "user_id,item_id", ignoreDuplicates: true },
+    );
   if (error) throw error;
 }

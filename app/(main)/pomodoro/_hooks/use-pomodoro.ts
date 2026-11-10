@@ -14,6 +14,7 @@ import {
   type FocusMinutes,
 } from "@/lib/pomodoro/timer";
 import type { TreeSpecies } from "@/lib/garden/growth";
+import type { SessionTree } from "@/lib/pomodoro/grow";
 import { usePomodoroStore } from "@/lib/stores/pomodoro";
 
 import { abandonFocus, completeFocus, startFocus } from "../_lib/actions";
@@ -94,7 +95,8 @@ export function usePomodoro() {
     };
   }, [store.phase, left, t]);
 
-  const start = (minutes: FocusMinutes, species?: TreeSpecies) =>
+  /** `tree` is what the session will tend, for the growing picture; `species` goes to the server. */
+  const start = (minutes: FocusMinutes, species: TreeSpecies | undefined, tree: SessionTree) =>
     startTransition(async () => {
       if (typeof Notification !== "undefined" && Notification.permission === "default") {
         void Notification.requestPermission();
@@ -102,7 +104,7 @@ export function usePomodoro() {
       const result = await startFocus({ minutes, species });
       if (result.ok) {
         setLastReward(null);
-        store.startFocus(result);
+        store.startFocus({ ...result, tree });
       } else {
         toast.error(t(result.reason === "locked" ? "tree.lockedError" : "startFailed"));
       }
@@ -117,6 +119,7 @@ export function usePomodoro() {
   return {
     phase: store.phase,
     minutes: store.minutes,
+    tree: store.tree,
     /** null until the clock is available on the client. */
     clock: left === null ? null : formatClock(left),
     progress: done,

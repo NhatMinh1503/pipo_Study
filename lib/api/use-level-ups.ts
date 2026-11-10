@@ -14,6 +14,7 @@ export interface LevelUpEvent {
   toLevel: number;
   fromStars: number;
   toStars: number;
+  xpTotal: number;
   xpIntoLevel: number;
   xpToNext: number;
   sourceReason: string;
@@ -23,7 +24,7 @@ async function fetchUnseenLevelUps(): Promise<LevelUpEvent[]> {
   const { data, error } = await createClient()
     .from("level_ups")
     .select(
-      "id, kind, from_level, to_level, from_stars, to_stars, xp_into_level, xp_to_next, source_reason",
+      "id, kind, from_level, to_level, from_stars, to_stars, xp_total, xp_into_level, xp_to_next, source_reason",
     )
     .is("seen_at", null)
     .order("created_at");
@@ -35,6 +36,7 @@ async function fetchUnseenLevelUps(): Promise<LevelUpEvent[]> {
     toLevel: row.to_level,
     fromStars: row.from_stars,
     toStars: row.to_stars,
+    xpTotal: row.xp_total,
     xpIntoLevel: row.xp_into_level,
     xpToNext: row.xp_to_next,
     sourceReason: row.source_reason,

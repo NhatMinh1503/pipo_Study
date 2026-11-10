@@ -87,6 +87,7 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 | Shop: decorations                   | Coins    | 25–40                      | —                                                               | S23 (DB)             |
 | Shop: torii / bridge / slime        | Coins    | 60 / 50 / 90               | — (**[Đề xuất]**, Minh có thể chỉnh trong migration)            | garden-scene §3.5    |
 | Shop: tree seeds (maple, sakura)    | Coins    | 120 each                   | —                                                               | garden-scene §3.2    |
+| Welcome gift (new accounts)         | Items    | deco-pond + deco-lantern   | free; accounts created while `welcome_gifts` row is active      | event 2026-11-10     |
 | Shop: topic packs                   | Coins    | 80 each                    | —                                                               | S23 (DB)             |
 
 ## Systems and their docs

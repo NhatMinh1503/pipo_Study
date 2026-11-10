@@ -404,6 +404,19 @@
       "growing": "Tending: {species} · {sessions}/{total} sessions",
       "needsSeed": "Needs a seed",
       "lockedError": "This tree needs a seed."
+    },
+    "scene": {
+      "seed": "A {species} seed is waiting for its first session",
+      "growing": "{species} growing · {sessions}/{total} sessions",
+      "focus": "{species} is growing in session {session}/{total}",
+      "break": "{species} just grew · {sessions}/{total} sessions",
+      "sessions": "{sessions} of {total} sessions tended",
+      "stagesLabel": "How the tree grows",
+      "stages": {
+        "sprout": "Sprout",
+        "sapling": "Young tree",
+        "mature": "Mature"
+      }
     }
   },
   "garden": {
@@ -846,6 +859,16 @@
         "lesson_bonus": "Your lesson completion bonus took you to a new milestone.",
         "flashcard_review": "The review you just did took you to a new milestone.",
         "review_clear": "Clearing today's reviews took you to a new milestone."
+      },
+      "kicker": "LEVEL UP · レベルアップ",
+      "from": "Lv {from} → Lv {to}. Well done!",
+      "generic": "You just reached a new milestone.",
+      "continue": "Continue",
+      "toProfile": "View profile",
+      "tiles": {
+        "level": "New level",
+        "total": "Total XP",
+        "toNext": "XP to next"
       }
     }
   }

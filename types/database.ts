@@ -1070,6 +1070,32 @@ export type Database = {
         }
         Relationships: []
       }
+      welcome_gifts: {
+        Row: {
+          ends_at: string | null
+          item_id: string
+          starts_at: string
+        }
+        Insert: {
+          ends_at?: string | null
+          item_id: string
+          starts_at?: string
+        }
+        Update: {
+          ends_at?: string | null
+          item_id?: string
+          starts_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "welcome_gifts_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: true
+            referencedRelation: "shop_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       word_explanations: {
         Row: {
           created_at: string
