@@ -48,7 +48,9 @@ export async function addToNotebook(input: unknown): Promise<ActionResult> {
   if (cardError)
     logger.error("flashcard insert failed", { code: cardError.code, module: "notebook" });
 
-  revalidatePath("/notebook");
+  // No revalidatePath here: words are saved from the lesson page, and revalidating made the
+  // action re-render that page, which closed the next word's popup a moment after it opened.
+  // The notebook and dashboard render per request, so they show the new word anyway.
   return { ok: true };
 }
 
