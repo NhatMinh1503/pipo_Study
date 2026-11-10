@@ -14,7 +14,7 @@ comment on table public.welcome_gifts is
 
 alter table public.welcome_gifts enable row level security;
 -- Not visible to learners; only migrations and the service role manage the event
-revoke all on public.welcome_gifts from anon, authenticated;
+revoke all on public.welcome_gifts from anon, authenticated, service_role;
 grant select, insert, update, delete on public.welcome_gifts to service_role;
 
 insert into public.welcome_gifts (item_id, starts_at) values
