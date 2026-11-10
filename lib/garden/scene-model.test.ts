@@ -20,15 +20,25 @@ describe("garden scene model", () => {
       hasSlime: false,
       studiedToday: false,
     });
-    expect(model.tiles.filter((tile) => tile.asset === "plot-soil")).toHaveLength(31);
-    // 8 path tiles in the map plus one outside each end
-    expect(model.tiles.filter((tile) => tile.asset === "tile-path")).toHaveLength(10);
-    expect(model.tiles).toHaveLength(41);
+    expect(model.tiles).toHaveLength(31);
+    expect(model.tiles.every((tile) => tile.asset === "plot-soil")).toBe(true);
+    // 14 path tiles in the map plus three past each edge
+    expect(model.pathTiles).toHaveLength(20);
     expect(model.tiles).toContainEqual({ asset: "plot-soil", ...tileCenter(plotTile(0)) });
     // Back to front
     const ys = model.tiles.map((tile) => tile.y);
     expect(ys).toEqual([...ys].sort((a, b) => a - b));
     expect(model.pond).toBeNull();
+  });
+
+  it("lays stepping stones along the path, the same on every visit, back to front", () => {
+    const input = { trees: [], hasPond: false, hasSlime: false, studiedToday: false };
+    const { stones } = buildSceneModel(input);
+    expect(stones.length).toBeGreaterThan(15);
+    expect(buildSceneModel(input).stones).toEqual(stones);
+    const ys = stones.map((stone) => stone.y);
+    expect(ys).toEqual([...ys].sort((a, b) => a - b));
+    expect(stones.every((stone) => stone.asset.startsWith("stone-"))).toBe(true);
   });
 
   it("draws the pond over its four tiles only when the learner owns one", () => {
@@ -38,7 +48,7 @@ describe("garden scene model", () => {
       hasSlime: false,
       studiedToday: false,
     });
-    expect(model.pond).toEqual(project(3, 4));
+    expect(model.pond).toEqual(project(5, 5));
     expect(model.koi).toBe(true);
     expect(model.bridge).toBeNull();
   });
@@ -51,7 +61,7 @@ describe("garden scene model", () => {
       hasBridge: true,
       studiedToday: false,
     });
-    expect(withPond.bridge?.x).toBe(project(3, 4).x);
+    expect(withPond.bridge?.x).toBe(project(5, 5).x);
     const noPond = buildSceneModel({
       trees: [],
       hasPond: false,
@@ -90,15 +100,15 @@ describe("garden scene model", () => {
   it("lets Pipo stop next to mature trees beside the path only", () => {
     const model = buildSceneModel({
       trees: [
-        tree({ id: "near", plot: 9 }), // (2,1): right above the path
-        tree({ id: "young", plot: 10, sessions: 2 }), // (3,1): not mature
-        tree({ id: "far", plot: 0 }), // (0,0): two rows away
+        tree({ id: "near", plot: 18 }), // (3,3): beside path tile 3, (2,3)
+        tree({ id: "young", plot: 12, sessions: 2 }), // (4,1): by the path, not mature
+        tree({ id: "far", plot: 0 }), // (0,0): away from the path
       ],
       hasPond: false,
       hasSlime: false,
       studiedToday: false,
     });
-    expect(model.stops).toEqual([{ distance: waypointDistances[3], kind: "view" }]);
+    expect(model.stops).toEqual([{ distance: waypointDistances[4], kind: "view" }]);
   });
 
   it("sorts trees back to front so lower ones are drawn on top", () => {
@@ -118,14 +128,25 @@ describe("garden scene model", () => {
       hasSlime: false,
       studiedToday: false,
       decorations: [
-        { itemId: "deco-bench", slot: 2 }, // (1,3): just below the path
-        { itemId: "deco-lantern", slot: 4 }, // (5,4): two rows away
+        { itemId: "deco-bench", slot: 1 }, // (5,2): beside path tile 6, (4,2)
+        { itemId: "deco-lantern", slot: 4 }, // (3,4): by the path, but not a seat
       ],
     });
     expect(model.decorations).toEqual([
-      { id: "deco-bench", asset: "deco-bench", slot: 2, ...tileBase(decorTile(2)) },
+      { id: "deco-bench", asset: "deco-bench", slot: 1, ...tileBase(decorTile(1)) },
       { id: "deco-lantern", asset: "deco-lantern", slot: 4, ...tileBase(decorTile(4)) },
     ]);
-    expect(model.stops).toEqual([{ distance: waypointDistances[2], kind: "bench" }]);
+    expect(model.stops).toEqual([{ distance: waypointDistances[7], kind: "bench" }]);
+  });
+
+  it("keeps one stop per path tile: a bench there wins over a view", () => {
+    const model = buildSceneModel({
+      trees: [tree({ id: "by-bench", plot: 12 })], // (4,1): beside path tile 6, like the bench
+      decorations: [{ itemId: "deco-bench", slot: 1 }],
+      hasPond: false,
+      hasSlime: false,
+      studiedToday: false,
+    });
+    expect(model.stops).toEqual([{ distance: waypointDistances[7], kind: "bench" }]);
   });
 });

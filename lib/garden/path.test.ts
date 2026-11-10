@@ -1,18 +1,17 @@
 import { describe, expect, it } from "vitest";
 
-import { COLS, project } from "./layout";
+import { PATH_ROUTE, project } from "./layout";
 import { PATH_WAYPOINTS, pathLength, pointAt, waypointDistances } from "./path";
 
 // garden-scene spec §3.4 (test case #3)
 describe("garden path", () => {
-  it("runs diagonally along the path row, from past one end of the map to past the other", () => {
-    const first = PATH_WAYPOINTS[0];
-    const last = PATH_WAYPOINTS.at(-1);
-    expect(first).toEqual(project(-0.6, 2.5));
-    expect(last).toEqual(project(COLS + 0.6, 2.5));
-    // Every waypoint sits on the same isometric row: x − 2y is constant along +x
-    const rowKey = (point: { x: number; y: number }) => point.x - 2 * point.y;
-    for (const point of PATH_WAYPOINTS) expect(rowKey(point)).toBeCloseTo(rowKey(project(0, 2.5)));
+  it("winds through every path tile, from past one edge of the map to past the other", () => {
+    expect(PATH_WAYPOINTS[0]).toEqual(project(0.5 - 1.1, 4.5));
+    expect(PATH_WAYPOINTS.at(-1)).toEqual(project(8.5 + 1.1, 1.5));
+    expect(PATH_WAYPOINTS).toHaveLength(PATH_ROUTE.length + 2);
+    PATH_ROUTE.forEach((tile, index) => {
+      expect(PATH_WAYPOINTS[index + 1]).toEqual(project(tile.x + 0.5, tile.y + 0.5));
+    });
   });
 
   it("passes through every waypoint", () => {

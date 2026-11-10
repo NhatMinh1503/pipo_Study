@@ -3,8 +3,10 @@
 import {
   Application,
   Assets,
+  BlurFilter,
   Container,
   Graphics,
+  Rectangle,
   Sprite,
   TilingSprite,
   type Texture,
@@ -13,12 +15,12 @@ import {
 import { assetUrl, gardenAsset } from "@/lib/garden/assets";
 import { SCENE } from "@/lib/garden/config";
 import {
-  HORIZON_Y,
   SCENE_HEIGHT,
   SCENE_WIDTH,
   decorTile,
   tileCorners,
   type Point,
+  type Tile,
 } from "@/lib/garden/layout";
 import { pathLength, pointAt } from "@/lib/garden/path";
 import {
@@ -62,18 +64,30 @@ const PIPO_SQUASH = 0.12;
 const PIPO_BODY_GAP = 9;
 /** Opacity of a tree while Pipo walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
+/** How soft the edge of the dirt path is, and how far its shade spreads into the meadow. */
+const PATH_EDGE_BLUR = 2.5;
+const PATH_SHADE_BLUR = 6;
+/** The koi swim an ellipse this wide and tall around the middle of the pond. */
+const KOI_ORBIT = { x: 46, y: 18 } as const;
+
+/** One polygon per path tile, grown a little around its centre so neighbours overlap. */
+function pathShape(tiles: readonly Tile[], grow: number, colour: number, alpha: number): Graphics {
+  const shape = new Graphics();
+  for (const tile of tiles) {
+    const corners = tileCorners(tile);
+    const cx = corners.reduce((sum, corner) => sum + corner.x, 0) / corners.length;
+    const cy = corners.reduce((sum, corner) => sum + corner.y, 0) / corners.length;
+    shape.poly(
+      corners.flatMap((corner) => [cx + (corner.x - cx) * grow, cy + (corner.y - cy) * grow]),
+    );
+  }
+  return shape.fill({ color: colour, alpha });
+}
 
 function neededAssets(model: SceneModel): string[] {
-  const ids = new Set<string>([
-    "bg-sky",
-    "bg-fuji",
-    "bg-hills",
-    "tile-grass-a",
-    "cloud-a",
-    "cloud-b",
-    ...PIPO_PARTS,
-  ]);
+  const ids = new Set<string>(["bg-garden", "tile-path", "cloud-a", "cloud-b", ...PIPO_PARTS]);
   for (const tile of model.tiles) ids.add(tile.asset);
+  for (const stone of model.stones) ids.add(stone.asset);
   for (const tree of model.trees) ids.add(tree.asset);
   for (const decoration of model.decorations) ids.add(decoration.asset);
   if (model.pond) ids.add("deco-pond");
@@ -124,27 +138,40 @@ export async function createGardenRenderer(
     return piece;
   };
 
-  // --- Background: sky, Mount Fuji, clouds, grass, distant trees ---------------------
-  const sky = sprite("bg-sky");
-  const fuji = sprite("bg-fuji");
-  fuji.position.set(150, HORIZON_Y + 4);
+  // --- Background: the painted sky, Mount Fuji, forest and meadow; drifting clouds -------
+  const backdrop = sprite("bg-garden");
   const clouds = Array.from({ length: SCENE.clouds }, (_, index) => {
     const cloud = sprite(index % 2 === 0 ? "cloud-a" : "cloud-b");
-    cloud.position.set(80 + index * 210, 22 + (index % 2) * 22);
-    return { sprite: cloud, speed: 4 + index * 1.5 };
+    cloud.position.set(80 + index * 210, 18 + (index % 2) * 16);
+    cloud.alpha = 0.92;
+    return { sprite: cloud, speed: 3 + index * 1.2 };
   });
-  const grass = new TilingSprite({
-    texture: texture("tile-grass-a"),
-    width: SCENE_WIDTH,
-    height: SCENE_HEIGHT - HORIZON_Y,
-  });
-  grass.position.set(0, HORIZON_Y);
-  const hills = sprite("bg-hills");
-  hills.position.set(0, HORIZON_Y + 10);
-  app.stage.addChild(sky, fuji, ...clouds.map((cloud) => cloud.sprite), grass, hills);
+  app.stage.addChild(backdrop, ...clouds.map((cloud) => cloud.sprite));
 
-  // --- Ground: tiles, pond, koi -----------------------------------------------------
+  // --- Ground: the dirt path with a soft edge, stepping stones, plots, pond, koi ----------
   const ground = new Container();
+  const sceneFrame = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+  // A faint shade where the meadow meets the path, then the dirt cut out by a blurred mask
+  const shade = pathShape(model.pathTiles, 1.12, 0x3c4a1c, 0.28);
+  shade.filters = [new BlurFilter({ strength: PATH_SHADE_BLUR })];
+  const maskShape = pathShape(model.pathTiles, 0.98, 0xffffff, 1);
+  maskShape.filters = [new BlurFilter({ strength: PATH_EDGE_BLUR })];
+  const maskTexture = app.renderer.generateTexture({ target: maskShape, frame: sceneFrame });
+  maskShape.destroy();
+  const pathMask = new Sprite(maskTexture);
+  const dirt = new TilingSprite({
+    texture: texture("tile-path"),
+    width: SCENE_WIDTH,
+    height: SCENE_HEIGHT,
+  });
+  dirt.mask = pathMask;
+  ground.addChild(shade, dirt, pathMask);
+  for (const stone of model.stones) {
+    const piece = sprite(stone.asset);
+    piece.position.set(stone.x, stone.y);
+    piece.scale.set(stone.flip ? -stone.scale : stone.scale, stone.scale);
+    ground.addChild(piece);
+  }
   for (const tile of model.tiles) {
     const piece = sprite(tile.asset);
     piece.position.set(tile.x, tile.y);
@@ -326,7 +353,10 @@ export async function createGardenRenderer(
     koi.forEach((fish, index) => {
       if (!model.pond) return;
       const angle = (moving ? elapsed * 0.5 : 0) + index * Math.PI;
-      fish.position.set(model.pond.x + Math.cos(angle) * 38, model.pond.y + Math.sin(angle) * 16);
+      fish.position.set(
+        model.pond.x + Math.cos(angle) * KOI_ORBIT.x,
+        model.pond.y + Math.sin(angle) * KOI_ORBIT.y,
+      );
       fish.rotation = angle + Math.PI / 2;
     });
 

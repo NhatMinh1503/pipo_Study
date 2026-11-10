@@ -1,17 +1,22 @@
-import { COLS, project, type Point } from "./layout";
+import { PATH_ROUTE, project, type Point } from "./layout";
 
-/** Path row (row 2 of the layout), crossing the map diagonally down-right. */
-const PATH_ROW = 2.5;
+/** How far past each edge of the map Pipo walks, in tiles from the edge tile's centre. */
+const OVERSHOOT = 1.1;
 
 /**
- * Waypoints: both ends of the path (just outside the map, where the path tiles continue)
- * plus the centre of each path tile, so stop k + 1 sits in column k.
+ * Waypoints: both ends of the path (just outside the map, where the drawn path continues)
+ * plus the centre of each path tile in walking order, so route tile k is waypoint k + 1.
  */
-export const PATH_WAYPOINTS: Point[] = [
-  -0.6,
-  ...Array.from({ length: COLS }, (_, column) => column + 0.5),
-  COLS + 0.6,
-].map((gridX) => project(gridX, PATH_ROW));
+export const PATH_WAYPOINTS: Point[] = (() => {
+  const first = PATH_ROUTE[0];
+  const last = PATH_ROUTE.at(-1);
+  if (!first || !last) return [];
+  return [
+    project(first.x + 0.5 - OVERSHOOT, first.y + 0.5),
+    ...PATH_ROUTE.map((tile) => project(tile.x + 0.5, tile.y + 0.5)),
+    project(last.x + 0.5 + OVERSHOOT, last.y + 0.5),
+  ];
+})();
 
 const SAMPLES_PER_SEGMENT = 24;
 
