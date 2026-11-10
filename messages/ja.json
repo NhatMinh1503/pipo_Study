@@ -404,6 +404,19 @@
       "growing": "育成中：{species}・{sessions}/{total} セッション",
       "needsSeed": "種が必要",
       "lockedError": "この木には種が必要です。"
+    },
+    "scene": {
+      "seed": "{species}の種が最初のセッションを待っています",
+      "growing": "{species}が成長中 · {sessions}/{total} セッション",
+      "focus": "セッション {session}/{total} で{species}が成長中",
+      "break": "{species}が少し大きくなりました · {sessions}/{total} セッション",
+      "sessions": "{total} セッション中 {sessions} 回お世話しました",
+      "stagesLabel": "木の成長段階",
+      "stages": {
+        "sprout": "芽",
+        "sapling": "若木",
+        "mature": "成木"
+      }
     }
   },
   "garden": {
@@ -846,6 +859,16 @@
         "lesson_bonus": "レッスン完了ボーナスで新しい目標に到達しました。",
         "flashcard_review": "今の復習で新しい目標に到達しました。",
         "review_clear": "今日の復習を終えて新しい目標に到達しました。"
+      },
+      "kicker": "レベルアップ",
+      "from": "Lv {from} → Lv {to}。すごい!",
+      "generic": "新しい節目に到達しました。",
+      "continue": "続ける",
+      "toProfile": "プロフィールを見る",
+      "tiles": {
+        "level": "新しいレベル",
+        "total": "合計 XP",
+        "toNext": "次まで XP"
       }
     }
   }

@@ -10,7 +10,9 @@ insert into auth.users (id, email, aud, role) values
 insert into public.purchases (user_id, item_id) values
   ('b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1', 'deco-lantern'),
   ('b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1', 'deco-bench'),
-  ('b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1', 'deco-pond');
+  ('b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1', 'deco-pond')
+-- (welcome gifts may already have given some of these)
+on conflict do nothing;
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub":"b1b1b1b1-b1b1-b1b1-b1b1-b1b1b1b1b1b1","role":"authenticated"}';

@@ -32,20 +32,23 @@ async function ShopContent() {
           </span>
         }
       />
-      {SECTIONS.map((kind) => (
-        <section key={kind} className="space-y-3">
-          <h2 className="mono-label">{t(`sections.${kind}`)}</h2>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {state.items
-              .filter((item) => item.kind === kind)
-              .map((item) => (
+      {SECTIONS.map((kind) => {
+        const items = state.items.filter((item) => item.kind === kind);
+        // A section with nothing to sell (e.g. before a catalog migration) is not shown
+        if (items.length === 0) return null;
+        return (
+          <section key={kind} className="space-y-3">
+            <h2 className="mono-label">{t(`sections.${kind}`)}</h2>
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {items.map((item) => (
                 <li key={item.id}>
                   <ShopItemCard item={item} coins={state.coins} active={state.accent === item.id} />
                 </li>
               ))}
-          </ul>
-        </section>
-      ))}
+            </ul>
+          </section>
+        );
+      })}
     </>
   );
 }

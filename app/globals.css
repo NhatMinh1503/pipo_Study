@@ -10,6 +10,7 @@
   --font-sans: var(--font-inter), var(--font-jp), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), var(--font-inter), var(--font-jp), ui-monospace, monospace;
   --font-heading: var(--font-plex-mono), var(--font-inter), var(--font-jp), ui-monospace, monospace;
+  --font-display: var(--font-dela), var(--font-inter), var(--font-jp), ui-sans-serif, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -268,4 +269,222 @@
 .dark[data-accent="theme-ocean"] {
   --primary: #86c6d6;
   --ring: #86c6d6;
+}
+
+/* --- Game motion (Pomodoro tree, XP and level-up moments) ------------------------------
+   Every animation here is decorative; prefers-reduced-motion turns all of them off. */
+@keyframes tree-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  18% {
+    transform: rotate(1.2deg);
+  }
+  36% {
+    transform: rotate(-0.9deg);
+  }
+  /* a gust */
+  52% {
+    transform: rotate(2.6deg);
+  }
+  62% {
+    transform: rotate(-1.6deg);
+  }
+  78% {
+    transform: rotate(0.9deg);
+  }
+}
+@keyframes tree-rustle {
+  0%,
+  100% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  50% {
+    transform: scale(1.012, 0.992) skewX(-1.2deg);
+  }
+}
+@keyframes leaf-drift {
+  0% {
+    left: -8%;
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-14px) rotate(200deg);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: 108%;
+    opacity: 0;
+    transform: translateY(10px) rotate(420deg);
+  }
+}
+@keyframes wind-streak {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  30%,
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(260%);
+    opacity: 0;
+  }
+}
+@keyframes sparkle-pop {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.15) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.6) rotate(90deg);
+    opacity: 0;
+  }
+}
+@keyframes xp-float {
+  0% {
+    transform: translateY(10px) scale(0.6) rotate(-6deg);
+    opacity: 0;
+  }
+  18% {
+    transform: translateY(0) scale(1.12) rotate(-3deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(0) scale(1) rotate(-3deg);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-22px) scale(1) rotate(-3deg);
+    opacity: 0;
+  }
+}
+@keyframes stamp-in {
+  0% {
+    transform: scale(2.2) rotate(-24deg);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(0.92) rotate(-8deg);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.04) rotate(-8deg);
+  }
+  100% {
+    transform: scale(1) rotate(-8deg);
+  }
+}
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-18px) rotate(-5deg);
+  }
+  60% {
+    transform: translateY(0) scale(1.04, 0.96);
+  }
+}
+@keyframes burst-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-30px) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(420deg);
+    opacity: 0;
+  }
+}
+
+/* Uses the separate `scale` property so it stacks on the sprite's own transform */
+@keyframes grow-pop {
+  0% {
+    scale: 0.55;
+  }
+  55% {
+    scale: 1.14;
+  }
+  75% {
+    scale: 0.96;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-grow-pop {
+    animation: grow-pop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+  .anim-tree-sway {
+    animation: tree-sway 6.5s ease-in-out infinite;
+  }
+  .anim-tree-rustle {
+    animation: tree-rustle 2.4s ease-in-out infinite;
+  }
+  .anim-leaf {
+    animation: leaf-drift var(--leaf-duration, 7s) linear infinite;
+    animation-delay: var(--leaf-delay, 0s);
+  }
+  .anim-wind {
+    animation: wind-streak var(--wind-duration, 4s) ease-in-out infinite;
+    animation-delay: var(--wind-delay, 0s);
+  }
+  .anim-sparkle {
+    animation: sparkle-pop 1.4s ease-out infinite;
+    animation-delay: var(--sparkle-delay, 0s);
+  }
+  .anim-xp-float {
+    animation: xp-float 2.4s ease-out both;
+  }
+  .anim-stamp {
+    animation: stamp-in 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+  .anim-hop {
+    animation: hop 1.4s ease-in-out infinite;
+  }
+  .anim-burst {
+    animation: burst-spin 24s linear infinite;
+  }
+  .anim-petal {
+    animation: petal-fall var(--petal-duration, 6s) linear infinite;
+    animation-delay: var(--petal-delay, 0s);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Still pictures only: no drifting leaves, petals, sparkles or floating badges */
+  .anim-leaf,
+  .anim-wind,
+  .anim-sparkle,
+  .anim-petal,
+  .anim-xp-float {
+    display: none;
+  }
+  .anim-stamp {
+    transform: rotate(-8deg);
+  }
 }

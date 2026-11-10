@@ -22,13 +22,13 @@ export function FeedbackPanel({ feedback }: { feedback: Feedback | null }) {
     <section
       aria-live="polite"
       aria-label={t("feedbackLabel")}
-      className="space-y-3 border-2 border-border bg-card p-4 shadow-[3px_3px_0_0_var(--shadow-ink)]"
+      className="relative space-y-3 border-2 border-border bg-card p-4 shadow-[3px_3px_0_0_var(--shadow-ink)]"
     >
       <div className="flex items-center justify-between gap-2 border-b border-dashed border-border/40 pb-2.5">
         <VerdictBadge verdict={result.verdict} />
         <span className="mono-label">{t("feedbackLabel")}</span>
       </div>
-      {result.xp && <SentenceXpNote xp={result.xp} />}
+      {result.xp && <SentenceXpNote key={result.attemptId} xp={result.xp} />}
       <p className="text-sm leading-relaxed">{result.feedback}</p>
       {result.hint && (
         <p className="flex gap-2 bg-warning/[0.09] px-2.5 py-2 text-sm leading-relaxed">

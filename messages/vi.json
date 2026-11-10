@@ -404,6 +404,19 @@
       "growing": "Đang chăm: {species} · {sessions}/{total} phiên",
       "needsSeed": "Cần hạt giống",
       "lockedError": "Loài cây này cần hạt giống."
+    },
+    "scene": {
+      "seed": "Hạt {species} đang chờ phiên đầu tiên",
+      "growing": "{species} đang lớn · {sessions}/{total} phiên",
+      "focus": "{species} đang lớn trong phiên {session}/{total}",
+      "break": "{species} vừa lớn thêm · {sessions}/{total} phiên",
+      "sessions": "Đã chăm {sessions} trên {total} phiên",
+      "stagesLabel": "Các giai đoạn lớn của cây",
+      "stages": {
+        "sprout": "Mầm",
+        "sapling": "Cây non",
+        "mature": "Trưởng thành"
+      }
     }
   },
   "garden": {
@@ -846,6 +859,16 @@
         "lesson_bonus": "Thưởng hoàn thành bài đã giúp bạn lên mốc mới.",
         "flashcard_review": "Lượt ôn thẻ vừa rồi đã giúp bạn lên mốc mới.",
         "review_clear": "Ôn hết thẻ hôm nay đã giúp bạn lên mốc mới."
+      },
+      "kicker": "LÊN CẤP · レベルアップ",
+      "from": "Lv {from} → Lv {to}. Giỏi lắm!",
+      "generic": "Bạn vừa lên mốc mới.",
+      "continue": "Tiếp tục",
+      "toProfile": "Xem hồ sơ",
+      "tiles": {
+        "level": "Cấp mới",
+        "total": "Tổng XP",
+        "toNext": "XP tới mốc sau"
       }
     }
   }

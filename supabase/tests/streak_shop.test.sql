@@ -60,7 +60,7 @@ select is((select coins from public.wallets), 40, 'coins deducted by the server-
 select is((select streak_current from public.wallets), 1, 'spending does not count as activity');
 select throws_ok($$ select public.buy_item('theme-sakura') $$, '23505', null, 'cannot buy the same item twice');
 select throws_ok($$ select public.buy_item('theme-matcha') $$, '23514', null, 'cannot buy without enough coins');
-select is((select count(*)::int from public.purchases), 1, 'a failed purchase leaves no row');
+select is((select count(*)::int from public.purchases where item_id like 'theme-%'), 1, 'a failed purchase leaves no row');
 
 select lives_ok(
   $$ update public.profiles set accent = 'theme-sakura' where user_id = auth.uid() $$,

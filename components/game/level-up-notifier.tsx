@@ -2,9 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
-import { useEffect, useEffectEvent, useRef } from "react";
-import { toast } from "sonner";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
   type LevelUpEvent,
@@ -13,21 +11,19 @@ import {
   useUnseenLevelUps,
 } from "@/lib/api/use-level-ups";
 
-const SOURCES = ["sentence_passed", "lesson_bonus", "flashcard_review", "review_clear"] as const;
-type Source = (typeof SOURCES)[number];
-const isSource = (value: string): value is Source => SOURCES.some((source) => source === value);
+import { LevelUpMoment } from "./level-up-moment";
 
 /**
  * Shows each level-up moment once (xp-levels §3.9). Events are marked seen before they are
- * shown, so a reload or a second device never repeats them. A plain notice for now; the
- * event data (from/to level, progress, source) is ready for an animation later.
+ * shown, so a reload or a second device never repeats them. Several moments at once queue
+ * up and play one after another.
  */
 export function LevelUpNotifier() {
-  const t = useTranslations("game.levelUp");
   const queryClient = useQueryClient();
   const pathname = usePathname();
   const { data: events } = useUnseenLevelUps();
   const handled = useRef(new Set<string>());
+  const [queue, setQueue] = useState<LevelUpEvent[]>([]);
 
   // Rewards also arrive with page changes (e.g. finishing a lesson opens the result page)
   useEffect(() => {
@@ -45,16 +41,7 @@ export function LevelUpNotifier() {
       fresh.forEach((event) => handled.current.delete(event.id));
       return;
     }
-    for (const event of fresh) {
-      toast.success(
-        event.kind === "star"
-          ? t("star", { stars: event.toStars })
-          : t("level", { level: event.toLevel }),
-        {
-          description: isSource(event.sourceReason) ? t(`source.${event.sourceReason}`) : undefined,
-        },
-      );
-    }
+    setQueue((current) => [...current, ...fresh]);
     queryClient.setQueryData(levelUpsKey, []);
   });
 
@@ -62,5 +49,10 @@ export function LevelUpNotifier() {
     if (events && events.length > 0) void show(events);
   }, [events]);
 
-  return null;
+  return (
+    <LevelUpMoment
+      event={queue[0] ?? null}
+      onContinue={() => setQueue((current) => current.slice(1))}
+    />
+  );
 }
