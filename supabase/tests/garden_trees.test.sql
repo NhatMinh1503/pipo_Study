@@ -43,8 +43,10 @@ select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1', 'pine');
 select results_eq($$ select * from pg_temp.trees('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1') $$,
   $$ values (1, 0, 'bamboo', 4), (1, 1, 'pine', 4) $$, 'session 2: a new pine in plot 1');
 select is(
-  (select species::text from public.pomodoro_sessions
-   where user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' order by started_at desc limit 1),
+  -- now() is frozen inside the test transaction, so find the session by the tree it planted
+  (select s.species::text from public.pomodoro_sessions s
+   join public.garden_trees t on t.id = s.garden_tree_id
+   where s.user_id = 'a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1' and t.plot_index = 1),
   'pine', 'the session records the species it planted');
 
 select pg_temp.focus('a1a1a1a1-a1a1-a1a1-a1a1-a1a1a1a1a1a1');
