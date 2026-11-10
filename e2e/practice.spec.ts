@@ -54,10 +54,21 @@ test.describe("practice modes", () => {
     await expect(page.getByText("Cần ít nhất 4 từ có nghĩa trong Sổ tay")).toBeVisible();
 
     await createLesson(page, "駅に猫と犬と本があります。");
+    const log: string[] = [];
+    page.on("console", (m) => log.push(`console.${m.type()}: ${m.text().slice(0, 300)}`));
+    page.on("pageerror", (e) => log.push(`pageerror: ${e.message.slice(0, 300)}`));
+    page.on("framenavigated", (f) => { if (f === page.mainFrame()) log.push(`nav: ${f.url()}`); });
+    page.on("response", (r) => { if (r.url().includes("/api/") || r.request().method() === "POST") log.push(`resp ${r.status()} ${r.request().method()} ${r.url().slice(0, 160)}`); });
     const source = page.getByRole("region", { name: "Văn bản gốc" });
     for (const word of ["駅", "猫", "犬", "本"]) {
+      log.push(`--- word ${word}`);
       await source.getByRole("button", { name: word, exact: true }).click();
-      await page.getByRole("dialog").getByRole("button", { name: "Thêm vào Sổ tay" }).click();
+      try {
+        await page.getByRole("dialog").getByRole("button", { name: "Thêm vào Sổ tay" }).click({ timeout: 20000 });
+      } catch {
+        const dialogs = await page.getByRole("dialog").evaluateAll((els) => els.map((e) => e.outerHTML.slice(0, 1500)));
+        throw new Error(`DEBUG\n${log.join("\n")}\nDIALOGS\n${dialogs.join("\n====\n")}`);
+      }
       await expect(
         page.getByRole("dialog").getByRole("button", { name: "Đã có trong Sổ tay" }),
       ).toBeVisible();
