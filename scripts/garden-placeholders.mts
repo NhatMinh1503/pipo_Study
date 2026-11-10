@@ -26,13 +26,11 @@ function fillFor(id: string): string {
     [/^pipo-body/, "#FCE46C"],
     [/^pipo-eyes/, OUTLINE],
     [/^pipo-wing/, "#FCB41C"],
-    [/^pipo-leg/, "#FC8C24"],
     [/^tree-.*-bloom/, "#F48C9C"],
     [/^tree-pine/, "#4E8C46"],
     [/^tree-maple/, "#FC5C44"],
     [/^tree-(bamboo|sakura)/, "#8CC45C"],
     [/^tile-path/, "#BCB0A4"],
-    [/^tile-grass/, "#8CC45C"],
     [/^deco-pond/, "#6CA4EC"],
     [/^deco-lantern/, "#BCB0A4"],
     [/^deco-bench/, "#843C34"],
@@ -40,8 +38,6 @@ function fillFor(id: string): string {
     [/^koi-a/, "#FC5C44"],
     [/^koi-b/, "#FCB41C"],
     [/^slime/, "#F48C9C"],
-    [/^bg-sky/, "#84C4FC"],
-    [/^bg-fuji/, "#6CA4EC"],
     [/^cloud/, "#FCF4EC"],
     [/^petal/, "#F48C9C"],
     [/^ui-coin/, "#FCB41C"],
@@ -75,10 +71,6 @@ function shapeFor(id: string, asset: Asset, w: number, h: number): string {
     const canopyR = Math.min(w, h * 0.7) / 2 - 6;
     return `<rect x="${ax - trunkW / 2}" y="${ay - h * 0.45}" width="${trunkW}" height="${h * 0.45}" fill="#843C34" ${line}/>
       <circle cx="${w / 2}" cy="${canopyR + 6}" r="${canopyR}" fill="${fill}" ${line}/>`;
-  }
-  if (id === "bg-fuji") {
-    return `<polygon points="4,${h - 4} ${w / 2},8 ${w - 4},${h - 4}" fill="${fill}" ${line}/>
-      <polygon points="${w * 0.4},${h * 0.32} ${w / 2},8 ${w * 0.6},${h * 0.32}" fill="#FCF4EC"/>`;
   }
   return `<rect x="4" y="4" width="${w - 8}" height="${h - 8}" rx="${Math.min(w, h) / 3}" fill="${fill}" ${line}/>`;
 }
