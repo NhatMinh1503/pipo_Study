@@ -60,24 +60,26 @@
 
 ## 6. Tỉ lệ & kích thước
 
+> Từ 10/11/2026 vườn dùng nền vẽ tay kiểu phim hoạt hình thập niên 90 (`bg-garden`) thay cho trời/núi/cỏ phẳng; đồ trang trí, hồ, cá koi và đá lối đi cũng vẽ lại theo phong cách đó. `bg-sky`, `bg-fuji`, `bg-hills`, `tile-grass-a` và `pipo-leg-*` không còn được dùng.
+
 Đơn vị **logical px** (1x). Ảnh xuất **@2x** (gấp đôi), **PNG nền trong suốt**, tên file có hậu tố `@2x`.
 
 | Thứ                              | Kích thước logical (rộng×cao) | Kích thước file @2x | Điểm neo (logical, từ góc trên-trái) |
 | -------------------------------- | ----------------------------- | ------------------- | ------------------------------------ |
 | Luống đất (`plot-soil`)          | 76×42                         | 152×84              | tâm (38, 21)                         |
-| Lối cát (`tile-path`)            | 80×40 (hình thoi)             | 160×80              | tâm (40, 20)                         |
-| Cỏ (`tile-grass-a`)              | 128×128, lặp liền mép         | 256×256             | (0, 0)                               |
-| Rặng cây xa (`bg-hills`)         | 640×48                        | 1280×96             | đáy trái (0, 48)                     |
+| Đất lối đi (`tile-path`)         | 128×48, lặp liền mép          | 256×96              | (0, 0)                               |
+| Đá kê chân (`stone-a`…`stone-e`) | 24×13–17                      | 48×26–34            | tâm                                  |
+| Nền vẽ tay (`bg-garden`)         | 640×432, chân rừng ở y ≈ 124  | 1280×864            | (0, 0)                               |
 | Cảnh (canvas)                    | 640×432                       | —                   | —                                    |
 | Pipo (ghép xong)                 | ~40×44                        | —                   | giữa chân (20, 44)                   |
 | Cây mầm                          | 28×28                         | 56×56               | gốc (14, 25)                         |
 | Cây con                          | 48×58                         | 96×116              | gốc (24, 54)                         |
 | Cây trưởng thành                 | 80×96                         | 160×192             | gốc (40, 90)                         |
-| Đèn lồng đá                      | 30×52                         | 60×104              | chân (15, 49)                        |
-| Ghế dài                          | 56×40                         | 112×80              | giữa chân (28, 36)                   |
-| Cổng torii                       | 88×92                         | 176×184             | giữa 2 chân (44, 88)                 |
-| Cầu gỗ đỏ                        | 88×56                         | 176×112             | giữa (44, 44)                        |
-| Hồ (gồm mép hồ, 2×2 ô)           | 168×92                        | 336×184             | tâm (84, 46)                         |
+| Đèn lồng đá                      | 24×52                         | 48×104              | chân (12, 49)                        |
+| Ghế dài                          | 42×44                         | 84×88               | giữa chân (21, 39)                   |
+| Cổng torii                       | 63×92                         | 126×184             | giữa 2 chân (31.5, 88)               |
+| Cầu gỗ đỏ                        | 70×58                         | 140×116             | giữa (35, 41.8)                      |
+| Hồ (gồm mép hồ, 2×2 ô)           | 176×97                        | 352×194             | tâm mặt nước (88, 50)                |
 | Cá koi                           | 20×10                         | 40×20               | tâm (10, 5)                          |
 | Slime (1 ảnh, co giãn bằng code) | 30×26                         | 60×52               | giữa đáy (15, 25)                    |
 | Nền trời                         | 640×432                       | 1280×864            | (0, 0)                               |

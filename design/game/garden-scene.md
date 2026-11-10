@@ -21,7 +21,7 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 | Loài cây           | Xoay vòng icon   | Người học **tự chọn** khi trồng cây mới; thông và tre có sẵn, anh đào và phong cần hạt giống **[Chốt]** |
 | Hiển thị           | Lưới icon lucide | Cảnh PixiJS v8 3/4 từ trên, lazy load chỉ ở `/garden` **[Chốt]**                                        |
 | Đồ trang trí       | Hàng emoji       | Đặt theo ô, lưu server **[Chốt]**                                                                       |
-| Bản đồ             | —                | Cố định 8×6 ô; đầy thì mở khu vườn 2 **[Chốt]**                                                         |
+| Bản đồ             | —                | Cố định 9×6 ô, lối đi uốn khúc; đầy thì mở khu vườn 2 **[Chốt]**                                        |
 
 ## 2. Learner fantasy & target feeling
 
@@ -68,22 +68,23 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 
 ### 3.4 Bản đồ, lối đi, khu vườn 2 **[Chốt]**
 
-Lưới **8×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ trang trí, `=` = lối đi, `W` = hồ 2×2):
+Lưới **9×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ trang trí, `=` = lối đi, `W` = hồ 2×2). Đổi từ 8×6 với lối đi thẳng sang lối đi uốn khúc ngày 10/11/2026 (Minh yêu cầu làm lại cả vườn):
 
 ```
-      x: 0 1 2 3 4 5 6 7
-   y0    T T T T T T T T
-   y1    T D T T T T D T
-   y2    = = = = = = = =
-   y3    T D W W D T T T
-   y4    T T W W T D T T
-   y5    T T T T T T T T
+      x: 0 1 2 3 4 5 6 7 8
+   y0    T T T T T T T T T
+   y1    T T T D T T = = =
+   y2    T T = = = D = D T
+   y3    T D = T = = = T T
+   y4    = = = D W W T T T
+   y5    T T T T W W T T T
 ```
 
 - **31 ô trồng cây** mỗi khu vườn, trồng theo thứ tự đọc (trái → phải, trên → dưới). **5 ô đồ trang trí.**
 - Ô `W` là hồ nếu người học có `deco-pond`, ngược lại là cỏ (không phải ô trồng).
 - Khu vườn đầy 31 cây → cây mới sang **khu vườn 2** (rồi 3…). Trang `/garden` có nút chuyển khu vườn.
-- **Lối đi** là chuỗi waypoint dọc hàng `y2`, nội suy cong (Catmull-Rom) để đường đi mềm. Có waypoint "ngắm cây" cạnh các ô cây và waypoint "ghế" cạnh ô `D` sát lối đi.
+- **Lối đi** đi từ mép trái (ô `0,4`) tới mép phải (ô `8,1`), rộng 1 ô, không tự chạm; code tự dò thứ tự ô (`PATH_ROUTE`). Waypoint là tâm từng ô theo thứ tự đó, nội suy cong (Catmull-Rom). Có waypoint "ngắm cây" ở ô lối đi cạnh cây trưởng thành và waypoint "ghế" ở ô lối đi cạnh ghế (cùng một ô thì ghế được ưu tiên).
+- Lối đi vẽ bằng đất (texture lặp) cắt theo mặt nạ làm mờ mép, có đá kê chân rải đều; vẽ dài thêm 3 ô ra ngoài mỗi mép để dẫn ra khỏi cảnh. Trời, núi Phú Sĩ, rừng và đồng cỏ là một ảnh vẽ tay (`bg-garden`).
 
 ### 3.5 Đồ trang trí **[Chốt: đặt theo ô, lưu server]**
 
