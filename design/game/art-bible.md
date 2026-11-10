@@ -54,7 +54,7 @@
 ## 5. Ánh sáng & bóng
 
 - Ánh sáng **cố định từ trên-trái**. Bóng tự thân nằm ở **phía dưới-phải** của khối, dùng **đúng 1 tông** theo cặp ở §3.
-- Vì nhân vật được lật gương, **bóng tự thân của Pipo, mèo và cá chỉ đặt ở phía dưới**, không lệch hẳn sang một bên.
+- Vì nhân vật được lật gương, **bóng tự thân của Pipo, slime và cá chỉ đặt ở phía dưới**, không lệch hẳn sang một bên.
 - **Bóng đổ dưới chân**: một hình elip màu `#542414` độ mờ 25%, đặt ở **file riêng** (`*-shadow@2x.png`), không vẽ dính vào vật.
 - Không highlight bóng loáng, không viền sáng (rim light), không phát sáng (glow), trừ ánh đèn lồng được vẽ bằng 1 vòng màu `#FCF4EC`.
 
@@ -62,33 +62,33 @@
 
 Đơn vị **logical px** (1x). Ảnh xuất **@2x** (gấp đôi), **PNG nền trong suốt**, tên file có hậu tố `@2x`.
 
-| Thứ                      | Kích thước logical (rộng×cao) | Kích thước file @2x | Điểm neo (logical, từ góc trên-trái) |
-| ------------------------ | ----------------------------- | ------------------- | ------------------------------------ |
-| Luống đất (`plot-soil`)  | 76×42                         | 152×84              | tâm (38, 21)                         |
-| Lối cát (`tile-path`)    | 80×40 (hình thoi)             | 160×80              | tâm (40, 20)                         |
-| Cỏ (`tile-grass-a`)      | 128×128, lặp liền mép         | 256×256             | (0, 0)                               |
-| Rặng cây xa (`bg-hills`) | 640×48                        | 1280×96             | đáy trái (0, 48)                     |
-| Cảnh (canvas)            | 640×432                       | —                   | —                                    |
-| Pipo (ghép xong)         | ~40×44                        | —                   | giữa chân (20, 44)                   |
-| Cây mầm                  | 28×28                         | 56×56               | gốc (14, 25)                         |
-| Cây con                  | 48×58                         | 96×116              | gốc (24, 54)                         |
-| Cây trưởng thành         | 80×96                         | 160×192             | gốc (40, 90)                         |
-| Đèn lồng đá              | 30×52                         | 60×104              | chân (15, 49)                        |
-| Ghế dài                  | 56×40                         | 112×80              | giữa chân (28, 36)                   |
-| Cổng torii               | 88×92                         | 176×184             | giữa 2 chân (44, 88)                 |
-| Cầu gỗ đỏ                | 88×56                         | 176×112             | giữa (44, 44)                        |
-| Hồ (gồm mép hồ, 2×2 ô)   | 168×92                        | 336×184             | tâm (84, 46)                         |
-| Cá koi                   | 20×10                         | 40×20               | tâm (10, 5)                          |
-| Mèo (ghép xong)          | ~36×28                        | —                   | giữa chân (18, 28)                   |
-| Nền trời                 | 640×432                       | 1280×864            | (0, 0)                               |
-| Núi Phú Sĩ               | 320×96                        | 640×192             | đáy giữa (160, 96)                   |
-| Mây                      | 96×40 / 64×28                 | 192×80 / 128×56     | tâm                                  |
-| Cánh hoa                 | 8×8                           | 16×16               | tâm                                  |
-| Icon UI                  | 48×48                         | 96×96               | tâm                                  |
+| Thứ                              | Kích thước logical (rộng×cao) | Kích thước file @2x | Điểm neo (logical, từ góc trên-trái) |
+| -------------------------------- | ----------------------------- | ------------------- | ------------------------------------ |
+| Luống đất (`plot-soil`)          | 76×42                         | 152×84              | tâm (38, 21)                         |
+| Lối cát (`tile-path`)            | 80×40 (hình thoi)             | 160×80              | tâm (40, 20)                         |
+| Cỏ (`tile-grass-a`)              | 128×128, lặp liền mép         | 256×256             | (0, 0)                               |
+| Rặng cây xa (`bg-hills`)         | 640×48                        | 1280×96             | đáy trái (0, 48)                     |
+| Cảnh (canvas)                    | 640×432                       | —                   | —                                    |
+| Pipo (ghép xong)                 | ~40×44                        | —                   | giữa chân (20, 44)                   |
+| Cây mầm                          | 28×28                         | 56×56               | gốc (14, 25)                         |
+| Cây con                          | 48×58                         | 96×116              | gốc (24, 54)                         |
+| Cây trưởng thành                 | 80×96                         | 160×192             | gốc (40, 90)                         |
+| Đèn lồng đá                      | 30×52                         | 60×104              | chân (15, 49)                        |
+| Ghế dài                          | 56×40                         | 112×80              | giữa chân (28, 36)                   |
+| Cổng torii                       | 88×92                         | 176×184             | giữa 2 chân (44, 88)                 |
+| Cầu gỗ đỏ                        | 88×56                         | 176×112             | giữa (44, 44)                        |
+| Hồ (gồm mép hồ, 2×2 ô)           | 168×92                        | 336×184             | tâm (84, 46)                         |
+| Cá koi                           | 20×10                         | 40×20               | tâm (10, 5)                          |
+| Slime (1 ảnh, co giãn bằng code) | 30×26                         | 60×52               | giữa đáy (15, 25)                    |
+| Nền trời                         | 640×432                       | 1280×864            | (0, 0)                               |
+| Núi Phú Sĩ                       | 320×96                        | 640×192             | đáy giữa (160, 96)                   |
+| Mây                              | 96×40 / 64×28                 | 192×80 / 128×56     | tâm                                  |
+| Cánh hoa                         | 8×8                           | 16×16               | tâm                                  |
+| Icon UI                          | 48×48                         | 96×96               | tâm                                  |
 
 **Tỉ lệ:** Pipo cao khoảng **1 ô** (44 so với 48); cây trưởng thành cao khoảng **2,3 ô**; ghế dài rộng **1 ô**; torii rộng **1,5 ô**.
 
-Kích thước và điểm neo của **từng bộ phận** Pipo và mèo ghi trong `asset-prompts.md` và trong `lib/garden/assets.ts` (nguồn sự thật cho code).
+Kích thước và điểm neo của **từng bộ phận** Pipo ghi trong `asset-prompts.md` và trong `lib/garden/assets.ts` (nguồn sự thật cho code).
 
 ## 7. Dấu hiệu "nhìn ra là AI vẽ" — phải tránh
 
@@ -127,4 +127,4 @@ Kích thước và điểm neo của **từng bộ phận** Pipo và mèo ghi tr
 - [ ] Không có dấu hiệu nào ở §7.
 - [ ] Đặt cạnh Pipo và một ảnh đã duyệt: cùng độ dày nét, cùng độ bão hoà, cùng "tay vẽ".
 - [ ] Đọc được ở kích thước 1x trên màn hình điện thoại 375 px.
-- [ ] Bộ phận tách rời (Pipo, mèo) ghép lại khớp, không hở khe khi xoay.
+- [ ] Bộ phận tách rời (Pipo) ghép lại khớp, không hở khe khi xoay.

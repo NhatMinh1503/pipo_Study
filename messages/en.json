@@ -613,7 +613,8 @@
     "sections": {
       "theme": "Accent colours",
       "decoration": "Garden decorations",
-      "topic_pack": "Topic packs for AI lessons"
+      "topic_pack": "Topic packs for AI lessons",
+      "seed": "Tree seeds"
     },
     "errors": {
       "notEnoughCoins": "Not enough coins.",
@@ -633,16 +634,16 @@
         "description": "Deep-sea blue."
       },
       "deco-pond": {
-        "name": "Lotus pond",
-        "description": "A small lotus pond for your garden."
+        "name": "Koi pond",
+        "description": "A small pond in the middle of your garden, with koi."
       },
       "deco-lantern": {
-        "name": "Lantern",
-        "description": "A red lantern for the evening."
+        "name": "Stone lantern",
+        "description": "A Japanese stone lantern with a warm glowing window."
       },
       "deco-bench": {
-        "name": "Stone bench",
-        "description": "A place to rest between sessions."
+        "name": "Wooden bench",
+        "description": "Put it by the path and Pipo will sit there for a rest."
       },
       "topics-anime": {
         "name": "Anime & Games pack",
@@ -651,6 +652,26 @@
       "topics-business": {
         "name": "Work pack",
         "description": "Adds meeting, email and interview topics."
+      },
+      "seed-maple": {
+        "name": "Maple seed",
+        "description": "Unlocks the red maple to plant in Pomodoro sessions."
+      },
+      "seed-sakura": {
+        "name": "Cherry seed",
+        "description": "Unlocks the cherry tree. Grown trees bloom on days you study."
+      },
+      "deco-torii": {
+        "name": "Torii gate",
+        "description": "A red gate for one of your garden’s decoration spots."
+      },
+      "deco-bridge": {
+        "name": "Red bridge",
+        "description": "Spans the koi pond. You need the pond to see it."
+      },
+      "deco-slime": {
+        "name": "Garden slime",
+        "description": "A squishy slime that bounces along the path."
       }
     }
   },

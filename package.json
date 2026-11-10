@@ -21,7 +21,8 @@
     "icons": "node --experimental-strip-types --no-warnings scripts/generate-icons.mts",
     "ai:eval": "vitest run --config vitest.eval.config.mts",
     "garden:placeholders": "node --experimental-strip-types --no-warnings scripts/garden-placeholders.mts",
-    "garden:check": "node --experimental-strip-types --no-warnings scripts/garden-check.mts"
+    "garden:check": "node --experimental-strip-types --no-warnings scripts/garden-check.mts",
+    "shop:thumbs": "node --experimental-strip-types --no-warnings scripts/shop-thumbs.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.1",

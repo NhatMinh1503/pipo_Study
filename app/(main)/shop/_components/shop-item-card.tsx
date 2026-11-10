@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Coins } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -38,10 +39,14 @@ export function ShopItemCard({ item, coins, active }: ShopItemCardProps) {
             aria-hidden
           />
         )}
-        {"emoji" in display && (
-          <span className="text-3xl" aria-hidden>
-            {display.emoji}
-          </span>
+        {"image" in display && (
+          <Image
+            src={display.image}
+            alt=""
+            width={64}
+            height={64}
+            className="size-16 shrink-0 object-contain"
+          />
         )}
         <div className="min-w-0">
           <p className="font-heading font-semibold">{t(`shop.items.${item.id}.name`)}</p>

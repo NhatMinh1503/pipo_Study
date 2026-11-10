@@ -16,7 +16,10 @@ export const SCENE = {
   reactSeconds: 1.2,
   blinkSeconds: { min: 2.5, max: 5 },
   blinkDuration: 0.12,
-  catSpeed: 18,
+  /** The slime hops along the path the other way from Pipo. */
+  slimeSpeed: 16,
+  slimeHopsPerSecond: 1.6,
+  slimeHopHeight: 7,
   maxPetals: 20,
   clouds: 3,
   koi: 2,

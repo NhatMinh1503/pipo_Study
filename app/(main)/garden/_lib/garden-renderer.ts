@@ -56,10 +56,8 @@ const PIPO_PARTS = [
   "pipo-eyes-open",
   "pipo-eyes-closed",
 ];
-const CAT_PARTS = ["cat-shadow", "cat-tail", "cat-leg-back", "cat-leg-front", "cat-body"];
-/** The cat's far-side legs reuse the leg images, shifted and shaded darker. */
-const FAR_LEG_TINT = 0xb9a48f;
-const FAR_LEG_OFFSET = { x: 3, y: -1 };
+/** How much the slime squashes when it lands (fraction of its size). */
+const SLIME_SQUASH = 0.16;
 /** Opacity of a tree while Pipo walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
 
@@ -77,8 +75,9 @@ function neededAssets(model: SceneModel): string[] {
   for (const tree of model.trees) ids.add(tree.asset);
   for (const decoration of model.decorations) ids.add(decoration.asset);
   if (model.pond) ids.add("deco-pond");
+  if (model.bridge) ids.add("deco-bridge");
   if (model.koi) ids.add("koi-a").add("koi-b");
-  if (model.cat) CAT_PARTS.forEach((id) => ids.add(id));
+  if (model.slime) ids.add("slime").add("slime-shadow");
   if (model.petalSources.length > 0) ids.add("petal");
   return [...ids];
 }
@@ -167,7 +166,7 @@ export async function createGardenRenderer(
   ground.addChild(highlight);
   app.stage.addChild(ground);
 
-  // --- World: trees, Pipo, cat, drawn back to front by their feet ---------------------
+  // --- World: trees, Pipo, slime, drawn back to front by their feet ---------------------
   const world = new Container({ sortableChildren: true });
   app.stage.addChild(world);
   const treeSprites: { sprite: Sprite; x: number; y: number; halfWidth: number; height: number }[] =
@@ -188,6 +187,13 @@ export async function createGardenRenderer(
       halfWidth: info.width / 2 - 4,
       height: info.height - 8,
     });
+  }
+
+  if (model.bridge) {
+    const bridge = sprite("deco-bridge");
+    bridge.position.set(model.bridge.x, model.bridge.y);
+    bridge.zIndex = model.bridge.y;
+    world.addChild(bridge);
   }
 
   for (const decoration of model.decorations) {
@@ -211,33 +217,14 @@ export async function createGardenRenderer(
   pipo.cursor = "pointer";
   world.addChild(pipo);
 
-  let cat: { root: Container; legs: Sprite[]; tail: Sprite } | null = null;
-  if (model.cat) {
+  let slime: { root: Container; body: Sprite; shadow: Sprite } | null = null;
+  if (model.slime) {
     const root = new Container();
-    const tail = part("cat-tail", "cat-body");
-    const farLeg = (id: string) => {
-      const leg = part(id, "cat-body");
-      leg.position.set(leg.x + FAR_LEG_OFFSET.x, leg.y + FAR_LEG_OFFSET.y);
-      leg.tint = FAR_LEG_TINT;
-      return leg;
-    };
-    const nearBack = part("cat-leg-back", "cat-body");
-    const nearFront = part("cat-leg-front", "cat-body");
-    const farBack = farLeg("cat-leg-back");
-    const farFront = farLeg("cat-leg-front");
-    // Order matters for the gait: near back, near front, far back, far front
-    const legs = [nearBack, nearFront, farBack, farFront];
-    root.addChild(
-      part("cat-shadow", "cat-body"),
-      farBack,
-      farFront,
-      tail,
-      nearBack,
-      nearFront,
-      sprite("cat-body"),
-    );
+    const shadow = sprite("slime-shadow");
+    const body = sprite("slime");
+    root.addChild(shadow, body);
     world.addChild(root);
-    cat = { root, legs, tail };
+    slime = { root, body, shadow };
   }
 
   // --- Petals ------------------------------------------------------------------------
@@ -252,8 +239,8 @@ export async function createGardenRenderer(
     reducedMotion: options.reducedMotion,
   };
   let pipoState: PipoState = initialPipo();
-  let catDistance = pathLength();
-  let catDirection = -1;
+  let slimeDistance = pathLength();
+  let slimeDirection = -1;
   let elapsed = 0;
   let petalClock = 0;
 
@@ -305,25 +292,25 @@ export async function createGardenRenderer(
       tree.sprite.alpha = covers ? OCCLUDING_ALPHA : 1;
     }
 
-    // Cat walks the other way
-    if (cat) {
+    // The slime hops the other way: up and down with a squash when it lands
+    if (slime) {
       if (moving) {
-        catDistance += SCENE.catSpeed * dt * catDirection;
-        if (catDistance <= 0 || catDistance >= pathLength()) {
-          catDirection = -catDirection;
-          catDistance = Math.min(Math.max(catDistance, 0), pathLength());
+        slimeDistance += SCENE.slimeSpeed * dt * slimeDirection;
+        if (slimeDistance <= 0 || slimeDistance >= pathLength()) {
+          slimeDirection = -slimeDirection;
+          slimeDistance = Math.min(Math.max(slimeDistance, 0), pathLength());
         }
       }
-      const catAt = pointAt(catDistance);
-      cat.root.position.set(catAt.x, catAt.y + 6);
-      cat.root.zIndex = catAt.y + 6;
-      cat.root.scale.x = catDirection;
-      const catSwing = moving ? Math.sin(elapsed * 8) * 0.3 : 0;
-      // Diagonal pairs move together, like a real walking cat
-      cat.legs.forEach(
-        (leg, index) => (leg.rotation = index === 0 || index === 3 ? catSwing : -catSwing),
-      );
-      cat.tail.rotation = moving ? Math.sin(elapsed * 2) * 0.2 : 0;
+      const slimeAt = pointAt(slimeDistance);
+      slime.root.position.set(slimeAt.x, slimeAt.y + 6);
+      slime.root.zIndex = slimeAt.y + 6;
+      // 0 on the ground, 1 at the top of the hop
+      const lift = moving ? Math.abs(Math.sin(elapsed * SCENE.slimeHopsPerSecond * Math.PI)) : 0;
+      const squash = moving ? (1 - lift) ** 3 * SLIME_SQUASH : 0;
+      slime.body.y = -lift * SCENE.slimeHopHeight;
+      slime.body.scale.set(slimeDirection * (1 + squash), 1 - squash + lift * 0.06);
+      slime.shadow.scale.set(1 - lift * 0.35);
+      slime.shadow.alpha = 1 - lift * 0.4;
     }
 
     // Koi swim slow ellipses around the pond
