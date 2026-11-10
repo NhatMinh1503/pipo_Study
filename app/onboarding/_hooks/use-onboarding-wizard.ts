@@ -1,11 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import type { DisplayLanguage, LearningLanguage, ProficiencyLevel } from "@/lib/schemas/common";
 import { isLevelForLanguage } from "@/lib/schemas/common";
 
-import { completeOnboarding } from "../_lib/actions";
+import { completeOnboarding, previewDisplayLanguage } from "../_lib/actions";
 
 export const ONBOARDING_STEPS = ["language", "level", "display"] as const;
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
@@ -24,6 +25,8 @@ export function useOnboardingWizard(initialDisplayLanguage: DisplayLanguage) {
   });
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
+  const [, startPreview] = useTransition();
+  const router = useRouter();
 
   const step = ONBOARDING_STEPS[stepIndex] ?? "language";
 
@@ -46,8 +49,14 @@ export function useOnboardingWizard(initialDisplayLanguage: DisplayLanguage) {
   const selectLevel = (level: ProficiencyLevel) =>
     setSelection((current) => ({ ...current, level }));
 
-  const selectDisplayLanguage = (displayLanguage: DisplayLanguage) =>
+  // The app starts in English; picking a display language switches the UI right away
+  const selectDisplayLanguage = (displayLanguage: DisplayLanguage) => {
     setSelection((current) => ({ ...current, displayLanguage }));
+    startPreview(async () => {
+      await previewDisplayLanguage(displayLanguage);
+      router.refresh();
+    });
+  };
 
   const back = () => setStepIndex((index) => Math.max(0, index - 1));
 

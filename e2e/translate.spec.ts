@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { grantXp, markManualXpEarnedToday } from "./helpers/admin";
-import { createOnboardedUser } from "./helpers/auth";
+import { createOnboardedUser, levelUpMoment } from "./helpers/auth";
 
 // The E2E server uses the fake grader: an answer containing "sai" is incorrect,
 // any other answer is acceptable (exact only when it matches a stored reference).
@@ -119,6 +119,8 @@ test.describe("translate flow", () => {
     page,
   }, testInfo) => {
     const email = await createOnboardedUser(page, testInfo);
+    // This test is about the moment itself, so it is not closed automatically
+    await page.removeLocatorHandler(levelUpMoment(page));
     await grantXp(email, 45); // 5 XP short of Lv2
     await createLesson(page, "Lên cấp", "一。二。三。");
 

@@ -34,6 +34,8 @@ const LANGUAGE_NAMES: Record<LearningLanguage | DisplayLanguage, string> = {
   ja: "Japanese",
   en: "English",
   vi: "Vietnamese",
+  my: "Burmese (Myanmar)",
+  id: "Indonesian",
 };
 
 export const SYSTEM_INSTRUCTION = `You are a strict but encouraging translation tutor.

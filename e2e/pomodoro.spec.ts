@@ -1,6 +1,5 @@
 import { expect, test } from "@playwright/test";
 
-import { plantTree } from "./helpers/admin";
 import { createOnboardedUser } from "./helpers/auth";
 
 test.describe("pomodoro", () => {
@@ -63,12 +62,20 @@ test.describe("pomodoro", () => {
     await expect(page.getByText("Sẵn sàng")).toBeVisible();
   });
 
-  test("while a tree is growing, the next sessions tend it", async ({ page }, testInfo) => {
-    const email = await createOnboardedUser(page, testInfo);
-    await plantTree(email, { species: "bamboo", sessions: 2 });
+  test("each session's length can be set, and leaving early wilts the tree", async ({
+    page,
+  }, testInfo) => {
+    await createOnboardedUser(page, testInfo);
     await page.goto("/pomodoro");
 
-    await expect(page.getByText("Đang chăm: Tre · 2/4 phiên")).toBeVisible();
-    await expect(page.getByRole("radiogroup", { name: "Cây sẽ trồng" })).toHaveCount(0);
+    await page.getByRole("button", { name: "45", exact: true }).click();
+    await expect(page.getByRole("timer")).toHaveText("45:00");
+    await page.getByRole("button", { name: "Bắt đầu 45 phút" }).click();
+    await expect(page.getByRole("timer")).toHaveText(/^4[45]:\d\d$/);
+
+    await page.getByRole("button", { name: "Bỏ cuộc (không nhận thưởng)" }).click();
+    await expect(page.getByText(/đã héo/).first()).toBeVisible();
+    // The length picked last is offered again
+    await expect(page.getByRole("button", { name: "Bắt đầu 45 phút" })).toBeVisible();
   });
 });

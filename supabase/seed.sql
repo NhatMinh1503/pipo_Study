@@ -37,11 +37,13 @@ from auth.users u
 where u.email in ('demo@pipo.local', 'demo2@pipo.local');
 
 update public.profiles
-set display_name = 'Minh Demo', learning_language = 'ja', level = 'N4', onboarded_at = now()
+set display_name = 'Minh Demo', learning_language = 'ja', level = 'N4', display_language = 'vi',
+  onboarded_at = now()
 where user_id = '11111111-1111-1111-1111-111111111111';
 
 update public.profiles
-set display_name = 'Demo Two', learning_language = 'en', level = 'B1', onboarded_at = now()
+set display_name = 'Demo Two', learning_language = 'en', level = 'B1', display_language = 'vi',
+  onboarded_at = now()
 where user_id = '22222222-2222-2222-2222-222222222222';
 
 update public.wallets set xp = 120, coins = 35, streak_current = 3, streak_best = 5,

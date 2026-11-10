@@ -40,13 +40,18 @@ export function TreeInfoDialog({ tree, onClose, onRestoreFocus }: TreeInfoDialog
             <DialogDescription>{t(`stage.${stageFor(tree.sessions)}`)}</DialogDescription>
           </DialogHeader>
           <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-            <dt className="mono-label">{t("info.sessions")}</dt>
-            <dd className="mono-value">
-              {t("info.sessionsValue", {
-                sessions: tree.sessions,
-                total: GAME.garden.matureAtSessions,
-              })}
-            </dd>
+            {/* Only trees from the old multi-session rule are still part-grown */}
+            {tree.sessions < GAME.garden.matureAtSessions && (
+              <>
+                <dt className="mono-label">{t("info.sessions")}</dt>
+                <dd className="mono-value">
+                  {t("info.sessionsValue", {
+                    sessions: tree.sessions,
+                    total: GAME.garden.matureAtSessions,
+                  })}
+                </dd>
+              </>
+            )}
             <dt className="mono-label">{t("info.planted")}</dt>
             <dd>{date(tree.plantedAt)}</dd>
             {tree.maturedAt && (

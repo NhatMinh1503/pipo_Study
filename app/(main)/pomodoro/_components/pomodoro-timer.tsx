@@ -3,16 +3,15 @@
 import { Coffee, Sprout, Trees } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { TreeSpecies } from "@/lib/garden/growth";
-import type { SessionTree } from "@/lib/pomodoro/grow";
-import { FOCUS_OPTIONS } from "@/lib/pomodoro/timer";
 import type { GardenStatus } from "@/server/queries/garden";
 
 import { usePomodoro } from "../_hooks/use-pomodoro";
 
+import { FocusLength } from "./focus-length";
 import { ProgressRing } from "./progress-ring";
 import { TreePanel } from "./tree-panel";
 import { TreePicker } from "./tree-picker";
@@ -21,23 +20,37 @@ interface PomodoroTimerProps {
   garden: GardenStatus;
 }
 
+/** How long a tree left behind by giving up stays on screen, wilting. */
+const WITHERED_MS = 4000;
+
 export function PomodoroTimer({ garden }: PomodoroTimerProps) {
   const t = useTranslations("pomodoro");
   const pomodoro = usePomodoro();
   const { phase } = pomodoro;
   const [picked, setPicked] = useState<TreeSpecies>("pine");
+  const [withered, setWithered] = useState<TreeSpecies | null>(null);
 
-  // The tree the next (or current) session tends
-  const nextTree: SessionTree = garden.growing
-    ? { species: garden.growing.species, fromSessions: garden.growing.sessions }
-    : { species: picked, fromSessions: 0 };
-  const tree = phase === "idle" ? nextTree : (pomodoro.tree ?? nextTree);
+  useEffect(() => {
+    if (!withered) return;
+    const timer = setTimeout(() => setWithered(null), WITHERED_MS);
+    return () => clearTimeout(timer);
+  }, [withered]);
+
+  // The species on screen: the running session's tree, the wilting one, or the next seed
+  const species = phase === "idle" ? (withered ?? picked) : (pomodoro.tree?.species ?? picked);
+  const minutes = phase === "idle" ? pomodoro.preferredMinutes : pomodoro.minutes;
 
   return (
-    <div className="grid w-full max-w-5xl items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-      <TreePanel phase={phase} tree={tree} progress={pomodoro.progress} />
+    <div className="grid w-full max-w-5xl min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <TreePanel
+        phase={phase}
+        species={species}
+        progress={pomodoro.progress}
+        minutes={minutes}
+        withered={phase === "idle" && withered !== null}
+      />
 
-      <section className="sheet flex flex-col items-center gap-6 p-6">
+      <section className="sheet flex min-w-0 flex-col items-center gap-6 p-6">
         <ProgressRing value={phase === "idle" ? 0 : pomodoro.progress} className="max-w-56">
           {phase === "break" ? (
             <Coffee className="size-5 text-muted-foreground" aria-hidden />
@@ -50,7 +63,7 @@ export function PomodoroTimer({ garden }: PomodoroTimerProps) {
             aria-label={t("timeLeft")}
           >
             {phase === "idle"
-              ? `${String(pomodoro.minutes).padStart(2, "0")}:00`
+              ? `${String(minutes).padStart(2, "0")}:00`
               : (pomodoro.clock ?? "--:--")}
           </p>
           <p className="mono-label">{t(phase === "idle" ? "ready" : phase)}</p>
@@ -63,30 +76,27 @@ export function PomodoroTimer({ garden }: PomodoroTimerProps) {
         )}
 
         {phase === "idle" && (
-          <TreePicker
-            growing={garden.growing}
-            ownedItemIds={garden.ownedItemIds}
-            value={picked}
-            onChange={setPicked}
-          />
-        )}
-
-        {phase === "idle" && (
-          <div className="grid w-full grid-cols-2 gap-3">
-            {FOCUS_OPTIONS.map((minutes) => (
-              <Button
-                key={minutes}
-                size="lg"
-                variant={minutes === 25 ? "default" : "outline"}
-                disabled={pomodoro.isPending}
-                onClick={() =>
-                  pomodoro.start(minutes, garden.growing ? undefined : picked, nextTree)
-                }
-              >
-                {t("startMinutes", { minutes })}
-              </Button>
-            ))}
-          </div>
+          <>
+            <FocusLength
+              minutes={minutes}
+              onChange={pomodoro.setPreferredMinutes}
+              disabled={pomodoro.isPending}
+            />
+            <TreePicker
+              ownedItemIds={garden.ownedItemIds}
+              value={picked}
+              onChange={setPicked}
+              disabled={pomodoro.isPending}
+            />
+            <Button
+              size="lg"
+              className="w-full"
+              disabled={pomodoro.isPending}
+              onClick={() => pomodoro.start(minutes, picked)}
+            >
+              {t("startMinutes", { minutes })}
+            </Button>
+          </>
         )}
         {phase === "focus" && (
           <Button
@@ -94,7 +104,7 @@ export function PomodoroTimer({ garden }: PomodoroTimerProps) {
             size="lg"
             className="w-full"
             disabled={pomodoro.isPending}
-            onClick={pomodoro.giveUp}
+            onClick={() => pomodoro.giveUp((tree) => setWithered(tree.species))}
           >
             {t("giveUp")}
           </Button>

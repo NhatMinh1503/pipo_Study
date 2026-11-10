@@ -1,27 +1,30 @@
-import Image from "next/image";
-
-import { assetUrl, gardenAsset } from "@/lib/garden/assets";
-import type { TreeSpecies } from "@/lib/garden/growth";
+import type { TreeSpecies, TreeStage } from "@/lib/garden/growth";
 import type { TreeLayer } from "@/lib/pomodoro/grow";
 import { cn } from "@/lib/utils";
 
 interface GrowingTreeSceneProps {
   species: TreeSpecies;
-  /** The one picture of the tree; null shows bare soil. */
+  /** The one picture of the tree; null shows the empty meadow. */
   tree: TreeLayer | null;
   /** Wind and drifting leaves while a session or break runs. */
   windy: boolean;
   /** Sparkles around the tree right after a session grew it. */
   celebrate?: boolean;
+  /** The session was left early: the tree wilts. */
+  withered?: boolean;
   /** Read by screen readers instead of the picture. */
   label: string;
   className?: string;
 }
 
-/** The scene is laid out in a 160 × 120 frame; the tree stands on the plot at (80, 100). */
-const FRAME = { width: 160, height: 120 };
-const GROUND = { x: 80, y: 100 };
-const HORIZON = 52;
+/** Art for this page lives in public/pomodoro (drawn large, so it stays crisp when scaled). */
+export const treeImage = (species: TreeSpecies, stage: TreeStage) =>
+  `/pomodoro/tree-${species}-${stage}.webp`;
+
+/** Height of each stage as a share of the scene, so the tree visibly grows up. */
+export const STAGE_HEIGHT: Record<TreeStage, number> = { sprout: 32, sapling: 46, mature: 64 };
+/** Where the tree stands, from the bottom of the scene (on the meadow, below the hills). */
+const GROUND_BOTTOM = 12;
 
 /** Leaves (or petals) blown across the scene, coloured like the tree. */
 const LEAF_COLOURS: Record<TreeSpecies, string[]> = {
@@ -31,114 +34,94 @@ const LEAF_COLOURS: Record<TreeSpecies, string[]> = {
   sakura: ["#f8b4c6", "#f48c9c", "#fde0e8"],
 };
 const LEAVES = [
-  { top: 22, duration: 7.5, delay: 0 },
-  { top: 38, duration: 9, delay: 2.4 },
-  { top: 55, duration: 6.8, delay: 4.1 },
-  { top: 30, duration: 8.4, delay: 5.6 },
-  { top: 64, duration: 10, delay: 1.2 },
+  { top: 30, duration: 11, delay: 0, flutter: 1.7 },
+  { top: 46, duration: 13, delay: 3.5, flutter: 2.2 },
+  { top: 58, duration: 10, delay: 6.2, flutter: 1.5 },
+  { top: 38, duration: 12.5, delay: 8.4, flutter: 2 },
 ];
 const WIND = [
-  { top: 24, width: 22, duration: 4.2, delay: 0.6 },
-  { top: 46, width: 30, duration: 5, delay: 2.6 },
-  { top: 70, width: 18, duration: 4.6, delay: 4 },
+  { top: 22, width: 18, duration: 6.5, delay: 0.8 },
+  { top: 52, width: 24, duration: 7.5, delay: 3.6 },
+  { top: 70, width: 14, duration: 6, delay: 5.4 },
+];
+/** Clouds drift slowly across the sky; negative delays spread them out from the start. */
+const CLOUDS = [
+  { src: "/pomodoro/cloud-big.webp", top: 3, width: 38, duration: 140, delay: -30, flip: false },
+  { src: "/pomodoro/cloud-small.webp", top: 20, width: 13, duration: 95, delay: -60, flip: false },
+  { src: "/pomodoro/cloud-big.webp", top: 9, width: 26, duration: 170, delay: -120, flip: true },
 ];
 const SPARKLES = [
   { left: 30, top: 30, delay: 0 },
-  { left: 66, top: 18, delay: 0.5 },
-  { left: 72, top: 52, delay: 0.9 },
-  { left: 26, top: 58, delay: 0.3 },
+  { left: 66, top: 20, delay: 0.5 },
+  { left: 70, top: 52, delay: 0.9 },
+  { left: 28, top: 56, delay: 0.3 },
 ];
 
-const pct = (value: number, of: number) => `${(value / of) * 100}%`;
-
-/** A garden picture positioned so its anchor (trunk base) sits on `at`. */
-function Sprite({
-  id,
-  at,
-  className,
-  style,
-}: {
-  id: string;
-  at: { x: number; y: number };
-  className?: string;
-  style?: React.CSSProperties;
-}) {
-  const asset = gardenAsset(id);
-  return (
-    <Image
-      src={assetUrl(id)}
-      alt=""
-      width={asset.width * 2}
-      height={asset.height * 2}
-      unoptimized
-      draggable={false}
-      className={cn("absolute h-auto max-w-none select-none", className)}
-      style={{
-        left: pct(at.x - asset.anchor.x, FRAME.width),
-        top: pct(at.y - asset.anchor.y, FRAME.height),
-        width: pct(asset.width, FRAME.width),
-        transformOrigin: `${pct(asset.anchor.x, asset.width)} ${pct(asset.anchor.y, asset.height)}`,
-        ...style,
-      }}
-    />
-  );
-}
+/* eslint-disable @next/next/no-img-element -- decorative art, already sized for this scene */
 
 /**
- * The Pomodoro tree in a small garden window: sky, distant trees, grass and a tilled plot.
- * The tree sways and rustles in the wind; leaves of its species drift past while the
- * timer runs. All motion is decorative and stops under prefers-reduced-motion.
+ * The Pomodoro tree in a small meadow: drifting clouds, a breeze, and the tree bending
+ * from its base while leaves of its species flutter past. All motion is decorative and
+ * stops under prefers-reduced-motion.
  */
 export function GrowingTreeScene({
   species,
   tree,
   windy,
   celebrate = false,
+  withered = false,
   label,
   className,
 }: GrowingTreeSceneProps) {
   const colours = LEAF_COLOURS[species];
+  const moving = windy && !withered;
 
   return (
     <div
       role="img"
       aria-label={label}
       className={cn(
-        "relative aspect-[4/3] w-full overflow-hidden border-2 border-border",
+        "relative aspect-[4/3] w-full overflow-hidden border-2 border-border bg-[#9fd8f2]",
         className,
       )}
-      style={{ background: "linear-gradient(#8fc6f1 0%, #c9e6fa 42%, #e3f2fb 52%)" }}
     >
-      {/* grass from the horizon down */}
-      <div
-        className="absolute inset-x-0 bottom-0"
-        style={{
-          top: pct(HORIZON, FRAME.height),
-          backgroundImage: `url(${assetUrl("tile-grass-a")})`,
-          backgroundSize: "34% auto",
-        }}
-      />
-      {/* distant treeline sitting on the horizon */}
-      <Image
-        src={assetUrl("bg-hills")}
+      <img
+        src="/pomodoro/scene-bg.webp"
         alt=""
-        width={1280}
-        height={96}
-        unoptimized
-        className="absolute h-auto w-[200%] max-w-none"
-        style={{ left: "-50%", top: pct(HORIZON - 15, FRAME.height) }}
+        draggable={false}
+        className="absolute inset-0 size-full object-cover select-none"
       />
+
+      {CLOUDS.map((cloud, index) => (
+        <img
+          key={`cloud-${index}`}
+          src={cloud.src}
+          alt=""
+          draggable={false}
+          className="anim-cloud absolute h-auto max-w-none select-none"
+          style={
+            {
+              top: `${cloud.top}%`,
+              // Resting place under reduced motion; the drift animation moves `left`
+              left: `${[4, 52, 70][index]}%`,
+              width: `${cloud.width}%`,
+              scale: cloud.flip ? "-1 1" : undefined,
+              "--cloud-duration": `${cloud.duration}s`,
+              "--cloud-delay": `${cloud.delay}s`,
+            } as React.CSSProperties
+          }
+        />
+      ))}
 
       {windy &&
         WIND.map((streak, index) => (
           <span
             key={`wind-${index}`}
             aria-hidden
-            className="anim-wind absolute h-px rounded-full bg-white/80"
+            className="anim-wind absolute left-0 h-[2px] rounded-full bg-gradient-to-r from-transparent via-white/90 to-transparent opacity-0"
             style={
               {
                 top: `${streak.top}%`,
-                left: 0,
                 width: `${streak.width}%`,
                 "--wind-duration": `${streak.duration}s`,
                 "--wind-delay": `${streak.delay}s`,
@@ -147,39 +130,66 @@ export function GrowingTreeScene({
           />
         ))}
 
-      <Sprite id="plot-soil" at={GROUND} />
+      {/* soft shadow on the grass where the tree stands */}
+      <span
+        aria-hidden
+        className="absolute left-1/2 h-[5%] w-[30%] -translate-x-1/2 rounded-[50%] bg-black/10 blur-[2px]"
+        style={{ bottom: `${GROUND_BOTTOM - 2}%` }}
+      />
 
-      {/* the tree: the outer box sways from the trunk base, the inner one rustles */}
-      <div className={cn("absolute inset-0", windy && "anim-tree-sway")} style={treeOrigin}>
-        <div className={cn("absolute inset-0", windy && "anim-tree-rustle")} style={treeOrigin}>
-          {tree && (
-            // Keyed by picture: a new stage mounts fresh and pops in, never blended with the old
-            <Sprite
-              key={tree.assetId}
-              id={tree.assetId}
-              at={GROUND}
-              className="anim-grow-pop transition-[opacity,transform] duration-1000 ease-linear"
-              style={{ opacity: tree.opacity, transform: `scale(${tree.scale})` }}
-            />
+      {tree && (
+        <div
+          className={cn(
+            "absolute left-1/2 -translate-x-1/2 transition-[height] duration-700 ease-out",
+            withered && "anim-wither",
           )}
+          style={{ bottom: `${GROUND_BOTTOM}%`, height: `${STAGE_HEIGHT[tree.stage]}%` }}
+        >
+          {/* the outer box bends from the base in the wind, the inner one breathes */}
+          <div className={cn("h-full origin-bottom", moving && "anim-tree-sway")}>
+            <div className={cn("h-full origin-bottom", moving && "anim-tree-rustle")}>
+              {/* Keyed by stage: a new stage mounts fresh and pops in, never blended */}
+              <img
+                key={tree.stage}
+                src={treeImage(species, tree.stage)}
+                alt=""
+                draggable={false}
+                className="anim-grow-pop h-full w-auto max-w-none origin-bottom transition-[opacity,transform,filter] duration-1000 ease-linear select-none"
+                style={{
+                  opacity: tree.opacity,
+                  transform: `scale(${tree.scale})`,
+                  filter: withered ? "grayscale(0.7) sepia(0.5) brightness(0.85)" : undefined,
+                }}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
-      {windy &&
+      {moving &&
         LEAVES.map((leaf, index) => (
           <span
             key={`leaf-${index}`}
             aria-hidden
-            className="anim-leaf absolute block size-[3%] rounded-[60%_0_60%_0] opacity-0"
+            className="anim-leaf absolute block size-[2.6%] opacity-0"
             style={
               {
                 top: `${leaf.top}%`,
-                backgroundColor: colours[index % colours.length],
                 "--leaf-duration": `${leaf.duration}s`,
                 "--leaf-delay": `${leaf.delay}s`,
               } as React.CSSProperties
             }
-          />
+          >
+            <span
+              className="anim-leaf-flutter block size-full rounded-[60%_0_60%_0]"
+              style={
+                {
+                  backgroundColor: colours[index % colours.length],
+                  "--flutter-duration": `${leaf.flutter}s`,
+                } as React.CSSProperties
+              }
+            />
+          </span>
         ))}
 
       {celebrate &&
@@ -203,8 +213,3 @@ export function GrowingTreeScene({
     </div>
   );
 }
-
-/** Sway and rustle pivot on the trunk base. */
-const treeOrigin: React.CSSProperties = {
-  transformOrigin: `${pct(GROUND.x, FRAME.width)} ${pct(GROUND.y, FRAME.height)}`,
-};

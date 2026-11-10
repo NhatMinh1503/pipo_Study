@@ -13,7 +13,7 @@ select is(
 );
 select is(
   (select display_language::text from public.profiles where user_id = 'cccccccc-cccc-cccc-cccc-cccccccccccc'),
-  'vi', 'profile defaults to Vietnamese display language'
+  'en', 'profile defaults to English display language'
 );
 select results_eq(
   $$ select xp, coins, streak_current from public.wallets

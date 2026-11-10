@@ -1,0 +1,880 @@
+{
+  "common": {
+    "appName": "pipo",
+    "tagline": "Belajar bahasa lewat terjemahan kontekstual, SRS, dan umpan balik AI.",
+    "loading": "Memuat...",
+    "or": "atau",
+    "cancel": "Batal"
+  },
+  "home": {
+    "getStarted": "Mulai gratis",
+    "signIn": "Masuk",
+    "healthOk": "Basis data terhubung",
+    "healthError": "Tidak dapat menjangkau Supabase"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Kata sandi",
+    "confirmPassword": "Ulangi kata sandi",
+    "newPassword": "Kata sandi baru",
+    "showPassword": "Tampilkan kata sandi",
+    "hidePassword": "Sembunyikan kata sandi",
+    "signIn": {
+      "title": "Selamat datang kembali",
+      "description": "Masuk untuk melanjutkan perjalanan belajarmu.",
+      "submit": "Masuk",
+      "forgot": "Lupa kata sandi?",
+      "noAccount": "Belum punya akun?",
+      "toSignUp": "Daftar"
+    },
+    "signUp": {
+      "title": "Buat akun",
+      "description": "Gratis. Cukup email dan kata sandi.",
+      "submit": "Daftar",
+      "hasAccount": "Sudah punya akun?",
+      "toSignIn": "Masuk",
+      "passwordHint": "Minimal 8 karakter."
+    },
+    "checkEmail": {
+      "title": "Periksa email kamu",
+      "description": "Kami mengirim tautan konfirmasi ke {email}. Buka tautan itu untuk menyelesaikan pendaftaran.",
+      "back": "Kembali ke halaman masuk"
+    },
+    "forgot": {
+      "title": "Lupa kata sandi",
+      "description": "Masukkan email kamu dan kami akan mengirim tautan untuk mengatur ulang.",
+      "submit": "Kirim tautan",
+      "sent": "Jika email terdaftar, tautan atur ulang sudah dikirim. Periksa kotak masuk kamu.",
+      "back": "Kembali ke halaman masuk"
+    },
+    "reset": {
+      "title": "Atur kata sandi baru",
+      "description": "Kata sandi baru minimal 8 karakter.",
+      "submit": "Simpan kata sandi",
+      "success": "Kata sandi diperbarui."
+    },
+    "signOut": "Keluar",
+    "errors": {
+      "invalidCredentials": "Email atau kata sandi salah.",
+      "emailNotConfirmed": "Email belum dikonfirmasi. Buka tautan di kotak masuk kamu.",
+      "weakPassword": "Kata sandi terlalu lemah. Pilih yang lebih panjang.",
+      "samePassword": "Kata sandi baru harus berbeda dari yang lama.",
+      "rateLimited": "Terlalu banyak percobaan. Coba lagi beberapa menit lagi.",
+      "linkInvalid": "Tautan tidak valid atau sudah kedaluwarsa. Silakan coba lagi.",
+      "sessionMissing": "Sesi atur ulang sudah berakhir. Minta tautan baru."
+    }
+  },
+  "validation": {
+    "required": "Kolom ini wajib diisi.",
+    "email": "Alamat email tidak valid.",
+    "passwordMin": "Kata sandi minimal 8 karakter.",
+    "passwordMax": "Kata sandi maksimal 72 karakter.",
+    "passwordMismatch": "Kata sandi tidak cocok.",
+    "level_mismatch": "Tingkat tidak cocok dengan bahasanya."
+  },
+  "errors": {
+    "unexpected": "Terjadi kesalahan. Silakan coba lagi."
+  },
+  "dashboard": {
+    "title": "Beranda",
+    "welcome": "Hai, {name}!",
+    "welcomeNoName": "Hai!",
+    "subtitle": "Mau belajar apa hari ini?",
+    "statsLabel": "Statistik",
+    "xp": "XP",
+    "coins": "Koin",
+    "streak": "Runtunan",
+    "streakBest": "Rekor: {count, plural, other {# hari}}",
+    "reviewTitle": "Kartu untuk diulang hari ini",
+    "reviewDue": "{count, plural, other {# kartu menunggu}}",
+    "reviewNone": "Tidak ada yang jatuh tempo. Kerja bagus!",
+    "reviewCta": "Ulangi sekarang",
+    "continueTitle": "Lanjutkan belajar",
+    "continueEmpty": "Belum ada pelajaran yang sedang berjalan.",
+    "newLesson": "Pelajaran baru",
+    "progress": "{done} dari {total} kalimat diterjemahkan",
+    "quick": {
+      "label": "Pintasan",
+      "analytics": "Analisis kesalahan",
+      "quiz": "Kuis",
+      "news": "Berita",
+      "skills": "Keterampilan",
+      "shop": "Toko",
+      "community": "Komunitas",
+      "leaderboard": "Papan peringkat",
+      "battle": "Duel 1v1"
+    },
+    "goals": {
+      "title": "Target hari ini",
+      "progress": "{done}/{total}",
+      "translate": "Selesaikan 1 terjemahan",
+      "translateDetail": "{count, plural, =0 {Belum ada hari ini} other {# selesai hari ini}}",
+      "review": "Selesaikan kartu yang jatuh tempo",
+      "reviewLeft": "{count, plural, other {sisa # kartu}}",
+      "reviewDetail": "{count, plural, =0 {Tidak ada yang jatuh tempo} other {# kartu diulang hari ini}}",
+      "focus": "Fokus 1 Pomodoro",
+      "focusDetail": "{count, plural, =0 {Belum ada sesi} other {# sesi selesai}}",
+      "done": "selesai",
+      "todo": "belum"
+    },
+    "activity": {
+      "title": "XP, 7 hari terakhir · total {total}",
+      "tooltip": "{day}: {xp} XP",
+      "empty": "Belum ada aktivitas minggu ini — terjemahkan satu pelajaran untuk memulai!"
+    },
+    "words": {
+      "title": "Kata terbaru",
+      "all": "Buka buku catatan",
+      "empty": "Belum ada kata yang disimpan. Ketuk sebuah kata saat menerjemahkan untuk menambahkannya."
+    },
+    "weak": {
+      "title": "Titik lemah untuk dilatih",
+      "count": "{count, plural, other {# kali dalam 2 minggu}}",
+      "practise": "Latih sekarang",
+      "details": "Lihat analisis",
+      "none": "Tidak ada kesalahan dalam 2 minggu terakhir. Pertahankan!"
+    },
+    "band": {
+      "label": "Status hari ini",
+      "streak": "Runtunan {count, plural, other {# hari}}",
+      "due": "{count, plural, other {# kartu}} jatuh tempo",
+      "goals": "Hari ini · {done}/{total} target"
+    }
+  },
+  "languages": {
+    "ja": "Bahasa Jepang",
+    "en": "Bahasa Inggris",
+    "vi": "Bahasa Vietnam",
+    "my": "Bahasa Myanmar (မြန်မာ)",
+    "id": "Bahasa Indonesia"
+  },
+  "levels": {
+    "N5": "Pemula — salam, kalimat sederhana",
+    "N4": "Pemula — percakapan sehari-hari dasar",
+    "N3": "Menengah — teks sehari-hari yang akrab",
+    "N2": "Menengah atas — koran, berita",
+    "N1": "Mahir — teks kompleks dan abstrak",
+    "A1": "Pemula awal",
+    "A2": "Dasar",
+    "B1": "Menengah",
+    "B2": "Menengah atas",
+    "C1": "Mahir",
+    "C2": "Sangat mahir"
+  },
+  "onboarding": {
+    "stepOf": "Langkah {current} dari {total}",
+    "back": "Kembali",
+    "next": "Lanjut",
+    "finish": "Mulai belajar",
+    "languageHint": {
+      "ja": "Tingkat JLPT N5 → N1",
+      "en": "Tingkat CEFR A1 → C2"
+    },
+    "language": {
+      "title": "Bahasa apa yang ingin kamu pelajari?",
+      "description": "Kamu bisa mengubahnya nanti di Pengaturan."
+    },
+    "level": {
+      "title": "Bagaimana tingkat kemampuanmu sekarang?",
+      "description": "Pelajaran dan penilaian AI menyesuaikan tingkat ini."
+    },
+    "display": {
+      "title": "Bahasa tampilan",
+      "description": "Bahasa antarmuka dan umpan balik AI."
+    }
+  },
+  "nav": {
+    "label": "Navigasi utama",
+    "dashboard": "Beranda",
+    "lessons": "Pelajaran",
+    "notebook": "Buku catatan",
+    "review": "Ulangan",
+    "pomodoro": "Pomodoro"
+  },
+  "theme": {
+    "toLight": "Ganti ke tema terang",
+    "toDark": "Ganti ke tema gelap",
+    "toggle": "Ganti tema terang/gelap"
+  },
+  "userMenu": {
+    "open": "Buka menu akun",
+    "language": "Bahasa tampilan",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "shop": "Toko",
+    "skills": "Pohon keterampilan"
+  },
+  "lessons": {
+    "title": "Pelajaran",
+    "description": "Tempel sebuah teks, terjemahkan kalimat demi kalimat, dan dapatkan umpan balik AI.",
+    "new": "Pelajaran baru",
+    "newTitle": "Pelajaran baru",
+    "newDescription": "Tempel teks yang ingin kamu latih. Teks akan otomatis dipecah menjadi kalimat.",
+    "empty": "Kamu belum punya pelajaran.",
+    "emptyHint": "Mulailah dengan teks pendek 3–5 kalimat.",
+    "completed": "Selesai",
+    "progress": "{done} dari {total} kalimat diterjemahkan",
+    "delete": "Hapus",
+    "deleteAria": "Hapus pelajaran {title}",
+    "deleteTitle": "Hapus pelajaran?",
+    "deleteDescription": "\"{title}\" dan semua percobaannya akan dihapus permanen.",
+    "deleted": "Pelajaran dihapus.",
+    "form": {
+      "title": "Judul",
+      "titlePlaceholder": "mis. Di supermarket",
+      "language": "Bahasa",
+      "level": "Tingkat",
+      "text": "Teks",
+      "textHint": "Setiap kalimat menjadi satu langkah terjemahan. Baris baru juga mengakhiri kalimat.",
+      "textPlaceholder": {
+        "ja": "昨日、駅の近くのスーパーに行きました。野菜がとても安かったです。",
+        "en": "Yesterday I went to the supermarket near the station. The vegetables were very cheap."
+      },
+      "submit": "Buat dan mulai menerjemahkan",
+      "titleTooLong": "Judul maksimal 120 karakter.",
+      "textTooLong": "Teks maksimal 5000 karakter.",
+      "tooManySentences": "Teks maksimal 200 kalimat."
+    },
+    "preview": {
+      "title": "{count, plural, =0 {Pratinjau} other {Pratinjau · # kalimat}}",
+      "empty": "Kalimat akan muncul di sini setelah kamu menempelkan teks.",
+      "tooMany": "Hanya {max} kalimat pertama yang bisa dipakai. Silakan perpendek teksnya."
+    },
+    "dictationAria": "Dikte untuk {title}",
+    "clozeAria": "Tes rumpang untuk {title}",
+    "news": "Berita",
+    "generate": "Buat dengan AI",
+    "source": {
+      "adapted": "Teks diadaptasi untuk pelajar oleh pipo dari <source></source>, di bawah lisensi <license></license>."
+    },
+    "newsRewrite": {
+      "writing": "AI sedang menulis ulang berita ini sesuai tingkatmu…",
+      "ready": "Teksmu sudah siap — sunting dulu sebelum membuat pelajaran jika mau.",
+      "retry": "Coba lagi",
+      "failed": "AI tidak berhasil menulis yang ini. Silakan coba lagi.",
+      "unreadable": "Artikel ini tidak dapat dibaca. Silakan pilih yang lain.",
+      "tooClose": "Hasil tulis ulang masih terlalu mirip dengan aslinya. Coba lagi atau pilih berita lain.",
+      "rateLimited": "Jatah AI hari ini sudah habis. Kembali lagi besok."
+    }
+  },
+  "translate": {
+    "sourceLabel": "Teks sumber",
+    "feedbackLabel": "Umpan balik AI",
+    "progress": "{done}/{total} kalimat",
+    "status": {
+      "done": "Sudah diterjemahkan",
+      "current": "Kalimat sekarang",
+      "locked": "Terkunci"
+    },
+    "yourTranslation": "Terjemahanmu",
+    "placeholder": "Ketik terjemahan kalimat yang disorot...",
+    "keyboardHint": "Enter untuk memeriksa · Shift+Enter untuk baris baru",
+    "attempts": "Percobaan ke-{count}",
+    "check": "Periksa",
+    "next": "Kalimat berikutnya",
+    "hint": "Petunjuk",
+    "reference": "Terjemahan acuan",
+    "verdict": {
+      "exact": "Tepat",
+      "acceptable": "Dapat diterima",
+      "incorrect": "Belum tepat"
+    },
+    "allDoneTitle": "Kamu sudah menerjemahkan seluruh teks!",
+    "allDoneDescription": "Ambil hadiahmu dan lihat ringkasannya.",
+    "finish": "Ambil hadiah & lihat hasil",
+    "errors": {
+      "rateLimited": "Jatah pemeriksaan AI hari ini sudah habis. Kembali lagi besok.",
+      "notConfigured": "AI belum dikonfigurasi (GEMINI_API_KEY tidak ada).",
+      "unavailable": "AI sedang sibuk dan tidak bisa menilai ini. Tidak dihitung — silakan coba lagi.",
+      "network": "Koneksi terputus. Periksa jaringanmu dan coba lagi."
+    },
+    "xp": {
+      "earned": "+{xp} XP",
+      "capped": "Batas XP hari ini untuk pelajaran buatanmu sendiri sudah tercapai",
+      "streakKept": "Runtunan belajarmu tetap terhitung"
+    }
+  },
+  "result": {
+    "title": "Pelajaran selesai",
+    "titlePerfect": "Sempurna! Semua benar pada percobaan pertama",
+    "statsLabel": "Hasil",
+    "score": "Skor",
+    "xp": "XP",
+    "coins": "Koin",
+    "details": "Rincian per kalimat",
+    "sentenceSummary": "{attempts, plural, other {# percobaan}} · {points} poin",
+    "newLesson": "Pelajaran baru",
+    "backHome": "Kembali ke beranda",
+    "publish": "Bagikan ke komunitas",
+    "publishing": "Membagikan…",
+    "publishFailed": "Gagal membagikan, silakan coba lagi.",
+    "capped": "Batas XP hari ini untuk pelajaran buatanmu sudah tercapai, jadi pelajaran ini tidak mendapat hadiah penyelesaian",
+    "tooShort": "Pelajaran perlu minimal 3 kalimat untuk mendapat hadiah penyelesaian"
+  },
+  "dictionary": {
+    "explain": "Jelaskan (AI)",
+    "save": "Tambah ke buku catatan",
+    "inNotebook": "Ada di buku catatan",
+    "saved": "Ditambahkan ke buku catatan beserta kartu hafalan.",
+    "noEntry": "Tidak ada di kamus offline. Ketuk \"Jelaskan\" untuk bertanya ke AI.",
+    "attribution": "Kamus: JMdict © EDRDG (CC BY-SA 4.0)",
+    "pos": {
+      "noun": "Kata benda",
+      "verb": "Kata kerja",
+      "i-adjective": "Adjektiva-i",
+      "na-adjective": "Adjektiva-na",
+      "adjective": "Kata sifat",
+      "adverb": "Kata keterangan",
+      "particle": "Partikel",
+      "auxiliary": "Kata kerja bantu",
+      "conjunction": "Kata sambung",
+      "interjection": "Kata seru",
+      "prenoun": "Prenomina",
+      "pronoun": "Kata ganti",
+      "symbol": "Simbol",
+      "other": "Kata"
+    }
+  },
+  "notebook": {
+    "title": "Buku catatan",
+    "description": "Kata-kata yang kamu simpan, beserta kalimat asalnya.",
+    "empty": "Buku catatanmu masih kosong.",
+    "emptyHint": "Saat menerjemahkan, ketuk sebuah kata lalu pilih \"Tambah ke buku catatan\".",
+    "search": "Cari berdasarkan kata, cara baca, atau arti",
+    "filterLabel": "Saring menurut bahasa",
+    "all": "Semua",
+    "count": "{count, plural, other {# kata}}",
+    "noMatch": "Tidak ada kata yang cocok.",
+    "noMeaning": "Belum ada arti — ketuk pensil untuk menambahkan.",
+    "alreadySaved": "Kata ini sudah ada di buku catatanmu.",
+    "deleted": "Kata dihapus.",
+    "updated": "Arti disimpan.",
+    "delete": "Hapus",
+    "deleteTitle": "Hapus kata ini?",
+    "deleteDescription": "\"{term}\" dan kartu hafalannya akan dihapus.",
+    "deleteAria": "Hapus {term}",
+    "editAria": "Sunting arti {term}",
+    "editDescription": "Tulis artinya dengan cara yang paling mudah kamu ingat.",
+    "meaning": "Arti",
+    "save": "Simpan",
+    "quiz": "Kuis latihan"
+  },
+  "review": {
+    "remaining": "{count, plural, other {sisa # kartu}}",
+    "flip": "Balik untuk melihat arti",
+    "flipBack": "Balik ke depan",
+    "tapToFlip": "Ketuk kartu atau tekan Spasi untuk membalik",
+    "showAnswer": "Tampilkan jawaban",
+    "noMeaning": "(belum ada arti)",
+    "rateLabel": "Seberapa baik kamu mengingatnya?",
+    "rating": {
+      "again": "Ulang",
+      "hard": "Sulit",
+      "good": "Baik",
+      "easy": "Mudah"
+    },
+    "doneTitle": "Sesi selesai!",
+    "doneDescription": "{count, plural, other {Kamu mengulang # kartu.}}",
+    "nothingDue": "Tidak ada yang perlu diulang",
+    "nothingDueHint": "Terjemahkan pelajaran baru dan simpan kata ke buku catatanmu.",
+    "toLessons": "Mulai pelajaran",
+    "toDashboard": "Kembali ke beranda",
+    "saveFailed": "Beberapa ulangan gagal disimpan. Silakan muat ulang halaman.",
+    "saving": "Menyimpan hasilmu...",
+    "offlineQueued": "{count, plural, other {# ulangan akan disimpan saat kamu kembali online}}",
+    "clearBonus": "+{xp} XP · Semua ulangan hari ini selesai"
+  },
+  "pomodoro": {
+    "ready": "Siap",
+    "focus": "Fokus",
+    "break": "Istirahat",
+    "timeLeft": "Sisa waktu",
+    "startMinutes": "Mulai {minutes} menit",
+    "giveUp": "Menyerah (tanpa hadiah)",
+    "skipBreak": "Lewati istirahat",
+    "focusHint": "Kamu boleh keluar atau memuat ulang — pengatur waktu memakai jam server.",
+    "idleHint": "Setiap sesi yang selesai menanam satu pohon di Taman Pengetahuanmu. Berhenti di tengah jalan dan pohonnya layu.",
+    "toGarden": "Lihat taman",
+    "rewardToast": "Sesi selesai! +{coins} Koin, tamanmu tumbuh.",
+    "focusDoneTitle": "Waktu fokus selesai",
+    "breakDoneTitle": "Istirahat selesai",
+    "breakDoneBody": "Siap untuk sesi berikutnya?",
+    "startFailed": "Sesi tidak dapat dimulai. Silakan coba lagi.",
+    "claimFailed": "Hadiah untuk sesi ini tidak dapat diambil.",
+    "tree": {
+      "title": "Pohon yang akan ditanam",
+      "needsSeed": "Perlu benih",
+      "lockedError": "Pohon ini perlu benih."
+    },
+    "scene": {
+      "seed": "Benih {species} siap: akan tumbuh menjadi pohon dalam {minutes} menit",
+      "focus": "{species} sedang tumbuh · {stage}",
+      "break": "{species} sudah besar dan ditanam di tamanmu!",
+      "stagesLabel": "Cara pohon tumbuh",
+      "stages": {
+        "sprout": "Tunas",
+        "sapling": "Pohon muda",
+        "mature": "Dewasa"
+      },
+      "withered": "{species} layu: sesi berhenti lebih awal, jadi tidak ada yang ditanam."
+    },
+    "length": {
+      "title": "Lama sesi",
+      "minutes": "{minutes} menit",
+      "slider": "Lama sesi dalam menit"
+    }
+  },
+  "garden": {
+    "title": "Taman Pengetahuan",
+    "description": "Setiap sesi fokus menumbuhkan satu pohon, dari tunas hingga besar, lalu menanamnya di sini.",
+    "plant": "Tanam pohon",
+    "statsLabel": "Statistik taman",
+    "trees": "Pohon",
+    "focusTime": "Waktu fokus",
+    "minutes": "{count, plural, other {# mnt}}",
+    "empty": "Tamanmu masih kosong.",
+    "emptyHint": "Selesaikan satu sesi Pomodoro untuk menanam pohon pertamamu.",
+    "treeLabel": "Pohon dari sesi {minutes} menit",
+    "decorations": "Dekorasi",
+    "species": {
+      "pine": "Pinus Jepang",
+      "bamboo": "Bambu",
+      "maple": "Maple merah",
+      "sakura": "Sakura"
+    },
+    "sceneLabel": "Taman pengetahuan: {count} pohon, {growing} sedang tumbuh",
+    "sceneError": "Taman tidak dapat ditampilkan di perangkat ini. Daftar pohon ada di bawah.",
+    "treeList": "Pohon di taman",
+    "stage": {
+      "sprout": "Tunas",
+      "sapling": "Pohon muda",
+      "mature": "Dewasa"
+    },
+    "pipo": {
+      "firstTree": "Yuk tanam pohon pertama kita? Satu sesi fokus sudah cukup.",
+      "growing": "{species} perlu {count} sesi lagi untuk tumbuh besar!",
+      "bloom": "Kita belajar hari ini, pohon sakura sedang mekar!",
+      "bloomHint": "Terjemahkan satu kalimat saja dan pohon sakura akan mekar.",
+      "treeCount": "Taman kita sekarang punya {count} pohon!"
+    },
+    "greet": "Sapa Pipo",
+    "info": {
+      "sessions": "Dirawat",
+      "sessionsValue": "{sessions}/{total} sesi",
+      "planted": "Ditanam",
+      "matured": "Tumbuh besar",
+      "legacy": "Pohon ini berasal dari sesi fokus sebelum taman didesain ulang."
+    },
+    "decor": {
+      "title": "Atur dekorasi",
+      "placeLabel": "Tempat untuk {item}",
+      "storage": "Di gudang",
+      "otherGarden": "Di taman {garden}",
+      "slot": "Tempat {slot}",
+      "slotTakenBy": "Tempat {slot} · {item}",
+      "slotTaken": "Sudah ada dekorasi lain di sana.",
+      "failed": "Gagal menaruhnya, silakan coba lagi."
+    },
+    "switcher": {
+      "label": "Taman",
+      "previous": "Taman sebelumnya",
+      "next": "Taman berikutnya",
+      "position": "Taman {index}/{count}"
+    }
+  },
+  "audio": {
+    "play": "Dengarkan",
+    "stop": "Berhenti",
+    "speed": "Kecepatan bicara",
+    "noVoice": "Tidak ada suara untuk bahasa ini di perangkat ini"
+  },
+  "quiz": {
+    "title": "Kuis kosakata",
+    "description": "Latih kata-kata di buku catatanmu dengan tiga cara.",
+    "modeLabel": "Mode",
+    "mode": {
+      "choice": "Pilihan ganda",
+      "fill": "Isian",
+      "match": "Pasangkan"
+    },
+    "progress": "Soal {current}/{total}",
+    "chooseMeaning": "Pilih arti yang benar",
+    "correct": "Benar!",
+    "wrong": "Belum tepat",
+    "next": "Berikutnya",
+    "check": "Periksa",
+    "typeWord": "Ketik kata yang hilang (cara baca juga boleh)",
+    "answerWas": "Jawaban:",
+    "matched": "Terpasang {done}/{total}",
+    "words": "Kata",
+    "meanings": "Arti",
+    "matchTime": "Waktu {time}",
+    "resultLabel": "Hasil",
+    "resultSummary": "{correct} dari {total} benar",
+    "restart": "Main lagi",
+    "notEnough": "Kamu perlu minimal {min} kata yang punya arti",
+    "notEnoughHint": "Simpan lebih banyak kata saat menerjemahkan.",
+    "toLessons": "Ke pelajaran"
+  },
+  "practice": {
+    "score": "Skor",
+    "backToLesson": "Kembali ke pelajaran",
+    "allLessons": "Semua pelajaran"
+  },
+  "dictation": {
+    "title": "Dikte",
+    "description": "Dengarkan setiap kalimat lalu ketik.",
+    "progress": "Kalimat {current}/{total}",
+    "placeholder": "Ketik apa yang kamu dengar...",
+    "check": "Periksa",
+    "next": "Kalimat berikutnya",
+    "result": "Hasil",
+    "summary": "{count, plural, other {Rata-rata dari # kalimat}}",
+    "legend": {
+      "equal": "Benar",
+      "missing": "Kurang",
+      "extra": "Lebih / salah"
+    }
+  },
+  "cloze": {
+    "title": "Tes rumpang",
+    "description": "Dengarkan dan isi kata-kata dari tingkat yang dipilih.",
+    "levelLabel": "Tingkat",
+    "blankLabel": "Rumpang",
+    "check": "Periksa",
+    "finish": "Lihat skor",
+    "summary": "{correct} dari {total} rumpang benar",
+    "noBlanks": "Tidak ada kata {level} di pelajaran ini.",
+    "noBlanksHint": "Coba tingkat lain."
+  },
+  "generate": {
+    "title": "Buat pelajaran",
+    "description": "Masukkan topik dan AI akan menulis teks sesuai tingkatmu untuk diterjemahkan.",
+    "topic": "Topik",
+    "topicPlaceholder": "mis. teknologi AI",
+    "levelNote": "Teks akan berada di tingkat {level}.",
+    "suggestions": "Ide topik",
+    "submit": "Buat",
+    "generating": "AI sedang menulis...",
+    "suggestion": {
+      "travel": "Perjalanan",
+      "food": "Makanan",
+      "work": "Pekerjaan",
+      "technology": "Teknologi AI",
+      "health": "Kesehatan",
+      "anime": "Anime",
+      "manga": "Manga",
+      "game": "Gim video",
+      "meeting": "Rapat",
+      "email": "Email kerja",
+      "interview": "Wawancara kerja"
+    }
+  },
+  "analytics": {
+    "title": "Analisis kesalahan",
+    "description": "Kesalahan yang ditemukan AI dalam {weeks} minggu terakhir.",
+    "empty": "Belum ada kesalahan yang tercatat.",
+    "emptyHint": "Terjemahkan beberapa pelajaran — setiap jawaban salah dikelompokkan di sini.",
+    "byTypeTitle": "Menurut jenis",
+    "byWeekTitle": "Menurut minggu",
+    "barTooltip": "{label}: {count} kali",
+    "weekTooltip": "Minggu {week}: {count} kesalahan",
+    "weakTitle": "3 titik lemah teratas",
+    "times": "{count}×",
+    "practise": "Latih titik lemah (3–5 mnt)",
+    "generating": "AI sedang menyiapkan...",
+    "tags": {
+      "particle": "Partikel (は/が, を/に…)",
+      "verb_form": "Bentuk kata kerja",
+      "tense": "Kala",
+      "politeness": "Kesopanan / ragam bahasa",
+      "word_choice": "Pilihan kata",
+      "word_order": "Urutan kata",
+      "omission": "Makna terlewat",
+      "addition": "Makna tambahan",
+      "meaning": "Makna salah",
+      "grammar": "Tata bahasa",
+      "spelling": "Ejaan",
+      "article": "Artikel",
+      "preposition": "Preposisi",
+      "plural": "Tunggal / jamak",
+      "naturalness": "Kewajaran"
+    }
+  },
+  "news": {
+    "title": "Berita hari ini",
+    "description": "Teks latihan yang ditulis ulang AI dari berita berlisensi terbuka, sesuai tingkatmu.",
+    "read": "Baca artikel",
+    "makeLesson": "Jadikan pelajaran",
+    "empty": "Berita tidak dapat dimuat.",
+    "emptyHint": "Periksa koneksimu dan coba lagi nanti.",
+    "copyrightNote": "pipo hanya menampilkan judul dan tautan; isi artikel milik penerbitnya.",
+    "open": {
+      "title": "Bacaan dari sumber terbuka",
+      "description": "Berita dari {source} ({license}) — lisensinya mengizinkan adaptasi. Tekan “Jadikan pelajaran” dan AI akan menulis ulang sesuai tingkatmu, tanpa menyalin aslinya."
+    },
+    "headlines": {
+      "title": "Judul berita dari {source}"
+    }
+  },
+  "shop": {
+    "title": "Toko",
+    "description": "Belanjakan koin yang kamu dapat dari belajar untuk benih pohon dan dekorasi taman.",
+    "balance": "Koinmu",
+    "buy": "Beli",
+    "notEnough": "Koin tidak cukup",
+    "use": "Pakai",
+    "stopUsing": "Berhenti memakai",
+    "owned": "Dimiliki",
+    "bought": "Berhasil dibeli!",
+    "applied": "Tema diperbarui.",
+    "sections": {
+      "theme": "Warna aksen",
+      "decoration": "Dekorasi taman",
+      "topic_pack": "Paket topik untuk pelajaran AI",
+      "seed": "Benih pohon"
+    },
+    "errors": {
+      "notEnoughCoins": "Koin tidak cukup.",
+      "alreadyOwned": "Kamu sudah memiliki barang ini."
+    },
+    "items": {
+      "theme-sakura": {
+        "name": "Sakura",
+        "description": "Merah muda bunga sakura."
+      },
+      "theme-matcha": {
+        "name": "Matcha",
+        "description": "Hijau teh hijau."
+      },
+      "theme-ocean": {
+        "name": "Samudra",
+        "description": "Biru laut dalam."
+      },
+      "deco-pond": {
+        "name": "Kolam koi",
+        "description": "Kolam kecil di tengah tamanmu, lengkap dengan ikan koi."
+      },
+      "deco-lantern": {
+        "name": "Lentera batu",
+        "description": "Lentera batu Jepang dengan jendela yang bercahaya hangat."
+      },
+      "deco-bench": {
+        "name": "Bangku kayu",
+        "description": "Taruh di dekat jalan setapak dan Pipo akan duduk beristirahat di sana."
+      },
+      "topics-anime": {
+        "name": "Paket Anime & Gim",
+        "description": "Menambah topik anime, manga, dan gim."
+      },
+      "topics-business": {
+        "name": "Paket Kerja",
+        "description": "Menambah topik rapat, email, dan wawancara."
+      },
+      "seed-maple": {
+        "name": "Benih maple",
+        "description": "Membuka maple merah untuk ditanam di sesi Pomodoro."
+      },
+      "seed-sakura": {
+        "name": "Benih sakura",
+        "description": "Membuka pohon sakura. Pohon yang sudah besar mekar di hari kamu belajar."
+      },
+      "deco-torii": {
+        "name": "Gerbang torii",
+        "description": "Gerbang merah untuk salah satu tempat dekorasi di tamanmu."
+      },
+      "deco-bridge": {
+        "name": "Jembatan merah",
+        "description": "Melintasi kolam koi. Kamu perlu kolamnya untuk melihatnya."
+      },
+      "deco-slime": {
+        "name": "Slime taman",
+        "description": "Slime kenyal yang melompat-lompat di sepanjang jalan setapak."
+      }
+    }
+  },
+  "skills": {
+    "title": "Pohon keterampilan",
+    "description": "Capai target untuk membuka langkah berikutnya di setiap cabang.",
+    "nodeLabel": "{goal} — {state}",
+    "state": {
+      "done": "selesai",
+      "open": "sedang berjalan",
+      "locked": "terkunci"
+    },
+    "branches": {
+      "translate": {
+        "title": "Terjemahan",
+        "goal": "{count, plural, other {Selesaikan # pelajaran}}"
+      },
+      "vocabulary": {
+        "title": "Kosakata",
+        "goal": "{count, plural, other {Simpan # kata}}"
+      },
+      "review": {
+        "title": "Ulangan",
+        "goal": "{count, plural, other {# ulangan kartu}}"
+      },
+      "focus": {
+        "title": "Fokus",
+        "goal": "{count, plural, other {# sesi Pomodoro}}"
+      }
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "displayName": "Nama tampilan",
+    "save": "Simpan",
+    "saved": "Tersimpan.",
+    "avatarAlt": "Avatar",
+    "avatarChange": "Ganti foto",
+    "avatarSaved": "Avatar diperbarui.",
+    "avatarFailed": "Gambar gagal diunggah.",
+    "avatarType": "Hanya gambar PNG, JPG, atau WebP.",
+    "avatarSize": "Gambar maksimal 1 MB.",
+    "statsLabel": "Statistik",
+    "streak": "Runtunan",
+    "best": "Rekor: {count}",
+    "lessons": "Pelajaran selesai",
+    "words": "Kata tersimpan",
+    "reviews": "Ulangan",
+    "focus": "Sesi fokus"
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "description": "Bahasa yang dipelajari, tingkat, antarmuka, dan akun.",
+    "learning": "Belajar",
+    "learningLanguage": "Bahasa yang dipelajari",
+    "level": "Tingkat",
+    "displayLanguage": "Bahasa tampilan",
+    "timeZone": "Zona waktu",
+    "save": "Simpan pengaturan",
+    "saved": "Pengaturan disimpan.",
+    "dangerZone": "Zona berbahaya",
+    "deleteDescription": "Menghapus akun akan menghapus permanen semua pelajaran, kata, poin, dan koin.",
+    "deleteTitle": "Hapus akun?",
+    "deleteConfirm": "Tindakan ini tidak dapat dibatalkan.",
+    "deleteButton": "Hapus akun"
+  },
+  "community": {
+    "title": "Komunitas",
+    "description": "Terjemahan yang dibagikan pelajar lain. Beri suka, komentari, dan saling belajar.",
+    "anonymous": "Pelajar anonim",
+    "failed": "Terjadi kesalahan, silakan coba lagi.",
+    "delete": "Hapus postingan",
+    "deleteTitle": "Hapus postingan ini?",
+    "deleteDescription": "Postingan dan semua komentarnya akan dihapus selamanya.",
+    "report": "Laporkan",
+    "reported": "Laporan terkirim. Terima kasih!",
+    "like": "Suka",
+    "comments": "{count, plural, other {# komentar}}",
+    "commentPlaceholder": "Tulis komentar…",
+    "send": "Kirim",
+    "empty": "Belum ada postingan",
+    "emptyHint": "Selesaikan sebuah terjemahan, lalu tekan “Bagikan ke komunitas” di layar ringkasan.",
+    "older": "Postingan lebih lama",
+    "newest": "Terbaru"
+  },
+  "leaderboard": {
+    "title": "Papan peringkat",
+    "description": "50 pelajar teratas menurut XP, runtunan, dan waktu fokus.",
+    "metricLabel": "Ukuran",
+    "periodLabel": "Periode",
+    "metric": {
+      "xp": "XP",
+      "streak": "Runtunan",
+      "focus": "Fokus"
+    },
+    "period": {
+      "week": "Minggu ini",
+      "month": "Bulan ini"
+    },
+    "unit": {
+      "xp": "{count} XP",
+      "streak": "{count, plural, other {# hari}}",
+      "focus": "{count, plural, other {# mnt}}"
+    },
+    "empty": "Belum ada yang di papan",
+    "anonymous": "Pelajar anonim",
+    "you": "Kamu",
+    "notRanked": "Kamu belum masuk 50 besar — terus belajar untuk naik!"
+  },
+  "battle": {
+    "title": "Duel terjemahan 1v1",
+    "description": "Terjemahkan lima kalimat yang sama dengan pelajar lain. Ketepatan dulu, lalu kecepatan.",
+    "find": "Cari lawan",
+    "finding": "Mencari…",
+    "failed": "Terjadi kesalahan, silakan coba lagi.",
+    "history": "Duel terbaru",
+    "noHistory": "Kamu belum pernah berduel",
+    "outcome": {
+      "won": "Menang",
+      "lost": "Kalah",
+      "draw": "Seri",
+      "waiting": "Menunggu lawan",
+      "active": "Sedang berlangsung",
+      "cancelled": "Dibatalkan",
+      "abandoned": "Ditinggalkan"
+    },
+    "notFound": "Duel tidak ditemukan",
+    "backToLobby": "Kembali ke lobi",
+    "cancelled": "Duel ini dibatalkan",
+    "waiting": "Menunggu lawan…",
+    "waitingHint": "Biarkan halaman ini terbuka. Duel dimulai begitu ada orang yang belajar bahasa yang sama bergabung.",
+    "cancel": "Berhenti mencari",
+    "forfeit": "Menyerah",
+    "forfeitTitle": "Menyerah dalam duel ini?",
+    "forfeitDescription": "Lawanmu akan dinyatakan menang.",
+    "scoreboard": "Papan skor",
+    "progress": "{answered}/{total} kalimat",
+    "offline": "terputus",
+    "you": "Kamu",
+    "opponent": "Lawan",
+    "noOpponent": "Belum ada lawan",
+    "sentence": "Kalimat {index}/{total}",
+    "yourTranslation": "Terjemahanmu",
+    "keyboardHint": "Enter untuk mengirim · Shift+Enter untuk baris baru",
+    "submit": "Kirim",
+    "grading": "Menilai…",
+    "gradeFailed": "Tidak bisa menilai yang ini, silakan kirim lagi.",
+    "waitingOpponentFinish": "Kamu sudah selesai! Menunggu lawanmu selesai…",
+    "absenceRule": "Meninggalkan aplikasi lebih dari 90 detik dihitung sebagai menyerah.",
+    "opponentAbsent": "Koneksi lawanmu terputus. Jika ia pergi lebih dari 90 detik, kamu menang.",
+    "abandoned": "Duel ini berakhir karena kedua pemain pergi",
+    "abandonedHint": "Tidak ada yang menang dalam duel ini."
+  },
+  "offline": {
+    "title": "Kamu sedang offline",
+    "description": "Halaman ini memerlukan koneksi. Buku catatan dan Ulangan tetap bisa dibuka jika sudah pernah kamu kunjungi.",
+    "review": "Ulangan",
+    "notebook": "Buku catatan"
+  },
+  "game": {
+    "level": {
+      "badge": "Lv{level}",
+      "stars": "{count} ★",
+      "progress": "{into}/{next} XP",
+      "label": "Level {level}: {into}/{next} XP menuju tonggak berikutnya"
+    },
+    "levelUp": {
+      "level": "Level {level}!",
+      "star": "Bintang ketekunan ★ ke-{stars}!",
+      "source": {
+        "sentence_passed": "Kalimat yang baru kamu terjemahkan membawamu ke tonggak baru.",
+        "lesson_bonus": "Bonus menyelesaikan pelajaran membawamu ke tonggak baru.",
+        "flashcard_review": "Ulangan yang baru kamu lakukan membawamu ke tonggak baru.",
+        "review_clear": "Menyelesaikan semua ulangan hari ini membawamu ke tonggak baru."
+      },
+      "kicker": "NAIK LEVEL · レベルアップ",
+      "from": "Lv {from} → Lv {to}. Hebat!",
+      "generic": "Kamu baru saja mencapai tonggak baru.",
+      "continue": "Lanjut",
+      "toProfile": "Lihat profil",
+      "tiles": {
+        "level": "Level baru",
+        "total": "Total XP",
+        "toNext": "XP ke berikutnya"
+      }
+    }
+  }
+}

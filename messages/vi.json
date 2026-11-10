@@ -144,7 +144,9 @@
   "languages": {
     "ja": "Tiếng Nhật",
     "en": "Tiếng Anh",
-    "vi": "Tiếng Việt"
+    "vi": "Tiếng Việt",
+    "my": "Tiếng Myanmar (မြန်မာ)",
+    "id": "Tiếng Indonesia (Bahasa Indonesia)"
   },
   "levels": {
     "N5": "Sơ cấp — chào hỏi, câu đơn giản",
@@ -391,7 +393,7 @@
     "giveUp": "Bỏ cuộc (không nhận thưởng)",
     "skipBreak": "Bỏ qua giờ nghỉ",
     "focusHint": "Rời trang hay tải lại vẫn được — đồng hồ chạy theo giờ máy chủ.",
-    "idleHint": "Hoàn thành một phiên để chăm cây trong Vườn tri thức.",
+    "idleHint": "Mỗi phiên hoàn thành sẽ trồng một cây vào Vườn tri thức. Bỏ dở giữa chừng thì cây sẽ héo.",
     "toGarden": "Xem Vườn tri thức",
     "rewardToast": "Xong phiên! +{coins} Coins, cây trong vườn đã lớn thêm.",
     "focusDoneTitle": "Hết giờ tập trung",
@@ -401,27 +403,30 @@
     "claimFailed": "Không nhận được thưởng cho phiên này.",
     "tree": {
       "title": "Cây sẽ trồng",
-      "growing": "Đang chăm: {species} · {sessions}/{total} phiên",
       "needsSeed": "Cần hạt giống",
       "lockedError": "Loài cây này cần hạt giống."
     },
     "scene": {
-      "seed": "Hạt {species} đang chờ phiên đầu tiên",
-      "growing": "{species} đang lớn · {sessions}/{total} phiên",
-      "focus": "{species} đang lớn trong phiên {session}/{total}",
-      "break": "{species} vừa lớn thêm · {sessions}/{total} phiên",
-      "sessions": "Đã chăm {sessions} trên {total} phiên",
+      "seed": "Hạt {species} đã sẵn sàng: cây sẽ lớn trong {minutes} phút",
+      "focus": "{species} đang lớn · {stage}",
+      "break": "{species} đã lớn và được trồng vào vườn của bạn!",
       "stagesLabel": "Các giai đoạn lớn của cây",
       "stages": {
         "sprout": "Mầm",
         "sapling": "Cây non",
         "mature": "Trưởng thành"
-      }
+      },
+      "withered": "Cây {species} đã héo: phiên bị bỏ dở nên không có cây nào được trồng."
+    },
+    "length": {
+      "title": "Thời gian mỗi phiên",
+      "minutes": "{minutes} phút",
+      "slider": "Thời gian mỗi phiên (phút)"
     }
   },
   "garden": {
     "title": "Vườn tri thức",
-    "description": "Mỗi phiên tập trung giúp cây lớn thêm: mầm, cây con, rồi trưởng thành.",
+    "description": "Mỗi phiên tập trung nuôi một cây lớn từ mầm đến cây trưởng thành và trồng nó vào đây.",
     "plant": "Trồng cây mới",
     "statsLabel": "Thống kê vườn",
     "trees": "Số cây",
@@ -614,7 +619,7 @@
   },
   "shop": {
     "title": "Cửa hàng",
-    "description": "Dùng Coins kiếm được từ học tập để mua theme, đồ trang trí vườn và gói chủ đề.",
+    "description": "Dùng xu kiếm được khi học để mua hạt giống và đồ trang trí cho vườn.",
     "balance": "Số Coins hiện có",
     "buy": "Mua",
     "notEnough": "Chưa đủ Coins",

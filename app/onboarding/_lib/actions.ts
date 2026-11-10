@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import type { ActionResult } from "@/lib/action-result";
+import { displayLanguageSchema } from "@/lib/schemas/common";
 import { onboardingSchema } from "@/lib/schemas/profile";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
@@ -35,4 +36,10 @@ export async function completeOnboarding(input: unknown): Promise<ActionResult> 
 
   await setLocaleCookie(displayLanguage);
   redirect("/dashboard");
+}
+
+/** Switches the UI language as soon as the learner picks it on the last step. */
+export async function previewDisplayLanguage(input: unknown): Promise<void> {
+  const parsed = displayLanguageSchema.safeParse(input);
+  if (parsed.success) await setLocaleCookie(parsed.data);
 }

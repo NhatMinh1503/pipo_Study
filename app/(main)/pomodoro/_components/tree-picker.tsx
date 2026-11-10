@@ -5,40 +5,25 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { canPlant, TREE_SPECIES, type TreeSpecies } from "@/lib/garden/growth";
-import { GAME } from "@/lib/game/config";
 import { cn } from "@/lib/utils";
 
 interface TreePickerProps {
-  growing: { species: TreeSpecies; sessions: number } | null;
   ownedItemIds: string[];
   value: TreeSpecies;
   onChange: (species: TreeSpecies) => void;
+  disabled?: boolean;
 }
 
-/**
- * The tree the next session will plant (garden-scene spec §3.1–3.2). While a tree is
- * growing, sessions tend it, so this shows its progress instead of a choice.
- */
-export function TreePicker({ growing, ownedItemIds, value, onChange }: TreePickerProps) {
+/** The seed the next session plants (Forest style: each session grows its own tree). */
+export function TreePicker({ ownedItemIds, value, onChange, disabled = false }: TreePickerProps) {
   const t = useTranslations("pomodoro.tree");
   const species = useTranslations("garden.species");
-
-  if (growing) {
-    return (
-      <p className="sheet-flat w-full bg-tint-mint p-3 text-center text-sm" role="status">
-        {t("growing", {
-          species: species(growing.species),
-          sessions: growing.sessions,
-          total: GAME.garden.matureAtSessions,
-        })}
-      </p>
-    );
-  }
+  const title = t("title");
 
   return (
-    <fieldset className="w-full space-y-2">
-      <legend className="mono-label mb-2">{t("title")}</legend>
-      <div role="radiogroup" aria-label={t("title")} className="grid grid-cols-2 gap-2">
+    <fieldset className="w-full space-y-2" disabled={disabled}>
+      <legend className="mono-label mb-2">{title}</legend>
+      <div role="radiogroup" aria-label={title} className="grid grid-cols-2 gap-2">
         {TREE_SPECIES.map((option) => {
           const unlocked = canPlant(option, ownedItemIds);
           return (
@@ -60,7 +45,7 @@ export function TreePicker({ growing, ownedItemIds, value, onChange }: TreePicke
                 className="accent-[var(--success)]"
               />
               <Image
-                src={`/garden/tree-${option}-mature@2x.png`}
+                src={`/pomodoro/tree-${option}-mature.webp`}
                 alt=""
                 width={28}
                 height={34}

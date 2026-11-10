@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/server/auth";
 import { jsonError, jsonOk } from "@/server/http";
 import { getCachedExplanation, lookupEntries } from "@/server/services/dictionary";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 /** GET /api/dictionary?term=&reading=&language= — offline entries + cached AI explanation. */
 export async function GET(request: NextRequest) {
@@ -30,7 +31,7 @@ export async function GET(request: NextRequest) {
       term,
       reading,
       language,
-      displayLanguage: profile?.display_language ?? "vi",
+      displayLanguage: profile?.display_language ?? DEFAULT_LOCALE,
     }),
   ]);
 

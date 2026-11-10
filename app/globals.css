@@ -7,9 +7,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter), var(--font-jp), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), var(--font-inter), var(--font-jp), ui-monospace, monospace;
-  --font-heading: var(--font-plex-mono), var(--font-inter), var(--font-jp), ui-monospace, monospace;
+  --font-sans:
+    var(--font-inter), var(--font-jp), var(--font-my), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    var(--font-plex-mono), var(--font-inter), var(--font-jp), var(--font-my), ui-monospace,
+    monospace;
+  --font-heading:
+    var(--font-plex-mono), var(--font-inter), var(--font-jp), var(--font-my), ui-monospace,
+    monospace;
   --font-display: var(--font-dela), var(--font-inter), var(--font-jp), ui-sans-serif, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -273,69 +278,100 @@
 
 /* --- Game motion (Pomodoro tree, XP and level-up moments) ------------------------------
    Every animation here is decorative; prefers-reduced-motion turns all of them off. */
+/* The tree bends from its base (skew keeps the trunk planted) in a slow, uneven breeze */
 @keyframes tree-sway {
   0%,
   100% {
-    transform: rotate(0deg);
+    transform: skewX(0deg);
   }
-  18% {
-    transform: rotate(1.2deg);
+  12% {
+    transform: skewX(-0.9deg);
   }
-  36% {
-    transform: rotate(-0.9deg);
+  26% {
+    transform: skewX(0.5deg);
   }
-  /* a gust */
-  52% {
-    transform: rotate(2.6deg);
+  40% {
+    transform: skewX(-0.4deg);
   }
-  62% {
-    transform: rotate(-1.6deg);
+  /* a gust leans it further, then it springs back past centre and settles */
+  55% {
+    transform: skewX(-2.2deg);
   }
-  78% {
-    transform: rotate(0.9deg);
+  66% {
+    transform: skewX(0.9deg);
+  }
+  77% {
+    transform: skewX(-0.5deg);
+  }
+  88% {
+    transform: skewX(0.2deg);
   }
 }
+/* Leaves breathe: the crown swells a hair and tips with the wind */
 @keyframes tree-rustle {
   0%,
   100% {
-    transform: scale(1, 1) skewX(0deg);
+    transform: scale(1, 1);
   }
   50% {
-    transform: scale(1.012, 0.992) skewX(-1.2deg);
+    transform: scale(1.008, 0.995);
   }
 }
+/* A leaf crosses the scene at an even pace (outer), fluttering up and down (inner) */
 @keyframes leaf-drift {
   0% {
-    left: -8%;
+    left: -6%;
     opacity: 0;
-    transform: translateY(0) rotate(0deg);
   }
-  10% {
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(-14px) rotate(200deg);
-  }
-  90% {
+  8%,
+  88% {
     opacity: 1;
   }
   100% {
-    left: 108%;
+    left: 106%;
     opacity: 0;
-    transform: translateY(10px) rotate(420deg);
+  }
+}
+@keyframes leaf-flutter {
+  0% {
+    transform: translateY(-6px) rotate(-30deg) scaleX(1);
+  }
+  50% {
+    transform: translateY(8px) rotate(40deg) scaleX(0.6);
+  }
+  100% {
+    transform: translateY(-6px) rotate(150deg) scaleX(1);
+  }
+}
+/* Clouds cross the sky very slowly, entering and leaving off-screen */
+@keyframes cloud-drift {
+  from {
+    left: -40%;
+  }
+  to {
+    left: 105%;
+  }
+}
+/* A session left early: the tree droops and loses its colour */
+@keyframes wither {
+  from {
+    transform: translateX(-50%) skewX(0deg) scaleY(1);
+  }
+  to {
+    transform: translateX(-50%) skewX(6deg) scaleY(0.93);
   }
 }
 @keyframes wind-streak {
   0% {
-    transform: translateX(-120%);
+    transform: translateX(-100%) scaleX(0.6);
     opacity: 0;
   }
-  30%,
-  70% {
-    opacity: 0.7;
+  35%,
+  65% {
+    opacity: 0.55;
   }
   100% {
-    transform: translateX(260%);
+    transform: translateX(240%) scaleX(1.1);
     opacity: 0;
   }
 }
@@ -441,17 +477,27 @@
     animation: grow-pop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
   }
   .anim-tree-sway {
-    animation: tree-sway 6.5s ease-in-out infinite;
+    animation: tree-sway 9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   }
   .anim-tree-rustle {
-    animation: tree-rustle 2.4s ease-in-out infinite;
+    animation: tree-rustle 3.4s ease-in-out infinite;
   }
   .anim-leaf {
-    animation: leaf-drift var(--leaf-duration, 7s) linear infinite;
+    animation: leaf-drift var(--leaf-duration, 9s) linear infinite;
     animation-delay: var(--leaf-delay, 0s);
   }
+  .anim-leaf-flutter {
+    animation: leaf-flutter var(--flutter-duration, 1.8s) ease-in-out infinite alternate;
+  }
+  .anim-cloud {
+    animation: cloud-drift var(--cloud-duration, 140s) linear infinite;
+    animation-delay: var(--cloud-delay, 0s);
+  }
+  .anim-wither {
+    animation: wither 1.4s cubic-bezier(0.3, 0, 0.2, 1) forwards;
+  }
   .anim-wind {
-    animation: wind-streak var(--wind-duration, 4s) ease-in-out infinite;
+    animation: wind-streak var(--wind-duration, 5s) cubic-bezier(0.4, 0, 0.6, 1) infinite;
     animation-delay: var(--wind-delay, 0s);
   }
   .anim-sparkle {

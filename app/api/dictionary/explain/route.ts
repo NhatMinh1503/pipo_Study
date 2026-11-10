@@ -10,6 +10,7 @@ import { jsonError, jsonOk } from "@/server/http";
 import { logger } from "@/server/logger";
 import { DictionaryError, explainWord } from "@/server/services/dictionary";
 import { createAdminClient } from "@/server/supabase-admin";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 /** POST /api/dictionary/explain — AI explanation in the user's display language (cached). */
 export async function POST(request: NextRequest) {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     const explanation = await explainWord({
       userClient,
       adminClient: createAdminClient(),
-      input: { ...body.data, displayLanguage: profile?.display_language ?? "vi" },
+      input: { ...body.data, displayLanguage: profile?.display_language ?? DEFAULT_LOCALE },
       explain: getExplainer(),
       dailyLimit: getServerEnv().AI_DAILY_LIMIT,
     });

@@ -57,6 +57,8 @@ test.describe("garden scene", () => {
 
     // Plot 0 is the top corner of the isometric map: click the sapling just above its base
     const scene = page.getByRole("img", { name: /Vườn tri thức/ });
+    // Focusing the list may have scrolled the top of the scene (plot 0) out of view
+    await scene.evaluate((element) => element.scrollIntoView({ block: "center" }));
     const box = await scene.boundingBox();
     if (!box) throw new Error("scene has no size");
     const base = tileBase(plotTile(0));

@@ -7,6 +7,7 @@ import type { BattleAnswerResponse } from "@/lib/schemas/battle";
 import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { Database } from "@/types/database";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 type Client = SupabaseClient<Database>;
 
@@ -75,7 +76,7 @@ export async function submitBattleAnswer(
     userTranslation: translation,
     sourceLanguage: battle.language,
     level: battle.level,
-    targetLanguage: profile.data?.display_language ?? "vi",
+    targetLanguage: profile.data?.display_language ?? DEFAULT_LOCALE,
     contextBefore: battle.sentences[sentenceIndex - 1] ?? null,
     contextAfter: battle.sentences[sentenceIndex + 1] ?? null,
     referenceTranslation: null,

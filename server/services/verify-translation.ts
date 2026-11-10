@@ -8,6 +8,7 @@ import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { GradeResponse } from "@/server/prompts/grade-translation.v1";
 import type { Database } from "@/types/database";
+import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 type Client = SupabaseClient<Database>;
 
@@ -73,7 +74,7 @@ export async function verifyTranslation(
     userTranslation,
     sourceLanguage: sentence.lessons.language,
     level: sentence.lessons.level,
-    targetLanguage: profile.data?.display_language ?? "vi",
+    targetLanguage: profile.data?.display_language ?? DEFAULT_LOCALE,
     contextBefore: neighbor(sentence.position - 1),
     contextAfter: neighbor(sentence.position + 1),
     referenceTranslation: sentence.reference_translation,

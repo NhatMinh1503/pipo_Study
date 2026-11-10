@@ -1,8 +1,32 @@
 import { GAME } from "@/lib/game/config";
 
-export const FOCUS_OPTIONS = GAME.pomodoro.focusOptions;
-export type FocusMinutes = (typeof FOCUS_OPTIONS)[number];
+export const FOCUS_PRESETS = GAME.pomodoro.focusPresets;
+export const DEFAULT_FOCUS_MINUTES = GAME.pomodoro.defaultFocusMinutes;
 export const BREAK_MINUTES = GAME.pomodoro.breakMinutes;
+const { focusMinMinutes, focusMaxMinutes, focusStepMinutes } = GAME.pomodoro;
+export const FOCUS_RANGE = {
+  min: focusMinMinutes,
+  max: focusMaxMinutes,
+  step: focusStepMinutes,
+} as const;
+
+/** True for a session length the learner may pick: within the range, on a step. */
+export function isFocusMinutes(value: number): boolean {
+  return (
+    Number.isInteger(value) &&
+    value >= focusMinMinutes &&
+    value <= focusMaxMinutes &&
+    (value - focusMinMinutes) % focusStepMinutes === 0
+  );
+}
+
+/** Snaps any number to the nearest allowed session length. */
+export function clampFocusMinutes(value: number): number {
+  if (!Number.isFinite(value)) return DEFAULT_FOCUS_MINUTES;
+  const stepped =
+    focusMinMinutes + Math.round((value - focusMinMinutes) / focusStepMinutes) * focusStepMinutes;
+  return Math.min(focusMaxMinutes, Math.max(focusMinMinutes, stepped));
+}
 
 const MINUTE_MS = 60_000;
 
