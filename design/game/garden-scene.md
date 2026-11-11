@@ -92,26 +92,42 @@ Lưới **9×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ t
 - Hồ (`deco-pond`) không đặt vào ô `D`: có hồ thì ô `W` thành hồ, kèm **2 cá koi**.
 - Cầu gỗ đỏ (50), cổng torii (60), bé slime (90) có trong shop từ 09/11/2026, giá **[Đề xuất]**. Torii đặt vào ô trang trí; cầu bắc ngang hồ (cần có hồ); slime nhún nhảy dọc lối đi, không chiếm ô. (Slime thay cho con mèo theo yêu cầu của Minh ngày 09/11/2026.)
 
-### 3.5b Thú cưng slime **[Chốt: mua bằng Coins, tất cả cùng đi chơi]**
+### 3.5b Thú cưng **[Chốt: mua bằng Coins, tất cả cùng đi chơi, mỗi con một kỹ năng]**
 
-Từ 11/11/2026, theo yêu cầu của Minh: có thêm 5 bé slime, art vẽ tay do Gemini vẽ. Slime đầu tiên cũng được vẽ lại cho cùng phong cách.
+Lịch sử thay đổi:
 
-- Shop có mục riêng **Thú cưng** (`shop_item_kind = 'pet'`). Slime đầu giữ id `deco-slime` để ai đã mua vẫn còn sở hữu.
-- Danh sách và giá **[Đề xuất]**:
+- 11/11/2026: thêm 5 bé slime theo yêu cầu của Minh.
+- Cùng ngày, sau góp ý của Minh: vẽ lại 4 con cho có dáng riêng, mỗi con thêm 1 kỹ năng, bấm vào thì xem được kỹ năng; code dựng bằng kế thừa / ghi đè.
 
-  | id                 | Tên           | Giá | Cách di chuyển                  |
-  | ------------------ | ------------- | --- | ------------------------------- |
-  | `deco-slime`       | Slime đào     | 90  | nhảy, nhịp vừa                  |
-  | `pet-slime-water`  | Slime nước    | 100 | nhảy nhanh, thấp                |
-  | `pet-slime-moss`   | Slime rêu     | 100 | lười: đi chậm, nhảy rất thấp    |
-  | `pet-slime-sakura` | Slime anh đào | 140 | nhảy cao                        |
-  | `pet-slime-ember`  | Slime lửa     | 160 | hiếu động: nhanh nhất, nhảy dồn |
-  | `pet-slime-cloud`  | Slime mây     | 200 | bay lơ lửng, nhấp nhô trên bóng |
+Art do Gemini vẽ. Mỗi con có 3 khung hình cùng kích thước và cùng điểm neo: `<art>` (đứng yên), `<art>-b` (khung thứ hai) và `<art>-skill`.
 
-- Mọi thú cưng đã mua đều đi chơi cùng lúc. Lúc đầu chúng rải đều dọc lối đi, con đi xuôi con đi ngược, chia 2 làn để đi qua nhau mà không chồng lên nhau.
-- Thỉnh thoảng một con dừng lại nghỉ (khả năng 8%/giây, mỗi lần 1,5–3,5 giây); lúc nghỉ thì thở phập phồng.
+- Shop có mục **Thú cưng** (`shop_item_kind = 'pet'`). Id trong shop giữ như lúc bán (`deco-slime` nay là tinh linh đào).
+- Danh sách, giá **[Đề xuất]** và kỹ năng:
+
+  | id                 | Tên                 | Giá | Di chuyển             | Kỹ năng (bấm vào)                                        |
+  | ------------------ | ------------------- | --- | --------------------- | -------------------------------------------------------- |
+  | `deco-slime`       | Tinh linh đào       | 90  | nhảy, nhịp vừa        | Gieo mầm: bật nhảy cao, lá bung lên, mầm cây nhú ra      |
+  | `pet-slime-water`  | Tinh linh nước      | 100 | nhảy nhanh, thấp      | Phun nước: vòi nước từ đầu, giọt rơi, vòng sóng dưới đất |
+  | `pet-slime-moss`   | Slime rêu           | 100 | lười: chậm, nhảy thấp | Nở hoa: hoa mọc trên lưng và nở thành vòng quanh nó      |
+  | `pet-slime-sakura` | Thỏ mochi anh đào   | 140 | nhảy cao              | Lốc hoa anh đào: xoay 2 vòng, cánh hoa xoáy ra           |
+  | `pet-slime-ember`  | Tinh linh than hồng | 160 | hiếu động, nhanh nhất | Phun lửa: hít vào, ngả người rồi phun lửa, tia lửa, khói |
+  | `pet-slime-cloud`  | Slime mây           | 200 | bay lơ lửng, nhấp nhô | Gọi mưa: bay cao lên, xám lại, mưa rơi, cầu vồng         |
+
+- Tất cả thú cưng đã mua đều đi chơi cùng lúc:
+  - lúc đầu rải đều dọc lối đi, đi cả hai chiều, chia 2 làn để không chồng lên nhau;
+  - thỉnh thoảng dừng nghỉ (8%/giây, mỗi lần 1,5–3,5 giây);
+  - lúc nghỉ có thể tự dùng kỹ năng (6%/giây);
+  - giữa hai lần dùng kỹ năng nghỉ ít nhất 0,6 giây.
+- Kỹ năng chỉ để vui, không cộng Coins hay XP (Minh chọn). Có hai cách dùng:
+  - bấm vào thú cưng trong cảnh vườn;
+  - bấm nút tương ứng trong mục "Thú cưng của bạn" bên dưới vườn. Đây là cách dùng bằng bàn phím; trình đọc màn hình sẽ đọc tên thú cưng và kỹ năng.
+- Khi bật giảm chuyển động (`prefers-reduced-motion`): thú cưng đứng yên, bấm vào chỉ đổi sang hình kỹ năng, không có hạt hiệu ứng.
+- Pipo khi được chào: khom người, nhảy cao 22 px, vỗ cánh mạnh, rơi vài chiếc lông.
 - Thú cưng không chiếm ô `D`: `place_decoration` chỉ nhận món có `kind = 'decoration'`.
-- Thông số chuyển động nằm ở `lib/garden/pets.ts`; giá nằm trong migration `20261111030100_garden_pets.sql`.
+- Code:
+  - `lib/garden/pet-behaviour.ts` (thuần, có unit test). `PetBehaviour` lo phần chung: đi trên lối, nghỉ, tính giờ kỹ năng. `HoppingPet` và `FloatingPet` ghi đè `motionPose`. Mỗi loài ghi đè `skillPose`.
+  - `app/(main)/garden/_lib/pets/pet-view.ts`. `PetView` đổi khung hình và áp tư thế. Mỗi loài ghi đè `onSkillStart` / `onSkillFrame` để thêm hạt hiệu ứng (`particles.ts`).
+  - Thông số từng con nằm ở `lib/garden/pets.ts`; giá nằm trong migration `20261111030100_garden_pets.sql`.
 
 ### 3.6 Pipo — máy trạng thái
 

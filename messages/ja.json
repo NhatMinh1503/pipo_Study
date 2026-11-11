@@ -480,6 +480,19 @@
       "previous": "前の庭",
       "next": "次の庭",
       "position": "庭 {index}/{count}"
+    },
+    "pets": {
+      "title": "あなたのペット",
+      "hint": "庭のペットをタップするか、このボタンで特技を見られます。",
+      "announce": "{name}：{skill}！",
+      "skill": {
+        "sprout": "芽ぶき",
+        "fountain": "噴水",
+        "bloom": "花ざかり",
+        "petals": "花吹雪",
+        "fire": "ほのお",
+        "rain": "にわか雨"
+      }
     }
   },
   "audio": {
@@ -689,28 +702,28 @@
         "description": "鯉の池にかかる橋。池があると見えます。"
       },
       "deco-slime": {
-        "name": "ピーチスライム",
-        "description": "小さな芽がついた、道をぴょんぴょん跳ねるスライム。"
+        "name": "ももの精",
+        "description": "葉っぱの耳をもつ、まるい桃。タップするとジャンプして芽が出ます。"
       },
       "pet-slime-water": {
-        "name": "みずスライム",
-        "description": "庭をはね回る、すき通った水のしずく。"
+        "name": "みずの精",
+        "description": "鯉のしっぽをもつ、波の形の精。タップすると噴水を出します。"
       },
       "pet-slime-moss": {
         "name": "こけスライム",
-        "description": "白い小花をつけた、こけむした緑のスライム。"
+        "description": "白い小花をつけた、こけむしたスライム。タップすると周りに花が咲きます。"
       },
       "pet-slime-sakura": {
-        "name": "さくらスライム",
-        "description": "桜の花びらを二枚のせた、淡いピンクのスライム。"
+        "name": "さくらもちうさぎ",
+        "description": "花びらの耳をもつ桜もち。タップすると花吹雪の中でくるくる回ります。"
       },
       "pet-slime-ember": {
-        "name": "ほのおスライム",
-        "description": "やさしい小さな炎がゆれる、オレンジのスライム。"
+        "name": "ほのおの精",
+        "description": "炎の髪をもつ、光る炭の精。タップすると小さな火をふきます。"
       },
       "pet-slime-cloud": {
         "name": "くもスライム",
-        "description": "道のそばをふわふわ浮かぶ、わたあめみたいな雲。"
+        "description": "道のそばをふわふわ浮かぶ雲。タップすると庭に雨をふらせます。"
       }
     }
   },

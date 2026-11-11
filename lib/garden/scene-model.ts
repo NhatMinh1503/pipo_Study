@@ -12,7 +12,7 @@ import {
   type Tile,
 } from "./layout";
 import { pathLength, pointAt, waypointDistances } from "./path";
-import { PETS, type PetId, type PetMotion } from "./pets";
+import { petFrames, type PetId } from "./pets";
 import type { PipoStop } from "./pipo-machine";
 
 export interface SceneTree {
@@ -50,11 +50,8 @@ export interface SceneStone extends Point {
 
 export interface ScenePet {
   id: PetId;
-  asset: string;
-  motion: PetMotion;
-  speed: number;
-  beatsPerSecond: number;
-  height: number;
+  /** Its idle, second idle and skill pictures (see petFrames). */
+  frames: [string, string, string];
   /** Where it starts, as a share of the path length. */
   start: number;
   /** 1 walks toward the end of the path, -1 toward the start. */
@@ -194,7 +191,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     koi: input.hasPond,
     pets: (input.pets ?? []).map((id, index, all) => ({
       id,
-      ...PETS[id],
+      frames: petFrames(id),
       start: (index + 0.5) / all.length,
       direction: index % 2 === 0 ? -1 : 1,
     })),

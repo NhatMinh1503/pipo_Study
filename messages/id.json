@@ -480,6 +480,19 @@
       "previous": "Taman sebelumnya",
       "next": "Taman berikutnya",
       "position": "Taman {index}/{count}"
+    },
+    "pets": {
+      "title": "Hewan peliharaanmu",
+      "hint": "Ketuk hewan di taman, atau pakai tombol ini, untuk melihat keahliannya.",
+      "announce": "{name}: {skill}!",
+      "skill": {
+        "sprout": "Tunas",
+        "fountain": "Air mancur",
+        "bloom": "Mekar",
+        "petals": "Pusaran kelopak",
+        "fire": "Semburan api",
+        "rain": "Hujan"
+      }
     }
   },
   "audio": {
@@ -689,28 +702,28 @@
         "description": "Melintasi kolam koi. Kamu perlu kolamnya untuk melihatnya."
       },
       "deco-slime": {
-        "name": "Slime persik",
-        "description": "Slime kenyal bertunas kecil yang melompat di sepanjang jalan."
+        "name": "Roh persik",
+        "description": "Persik bulat bertelinga daun. Ketuk: ia melompat dan tunas muncul."
       },
       "pet-slime-water": {
-        "name": "Slime air",
-        "description": "Tetesan air bening yang melompat-lompat di taman."
+        "name": "Roh air",
+        "description": "Roh berbentuk ombak dengan ekor koi. Ketuk: ia menyemburkan air mancur."
       },
       "pet-slime-moss": {
         "name": "Slime lumut",
-        "description": "Slime hijau berlumut dengan bunga putih mungil."
+        "description": "Slime hijau berlumut dengan bunga putih mungil. Ketuk: bunga mekar di sekitarnya."
       },
       "pet-slime-sakura": {
-        "name": "Slime sakura",
-        "description": "Slime merah muda lembut dengan dua kelopak sakura."
+        "name": "Kelinci mochi sakura",
+        "description": "Mochi sakura bertelinga kelopak. Ketuk: ia berputar di pusaran kelopak."
       },
       "pet-slime-ember": {
-        "name": "Slime bara",
-        "description": "Slime oranye hangat dengan nyala api kecil yang ramah."
+        "name": "Roh bara",
+        "description": "Roh arang menyala berambut api. Ketuk: ia menyemburkan api kecil."
       },
       "pet-slime-cloud": {
         "name": "Slime awan",
-        "description": "Awan lembut yang melayang di samping jalan."
+        "description": "Awan lembut yang melayang di samping jalan. Ketuk: ia menurunkan hujan."
       }
     }
   },

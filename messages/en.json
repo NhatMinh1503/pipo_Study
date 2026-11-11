@@ -480,6 +480,19 @@
       "previous": "Previous garden",
       "next": "Next garden",
       "position": "Garden {index}/{count}"
+    },
+    "pets": {
+      "title": "Your pets",
+      "hint": "Tap a pet in the garden, or use these buttons, to see its skill.",
+      "announce": "{name}: {skill}!",
+      "skill": {
+        "sprout": "Sprout",
+        "fountain": "Fountain",
+        "bloom": "Bloom",
+        "petals": "Petal swirl",
+        "fire": "Fire breath",
+        "rain": "Rain shower"
+      }
     }
   },
   "audio": {
@@ -689,28 +702,28 @@
         "description": "Spans the koi pond. You need the pond to see it."
       },
       "deco-slime": {
-        "name": "Peach slime",
-        "description": "A squishy slime with a little sprout that bounces along the path."
+        "name": "Peach spirit",
+        "description": "A plump peach with leaf ears. Tap it: it leaps and a sprout pops up."
       },
       "pet-slime-water": {
-        "name": "Water slime",
-        "description": "A clear little water drop that bounces around the garden."
+        "name": "Water sprite",
+        "description": "A wave-shaped sprite with a koi tail. Tap it: it spouts a fountain."
       },
       "pet-slime-moss": {
         "name": "Moss slime",
-        "description": "A mossy green slime with a tiny white flower."
+        "description": "A mossy green slime with a tiny white flower. Tap it: flowers bloom around it."
       },
       "pet-slime-sakura": {
-        "name": "Sakura slime",
-        "description": "A soft pink slime wearing two cherry petals."
+        "name": "Sakura mochi bunny",
+        "description": "A sakura-mochi bun with petal ears. Tap it: it spins in a swirl of petals."
       },
       "pet-slime-ember": {
-        "name": "Ember slime",
-        "description": "A warm orange slime with a friendly little flame."
+        "name": "Ember sprite",
+        "description": "A glowing charcoal sprite with flame hair. Tap it: it breathes a puff of fire."
       },
       "pet-slime-cloud": {
         "name": "Cloud slime",
-        "description": "A fluffy cloud that floats along beside the path."
+        "description": "A fluffy cloud that floats along the path. Tap it: it rains on the garden."
       }
     }
   },

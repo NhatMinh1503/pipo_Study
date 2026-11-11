@@ -38,11 +38,12 @@ describe("garden scene model", () => {
       pets: ["deco-slime", "pet-slime-water", "pet-slime-cloud"],
       studiedToday: false,
     });
-    expect(model.pets.map((pet) => [pet.id, pet.asset, pet.motion])).toEqual([
-      ["deco-slime", "slime", "hop"],
-      ["pet-slime-water", "slime-water", "hop"],
-      ["pet-slime-cloud", "slime-cloud", "float"],
+    expect(model.pets.map((pet) => [pet.id, pet.frames[0]])).toEqual([
+      ["deco-slime", "pet-peach"],
+      ["pet-slime-water", "pet-water"],
+      ["pet-slime-cloud", "pet-cloud"],
     ]);
+    expect(model.pets[2]?.frames).toEqual(["pet-cloud", "pet-cloud-b", "pet-cloud-skill"]);
     expect(model.pets.map((pet) => pet.start)).toEqual([1 / 6, 3 / 6, 5 / 6]);
     expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1]);
   });

@@ -3,6 +3,7 @@
 import { useEffect, useEffectEvent, useRef, useState, type RefObject } from "react";
 
 import type { Point } from "@/lib/garden/layout";
+import type { PetId } from "@/lib/garden/pets";
 import type { SceneModel } from "@/lib/garden/scene-model";
 
 import type { GardenRenderer } from "../_lib/garden-renderer";
@@ -13,6 +14,7 @@ interface UseGardenSceneOptions {
   reducedMotion: boolean;
   onTreeSelect: (treeId: string) => void;
   onPipoSpeak: (position: Point) => void;
+  onPetSkill: (petId: PetId) => void;
 }
 
 /**
@@ -28,6 +30,7 @@ export function useGardenScene(
   const renderer = useRef<GardenRenderer | null>(null);
   const selectTree = useEffectEvent(options.onTreeSelect);
   const speak = useEffectEvent(options.onPipoSpeak);
+  const petSkill = useEffectEvent(options.onPetSkill);
   const { reducedMotion } = options;
 
   useEffect(() => {
@@ -42,6 +45,7 @@ export function useGardenScene(
           reducedMotion,
           onTreeSelect: (id) => selectTree(id),
           onPipoSpeak: (position) => speak(position),
+          onPetSkill: (petId) => petSkill(petId),
         }),
       )
       .then((result) => {
@@ -68,6 +72,7 @@ export function useGardenScene(
   return {
     status,
     greetPipo: () => renderer.current?.greetPipo(),
+    usePetSkill: (petId: PetId) => renderer.current?.usePetSkill(petId),
     highlightSlot: (slot: number | null) => renderer.current?.highlightSlot(slot),
   };
 }
