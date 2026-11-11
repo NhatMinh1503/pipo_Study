@@ -60,7 +60,7 @@
 
 ## 6. Tỉ lệ & kích thước
 
-> Từ 10/11/2026 vườn dùng nền vẽ tay kiểu phim hoạt hình thập niên 90 (`bg-garden`) thay cho trời/núi/cỏ phẳng; đồ trang trí, hồ, cá koi và đá lối đi cũng vẽ lại theo phong cách đó. `bg-sky`, `bg-fuji`, `bg-hills`, `tile-grass-a` và `pipo-leg-*` không còn được dùng.
+> Từ 10/11/2026 vườn dùng nền vẽ tay kiểu phim hoạt hình thập niên 90 (`bg-garden`) thay cho trời/núi/cỏ phẳng; đồ trang trí, hồ, cá koi và đá lối đi cũng vẽ lại theo phong cách đó. `bg-sky`, `bg-fuji`, `bg-hills`, `tile-grass-a` và `pipo-leg-*` đã bị xoá.
 
 Đơn vị **logical px** (1x). Ảnh xuất **@2x** (gấp đôi), **PNG nền trong suốt**, tên file có hậu tố `@2x`.
 

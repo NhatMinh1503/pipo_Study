@@ -62,32 +62,6 @@
         "y": 28.4
       }
     },
-    "pipo-leg-front": {
-      "width": 9,
-      "height": 11,
-      "anchor": {
-        "x": 3.2,
-        "y": 0.7
-      },
-      "kind": "part",
-      "attach": {
-        "x": 12.3,
-        "y": 37.3
-      }
-    },
-    "pipo-leg-back": {
-      "width": 9,
-      "height": 11,
-      "anchor": {
-        "x": 3.4,
-        "y": 0.7
-      },
-      "kind": "part",
-      "attach": {
-        "x": 22.6,
-        "y": 36.7
-      }
-    },
     "pipo-shadow": {
       "width": 32,
       "height": 10,
@@ -218,15 +192,6 @@
       },
       "kind": "sprite"
     },
-    "tile-grass-a": {
-      "width": 128,
-      "height": 128,
-      "anchor": {
-        "x": 0,
-        "y": 0
-      },
-      "kind": "tile"
-    },
     "tile-path": {
       "width": 128,
       "height": 48,
@@ -296,24 +261,6 @@
       "anchor": {
         "x": 9.0,
         "y": 5.0
-      },
-      "kind": "sprite"
-    },
-    "bg-sky": {
-      "width": 640,
-      "height": 432,
-      "anchor": {
-        "x": 0,
-        "y": 0
-      },
-      "kind": "background"
-    },
-    "bg-fuji": {
-      "width": 320,
-      "height": 96,
-      "anchor": {
-        "x": 160,
-        "y": 96
       },
       "kind": "sprite"
     },
@@ -388,15 +335,6 @@
         "y": 21
       },
       "kind": "tile"
-    },
-    "bg-hills": {
-      "width": 640,
-      "height": 48,
-      "anchor": {
-        "x": 0,
-        "y": 48
-      },
-      "kind": "background"
     },
     "slime": {
       "width": 36,
