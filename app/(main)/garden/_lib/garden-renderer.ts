@@ -58,6 +58,11 @@ const PIPO_PARTS = [
 ];
 /** How much the slime squashes when it lands (fraction of its size). */
 const SLIME_SQUASH = 0.16;
+/** Chance per second that a pet stops for a rest, and how long it rests. */
+const PET_REST_CHANCE = 0.08;
+const PET_REST_SECONDS = { min: 1.5, max: 3.5 } as const;
+/** Pets keep to two lanes across the path so they pass each other instead of overlapping. */
+const PET_LANES = [7, 2] as const;
 /** Pipo squashes a little less than the slime. */
 const PIPO_SQUASH = 0.12;
 /** Empty rows under the chick in pipo-body (where legs used to attach), in logical px. */
@@ -93,7 +98,7 @@ function neededAssets(model: SceneModel): string[] {
   if (model.pond) ids.add("deco-pond");
   if (model.bridge) ids.add("deco-bridge");
   if (model.koi) ids.add("koi-a").add("koi-b");
-  if (model.slime) ids.add("slime").add("slime-shadow");
+  for (const pet of model.pets) ids.add(pet.asset).add("slime-shadow");
   if (model.petalSources.length > 0) ids.add("petal");
   return [...ids];
 }
@@ -246,15 +251,25 @@ export async function createGardenRenderer(
   pipo.cursor = "pointer";
   world.addChild(pipo);
 
-  let slime: { root: Container; body: Sprite; shadow: Sprite } | null = null;
-  if (model.slime) {
+  const pets = model.pets.map((pet, index) => {
     const root = new Container();
     const shadow = sprite("slime-shadow");
-    const body = sprite("slime");
+    const body = sprite(pet.asset);
     root.addChild(shadow, body);
     world.addChild(root);
-    slime = { root, body, shadow };
-  }
+    return {
+      pet,
+      root,
+      body,
+      shadow,
+      distance: pet.start * pathLength(),
+      direction: pet.direction,
+      rest: 0,
+      lane: PET_LANES[index % PET_LANES.length] ?? 0,
+      // Pets do not hop in step with each other
+      phase: index * 0.37,
+    };
+  });
 
   // --- Petals ------------------------------------------------------------------------
   const fx = new Container();
@@ -268,8 +283,6 @@ export async function createGardenRenderer(
     reducedMotion: options.reducedMotion,
   };
   let pipoState: PipoState = initialPipo();
-  let slimeDistance = pathLength();
-  let slimeDirection = -1;
   let elapsed = 0;
   let petalClock = 0;
 
@@ -328,25 +341,50 @@ export async function createGardenRenderer(
       tree.sprite.alpha = covers ? OCCLUDING_ALPHA : 1;
     }
 
-    // The slime hops the other way: up and down with a squash when it lands
-    if (slime) {
+    // Pets wander the path both ways, resting now and then: slimes hop with a squash
+    // when they land, the cloud floats and bobs above its shadow
+    for (const roamer of pets) {
+      const { pet } = roamer;
       if (moving) {
-        slimeDistance += SCENE.slimeSpeed * dt * slimeDirection;
-        if (slimeDistance <= 0 || slimeDistance >= pathLength()) {
-          slimeDirection = -slimeDirection;
-          slimeDistance = Math.min(Math.max(slimeDistance, 0), pathLength());
+        if (roamer.rest > 0) {
+          roamer.rest -= dt;
+        } else {
+          roamer.distance += pet.speed * dt * roamer.direction;
+          if (roamer.distance <= 0 || roamer.distance >= pathLength()) {
+            roamer.direction = roamer.direction === 1 ? -1 : 1;
+            roamer.distance = Math.min(Math.max(roamer.distance, 0), pathLength());
+          }
+          if (random() < dt * PET_REST_CHANCE) {
+            roamer.rest =
+              PET_REST_SECONDS.min + random() * (PET_REST_SECONDS.max - PET_REST_SECONDS.min);
+          }
         }
       }
-      const slimeAt = pointAt(slimeDistance);
-      slime.root.position.set(slimeAt.x, slimeAt.y + 6);
-      slime.root.zIndex = slimeAt.y + 6;
-      // 0 on the ground, 1 at the top of the hop
-      const lift = moving ? Math.abs(Math.sin(elapsed * SCENE.slimeHopsPerSecond * Math.PI)) : 0;
-      const squash = moving ? (1 - lift) ** 3 * SLIME_SQUASH : 0;
-      slime.body.y = -lift * SCENE.slimeHopHeight;
-      slime.body.scale.set(slimeDirection * (1 + squash), 1 - squash + lift * 0.06);
-      slime.shadow.scale.set(1 - lift * 0.35);
-      slime.shadow.alpha = 1 - lift * 0.4;
+      const at = pointAt(roamer.distance);
+      roamer.root.position.set(at.x, at.y + roamer.lane);
+      roamer.root.zIndex = at.y + roamer.lane;
+
+      const beat = (elapsed + roamer.phase) * pet.beatsPerSecond;
+      if (pet.motion === "float") {
+        const bob = moving ? Math.sin(beat * 2 * Math.PI) : 0;
+        roamer.body.y = -(pet.height + bob * 3);
+        roamer.body.scale.set(roamer.direction, 1);
+        roamer.shadow.scale.set(0.8 - bob * 0.08);
+        roamer.shadow.alpha = 0.5;
+      } else {
+        const hopping = moving && roamer.rest <= 0;
+        const lift = hopping ? Math.abs(Math.sin(beat * Math.PI)) : 0;
+        const squash = hopping ? (1 - lift) ** 3 * SLIME_SQUASH : 0;
+        // Resting slimes breathe a little instead
+        const breath = moving && !hopping ? Math.sin((elapsed + roamer.phase) * 2.4) * 0.03 : 0;
+        roamer.body.y = -lift * pet.height;
+        roamer.body.scale.set(
+          roamer.direction * (1 + squash - breath),
+          1 - squash + lift * 0.06 + breath,
+        );
+        roamer.shadow.scale.set(1 - lift * 0.35);
+        roamer.shadow.alpha = 1 - lift * 0.4;
+      }
     }
 
     // Koi swim slow ellipses around the pond

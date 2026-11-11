@@ -17,7 +17,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.tiles).toHaveLength(31);
@@ -31,8 +31,24 @@ describe("garden scene model", () => {
     expect(model.pond).toBeNull();
   });
 
+  it("spreads owned pets along the path, walking both ways", () => {
+    const model = buildSceneModel({
+      trees: [],
+      hasPond: false,
+      pets: ["deco-slime", "pet-slime-water", "pet-slime-cloud"],
+      studiedToday: false,
+    });
+    expect(model.pets.map((pet) => [pet.id, pet.asset, pet.motion])).toEqual([
+      ["deco-slime", "slime", "hop"],
+      ["pet-slime-water", "slime-water", "hop"],
+      ["pet-slime-cloud", "slime-cloud", "float"],
+    ]);
+    expect(model.pets.map((pet) => pet.start)).toEqual([1 / 6, 3 / 6, 5 / 6]);
+    expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1]);
+  });
+
   it("lays stepping stones along the path, the same on every visit, back to front", () => {
-    const input = { trees: [], hasPond: false, hasSlime: false, studiedToday: false };
+    const input = { trees: [], hasPond: false, pets: [], studiedToday: false };
     const { stones } = buildSceneModel(input);
     expect(stones.length).toBeGreaterThan(15);
     expect(buildSceneModel(input).stones).toEqual(stones);
@@ -45,7 +61,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: true,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.pond).toEqual(project(5, 5));
@@ -57,7 +73,7 @@ describe("garden scene model", () => {
     const withPond = buildSceneModel({
       trees: [],
       hasPond: true,
-      hasSlime: false,
+      pets: [],
       hasBridge: true,
       studiedToday: false,
     });
@@ -65,7 +81,7 @@ describe("garden scene model", () => {
     const noPond = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       hasBridge: true,
       studiedToday: false,
     });
@@ -76,7 +92,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [tree({ id: "a", plot: 9, species: "bamboo", sessions: 2 })],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.trees).toEqual([
@@ -88,7 +104,7 @@ describe("garden scene model", () => {
     const input = {
       trees: [tree({ id: "s", plot: 3, species: "sakura" })],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
     };
     expect(buildSceneModel({ ...input, studiedToday: true }).trees[0]?.asset).toBe(
       "tree-sakura-mature-bloom",
@@ -105,7 +121,7 @@ describe("garden scene model", () => {
         tree({ id: "far", plot: 0 }), // (0,0): away from the path
       ],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.stops).toEqual([{ distance: waypointDistances[4], kind: "view" }]);
@@ -115,7 +131,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [tree({ id: "low", plot: 30 }), tree({ id: "high", plot: 0 })],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.trees.map((item) => item.id)).toEqual(["high", "low"]);
@@ -125,7 +141,7 @@ describe("garden scene model", () => {
     const model = buildSceneModel({
       trees: [],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
       decorations: [
         { itemId: "deco-bench", slot: 1 }, // (5,2): beside path tile 6, (4,2)
@@ -144,7 +160,7 @@ describe("garden scene model", () => {
       trees: [tree({ id: "by-bench", plot: 12 })], // (4,1): beside path tile 6, like the bench
       decorations: [{ itemId: "deco-bench", slot: 1 }],
       hasPond: false,
-      hasSlime: false,
+      pets: [],
       studiedToday: false,
     });
     expect(model.stops).toEqual([{ distance: waypointDistances[7], kind: "bench" }]);

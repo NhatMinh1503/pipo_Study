@@ -619,7 +619,7 @@
   },
   "shop": {
     "title": "Toko",
-    "description": "Belanjakan koin yang kamu dapat dari belajar untuk benih pohon dan dekorasi taman.",
+    "description": "Gunakan koin dari belajar untuk membeli benih pohon, hiasan taman, dan hewan peliharaan.",
     "balance": "Koinmu",
     "buy": "Beli",
     "notEnough": "Koin tidak cukup",
@@ -632,7 +632,8 @@
       "theme": "Warna aksen",
       "decoration": "Dekorasi taman",
       "topic_pack": "Paket topik untuk pelajaran AI",
-      "seed": "Benih pohon"
+      "seed": "Benih pohon",
+      "pet": "Hewan peliharaan"
     },
     "errors": {
       "notEnoughCoins": "Koin tidak cukup.",
@@ -688,8 +689,28 @@
         "description": "Melintasi kolam koi. Kamu perlu kolamnya untuk melihatnya."
       },
       "deco-slime": {
-        "name": "Slime taman",
-        "description": "Slime kenyal yang melompat-lompat di sepanjang jalan setapak."
+        "name": "Slime persik",
+        "description": "Slime kenyal bertunas kecil yang melompat di sepanjang jalan."
+      },
+      "pet-slime-water": {
+        "name": "Slime air",
+        "description": "Tetesan air bening yang melompat-lompat di taman."
+      },
+      "pet-slime-moss": {
+        "name": "Slime lumut",
+        "description": "Slime hijau berlumut dengan bunga putih mungil."
+      },
+      "pet-slime-sakura": {
+        "name": "Slime sakura",
+        "description": "Slime merah muda lembut dengan dua kelopak sakura."
+      },
+      "pet-slime-ember": {
+        "name": "Slime bara",
+        "description": "Slime oranye hangat dengan nyala api kecil yang ramah."
+      },
+      "pet-slime-cloud": {
+        "name": "Slime awan",
+        "description": "Awan lembut yang melayang di samping jalan."
       }
     }
   },

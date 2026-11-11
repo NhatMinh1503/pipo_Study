@@ -6,8 +6,8 @@ const ids = Object.keys(GARDEN_ASSETS);
 
 // design/game/asset-prompts.md §7 and art-bible.md §6
 describe("garden asset manifest", () => {
-  it("lists the garden art: trees, Pipo, the painted ground and its decorations", () => {
-    expect(ids).toHaveLength(43);
+  it("lists the garden art: trees, Pipo, pets, the painted ground and its decorations", () => {
+    expect(ids).toHaveLength(48);
     expect(ids).toEqual(
       expect.arrayContaining(["bg-garden", "stone-a", "stone-b", "stone-c", "stone-d", "stone-e"]),
     );

@@ -21,8 +21,9 @@ const SINGLE: Record<string, string> = {
   "deco-bench": "deco-bench",
   "deco-torii": "deco-torii",
   "deco-bridge": "deco-bridge",
-  "deco-slime": "slime",
 };
+// Pet thumbnails (deco-slime, pet-slime-*) are cut from the painted pet sheet at full size,
+// because the garden sprites are too small to enlarge; they are not rebuilt here.
 
 const file = (id: string) => join(GARDEN, `${id}@2x.png`);
 

@@ -16,11 +16,7 @@ export const SCENE = {
   reactSeconds: 1.2,
   blinkSeconds: { min: 2.5, max: 5 },
   blinkDuration: 0.12,
-  /** The slime hops along the path the other way from Pipo. */
-  slimeSpeed: 16,
-  slimeHopsPerSecond: 1.6,
-  slimeHopHeight: 7,
-  /** Pipo has no legs: it bounces along like the slime, a little quicker and lower. */
+  /** Pipo has no legs: it bounces along like the slimes (lib/garden/pets.ts). */
   pipoHopsPerSecond: 2.4,
   pipoHopHeight: 6,
   maxPetals: 20,
