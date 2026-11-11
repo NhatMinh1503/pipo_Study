@@ -619,7 +619,7 @@
   },
   "shop": {
     "title": "Cửa hàng",
-    "description": "Dùng xu kiếm được khi học để mua hạt giống và đồ trang trí cho vườn.",
+    "description": "Dùng coin kiếm được khi học để mua hạt giống, đồ trang trí vườn và thú cưng.",
     "balance": "Số Coins hiện có",
     "buy": "Mua",
     "notEnough": "Chưa đủ Coins",
@@ -632,7 +632,8 @@
       "theme": "Màu chủ đạo",
       "decoration": "Trang trí Vườn tri thức",
       "topic_pack": "Gói chủ đề cho bài AI",
-      "seed": "Hạt giống cây"
+      "seed": "Hạt giống cây",
+      "pet": "Thú cưng"
     },
     "errors": {
       "notEnoughCoins": "Không đủ Coins.",
@@ -688,8 +689,28 @@
         "description": "Bắc ngang hồ cá koi. Cần có hồ để thấy cầu."
       },
       "deco-slime": {
-        "name": "Bé slime",
-        "description": "Một bé slime mềm mềm nhún nhảy dọc lối đi."
+        "name": "Slime đào",
+        "description": "Slime mềm dẻo có mầm cây nhỏ, nhảy tưng tưng dọc lối đi."
+      },
+      "pet-slime-water": {
+        "name": "Slime nước",
+        "description": "Giọt nước trong veo nhảy nhót khắp vườn."
+      },
+      "pet-slime-moss": {
+        "name": "Slime rêu",
+        "description": "Slime xanh phủ rêu, cài một bông hoa trắng nhỏ."
+      },
+      "pet-slime-sakura": {
+        "name": "Slime anh đào",
+        "description": "Slime hồng nhạt đội hai cánh hoa anh đào."
+      },
+      "pet-slime-ember": {
+        "name": "Slime lửa",
+        "description": "Slime cam ấm áp với ngọn lửa nhỏ thân thiện."
+      },
+      "pet-slime-cloud": {
+        "name": "Slime mây",
+        "description": "Cụm mây bông bềnh lơ lửng bay cạnh lối đi."
       }
     }
   },

@@ -12,6 +12,7 @@ import {
   type Tile,
 } from "./layout";
 import { pathLength, pointAt, waypointDistances } from "./path";
+import { PETS, type PetId, type PetMotion } from "./pets";
 import type { PipoStop } from "./pipo-machine";
 
 export interface SceneTree {
@@ -32,7 +33,8 @@ export interface SceneInput {
   /** Decorations placed in this garden's slots (spec §3.5). */
   decorations?: readonly SceneDecoration[];
   hasPond: boolean;
-  hasSlime: boolean;
+  /** Owned pets, in catalog order (see ownedPets). */
+  pets?: readonly PetId[];
   /** Owns the red bridge; it is drawn across the pond, so it needs the pond too. */
   hasBridge?: boolean;
   /** Today had study activity: mature sakura are in bloom. */
@@ -44,6 +46,19 @@ export interface SceneStone extends Point {
   scale: number;
   /** Mirrored left to right, so the few stone pictures do not repeat. */
   flip: boolean;
+}
+
+export interface ScenePet {
+  id: PetId;
+  asset: string;
+  motion: PetMotion;
+  speed: number;
+  beatsPerSecond: number;
+  height: number;
+  /** Where it starts, as a share of the path length. */
+  start: number;
+  /** 1 walks toward the end of the path, -1 toward the start. */
+  direction: 1 | -1;
 }
 
 export interface SceneModel {
@@ -60,7 +75,8 @@ export interface SceneModel {
   /** Where the bridge stands across the pond, or null. */
   bridge: Point | null;
   koi: boolean;
-  slime: boolean;
+  /** Pets roaming the path, spread out along it and walking both ways. */
+  pets: ScenePet[];
   /** Places Pipo may stop: viewing spots next to mature trees beside the path. */
   stops: PipoStop[];
   /** Blooming sakura canopies petals fall from. */
@@ -176,7 +192,12 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     pond: input.hasPond ? pondCenter() : null,
     bridge: input.hasPond && input.hasBridge ? bridgeOverPond() : null,
     koi: input.hasPond,
-    slime: input.hasSlime,
+    pets: (input.pets ?? []).map((id, index, all) => ({
+      id,
+      ...PETS[id],
+      start: (index + 0.5) / all.length,
+      direction: index % 2 === 0 ? -1 : 1,
+    })),
     stops,
     petalSources,
   };

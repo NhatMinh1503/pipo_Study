@@ -619,7 +619,7 @@
   },
   "shop": {
     "title": "ショップ",
-    "description": "学習で貯めたコインで、木の種や庭の飾りを購入できます。",
+    "description": "勉強で集めたコインで、木の種・庭の飾り・ペットを買えます。",
     "balance": "所持コイン",
     "buy": "購入",
     "notEnough": "コイン不足",
@@ -632,7 +632,8 @@
       "theme": "アクセントカラー",
       "decoration": "庭の飾り",
       "topic_pack": "AIレッスン用トピックパック",
-      "seed": "木の種"
+      "seed": "木の種",
+      "pet": "ペット"
     },
     "errors": {
       "notEnoughCoins": "コインが足りません。",
@@ -688,8 +689,28 @@
         "description": "鯉の池にかかる橋。池があると見えます。"
       },
       "deco-slime": {
-        "name": "スライム",
-        "description": "小道をぴょんぴょん跳ねる、ぷにぷにのスライム。"
+        "name": "ピーチスライム",
+        "description": "小さな芽がついた、道をぴょんぴょん跳ねるスライム。"
+      },
+      "pet-slime-water": {
+        "name": "みずスライム",
+        "description": "庭をはね回る、すき通った水のしずく。"
+      },
+      "pet-slime-moss": {
+        "name": "こけスライム",
+        "description": "白い小花をつけた、こけむした緑のスライム。"
+      },
+      "pet-slime-sakura": {
+        "name": "さくらスライム",
+        "description": "桜の花びらを二枚のせた、淡いピンクのスライム。"
+      },
+      "pet-slime-ember": {
+        "name": "ほのおスライム",
+        "description": "やさしい小さな炎がゆれる、オレンジのスライム。"
+      },
+      "pet-slime-cloud": {
+        "name": "くもスライム",
+        "description": "道のそばをふわふわ浮かぶ、わたあめみたいな雲。"
       }
     }
   },

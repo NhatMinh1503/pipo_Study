@@ -17,7 +17,12 @@ export const SHOP_ITEMS = {
   "deco-bench": { kind: "decoration", image: "/shop/deco-bench.png" },
   "deco-torii": { kind: "decoration", image: "/shop/deco-torii.png" },
   "deco-bridge": { kind: "decoration", image: "/shop/deco-bridge.png" },
-  "deco-slime": { kind: "decoration", image: "/shop/deco-slime.png" },
+  "deco-slime": { kind: "pet", image: "/shop/deco-slime.png" },
+  "pet-slime-water": { kind: "pet", image: "/shop/pet-slime-water.png" },
+  "pet-slime-moss": { kind: "pet", image: "/shop/pet-slime-moss.png" },
+  "pet-slime-sakura": { kind: "pet", image: "/shop/pet-slime-sakura.png" },
+  "pet-slime-ember": { kind: "pet", image: "/shop/pet-slime-ember.png" },
+  "pet-slime-cloud": { kind: "pet", image: "/shop/pet-slime-cloud.png" },
   "topics-anime": { kind: "topic_pack", topics: ["anime", "manga", "game"] },
   "topics-business": { kind: "topic_pack", topics: ["meeting", "email", "interview"] },
 } as const satisfies Record<string, { kind: ShopItemKind } & Record<string, unknown>>;

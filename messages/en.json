@@ -619,7 +619,7 @@
   },
   "shop": {
     "title": "Shop",
-    "description": "Spend the coins you earn by studying on tree seeds and garden decorations.",
+    "description": "Spend the coins you earn by studying on tree seeds, garden decorations and pets.",
     "balance": "Your coins",
     "buy": "Buy",
     "notEnough": "Not enough coins",
@@ -632,7 +632,8 @@
       "theme": "Accent colours",
       "decoration": "Garden decorations",
       "topic_pack": "Topic packs for AI lessons",
-      "seed": "Tree seeds"
+      "seed": "Tree seeds",
+      "pet": "Pets"
     },
     "errors": {
       "notEnoughCoins": "Not enough coins.",
@@ -688,8 +689,28 @@
         "description": "Spans the koi pond. You need the pond to see it."
       },
       "deco-slime": {
-        "name": "Garden slime",
-        "description": "A squishy slime that bounces along the path."
+        "name": "Peach slime",
+        "description": "A squishy slime with a little sprout that bounces along the path."
+      },
+      "pet-slime-water": {
+        "name": "Water slime",
+        "description": "A clear little water drop that bounces around the garden."
+      },
+      "pet-slime-moss": {
+        "name": "Moss slime",
+        "description": "A mossy green slime with a tiny white flower."
+      },
+      "pet-slime-sakura": {
+        "name": "Sakura slime",
+        "description": "A soft pink slime wearing two cherry petals."
+      },
+      "pet-slime-ember": {
+        "name": "Ember slime",
+        "description": "A warm orange slime with a friendly little flame."
+      },
+      "pet-slime-cloud": {
+        "name": "Cloud slime",
+        "description": "A fluffy cloud that floats along beside the path."
       }
     }
   },

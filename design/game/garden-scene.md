@@ -92,6 +92,27 @@ Lưới **9×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ t
 - Hồ (`deco-pond`) không đặt vào ô `D`: có hồ thì ô `W` thành hồ, kèm **2 cá koi**.
 - Cầu gỗ đỏ (50), cổng torii (60), bé slime (90) có trong shop từ 09/11/2026, giá **[Đề xuất]**. Torii đặt vào ô trang trí; cầu bắc ngang hồ (cần có hồ); slime nhún nhảy dọc lối đi, không chiếm ô. (Slime thay cho con mèo theo yêu cầu của Minh ngày 09/11/2026.)
 
+### 3.5b Thú cưng slime **[Chốt: mua bằng Coins, tất cả cùng đi chơi]**
+
+Từ 11/11/2026, theo yêu cầu của Minh: có thêm 5 bé slime, art vẽ tay do Gemini vẽ. Slime đầu tiên cũng được vẽ lại cho cùng phong cách.
+
+- Shop có mục riêng **Thú cưng** (`shop_item_kind = 'pet'`). Slime đầu giữ id `deco-slime` để ai đã mua vẫn còn sở hữu.
+- Danh sách và giá **[Đề xuất]**:
+
+  | id                 | Tên           | Giá | Cách di chuyển                  |
+  | ------------------ | ------------- | --- | ------------------------------- |
+  | `deco-slime`       | Slime đào     | 90  | nhảy, nhịp vừa                  |
+  | `pet-slime-water`  | Slime nước    | 100 | nhảy nhanh, thấp                |
+  | `pet-slime-moss`   | Slime rêu     | 100 | lười: đi chậm, nhảy rất thấp    |
+  | `pet-slime-sakura` | Slime anh đào | 140 | nhảy cao                        |
+  | `pet-slime-ember`  | Slime lửa     | 160 | hiếu động: nhanh nhất, nhảy dồn |
+  | `pet-slime-cloud`  | Slime mây     | 200 | bay lơ lửng, nhấp nhô trên bóng |
+
+- Mọi thú cưng đã mua đều đi chơi cùng lúc. Lúc đầu chúng rải đều dọc lối đi, con đi xuôi con đi ngược, chia 2 làn để đi qua nhau mà không chồng lên nhau.
+- Thỉnh thoảng một con dừng lại nghỉ (khả năng 8%/giây, mỗi lần 1,5–3,5 giây); lúc nghỉ thì thở phập phồng.
+- Thú cưng không chiếm ô `D`: `place_decoration` chỉ nhận món có `kind = 'decoration'`.
+- Thông số chuyển động nằm ở `lib/garden/pets.ts`; giá nằm trong migration `20261111030100_garden_pets.sql`.
+
 ### 3.6 Pipo — máy trạng thái
 
 | Trạng thái | Làm gì                                                               | Chuyển sang                                                                                                    |

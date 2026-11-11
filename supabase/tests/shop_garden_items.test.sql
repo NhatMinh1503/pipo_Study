@@ -16,8 +16,8 @@ select results_eq(
   $$ select id, kind::text, price from public.shop_items
      where id in ('seed-maple', 'seed-sakura', 'deco-torii', 'deco-bridge', 'deco-slime') order by sort_order $$,
   $$ values ('seed-maple', 'seed', 120), ('seed-sakura', 'seed', 120), ('deco-torii', 'decoration', 60),
-            ('deco-bridge', 'decoration', 50), ('deco-slime', 'decoration', 90) $$,
-  'the shop sells both seeds and the three new decorations at the registry prices');
+            ('deco-bridge', 'decoration', 50), ('deco-slime', 'pet', 90) $$,
+  'the shop sells both seeds, two decorations and the first slime pet at the registry prices');
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub":"5e5e5e5e-5e5e-5e5e-5e5e-5e5e5e5e5e5e","role":"authenticated"}';

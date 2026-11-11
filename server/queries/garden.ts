@@ -5,6 +5,7 @@ import { GAME } from "@/lib/game/config";
 import type { TreeSpecies } from "@/lib/garden/growth";
 import { isSlotDecoration } from "@/lib/garden/decorations";
 import { resolveGardenIndex } from "@/lib/garden/gardens";
+import { ownedPets, type PetId } from "@/lib/garden/pets";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/server/profile";
 
@@ -73,7 +74,8 @@ export interface GardenScene {
   totalTrees: number;
   growing: { species: TreeSpecies; sessions: number } | null;
   hasPond: boolean;
-  hasSlime: boolean;
+  /** Owned pets, in catalog order. */
+  pets: PetId[];
   hasBridge: boolean;
   /** Decorations placed in the garden shown. */
   decorations: { itemId: string; slot: number }[];
@@ -126,7 +128,7 @@ export async function getGardenScene(requested?: string | string[]): Promise<Gar
     totalTrees: rows.length,
     growing: growing ? { species: growing.species, sessions: growing.sessions } : null,
     hasPond: owned.has("deco-pond"),
-    hasSlime: owned.has("deco-slime"),
+    pets: ownedPets(owned),
     hasBridge: owned.has("deco-bridge"),
     decorations: placements
       .filter((row) => row.garden_index === gardenIndex)
