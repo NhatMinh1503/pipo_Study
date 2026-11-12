@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { gardenAsset } from "./assets";
-import { PET_IDS, PETS, isPetId, ownedPets } from "./pets";
+import { PET_IDS, isPetId, ownedPets, petFrames } from "./pets";
 
 describe("garden pets", () => {
-  it("has six slimes, the first one keeping its old shop id", () => {
+  it("has six pets, the first one keeping its old shop id", () => {
     expect(PET_IDS).toEqual([
       "deco-slime",
       "pet-slime-water",
@@ -15,8 +15,12 @@ describe("garden pets", () => {
     ]);
   });
 
-  it("draws every pet with art from the garden manifest", () => {
-    for (const id of PET_IDS) expect(gardenAsset(PETS[id].asset).kind).toBe("sprite");
+  it("draws every pet with three same-sized frames from the garden manifest", () => {
+    for (const id of PET_IDS) {
+      const [idle, ...others] = petFrames(id).map(gardenAsset);
+      expect(idle?.kind).toBe("sprite");
+      for (const frame of others) expect(frame).toEqual(idle);
+    }
   });
 
   it("lists owned pets in catalog order and ignores other items", () => {

@@ -336,15 +336,6 @@
       },
       "kind": "tile"
     },
-    "slime": {
-      "width": 30,
-      "height": 34,
-      "anchor": {
-        "x": 15.0,
-        "y": 32
-      },
-      "kind": "sprite"
-    },
     "slime-shadow": {
       "width": 30,
       "height": 9,
@@ -408,48 +399,165 @@
       },
       "kind": "sprite"
     },
-    "slime-water": {
-      "width": 30,
-      "height": 32,
+    "pet-peach": {
+      "width": 48,
+      "height": 44,
       "anchor": {
-        "x": 15.0,
-        "y": 30
+        "x": 20.4,
+        "y": 34.1
       },
       "kind": "sprite"
     },
-    "slime-moss": {
-      "width": 30,
-      "height": 28,
+    "pet-peach-b": {
+      "width": 48,
+      "height": 44,
       "anchor": {
-        "x": 15.0,
-        "y": 26
+        "x": 20.4,
+        "y": 34.1
       },
       "kind": "sprite"
     },
-    "slime-sakura": {
-      "width": 30,
-      "height": 28,
+    "pet-peach-skill": {
+      "width": 48,
+      "height": 44,
       "anchor": {
-        "x": 15.0,
-        "y": 26
+        "x": 20.4,
+        "y": 34.1
       },
       "kind": "sprite"
     },
-    "slime-ember": {
-      "width": 30,
-      "height": 38,
+    "pet-water": {
+      "width": 44,
+      "height": 40,
       "anchor": {
-        "x": 15.0,
-        "y": 36
+        "x": 23.1,
+        "y": 36.7
       },
       "kind": "sprite"
     },
-    "slime-cloud": {
-      "width": 32,
-      "height": 25,
+    "pet-water-b": {
+      "width": 44,
+      "height": 40,
       "anchor": {
-        "x": 16.0,
-        "y": 23
+        "x": 23.1,
+        "y": 36.7
+      },
+      "kind": "sprite"
+    },
+    "pet-water-skill": {
+      "width": 44,
+      "height": 40,
+      "anchor": {
+        "x": 23.1,
+        "y": 36.7
+      },
+      "kind": "sprite"
+    },
+    "pet-sakura": {
+      "width": 49,
+      "height": 42,
+      "anchor": {
+        "x": 24.1,
+        "y": 37.8
+      },
+      "kind": "sprite"
+    },
+    "pet-sakura-b": {
+      "width": 49,
+      "height": 42,
+      "anchor": {
+        "x": 24.1,
+        "y": 37.8
+      },
+      "kind": "sprite"
+    },
+    "pet-sakura-skill": {
+      "width": 49,
+      "height": 42,
+      "anchor": {
+        "x": 24.1,
+        "y": 37.8
+      },
+      "kind": "sprite"
+    },
+    "pet-ember": {
+      "width": 51,
+      "height": 44,
+      "anchor": {
+        "x": 24.1,
+        "y": 38.8
+      },
+      "kind": "sprite"
+    },
+    "pet-ember-b": {
+      "width": 51,
+      "height": 44,
+      "anchor": {
+        "x": 24.1,
+        "y": 38.8
+      },
+      "kind": "sprite"
+    },
+    "pet-ember-skill": {
+      "width": 51,
+      "height": 44,
+      "anchor": {
+        "x": 24.1,
+        "y": 38.8
+      },
+      "kind": "sprite"
+    },
+    "pet-moss": {
+      "width": 64,
+      "height": 54,
+      "anchor": {
+        "x": 34.1,
+        "y": 45.2
+      },
+      "kind": "sprite"
+    },
+    "pet-moss-b": {
+      "width": 64,
+      "height": 54,
+      "anchor": {
+        "x": 34.1,
+        "y": 45.2
+      },
+      "kind": "sprite"
+    },
+    "pet-moss-skill": {
+      "width": 64,
+      "height": 54,
+      "anchor": {
+        "x": 34.1,
+        "y": 45.2
+      },
+      "kind": "sprite"
+    },
+    "pet-cloud": {
+      "width": 65,
+      "height": 51,
+      "anchor": {
+        "x": 28.6,
+        "y": 39.1
+      },
+      "kind": "sprite"
+    },
+    "pet-cloud-b": {
+      "width": 65,
+      "height": 51,
+      "anchor": {
+        "x": 28.6,
+        "y": 39.1
+      },
+      "kind": "sprite"
+    },
+    "pet-cloud-skill": {
+      "width": 65,
+      "height": 51,
+      "anchor": {
+        "x": 28.6,
+        "y": 39.1
       },
       "kind": "sprite"
     }

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { stageFor } from "@/lib/garden/growth";
+import { PETS, type PetId } from "@/lib/garden/pets";
 import { SCENE_HEIGHT, SCENE_WIDTH } from "@/lib/garden/layout";
 import { buildSceneModel } from "@/lib/garden/scene-model";
 import type { GardenScene } from "@/server/queries/garden";
@@ -15,6 +16,7 @@ import { useGardenScene } from "../_hooks/use-garden-scene";
 import { usePipoSpeech } from "../_hooks/use-pipo-speech";
 
 import { DecorationsPanel } from "./decorations-panel";
+import { PetSkills } from "./pet-skills";
 import { TreeInfoDialog } from "./tree-info-dialog";
 
 interface GardenViewProps {
@@ -24,6 +26,7 @@ interface GardenViewProps {
 /** The living garden (garden-scene spec §3) plus a text list of its trees. */
 export function GardenView({ scene }: GardenViewProps) {
   const t = useTranslations("garden");
+  const tShop = useTranslations("shop.items");
   const reducedMotion = usePrefersReducedMotion();
   const host = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -33,6 +36,15 @@ export function GardenView({ scene }: GardenViewProps) {
     setSelectedId(treeId);
   };
   const { bubble, announcement, speak } = usePipoSpeech(scene);
+  // Skills are fun, not news: announced politely, at most once per tap
+  const [petNews, setPetNews] = useState("");
+  const onPetSkill = (petId: PetId) =>
+    setPetNews(
+      t("pets.announce", {
+        name: tShop(`${petId}.name`),
+        skill: t(`pets.skill.${PETS[petId].skill}`),
+      }),
+    );
 
   const model = useMemo(
     () =>
@@ -47,10 +59,11 @@ export function GardenView({ scene }: GardenViewProps) {
     [scene],
   );
 
-  const { status, greetPipo, highlightSlot } = useGardenScene(host, model, {
+  const { status, greetPipo, usePetSkill, highlightSlot } = useGardenScene(host, model, {
     reducedMotion,
     onTreeSelect: openTree,
     onPipoSpeak: speak,
+    onPetSkill,
   });
   const selected = scene.trees.find((tree) => tree.id === selectedId) ?? null;
 
@@ -94,7 +107,12 @@ export function GardenView({ scene }: GardenViewProps) {
         <p role="status" className="sr-only">
           {announcement}
         </p>
+        <p role="status" className="sr-only">
+          {petNews}
+        </p>
       </div>
+
+      <PetSkills pets={scene.pets} disabled={status !== "ready"} onUse={usePetSkill} />
 
       <section aria-labelledby="garden-tree-list" className="space-y-2">
         <h2 id="garden-tree-list" className="mono-label">

@@ -38,6 +38,7 @@ function fillFor(id: string): string {
     [/^koi-a/, "#FC5C44"],
     [/^koi-b/, "#FCB41C"],
     [/^slime/, "#F48C9C"],
+    [/^pet-/, "#F4B49C"],
     [/^cloud/, "#FCF4EC"],
     [/^petal/, "#F48C9C"],
     [/^ui-coin/, "#FCB41C"],

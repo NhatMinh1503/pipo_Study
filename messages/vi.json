@@ -480,6 +480,19 @@
       "previous": "Khu vườn trước",
       "next": "Khu vườn sau",
       "position": "Khu vườn {index}/{count}"
+    },
+    "pets": {
+      "title": "Thú cưng của bạn",
+      "hint": "Chạm vào thú cưng trong vườn, hoặc dùng các nút này, để xem kỹ năng của nó.",
+      "announce": "{name}: {skill}!",
+      "skill": {
+        "sprout": "Gieo mầm",
+        "fountain": "Phun nước",
+        "bloom": "Nở hoa",
+        "petals": "Lốc hoa anh đào",
+        "fire": "Phun lửa",
+        "rain": "Gọi mưa"
+      }
     }
   },
   "audio": {
@@ -689,28 +702,28 @@
         "description": "Bắc ngang hồ cá koi. Cần có hồ để thấy cầu."
       },
       "deco-slime": {
-        "name": "Slime đào",
-        "description": "Slime mềm dẻo có mầm cây nhỏ, nhảy tưng tưng dọc lối đi."
+        "name": "Tinh linh đào",
+        "description": "Quả đào tròn trịa có tai lá. Chạm vào: nó bật nhảy và một mầm cây nhú lên."
       },
       "pet-slime-water": {
-        "name": "Slime nước",
-        "description": "Giọt nước trong veo nhảy nhót khắp vườn."
+        "name": "Tinh linh nước",
+        "description": "Tinh linh hình con sóng có đuôi cá koi. Chạm vào: nó phun vòi nước."
       },
       "pet-slime-moss": {
         "name": "Slime rêu",
-        "description": "Slime xanh phủ rêu, cài một bông hoa trắng nhỏ."
+        "description": "Slime xanh phủ rêu, cài một bông hoa trắng nhỏ. Chạm vào: hoa nở quanh nó."
       },
       "pet-slime-sakura": {
-        "name": "Slime anh đào",
-        "description": "Slime hồng nhạt đội hai cánh hoa anh đào."
+        "name": "Thỏ mochi anh đào",
+        "description": "Bánh mochi anh đào có tai cánh hoa. Chạm vào: nó xoay tròn giữa lốc hoa."
       },
       "pet-slime-ember": {
-        "name": "Slime lửa",
-        "description": "Slime cam ấm áp với ngọn lửa nhỏ thân thiện."
+        "name": "Tinh linh than hồng",
+        "description": "Cục than hồng có tóc lửa. Chạm vào: nó phun một luồng lửa nhỏ."
       },
       "pet-slime-cloud": {
         "name": "Slime mây",
-        "description": "Cụm mây bông bềnh lơ lửng bay cạnh lối đi."
+        "description": "Cụm mây bông bềnh bay dọc lối đi. Chạm vào: nó làm mưa tưới vườn."
       }
     }
   },

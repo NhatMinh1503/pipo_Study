@@ -30,19 +30,28 @@ import {
   type PipoEvent,
   type PipoState,
 } from "@/lib/garden/pipo-machine";
+import { createPetBehaviour, type PetWorld } from "@/lib/garden/pet-behaviour";
+import type { PetId } from "@/lib/garden/pets";
 import type { SceneModel } from "@/lib/garden/scene-model";
+
+import { ParticleLayer, shapes } from "./pets/particles";
+import { createPetView } from "./pets/pet-view";
 
 export interface RendererOptions {
   reducedMotion: boolean;
   onTreeSelect: (treeId: string) => void;
   /** Pipo wants to say something; position is the top of its head in scene coordinates. */
   onPipoSpeak: (position: Point) => void;
+  /** A pet used its skill (tapped, from its button, or on its own). */
+  onPetSkill?: (petId: PetId) => void;
   random?: () => number;
 }
 
 export interface GardenRenderer {
   /** Same as clicking Pipo (keyboard "Chào Pipo" button). */
   greetPipo: () => void;
+  /** Same as tapping a pet (keyboard buttons under the garden). */
+  usePetSkill: (petId: PetId) => void;
   /** Outlines a decoration slot while the learner chooses where to put something. */
   highlightSlot: (slot: number | null) => void;
   destroy: () => void;
@@ -56,13 +65,10 @@ const PIPO_PARTS = [
   "pipo-eyes-open",
   "pipo-eyes-closed",
 ];
-/** How much the slime squashes when it lands (fraction of its size). */
-const SLIME_SQUASH = 0.16;
-/** Chance per second that a pet stops for a rest, and how long it rests. */
-const PET_REST_CHANCE = 0.08;
-const PET_REST_SECONDS = { min: 1.5, max: 3.5 } as const;
 /** Pets keep to two lanes across the path so they pass each other instead of overlapping. */
 const PET_LANES = [7, 2] as const;
+/** How high Pipo jumps when greeted, flapping its wings. */
+const PIPO_GREET_JUMP = 22;
 /** Pipo squashes a little less than the slime. */
 const PIPO_SQUASH = 0.12;
 /** Empty rows under the chick in pipo-body (where legs used to attach), in logical px. */
@@ -98,7 +104,10 @@ function neededAssets(model: SceneModel): string[] {
   if (model.pond) ids.add("deco-pond");
   if (model.bridge) ids.add("deco-bridge");
   if (model.koi) ids.add("koi-a").add("koi-b");
-  for (const pet of model.pets) ids.add(pet.asset).add("slime-shadow");
+  for (const pet of model.pets) for (const frame of pet.frames) ids.add(frame);
+  if (model.pets.length > 0) ids.add("slime-shadow");
+  // The sakura bunny's petal swirl uses the sakura petal
+  if (model.pets.some((pet) => pet.id === "pet-slime-sakura")) ids.add("petal");
   if (model.petalSources.length > 0) ids.add("petal");
   return [...ids];
 }
@@ -251,25 +260,36 @@ export async function createGardenRenderer(
   pipo.cursor = "pointer";
   world.addChild(pipo);
 
+  // Pets: behaviour objects (lib/garden/pet-behaviour.ts) drawn by their PetView subclass
+  const petFx = new ParticleLayer(new Container());
+  const petWorld: PetWorld = { pathLength: pathLength(), moving: !options.reducedMotion, random };
   const pets = model.pets.map((pet, index) => {
-    const root = new Container();
-    const shadow = sprite("slime-shadow");
-    const body = sprite(pet.asset);
-    root.addChild(shadow, body);
-    world.addChild(root);
-    return {
-      pet,
-      root,
-      body,
-      shadow,
-      distance: pet.start * pathLength(),
-      direction: pet.direction,
-      rest: 0,
-      lane: PET_LANES[index % PET_LANES.length] ?? 0,
-      // Pets do not hop in step with each other
-      phase: index * 0.37,
-    };
+    const [idle, alt, skill] = pet.frames;
+    const info = gardenAsset(idle);
+    const view = createPetView(
+      createPetBehaviour(pet.id, {
+        start: pet.start,
+        direction: pet.direction,
+        phase: index * 0.37,
+        pathLength: pathLength(),
+      }),
+      {
+        frames: { idle: texture(idle), alt: texture(alt), skill: texture(skill) },
+        anchor: { x: info.anchor.x / info.width, y: info.anchor.y / info.height },
+        shadow: texture("slime-shadow"),
+        petal: pet.id === "pet-slime-sakura" ? texture("petal") : null,
+      },
+      petFx,
+      PET_LANES[index % PET_LANES.length] ?? 0,
+      random,
+    );
+    view.root.on("pointertap", () => {
+      if (view.triggerSkill(petWorld)) options.onPetSkill?.(pet.id);
+    });
+    world.addChild(view.root);
+    return view;
   });
+  app.stage.addChild(petFx.container);
 
   // --- Petals ------------------------------------------------------------------------
   const fx = new Container();
@@ -293,6 +313,26 @@ export async function createGardenRenderer(
     const result = clickPipo(pipoState);
     pipoState = result.state;
     speak(result.events);
+    if (options.reducedMotion) return;
+    // A few feathers flutter down from the flapping wings
+    for (let index = 0; index < 4; index += 1) {
+      const feather = shapes.leaf(2.2, index % 2 === 0 ? 0xfce68a : 0xfff6cf);
+      petFx.add(feather, {
+        x: pipo.x + (random() - 0.5) * 16,
+        y: pipo.y - 20 - random() * 8,
+        vx: (random() - 0.5) * 30,
+        vy: -10 - random() * 20,
+        gravity: 30,
+        drag: 0.4,
+        spin: (random() - 0.5) * 8,
+        life: 1.4,
+        fadeAt: 0.5,
+      });
+    }
+  };
+  const usePetSkill = (petId: PetId) => {
+    const view = pets.find((candidate) => candidate.id === petId);
+    if (view?.triggerSkill(petWorld)) options.onPetSkill?.(petId);
   };
   pipo.on("pointertap", greetPipo);
 
@@ -319,10 +359,14 @@ export async function createGardenRenderer(
     const breath = !walking && moving ? Math.sin(elapsed * 2.2) * 0.025 : 0;
     if (pipoState.mode === "reacting") {
       const progress = 1 - pipoState.timer / SCENE.reactSeconds;
-      torso.y = -Math.sin(progress * Math.PI) * 10;
-      torso.scale.set(1, 1);
-      wingFront.rotation = Math.sin(elapsed * 30) * 0.6;
-      wingBack.rotation = -wingFront.rotation;
+      // A happy jump: crouch, spring up flapping hard, land with a little squash
+      const air = Math.max(0, Math.sin(Math.min(1, progress * 1.25) * Math.PI));
+      const crouch = progress < 0.12 ? Math.sin((progress / 0.12) * Math.PI) * 0.1 : 0;
+      torso.y = moving ? -air * PIPO_GREET_JUMP : 0;
+      torso.scale.set(1 + crouch, 1 - crouch);
+      const flap = moving ? Math.sin(elapsed * 34) * (0.5 + air * 0.6) - air * 0.5 : 0;
+      wingFront.rotation = flap;
+      wingBack.rotation = -flap;
     } else {
       torso.y = -lift * SCENE.pipoHopHeight;
       const sit = sitting ? 0.06 : 0;
@@ -341,51 +385,13 @@ export async function createGardenRenderer(
       tree.sprite.alpha = covers ? OCCLUDING_ALPHA : 1;
     }
 
-    // Pets wander the path both ways, resting now and then: slimes hop with a squash
-    // when they land, the cloud floats and bobs above its shadow
-    for (const roamer of pets) {
-      const { pet } = roamer;
-      if (moving) {
-        if (roamer.rest > 0) {
-          roamer.rest -= dt;
-        } else {
-          roamer.distance += pet.speed * dt * roamer.direction;
-          if (roamer.distance <= 0 || roamer.distance >= pathLength()) {
-            roamer.direction = roamer.direction === 1 ? -1 : 1;
-            roamer.distance = Math.min(Math.max(roamer.distance, 0), pathLength());
-          }
-          if (random() < dt * PET_REST_CHANCE) {
-            roamer.rest =
-              PET_REST_SECONDS.min + random() * (PET_REST_SECONDS.max - PET_REST_SECONDS.min);
-          }
-        }
-      }
-      const at = pointAt(roamer.distance);
-      roamer.root.position.set(at.x, at.y + roamer.lane);
-      roamer.root.zIndex = at.y + roamer.lane;
-
-      const beat = (elapsed + roamer.phase) * pet.beatsPerSecond;
-      if (pet.motion === "float") {
-        const bob = moving ? Math.sin(beat * 2 * Math.PI) : 0;
-        roamer.body.y = -(pet.height + bob * 3);
-        roamer.body.scale.set(roamer.direction, 1);
-        roamer.shadow.scale.set(0.8 - bob * 0.08);
-        roamer.shadow.alpha = 0.5;
-      } else {
-        const hopping = moving && roamer.rest <= 0;
-        const lift = hopping ? Math.abs(Math.sin(beat * Math.PI)) : 0;
-        const squash = hopping ? (1 - lift) ** 3 * SLIME_SQUASH : 0;
-        // Resting slimes breathe a little instead
-        const breath = moving && !hopping ? Math.sin((elapsed + roamer.phase) * 2.4) * 0.03 : 0;
-        roamer.body.y = -lift * pet.height;
-        roamer.body.scale.set(
-          roamer.direction * (1 + squash - breath),
-          1 - squash + lift * 0.06 + breath,
-        );
-        roamer.shadow.scale.set(1 - lift * 0.35);
-        roamer.shadow.alpha = 1 - lift * 0.4;
-      }
+    // Pets wander, rest and use their skills; each species draws its own effect
+    for (const view of pets) {
+      const events = view.behaviour.update(dt, petWorld);
+      if (events.includes("skill")) options.onPetSkill?.(view.id);
+      view.render(dt, petWorld, pointAt(view.behaviour.distance));
     }
+    petFx.update(dt);
 
     // Koi swim slow ellipses around the pond
     koi.forEach((fish, index) => {
@@ -459,6 +465,7 @@ export async function createGardenRenderer(
 
   return {
     greetPipo,
+    usePetSkill,
     highlightSlot,
     destroy: () => {
       document.removeEventListener("visibilitychange", onVisibility);
