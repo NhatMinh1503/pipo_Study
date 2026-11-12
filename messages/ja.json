@@ -332,8 +332,23 @@
       "prenoun": "連体詞",
       "pronoun": "代名詞",
       "symbol": "記号",
-      "other": "語"
-    }
+      "other": "語",
+      "preposition": "前置詞",
+      "determiner": "限定詞"
+    },
+    "inflection": {
+      "past": "<b>{lemma}</b> の過去形",
+      "pastParticiple": "<b>{lemma}</b> の過去分詞",
+      "presentParticiple": "<b>{lemma}</b> の -ing 形",
+      "thirdPerson": "<b>{lemma}</b> の三人称単数現在形",
+      "plural": "<b>{lemma}</b> の複数形",
+      "comparative": "<b>{lemma}</b> の比較級",
+      "superlative": "<b>{lemma}</b> の最上級"
+    },
+    "oxford": "Oxford 3000",
+    "englishAttribution": "辞書：WordNet 3.1 © Princeton・ECDICT（MIT）・CMUdict © CMU",
+    "preparing": "AI がこのレッスンの単語の意味を準備しています…",
+    "listen": "発音を聞く"
   },
   "notebook": {
     "title": "単語帳",

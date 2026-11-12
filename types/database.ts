@@ -302,6 +302,59 @@ export type Database = {
         }
         Relationships: []
       }
+      english_entries: {
+        Row: {
+          ipa: string | null
+          oxford: boolean
+          rank: number | null
+          senses: Json
+          word: string
+        }
+        Insert: {
+          ipa?: string | null
+          oxford?: boolean
+          rank?: number | null
+          senses?: Json
+          word: string
+        }
+        Update: {
+          ipa?: string | null
+          oxford?: boolean
+          rank?: number | null
+          senses?: Json
+          word?: string
+        }
+        Relationships: []
+      }
+      english_forms: {
+        Row: {
+          form: string
+          ipa: string | null
+          kind: string
+          lemma: string
+        }
+        Insert: {
+          form: string
+          ipa?: string | null
+          kind: string
+          lemma: string
+        }
+        Update: {
+          form?: string
+          ipa?: string | null
+          kind?: string
+          lemma?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "english_forms_lemma_fkey"
+            columns: ["lemma"]
+            isOneToOne: false
+            referencedRelation: "english_entries"
+            referencedColumns: ["word"]
+          },
+        ]
+      }
       error_logs: {
         Row: {
           attempt_id: string

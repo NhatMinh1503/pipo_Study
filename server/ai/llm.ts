@@ -54,9 +54,24 @@ export function providerOrder(
  * free tier costs the learner a few seconds, not thirty; the next provider then answers.
  * Bad requests (wrong key/model) also fall through, so one broken provider never blocks AI.
  */
+export interface CallBudget {
+  timeoutMs: number;
+  maxRetries: number;
+}
+
+const INTERACTIVE_BUDGETS = {
+  failover: { timeoutMs: 4_000, maxRetries: 0 },
+  last: { timeoutMs: 9_000, maxRetries: 1 },
+};
+
 export async function generateWithFallback<T>(
   request: LlmRequest<T>,
-  deps: { env?: Parameters<typeof providerOrder>[0]; call?: Call } = {},
+  deps: {
+    env?: Parameters<typeof providerOrder>[0];
+    call?: Call;
+    /** Background jobs (e.g. warming a lesson's vocabulary) can afford longer answers. */
+    budgets?: { failover: CallBudget; last: CallBudget };
+  } = {},
 ): Promise<LlmResult<T>> {
   const order = providerOrder(deps.env ?? getServerEnv());
   const call = deps.call ?? callProvider;
@@ -66,9 +81,8 @@ export async function generateWithFallback<T>(
   for (const [index, provider] of order.entries()) {
     const isLast = index === order.length - 1;
     // With a fallback waiting, fail fast; the last provider gets the full budget
-    const budget = isLast
-      ? { timeoutMs: 9_000, maxRetries: 1 }
-      : { timeoutMs: 4_000, maxRetries: 0 };
+    const budgets = deps.budgets ?? INTERACTIVE_BUDGETS;
+    const budget = isLast ? budgets.last : budgets.failover;
     try {
       const result = await call(provider, request, budget);
       return { ...result, provider };

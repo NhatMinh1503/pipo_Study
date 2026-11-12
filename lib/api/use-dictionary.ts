@@ -1,10 +1,12 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 
 import type { LearningLanguage } from "@/lib/schemas/common";
 import {
   dictionaryLookupResponseSchema,
+  warmVocabularyResponseSchema,
   wordExplanationSchema,
   type DictionaryLookupResponse,
   type ExplainWordRequest,
@@ -49,4 +51,36 @@ export function useExplainWord() {
       );
     },
   });
+}
+
+const WARM_KEY = ["dictionary", "warm"] as const;
+
+/**
+ * Asks the server once per lesson visit to explain the lesson's uncached words ahead of time;
+ * when it is done, popups opened meanwhile refetch so they pick up the new meanings.
+ */
+export function useWarmVocabulary(lessonId: string) {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationKey: WARM_KEY,
+    mutationFn: (id: string) =>
+      postJson("/api/dictionary/warm", { lessonId: id }, warmVocabularyResponseSchema),
+    onSuccess: (result) => {
+      if (result.explained > 0) void queryClient.invalidateQueries({ queryKey: ["dictionary"] });
+    },
+    // Best effort: the popup still offers "Explain" word by word
+    onError: () => undefined,
+  });
+  // Once per lesson, also under React's dev double-run of effects
+  const started = useRef<string | null>(null);
+  useEffect(() => {
+    if (started.current === lessonId) return;
+    started.current = lessonId;
+    mutate(lessonId);
+  }, [lessonId, mutate]);
+}
+
+/** True while a lesson's vocabulary is being explained in the background. */
+export function useIsWarmingVocabulary(): boolean {
+  return useIsMutating({ mutationKey: WARM_KEY }) > 0;
 }

@@ -1,18 +1,24 @@
 "use client";
 
-import { BookmarkPlus, Check, Sparkles } from "lucide-react";
+import { BookmarkPlus, Check, CornerDownRight, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
+import { PlayButton } from "@/components/audio/play-button";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ApiError } from "@/lib/api/http";
-import { useDictionaryLookup, useExplainWord } from "@/lib/api/use-dictionary";
+import {
+  useDictionaryLookup,
+  useExplainWord,
+  useIsWarmingVocabulary,
+} from "@/lib/api/use-dictionary";
 import { hasKanji } from "@/lib/nlp/kana";
 import type { Token } from "@/lib/nlp/token";
 import type { LearningLanguage } from "@/lib/schemas/common";
+import type { EnglishEntry } from "@/lib/schemas/dictionary";
 import { addToNotebook } from "@/server/actions/notebook";
 
 export interface WordContext {
@@ -41,8 +47,14 @@ export function WordPopup({ context }: { context: WordContext }) {
   const word = { term: token.base, reading: token.reading, language };
   const lookup = useDictionaryLookup(word, open);
   const explain = useExplainWord();
+  const isWarming = useIsWarmingVocabulary();
   const explanation = lookup.data?.explanation ?? null;
+  const english = lookup.data?.english ?? [];
   const showReading = language === "ja" && hasKanji(token.base) && token.reading;
+  const ipa = language === "en" ? (lookup.data?.ipa ?? null) : null;
+  // English tokens carry no part of speech; the dictionary's most common sense supplies it
+  const pos = token.pos === "other" ? (english[0]?.senses[0]?.pos ?? token.pos) : token.pos;
+  const hasOfflineEntry = (lookup.data?.entries.length ?? 0) > 0 || english.length > 0;
 
   const save = () =>
     startSaving(async () => {
@@ -50,9 +62,12 @@ export function WordPopup({ context }: { context: WordContext }) {
         language,
         term: token.base,
         reading: language === "ja" ? token.reading : undefined,
-        partOfSpeech: token.pos,
+        partOfSpeech: pos,
         meaning:
-          explanation?.meaning ?? lookup.data?.entries[0]?.senses[0]?.glosses.join(", ") ?? "",
+          explanation?.meaning ??
+          english[0]?.senses[0]?.gloss ??
+          lookup.data?.entries[0]?.senses[0]?.glosses.join(", ") ??
+          "",
         contextSentence: context.sentence,
         contextTranslation: context.sentenceTranslation ?? undefined,
         sentenceId: context.sentenceId,
@@ -90,17 +105,26 @@ export function WordPopup({ context }: { context: WordContext }) {
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 space-y-3" align="start">
-        <div className="space-y-1 border-b border-dashed border-border/40 pb-2.5">
-          <p
-            lang={language}
-            className="font-heading text-lg leading-tight font-bold tracking-tight"
-          >
-            {token.base}
-          </p>
-          <p className="font-mono text-[0.6875rem] tracking-[0.04em] text-muted-foreground">
-            {showReading && <span lang="ja">{token.reading} · </span>}
-            {t(`pos.${token.pos}`)}
-          </p>
+        <div className="flex items-start justify-between gap-2 border-b border-dashed border-border/40 pb-2.5">
+          <div className="min-w-0 space-y-1">
+            <p
+              lang={language}
+              className="font-heading text-lg leading-tight font-bold tracking-tight"
+            >
+              {token.base}
+            </p>
+            <p className="font-mono text-[0.6875rem] tracking-[0.04em] text-muted-foreground">
+              {showReading && <span lang="ja">{token.reading} · </span>}
+              {ipa && <span>/{ipa}/ · </span>}
+              {t(`pos.${pos}`)}
+              {english[0]?.oxford && english[0].inflection === null && (
+                <span className="ml-1.5 border border-primary/40 px-1 text-primary">
+                  {t("oxford")}
+                </span>
+              )}
+            </p>
+          </div>
+          <PlayButton text={token.base} language={language} compact label={t("listen")} />
         </div>
 
         {lookup.isPending ? (
@@ -128,7 +152,11 @@ export function WordPopup({ context }: { context: WordContext }) {
                 </p>
               </div>
             )}
-            {!explanation && lookup.data?.entries.length === 0 && (
+            {english.length > 0 && <EnglishEntries entries={english} />}
+            {!explanation && isWarming && (
+              <p className="text-xs leading-relaxed text-muted-foreground">{t("preparing")}</p>
+            )}
+            {!explanation && !hasOfflineEntry && !isWarming && (
               <p className="text-sm leading-relaxed text-muted-foreground">{t("noEntry")}</p>
             )}
           </>
@@ -166,5 +194,62 @@ export function WordPopup({ context }: { context: WordContext }) {
         </div>
       </PopoverContent>
     </Popover>
+  );
+}
+
+/** Offline English senses: lemma line for inflected forms, then senses grouped by part of speech. */
+function EnglishEntries({ entries }: { entries: EnglishEntry[] }) {
+  const t = useTranslations("dictionary");
+  return (
+    <div className="space-y-2">
+      {entries.map((entry, entryIndex) => {
+        // The second entry is a pointer ("see also running"), so it gets one sense
+        const senses = entry.senses.slice(0, entryIndex === 0 ? 3 : 1);
+        return (
+          <div key={entry.word} className="space-y-1">
+            {entry.inflection && (
+              <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                <CornerDownRight className="size-3 shrink-0" aria-hidden />
+                <span>
+                  {t.rich(`inflection.${entry.inflection}`, {
+                    lemma: entry.word,
+                    b: (chunks) => (
+                      <span lang="en" className="font-semibold text-foreground">
+                        {chunks}
+                      </span>
+                    ),
+                  })}
+                </span>
+                {entry.ipa && <span className="font-mono">/{entry.ipa}/</span>}
+              </p>
+            )}
+            {!entry.inflection && entryIndex > 0 && (
+              <p lang="en" className="text-xs font-semibold">
+                {entry.word}
+              </p>
+            )}
+            <ol className="space-y-1 text-sm leading-relaxed text-muted-foreground">
+              {senses.map((sense, index) => (
+                <li key={index}>
+                  <span className="mr-1 font-mono text-[0.625rem] tracking-[0.04em] uppercase">
+                    {t(`pos.${sense.pos}`)}
+                  </span>
+                  <span lang="en">{sense.gloss}</span>
+                  {sense.example && entryIndex === 0 && index === 0 && (
+                    <span lang="en" className="block text-xs italic">
+                      “{sense.example}”
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        );
+      })}
+      {/* Required attribution: WordNet license, ECDICT (MIT), CMUdict (BSD) */}
+      <p className="font-mono text-[0.5625rem] leading-relaxed tracking-[0.02em] text-muted-foreground/80">
+        {t("englishAttribution")}
+      </p>
+    </div>
   );
 }

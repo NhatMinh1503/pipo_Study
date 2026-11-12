@@ -43,6 +43,16 @@ describe("generateWithFallback", () => {
     expect(call).toHaveBeenLastCalledWith("groq", request, { timeoutMs: 9_000, maxRetries: 1 });
   });
 
+  it("uses the caller's budgets for background work", async () => {
+    const call = vi.fn().mockResolvedValue(ok);
+    const budgets = {
+      failover: { timeoutMs: 15_000, maxRetries: 0 },
+      last: { timeoutMs: 25_000, maxRetries: 1 },
+    };
+    await generateWithFallback(request, { env: both, call, budgets });
+    expect(call).toHaveBeenCalledWith("gemini", request, budgets.failover);
+  });
+
   it("also fails over when the primary rejects the request (bad key or model)", async () => {
     const call = vi
       .fn()
