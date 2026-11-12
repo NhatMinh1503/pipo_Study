@@ -4,10 +4,14 @@ import { dictionaryLookupQuerySchema } from "@/lib/schemas/dictionary";
 import { createClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/server/auth";
 import { jsonError, jsonOk } from "@/server/http";
-import { getCachedExplanation, lookupEntries } from "@/server/services/dictionary";
+import {
+  getCachedExplanation,
+  lookupEnglishEntries,
+  lookupEntries,
+} from "@/server/services/dictionary";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
-/** GET /api/dictionary?term=&reading=&language= — offline entries + cached AI explanation. */
+/** GET /api/dictionary?term=&reading=&language= — offline JMdict / English entries + cached AI explanation. */
 export async function GET(request: NextRequest) {
   const user = await getSessionUser();
   if (!user) return jsonError("UNAUTHORIZED");
@@ -25,8 +29,11 @@ export async function GET(request: NextRequest) {
     .eq("user_id", user.id)
     .maybeSingle();
 
-  const [entries, explanation] = await Promise.all([
+  const [entries, english, explanation] = await Promise.all([
     lookupEntries(client, term, reading, language),
+    language === "en"
+      ? lookupEnglishEntries(client, term)
+      : Promise.resolve({ entries: [], ipa: null }),
     getCachedExplanation(client, {
       term,
       reading,
@@ -35,5 +42,5 @@ export async function GET(request: NextRequest) {
     }),
   ]);
 
-  return jsonOk({ entries, explanation });
+  return jsonOk({ entries, english: english.entries, ipa: english.ipa, explanation });
 }

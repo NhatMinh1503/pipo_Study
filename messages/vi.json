@@ -332,8 +332,23 @@
       "prenoun": "Liên thể từ",
       "pronoun": "Đại từ",
       "symbol": "Ký hiệu",
-      "other": "Từ"
-    }
+      "other": "Từ",
+      "preposition": "Giới từ",
+      "determiner": "Từ hạn định"
+    },
+    "inflection": {
+      "past": "quá khứ của <b>{lemma}</b>",
+      "pastParticiple": "quá khứ phân từ của <b>{lemma}</b>",
+      "presentParticiple": "dạng V-ing của <b>{lemma}</b>",
+      "thirdPerson": "ngôi thứ ba số ít của <b>{lemma}</b>",
+      "plural": "số nhiều của <b>{lemma}</b>",
+      "comparative": "so sánh hơn của <b>{lemma}</b>",
+      "superlative": "so sánh nhất của <b>{lemma}</b>"
+    },
+    "oxford": "Oxford 3000",
+    "englishAttribution": "Từ điển: WordNet 3.1 © Princeton · ECDICT (MIT) · CMUdict © CMU",
+    "preparing": "AI đang chuẩn bị nghĩa cho các từ trong bài…",
+    "listen": "Nghe phát âm"
   },
   "notebook": {
     "title": "Sổ tay",

@@ -332,8 +332,23 @@
       "prenoun": "Prenomina",
       "pronoun": "Kata ganti",
       "symbol": "Simbol",
-      "other": "Kata"
-    }
+      "other": "Kata",
+      "preposition": "Kata depan",
+      "determiner": "Kata penentu"
+    },
+    "inflection": {
+      "past": "bentuk lampau dari <b>{lemma}</b>",
+      "pastParticiple": "participle lampau dari <b>{lemma}</b>",
+      "presentParticiple": "bentuk -ing dari <b>{lemma}</b>",
+      "thirdPerson": "orang ketiga tunggal dari <b>{lemma}</b>",
+      "plural": "bentuk jamak dari <b>{lemma}</b>",
+      "comparative": "bentuk komparatif dari <b>{lemma}</b>",
+      "superlative": "bentuk superlatif dari <b>{lemma}</b>"
+    },
+    "oxford": "Oxford 3000",
+    "englishAttribution": "Kamus: WordNet 3.1 © Princeton · ECDICT (MIT) · CMUdict © CMU",
+    "preparing": "AI sedang menyiapkan arti kata-kata di pelajaran ini…",
+    "listen": "Dengar pelafalan"
   },
   "notebook": {
     "title": "Buku catatan",

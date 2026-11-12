@@ -78,6 +78,7 @@ supabase migration up                   # Áp migration mới vào DB local
 npm run db:types                        # supabase gen types typescript --local > types/database.ts
 supabase test db                        # pgTAP: test RLS + functions
 npm run dict:import                     # Import JMdict (chạy lại sau mỗi `supabase db reset`)
+npm run dict:import:en                  # Import từ điển Anh: ECDICT + WordNet + CMUdict (cũng chạy lại sau reset)
 npm run lint && npm run typecheck && npm test
 npm run test:int                        # Integration test với Supabase local
 npm run test:e2e                        # Playwright: server riêng port 3100, AI giả (AI_PROVIDER=fake)

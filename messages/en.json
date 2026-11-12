@@ -332,8 +332,23 @@
       "prenoun": "Pre-noun adjectival",
       "pronoun": "Pronoun",
       "symbol": "Symbol",
-      "other": "Word"
-    }
+      "other": "Word",
+      "preposition": "Preposition",
+      "determiner": "Determiner"
+    },
+    "inflection": {
+      "past": "past tense of <b>{lemma}</b>",
+      "pastParticiple": "past participle of <b>{lemma}</b>",
+      "presentParticiple": "-ing form of <b>{lemma}</b>",
+      "thirdPerson": "3rd person singular of <b>{lemma}</b>",
+      "plural": "plural of <b>{lemma}</b>",
+      "comparative": "comparative of <b>{lemma}</b>",
+      "superlative": "superlative of <b>{lemma}</b>"
+    },
+    "oxford": "Oxford 3000",
+    "englishAttribution": "Dictionary: WordNet 3.1 © Princeton · ECDICT (MIT) · CMUdict © CMU",
+    "preparing": "The AI is preparing meanings for this lesson's words…",
+    "listen": "Hear pronunciation"
   },
   "notebook": {
     "title": "Notebook",

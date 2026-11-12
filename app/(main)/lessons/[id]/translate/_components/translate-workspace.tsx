@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { SourceAttribution } from "@/components/lessons/source-attribution";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useWarmVocabulary } from "@/lib/api/use-dictionary";
 import type { LessonWorkspace } from "@/lib/lessons/workspace";
 
 import { useTranslateSession } from "../_hooks/use-translate-session";
@@ -21,6 +22,7 @@ import { TargetPane } from "./target-pane";
 export function TranslateWorkspace({ workspace }: { workspace: LessonWorkspace }) {
   const t = useTranslations("translate");
   const session = useTranslateSession(workspace);
+  useWarmVocabulary(workspace.id);
   const total = session.sentences.length;
 
   return (

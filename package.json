@@ -17,6 +17,7 @@
     "test:int": "vitest run --config vitest.int.config.mts",
     "test:e2e": "playwright test",
     "dict:import": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-jmdict.mts",
+    "dict:import:en": "node --env-file=.env.local --experimental-strip-types --no-warnings scripts/import-english-dict.mts",
     "docker:up": "docker compose --env-file .env.local up --build",
     "icons": "node --experimental-strip-types --no-warnings scripts/generate-icons.mts",
     "ai:eval": "vitest run --config vitest.eval.config.mts",

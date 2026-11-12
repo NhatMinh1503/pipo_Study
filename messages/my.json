@@ -332,8 +332,23 @@
       "prenoun": "နာမ်ရှေ့ ဝိသေသန",
       "pronoun": "နာမ်စား",
       "symbol": "သင်္ကေတ",
-      "other": "စကားလုံး"
-    }
+      "other": "စကားလုံး",
+      "preposition": "ဝိဘတ်",
+      "determiner": "သတ်မှတ်စကားလုံး"
+    },
+    "inflection": {
+      "past": "<b>{lemma}</b> ၏ အတိတ်ပုံစံ",
+      "pastParticiple": "<b>{lemma}</b> ၏ past participle ပုံစံ",
+      "presentParticiple": "<b>{lemma}</b> ၏ -ing ပုံစံ",
+      "thirdPerson": "<b>{lemma}</b> ၏ တတိယပုဂ္ဂိုလ် ဧကဝုစ်ပုံစံ",
+      "plural": "<b>{lemma}</b> ၏ အများကိန်း",
+      "comparative": "<b>{lemma}</b> ၏ နှိုင်းယှဉ်ပုံစံ",
+      "superlative": "<b>{lemma}</b> ၏ အသာလွန်ဆုံးပုံစံ"
+    },
+    "oxford": "Oxford 3000",
+    "englishAttribution": "အဘိဓာန်: WordNet 3.1 © Princeton · ECDICT (MIT) · CMUdict © CMU",
+    "preparing": "ဤသင်ခန်းစာရှိ စကားလုံးများ၏ အဓိပ္ပာယ်ကို AI ပြင်ဆင်နေသည်…",
+    "listen": "အသံထွက် နားထောင်ရန်"
   },
   "notebook": {
     "title": "မှတ်စုစာအုပ်",

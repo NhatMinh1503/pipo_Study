@@ -69,6 +69,7 @@ jobs:
             echo "SUPABASE_SECRET_KEY=$SECRET_KEY"
           } > .env.local
       - run: npm run dict:import
+      - run: npm run dict:import:en
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - if: failure()
