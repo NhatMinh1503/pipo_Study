@@ -10,6 +10,7 @@ import { createLessonSchema, MAX_SENTENCES } from "@/lib/schemas/lesson";
 import { createClient } from "@/lib/supabase/server";
 import { requireUser } from "@/server/auth";
 import { logger } from "@/server/logger";
+import { getOpenArticle } from "@/server/queries/open-news";
 import { CreateLessonError, createLessonForLearner } from "@/server/services/create-lesson";
 import { createAdminClient } from "@/server/supabase-admin";
 
@@ -41,6 +42,8 @@ export async function createLesson(input: unknown): Promise<ActionResult> {
       text,
       sentences,
       ...(newsUrl ? { newsUrl } : {}),
+      // Cached article (the rewrite just fetched it); credits only exist for Global Voices
+      getCredits: async (url) => (await getOpenArticle(url)).credits,
     });
   } catch (error) {
     log.error("create lesson failed", {

@@ -52,7 +52,7 @@ test.describe("AI personalization", () => {
     const openNews = page.getByRole("region", { name: "Bài đọc từ nguồn mở" });
     const makeLesson = openNews.getByRole("link", { name: "Tạo bài" }).first();
     const unavailable = openNews.getByText("Chưa tải được tin tức.");
-    // The feed is live (首相官邸) and streams in; wait for either outcome before branching
+    // The feeds are live (Global Voices 日本語, 首相官邸) and stream in; wait for either outcome
     await expect(makeLesson.or(unavailable)).toBeVisible({ timeout: 20_000 });
     if (await unavailable.isVisible()) return;
     await makeLesson.click();
@@ -62,10 +62,12 @@ test.describe("AI personalization", () => {
       "総理はお客さんに会いました。二人は話しました。いい日でした。",
       { timeout: 20_000 },
     );
-    await expect(page.getByRole("link", { name: "PDL1.0" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /^(PDL1\.0|CC BY 3\.0)$/ })).toBeVisible();
     await page.getByRole("button", { name: "Tạo bài và bắt đầu dịch" }).click();
 
     await expect(page).toHaveURL(/\/translate$/);
-    await expect(page.getByRole("link", { name: "首相官邸ホームページ" })).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /^(首相官邸ホームページ|Global Voices 日本語)$/ }),
+    ).toBeVisible();
   });
 });

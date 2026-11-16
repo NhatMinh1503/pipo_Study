@@ -1,6 +1,6 @@
 import type { LearningLanguage } from "@/lib/schemas/common";
 
-export type OpenSourceId = "kantei" | "govuk";
+export type OpenSourceId = "kantei" | "govuk" | "globalvoices-ja" | "globalvoices-en" | "nih";
 
 export interface OpenSource {
   id: OpenSourceId;
@@ -17,6 +17,9 @@ export interface OpenSource {
 /**
  * Sources whose licence allows rewriting with attribution. Commercial news (NHK, BBC…)
  * is deliberately absent: those stay headline-and-link only.
+ * - Global Voices: CC BY 3.0 (attribute Global Voices and the writers; quoted third-party
+ *   material and images are not ours to reuse, so only the writers' own text is used)
+ * - NIH News in Health: U.S. government work, "not copyrighted"; NIH asks to be credited
  */
 export const OPEN_SOURCES: Record<OpenSourceId, OpenSource> = {
   kantei: {
@@ -37,11 +40,39 @@ export const OPEN_SOURCES: Record<OpenSourceId, OpenSource> = {
     homeUrl: "https://www.gov.uk/",
     articlePrefix: "https://www.gov.uk/government/news/",
   },
+  "globalvoices-ja": {
+    id: "globalvoices-ja",
+    language: "ja",
+    name: "Global Voices 日本語",
+    license: "CC BY 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/3.0/deed.ja",
+    homeUrl: "https://jp.globalvoices.org/",
+    articlePrefix: "https://jp.globalvoices.org/20",
+  },
+  "globalvoices-en": {
+    id: "globalvoices-en",
+    language: "en",
+    name: "Global Voices",
+    license: "CC BY 3.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/3.0/",
+    homeUrl: "https://globalvoices.org/",
+    articlePrefix: "https://globalvoices.org/20",
+  },
+  nih: {
+    id: "nih",
+    language: "en",
+    name: "NIH News in Health",
+    license: "Public domain",
+    licenseUrl: "https://www.usa.gov/government-works",
+    homeUrl: "https://newsinhealth.nih.gov/",
+    articlePrefix: "https://newsinhealth.nih.gov/20",
+  },
 };
 
-export const OPEN_SOURCE_BY_LANGUAGE: Record<LearningLanguage, OpenSource> = {
-  ja: OPEN_SOURCES.kantei,
-  en: OPEN_SOURCES.govuk,
+/** Sources per learning language, in the order their items are interleaved on the page. */
+export const OPEN_SOURCES_BY_LANGUAGE: Record<LearningLanguage, OpenSource[]> = {
+  ja: [OPEN_SOURCES["globalvoices-ja"], OPEN_SOURCES.kantei],
+  en: [OPEN_SOURCES["globalvoices-en"], OPEN_SOURCES.nih, OPEN_SOURCES.govuk],
 };
 
 /** The open source an article URL belongs to, or null for anything outside the allow-list. */
@@ -65,11 +96,26 @@ export function findOpenSource(url: string): OpenSource | null {
 
 /**
  * Attribution required by each licence, including the "edited" notice: PDL1.0 forbids
- * presenting edited text as if it were the government's unedited original.
+ * presenting edited text as if it were the government's unedited original, and CC BY asks
+ * to name the writers and say that the work was changed.
+ * `credits` names the writers and translators (Global Voices), when known.
  */
-export function attributionFor(source: OpenSource, title: string, url: string): string {
-  if (source.id === "kantei") {
-    return `「${title}」（${source.name}）（${url}）をもとに pipo が学習者向けに加工して作成`;
+export function attributionFor(
+  source: OpenSource,
+  title: string,
+  url: string,
+  credits: string | null = null,
+): string {
+  switch (source.id) {
+    case "kantei":
+      return `「${title}」（${source.name}）（${url}）をもとに pipo が学習者向けに加工して作成`;
+    case "globalvoices-ja":
+      return `「${title}」（${credits ? `${credits}、` : ""}${source.name}、${url}、CC BY 3.0）をもとに pipo が学習者向けに書き直して作成`;
+    case "globalvoices-en":
+      return `Adapted for learners by pipo from “${title}”${credits ? ` (${credits})` : ""}, ${source.name}, ${url}, licensed under CC BY 3.0.`;
+    case "nih":
+      return `Adapted for learners by pipo from “${title}” (${source.name}, ${url}). Not reviewed by NIH.`;
+    case "govuk":
+      return `Adapted for learners by pipo from “${title}” (${source.name}, ${url}). Contains public sector information licensed under the Open Government Licence v3.0.`;
   }
-  return `Adapted for learners by pipo from “${title}” (${source.name}, ${url}). Contains public sector information licensed under the Open Government Licence v3.0.`;
 }
