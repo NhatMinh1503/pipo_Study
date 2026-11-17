@@ -54,6 +54,7 @@ value is approved but not implemented yet.
 | skill_pass_accuracy          | 60 %                                     | 50–80 %   | gate     | `lib/skills/topics.ts` (`PASS_ACCURACY`)                             | skill-tree        | 2026-11-17 |
 | battle_finish_coins          | 3 (+2 for the winner)                    | 1–5       | economy  | SQL `award_battle`                                                   | battle            | 2026-11-17 |
 | battle_daily_rewarded        | 5 battles per local day                  | 3–10      | gate     | SQL `award_battle`                                                   | battle            | 2026-11-17 |
+| reports_to_hide_post         | 3                                        | 2–5       | gate     | SQL `hide_reported_post`                                             | community         | 2026-11-17 |
 | tree_per_session             | 1 whole tree per completed session       | fixed     | gate     | SQL `tend_garden` (migration 20261110040100)                         | Forest style      | 2026-11-10 |
 | garden_grid                  | 8 × 6 tiles                              | fixed     | gate     | _(planned)_ lib/garden/layout.ts                                     | garden-scene §3.4 | 2026-11-07 |
 | plots_per_garden             | 31                                       | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.4 | 2026-11-07 |

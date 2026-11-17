@@ -857,7 +857,7 @@
     "deleteTitle": "Hapus postingan ini?",
     "deleteDescription": "Postingan dan semua komentarnya akan dihapus selamanya.",
     "report": "Laporkan",
-    "reported": "Laporan terkirim. Terima kasih!",
+    "reported": "Dilaporkan. Kamu tidak akan melihat postingan ini lagi.",
     "like": "Suka",
     "comments": "{count, plural, other {# komentar}}",
     "commentPlaceholder": "Tulis komentar…",
@@ -865,7 +865,9 @@
     "empty": "Belum ada postingan",
     "emptyHint": "Selesaikan sebuah terjemahan, lalu tekan “Bagikan ke komunitas” di layar ringkasan.",
     "older": "Postingan lebih lama",
-    "newest": "Terbaru"
+    "newest": "Terbaru",
+    "underReview": "Sedang ditinjau",
+    "moderation": "Moderasi"
   },
   "leaderboard": {
     "title": "Papan peringkat",
@@ -992,5 +994,17 @@
         "toNext": "XP ke berikutnya"
       }
     }
+  },
+  "moderation": {
+    "title": "Moderasi",
+    "description": "Postingan yang dilaporkan. Postingan dengan 3 laporan sudah disembunyikan dari feed.",
+    "empty": "Tidak ada yang perlu ditinjau",
+    "meta": "{reports} laporan · {pairs} kalimat",
+    "hidden": "disembunyikan",
+    "restore": "Pulihkan",
+    "remove": "Hapus",
+    "restored": "Postingan dipulihkan",
+    "removed": "Postingan dihapus",
+    "failed": "Gagal, silakan coba lagi."
   }
 }

@@ -857,7 +857,7 @@
     "deleteTitle": "この投稿を削除しますか？",
     "deleteDescription": "投稿とすべてのコメントが完全に削除されます。",
     "report": "報告",
-    "reported": "報告を送信しました。ありがとうございます！",
+    "reported": "報告しました。この投稿はもう表示されません。",
     "like": "いいね",
     "comments": "{count, plural, other {コメント#件}}",
     "commentPlaceholder": "コメントを書く…",
@@ -865,7 +865,9 @@
     "empty": "まだ投稿がありません",
     "emptyHint": "翻訳を終えたら、結果画面の「コミュニティに共有」を押してください。",
     "older": "以前の投稿",
-    "newest": "最新"
+    "newest": "最新",
+    "underReview": "確認中",
+    "moderation": "管理"
   },
   "leaderboard": {
     "title": "ランキング",
@@ -992,5 +994,17 @@
         "toNext": "次まで XP"
       }
     }
+  },
+  "moderation": {
+    "title": "管理",
+    "description": "報告された投稿です。報告が3件ある投稿はフィードから自動で非表示になっています。",
+    "empty": "確認する投稿はありません",
+    "meta": "報告 {reports} 件 · {pairs} 文",
+    "hidden": "非表示",
+    "restore": "もとに戻す",
+    "remove": "削除",
+    "restored": "投稿をもとに戻しました",
+    "removed": "投稿を削除しました",
+    "failed": "できませんでした。もう一度ためしてください。"
   }
 }

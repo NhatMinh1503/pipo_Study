@@ -857,7 +857,7 @@
     "deleteTitle": "Xoá bài đăng này?",
     "deleteDescription": "Bài đăng cùng mọi bình luận sẽ bị xoá vĩnh viễn.",
     "report": "Báo cáo",
-    "reported": "Đã gửi báo cáo. Cảm ơn bạn!",
+    "reported": "Đã báo cáo. Bài này sẽ không hiện với bạn nữa.",
     "like": "Thích",
     "comments": "{count, plural, other {# bình luận}}",
     "commentPlaceholder": "Viết bình luận…",
@@ -865,7 +865,9 @@
     "empty": "Chưa có bài đăng nào",
     "emptyHint": "Hoàn thành một bài dịch rồi bấm “Chia sẻ lên cộng đồng” ở màn tổng kết.",
     "older": "Bài cũ hơn",
-    "newest": "Mới nhất"
+    "newest": "Mới nhất",
+    "underReview": "Đang chờ xem xét",
+    "moderation": "Kiểm duyệt"
   },
   "leaderboard": {
     "title": "Bảng xếp hạng",
@@ -992,5 +994,17 @@
         "toNext": "XP tới mốc sau"
       }
     }
+  },
+  "moderation": {
+    "title": "Kiểm duyệt",
+    "description": "Bài bị báo cáo. Bài có từ 3 báo cáo đã tự ẩn khỏi bảng tin.",
+    "empty": "Không có bài nào cần xem xét",
+    "meta": "{reports} báo cáo · {pairs} câu",
+    "hidden": "đang ẩn",
+    "restore": "Khôi phục",
+    "remove": "Xoá bài",
+    "restored": "Đã khôi phục bài",
+    "removed": "Đã xoá bài",
+    "failed": "Không thực hiện được, thử lại nhé."
   }
 }

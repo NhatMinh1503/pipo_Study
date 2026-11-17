@@ -696,6 +696,21 @@ export type Database = {
           },
         ]
       }
+      moderators: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       news_rewrites: {
         Row: {
           created_at: string
@@ -770,28 +785,34 @@ export type Database = {
       posts: {
         Row: {
           created_at: string
+          hidden_at: string | null
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           lesson_id: string | null
           pairs: Json
+          reviewed_at: string | null
           title: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          hidden_at?: string | null
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           lesson_id?: string | null
           pairs: Json
+          reviewed_at?: string | null
           title: string
           user_id: string
         }
         Update: {
           created_at?: string
+          hidden_at?: string | null
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           lesson_id?: string | null
           pairs?: Json
+          reviewed_at?: string | null
           title?: string
           user_id?: string
         }
@@ -1380,6 +1401,7 @@ export type Database = {
         Returns: string
       }
       is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
+      is_moderator: { Args: never; Returns: boolean }
       join_battle: {
         Args: {
           p_language: Database["public"]["Enums"]["learning_language"]
@@ -1424,6 +1446,22 @@ export type Database = {
           rank: number
           total: number
           value: number
+        }[]
+      }
+      moderate_post: {
+        Args: { p_action: string; p_post_id: string }
+        Returns: undefined
+      }
+      moderation_queue: {
+        Args: never
+        Returns: {
+          author_id: string
+          created_at: string
+          hidden_at: string
+          open_reports: number
+          pairs: Json
+          post_id: string
+          title: string
         }[]
       }
       next_garden_plot: {

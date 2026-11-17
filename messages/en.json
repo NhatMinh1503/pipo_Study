@@ -857,7 +857,7 @@
     "deleteTitle": "Delete this post?",
     "deleteDescription": "The post and all its comments will be removed for good.",
     "report": "Report",
-    "reported": "Report sent. Thank you!",
+    "reported": "Reported. You won't see this post any more.",
     "like": "Like",
     "comments": "{count, plural, one {# comment} other {# comments}}",
     "commentPlaceholder": "Write a comment…",
@@ -865,7 +865,9 @@
     "empty": "No posts yet",
     "emptyHint": "Finish a translation, then press “Share to community” on the summary screen.",
     "older": "Older posts",
-    "newest": "Newest"
+    "newest": "Newest",
+    "underReview": "Under review",
+    "moderation": "Moderation"
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -992,5 +994,17 @@
         "toNext": "XP to next"
       }
     }
+  },
+  "moderation": {
+    "title": "Moderation",
+    "description": "Reported posts. Posts with 3 reports are already hidden from the feed.",
+    "empty": "Nothing to review",
+    "meta": "{reports} reports · {pairs} sentences",
+    "hidden": "hidden",
+    "restore": "Restore",
+    "remove": "Remove",
+    "restored": "Post restored",
+    "removed": "Post removed",
+    "failed": "That didn't work, please try again."
   }
 }

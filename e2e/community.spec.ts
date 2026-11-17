@@ -40,6 +40,32 @@ test.describe("community", () => {
     await expect(post).toContainText("1 bình luận");
   });
 
+  test("a reported post disappears from the reporter's feed", async ({
+    browser,
+    page,
+  }, testInfo) => {
+    await createOnboardedUser(page, testInfo);
+    const title = `Bài bị báo cáo ${testInfo.project.name} ${Date.now()}`;
+    await finishOneLesson(page, title);
+    await page.getByRole("button", { name: "Chia sẻ lên cộng đồng" }).click();
+    await expect(page).toHaveURL(/\/community$/, { timeout: 30_000 });
+
+    const readerContext = await browser.newContext();
+    const reader = await readerContext.newPage();
+    await createOnboardedUser(reader, testInfo);
+    await reader.goto("/community");
+    const post = reader.getByRole("article").filter({ hasText: title });
+    await post.getByRole("button", { name: "Báo cáo" }).click();
+    await expect(reader.getByText("Đã báo cáo. Bài này sẽ không hiện với bạn nữa.")).toBeVisible();
+    await reader.reload();
+    await expect(reader.getByRole("article").filter({ hasText: title })).toHaveCount(0);
+    await readerContext.close();
+
+    // One report is not enough to hide it from everyone else
+    await page.reload();
+    await expect(page.getByRole("article").filter({ hasText: title })).toBeVisible();
+  });
+
   test("leaderboard shows the learner after earning XP", async ({ page }, testInfo) => {
     const email = await createOnboardedUser(page, testInfo);
     await finishOneLesson(page, "Leo bảng");
