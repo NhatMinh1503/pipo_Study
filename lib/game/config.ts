@@ -51,6 +51,10 @@ export const GAME = {
       { days: 100, coins: 100 },
     ],
   },
+  ai: {
+    /** Mirrors SQL rate_limit_hit: AI calls per learner per minute (the daily cap is AI_DAILY_LIMIT). */
+    perMinute: 30,
+  },
   level: {
     /** Mirrors SQL level_for_xp: xp_to_next(L) = base + step × (L − 1). */
     base: 50,

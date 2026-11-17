@@ -288,7 +288,7 @@
     "allDoneDescription": "Ambil hadiahmu dan lihat ringkasannya.",
     "finish": "Ambil hadiah & lihat hasil",
     "errors": {
-      "rateLimited": "Jatah pemeriksaan AI hari ini sudah habis. Kembali lagi besok.",
+      "rateLimited": "Batas AI tercapai untuk saat ini (terlalu banyak dalam semenit, atau kuota hari ini habis). Coba lagi sebentar lagi.",
       "notConfigured": "AI belum dikonfigurasi (GEMINI_API_KEY tidak ada).",
       "unavailable": "AI sedang sibuk dan tidak bisa menilai ini. Tidak dihitung — silakan coba lagi.",
       "network": "Koneksi terputus. Periksa jaringanmu dan coba lagi."

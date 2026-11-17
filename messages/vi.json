@@ -288,7 +288,7 @@
     "allDoneDescription": "Nhận điểm và xem tổng kết.",
     "finish": "Nhận thưởng & xem kết quả",
     "errors": {
-      "rateLimited": "Bạn đã dùng hết lượt chấm AI hôm nay. Hãy quay lại vào ngày mai.",
+      "rateLimited": "Bạn đã dùng hết lượt AI lúc này (quá nhiều lượt trong 1 phút, hoặc hết lượt hôm nay). Thử lại sau ít phút nhé.",
       "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
       "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
       "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại."

@@ -288,7 +288,7 @@
     "allDoneDescription": "Claim your reward and see the summary.",
     "finish": "Claim reward & see results",
     "errors": {
-      "rateLimited": "You have used today's AI checks. Come back tomorrow.",
+      "rateLimited": "You've reached the AI limit for now (too many checks in a minute, or today's quota is used up). Try again shortly.",
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
       "network": "Connection lost. Check your network and try again."
