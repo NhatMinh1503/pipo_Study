@@ -33,6 +33,19 @@ test.describe("gamification and account", () => {
     await expect(page.getByLabel("Hoàn thành 3 bài — đang thực hiện")).toBeVisible();
   });
 
+  test("a topic node generates a lesson tagged with its level; higher levels start locked", async ({
+    page,
+  }, testInfo) => {
+    await createOnboardedUser(page, testInfo);
+
+    await page.goto("/skills");
+    const travel = page.getByLabel("Du lịch N4 — đã mở");
+    await expect(travel).toBeVisible();
+    await expect(page.getByLabel("Du lịch N3 — chưa mở khoá")).toBeVisible();
+    await travel.getByRole("button", { name: "Học" }).click();
+    await expect(page).toHaveURL(/\/translate$/);
+  });
+
   test("buy a decoration with coins and the balance goes down", async ({ page }, testInfo) => {
     const email = await createOnboardedUser(page, testInfo);
 

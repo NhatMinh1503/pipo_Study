@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import type { ActionResult } from "@/lib/action-result";
-import { errorTagSchema } from "@/lib/ai/error-tags";
+import { errorTagSchema, type ErrorTag } from "@/lib/ai/error-tags";
+import type { LearningLanguage, ProficiencyLevel } from "@/lib/schemas/common";
+import { canStartNode, computeTopicTree, parseSkillNode, TOPIC_PROMPTS } from "@/lib/skills/topics";
 import { createClient } from "@/lib/supabase/server";
 import { getLessonGenerator } from "@/server/ai/lesson-generator";
 import { getServerEnv } from "@/server/env";
@@ -38,6 +40,52 @@ export async function generateLesson(input: unknown): Promise<ActionResult> {
   const level = profile.level;
   if (!language || !level) return { ok: false, error: "errors.unexpected" };
 
+  return generateAndOpen({ userId: profile.user_id, language, level, ...parsed.data });
+}
+
+/**
+ * Starts a skill-tree node: checks on the server that the node is open for this learner,
+ * then generates a lesson on its topic at the node's level, tagged with the node.
+ */
+export async function startSkillNode(nodeId: unknown): Promise<ActionResult> {
+  const id = z.string().max(40).safeParse(nodeId);
+  if (!id.success) return { ok: false, error: "errors.unexpected" };
+
+  const profile = await requireOnboardedProfile();
+  const language = profile.learning_language;
+  const level = profile.level;
+  if (!language || !level) return { ok: false, error: "errors.unexpected" };
+
+  const node = parseSkillNode(id.data, language);
+  if (!node) return { ok: false, error: "errors.unexpected" };
+  const supabase = await createClient();
+  const { data: progress } = await supabase.rpc("skill_tree_progress");
+  const tree = computeTopicTree(language, level, progress ?? []);
+  if (!canStartNode(tree, id.data)) return { ok: false, error: "skills.tree.locked" };
+
+  return generateAndOpen({
+    userId: profile.user_id,
+    language,
+    level: node.level,
+    topic: TOPIC_PROMPTS[node.topic],
+    skillNode: id.data,
+  });
+}
+
+interface GenerateParams {
+  userId: string;
+  language: LearningLanguage;
+  level: ProficiencyLevel;
+  topic?: string;
+  focusTags?: ErrorTag[];
+  skillNode?: string;
+}
+
+async function generateAndOpen({
+  userId,
+  skillNode,
+  ...request
+}: GenerateParams): Promise<ActionResult> {
   const supabase = await createClient();
   const { data: allowed } = await supabase.rpc("rate_limit_hit", {
     p_key: "ai",
@@ -47,7 +95,7 @@ export async function generateLesson(input: unknown): Promise<ActionResult> {
 
   let lesson;
   try {
-    lesson = await getLessonGenerator()({ language, level, ...parsed.data });
+    lesson = await getLessonGenerator()(request);
   } catch (error) {
     logger.warn("lesson generation failed", {
       code: error instanceof AiError ? error.code : "INTERNAL",
@@ -60,11 +108,12 @@ export async function generateLesson(input: unknown): Promise<ActionResult> {
     // Only the server creates ai lessons (they are outside the daily XP cap for manual ones)
     lessonId = await createGeneratedLesson({
       adminClient: createAdminClient(),
-      userId: profile.user_id,
+      userId,
       title: lesson.title,
-      language,
-      level,
+      language: request.language,
+      level: request.level,
       sentences: lesson.sentences,
+      skillNode,
     });
   } catch (error) {
     logger.error("saving generated lesson failed", {
@@ -74,5 +123,6 @@ export async function generateLesson(input: unknown): Promise<ActionResult> {
   }
 
   revalidatePath("/lessons");
+  revalidatePath("/skills");
   redirect(`/lessons/${lessonId}/translate`);
 }

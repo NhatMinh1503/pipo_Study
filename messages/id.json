@@ -760,7 +760,7 @@
   },
   "skills": {
     "title": "Pohon keterampilan",
-    "description": "Capai target untuk membuka langkah berikutnya di setiap cabang.",
+    "description": "Belajar per topik dan level: skor 60% atau lebih di satu titik membuka level berikutnya.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "selesai",
@@ -784,6 +784,33 @@
         "title": "Fokus",
         "goal": "{count, plural, other {# sesi Pomodoro}}"
       }
+    },
+    "tree": {
+      "title": "Jalur topik",
+      "description": "Setiap titik adalah pelajaran AI tentang topik itu di level itu. Level sampai levelmu sudah terbuka.",
+      "topics": {
+        "daily": "Kehidupan sehari-hari",
+        "food": "Makanan",
+        "travel": "Perjalanan",
+        "school": "Sekolah",
+        "work": "Pekerjaan",
+        "technology": "Teknologi"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "lulus",
+        "open": "terbuka",
+        "locked": "terkunci"
+      },
+      "best": "Terbaik {percent}%",
+      "start": "Belajar",
+      "again": "Lagi",
+      "starting": "Menulis pelajaran…",
+      "locked": "Titik ini masih terkunci"
+    },
+    "achievements": {
+      "title": "Pencapaian",
+      "description": "Lencana untuk tonggak aktivitas."
     }
   },
   "profile": {

@@ -760,7 +760,7 @@
   },
   "skills": {
     "title": "スキルツリー",
-    "description": "目標を達成すると、各ブランチの次のステップが解放されます。",
+    "description": "テーマとレベルで学ぶ：60%以上で次のレベルがひらきます。",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "達成",
@@ -784,6 +784,33 @@
         "title": "集中",
         "goal": "ポモドーロ{count}回"
       }
+    },
+    "tree": {
+      "title": "テーマ別ルート",
+      "description": "それぞれのノードは、そのテーマとレベルのAIレッスンです。あなたのレベルまでは最初からひらいています。",
+      "topics": {
+        "daily": "くらし",
+        "food": "たべもの",
+        "travel": "りょこう",
+        "school": "がっこう",
+        "work": "しごと",
+        "technology": "テクノロジー"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "クリア",
+        "open": "ひらいている",
+        "locked": "ロック中"
+      },
+      "best": "さいこう {percent}%",
+      "start": "学ぶ",
+      "again": "もう一度",
+      "starting": "レッスンを作っています…",
+      "locked": "このノードはまだロックされています"
+    },
+    "achievements": {
+      "title": "実績",
+      "description": "活動の目標ごとのバッジ。"
     }
   },
   "profile": {

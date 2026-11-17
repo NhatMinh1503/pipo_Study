@@ -569,6 +569,7 @@ export type Database = {
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
+          skill_node: string | null
           source: Database["public"]["Enums"]["lesson_source"]
           source_credits: string | null
           source_license: string | null
@@ -584,6 +585,7 @@ export type Database = {
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
+          skill_node?: string | null
           source?: Database["public"]["Enums"]["lesson_source"]
           source_credits?: string | null
           source_license?: string | null
@@ -599,6 +601,7 @@ export type Database = {
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
+          skill_node?: string | null
           source?: Database["public"]["Enums"]["lesson_source"]
           source_credits?: string | null
           source_license?: string | null
@@ -1427,8 +1430,17 @@ export type Database = {
       }
       record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
       remove_decoration: { Args: { p_item_id: string }; Returns: undefined }
+      review_count: { Args: never; Returns: number }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
       streak_milestone_coins: { Args: { p_days: number }; Returns: number }
+      skill_tree_progress: {
+        Args: never
+        Returns: {
+          best_accuracy: number
+          lessons_done: number
+          skill_node: string
+        }[]
+      }
       start_pomodoro: {
         Args: {
           p_planned_minutes?: number

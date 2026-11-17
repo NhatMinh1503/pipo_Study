@@ -51,6 +51,7 @@ value is approved but not implemented yet.
 | streak_freeze_price          | 50 Coins                                 | 30–80     | economy  | SQL `buy_streak_freeze` + `GAME.streak`                              | streak-goals §2   | 2026-11-17 |
 | streak_freeze_max            | 2                                        | 1–3       | gate     | SQL wallets CHECK + `GAME.streak`                                    | streak-goals §2   | 2026-11-17 |
 | streak_milestones            | 3→5, 7→10, 14→20, 30→40, 60→60, 100n→100 | —         | feel     | SQL `streak_milestone_coins` + `GAME.streak`                         | streak-goals §2   | 2026-11-17 |
+| skill_pass_accuracy          | 60 %                                     | 50–80 %   | gate     | `lib/skills/topics.ts` (`PASS_ACCURACY`)                             | skill-tree        | 2026-11-17 |
 | tree_per_session             | 1 whole tree per completed session       | fixed     | gate     | SQL `tend_garden` (migration 20261110040100)                         | Forest style      | 2026-11-10 |
 | garden_grid                  | 8 × 6 tiles                              | fixed     | gate     | _(planned)_ lib/garden/layout.ts                                     | garden-scene §3.4 | 2026-11-07 |
 | plots_per_garden             | 31                                       | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.4 | 2026-11-07 |

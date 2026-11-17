@@ -760,7 +760,7 @@
   },
   "skills": {
     "title": "Cây kỹ năng",
-    "description": "Hoàn thành mục tiêu để mở khoá bước tiếp theo của từng nhánh.",
+    "description": "Học theo chủ đề và trình độ: đạt từ 60% ở một nút để mở trình độ tiếp theo.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "đã hoàn thành",
@@ -784,6 +784,33 @@
         "title": "Tập trung",
         "goal": "{count, plural, other {# phiên Pomodoro}}"
       }
+    },
+    "tree": {
+      "title": "Lộ trình theo chủ đề",
+      "description": "Mỗi nút là một bài AI viết đúng chủ đề và trình độ. Các trình độ đến trình độ của bạn đã mở sẵn.",
+      "topics": {
+        "daily": "Đời sống",
+        "food": "Ẩm thực",
+        "travel": "Du lịch",
+        "school": "Trường học",
+        "work": "Công việc",
+        "technology": "Công nghệ"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "đã vượt qua",
+        "open": "đã mở",
+        "locked": "chưa mở khoá"
+      },
+      "best": "Tốt nhất {percent}%",
+      "start": "Học",
+      "again": "Học lại",
+      "starting": "Đang tạo bài…",
+      "locked": "Nút này chưa mở khoá"
+    },
+    "achievements": {
+      "title": "Thành tựu",
+      "description": "Huy hiệu theo mốc hoạt động."
     }
   },
   "profile": {

@@ -760,7 +760,7 @@
   },
   "skills": {
     "title": "Skill tree",
-    "description": "Reach goals to unlock the next step of each branch.",
+    "description": "Learn by topic and level: score 60% or more on a node to open the next level.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "completed",
@@ -784,6 +784,33 @@
         "title": "Focus",
         "goal": "{count, plural, one {# Pomodoro session} other {# Pomodoro sessions}}"
       }
+    },
+    "tree": {
+      "title": "Topic path",
+      "description": "Each node is an AI lesson on that topic at that level. Levels up to yours are already open.",
+      "topics": {
+        "daily": "Daily life",
+        "food": "Food",
+        "travel": "Travel",
+        "school": "School",
+        "work": "Work",
+        "technology": "Technology"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "passed",
+        "open": "open",
+        "locked": "locked"
+      },
+      "best": "Best {percent}%",
+      "start": "Learn",
+      "again": "Again",
+      "starting": "Writing the lesson…",
+      "locked": "This node is still locked"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "description": "Badges for activity milestones."
     }
   },
   "profile": {

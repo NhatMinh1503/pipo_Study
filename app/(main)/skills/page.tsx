@@ -7,12 +7,23 @@ import { PageHeader } from "@/components/common/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { SkillTreeView } from "./_components/skill-tree-view";
+import { TopicTreeView } from "./_components/topic-tree-view";
 
 export const metadata: Metadata = { title: "Skill tree" };
 
 async function SkillsHeader() {
   const t = await getTranslations("skills");
   return <PageHeader title={t("title")} description={t("description")} />;
+}
+
+async function AchievementsHeading() {
+  const t = await getTranslations("skills");
+  return (
+    <div>
+      <h2 className="font-heading text-lg font-bold">{t("achievements.title")}</h2>
+      <p className="text-sm text-muted-foreground">{t("achievements.description")}</p>
+    </div>
+  );
 }
 
 export default function SkillsPage() {
@@ -22,6 +33,10 @@ export default function SkillsPage() {
         <SkillsHeader />
       </Suspense>
       <Suspense fallback={<Skeleton className="h-96 border-2 border-border" />}>
+        <TopicTreeView />
+      </Suspense>
+      <Suspense fallback={<Skeleton className="h-64 border-2 border-border" />}>
+        <AchievementsHeading />
         <SkillTreeView />
       </Suspense>
     </PageContainer>
