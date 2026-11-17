@@ -245,7 +245,8 @@
     "news": "Berita",
     "generate": "Buat dengan AI",
     "source": {
-      "adapted": "Teks diadaptasi untuk pelajar oleh pipo dari <source></source>, di bawah lisensi <license></license>."
+      "adapted": "Teks diadaptasi untuk pelajar oleh pipo dari <source></source>, di bawah lisensi <license></license>.",
+      "credits": "Kredit: {credits}."
     },
     "newsRewrite": {
       "writing": "AI sedang menulis ulang berita ini sesuai tingkatmu…",
@@ -639,7 +640,9 @@
     "copyrightNote": "pipo hanya menampilkan judul dan tautan; isi artikel milik penerbitnya.",
     "open": {
       "title": "Bacaan dari sumber terbuka",
-      "description": "Berita dari {source} ({license}) — lisensinya mengizinkan adaptasi. Tekan “Jadikan pelajaran” dan AI akan menulis ulang sesuai tingkatmu, tanpa menyalin aslinya."
+      "description": "Artikel dari {sources}, yang lisensinya mengizinkan adaptasi. Ketuk “Jadikan pelajaran” dan AI menulis ulang sesuai levelmu, tanpa menyalin teks aslinya.",
+      "all": "Semua",
+      "filterLabel": "Saring menurut sumber"
     },
     "headlines": {
       "title": "Judul berita dari {source}"

@@ -35,6 +35,7 @@ export function SourceAttribution({ source, className }: SourceAttributionProps)
             source.license
           ),
       })}
+      {source.credits && <> {t("credits", { credits: source.credits })}</>}
     </p>
   );
 }

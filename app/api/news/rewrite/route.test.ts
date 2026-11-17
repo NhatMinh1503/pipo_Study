@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   allowed: true,
   rewrite: vi.fn(),
   upsert: vi.fn(),
+  credits: null as string | null,
 }));
 
 vi.mock("@/server/auth", () => ({ getSessionUser: async () => mocks.user }));
@@ -18,6 +19,7 @@ vi.mock("@/server/queries/open-news", () => ({
   getOpenArticle: async () => ({
     title: "防災士の表敬",
     text: "高市総理は、総理大臣官邸で防災士アンバサダーの野口絵子氏による表敬を受けました。",
+    credits: mocks.credits,
   }),
 }));
 vi.mock("@/server/ai/news-rewriter", () => ({
@@ -56,6 +58,7 @@ describe("POST /api/news/rewrite", () => {
     mocks.user = { id: "user-1" };
     mocks.cached = null;
     mocks.allowed = true;
+    mocks.credits = null;
     mocks.rewrite.mockReset().mockResolvedValue(ORIGINAL_DRAFT);
     mocks.upsert.mockReset().mockResolvedValue({ error: null });
   });
@@ -82,6 +85,15 @@ describe("POST /api/news/rewrite", () => {
       expect.objectContaining({ level: "N4", language: "ja" }),
     );
     expect(mocks.upsert).toHaveBeenCalledOnce();
+  });
+
+  it("credits the Global Voices writers in the attribution", async () => {
+    mocks.credits = "記者 (English) Oiwan Lam · 翻訳 (日本語) Yasuhisa Miyata";
+    const json = await (
+      await call({ url: "https://jp.globalvoices.org/2026/11/02/65795/" })
+    ).json();
+    expect(json.source).toMatchObject({ name: "Global Voices 日本語", license: "CC BY 3.0" });
+    expect(json.source.attribution).toContain("Oiwan Lam");
   });
 
   it("serves the shared cache without calling the AI", async () => {

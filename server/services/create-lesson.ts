@@ -29,6 +29,8 @@ export interface CreateLessonForLearnerParams {
   text: string;
   sentences: string[];
   newsUrl?: string;
+  /** Writers to credit for an allow-listed article (Global Voices), looked up by the server. */
+  getCredits?: (url: string) => Promise<string | null>;
 }
 
 /**
@@ -42,12 +44,17 @@ export async function createLessonForLearner(
   const { userClient, adminClient, userId, title, language, level, text, sentences } = params;
   // Attribution comes from the allow-list, never from what the client sends
   const source = params.newsUrl ? findOpenSource(params.newsUrl) : null;
+  const credits =
+    source && params.newsUrl && params.getCredits
+      ? await params.getCredits(params.newsUrl).catch(() => null)
+      : null;
   const attribution =
     source && params.newsUrl
       ? {
           p_source_name: source.name,
           p_source_url: params.newsUrl,
           p_source_license: source.license,
+          ...(credits ? { p_source_credits: credits.slice(0, 300) } : {}),
         }
       : {};
 

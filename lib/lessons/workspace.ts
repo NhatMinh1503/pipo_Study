@@ -28,6 +28,8 @@ export interface LessonSource {
   name: string;
   url: string;
   license: string;
+  /** Writers and translators the licence asks to name (Global Voices). */
+  credits?: string | null;
 }
 
 export interface LessonWorkspace {
