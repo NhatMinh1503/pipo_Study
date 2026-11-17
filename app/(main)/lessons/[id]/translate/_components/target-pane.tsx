@@ -14,6 +14,8 @@ interface TargetPaneProps {
   isGrading: boolean;
   /** True after a correct answer: input is locked and "next" is offered. */
   isReviewing: boolean;
+  /** Same lesson and display language: the learner rewords the sentence instead. */
+  reword: boolean;
   onSubmit: (text: string) => void;
   onNext: () => void;
 }
@@ -27,6 +29,7 @@ export function TargetPane({
   attemptCount,
   isGrading,
   isReviewing,
+  reword,
   onSubmit,
   onNext,
 }: TargetPaneProps) {
@@ -52,7 +55,7 @@ export function TargetPane({
       }}
     >
       <label htmlFor={inputId} className="mono-label block">
-        {t("yourTranslation")}
+        {reword ? t("yourRewording") : t("yourTranslation")}
         <span className="sr-only">: {sourceText}</span>
       </label>
       <Textarea
@@ -61,7 +64,7 @@ export function TargetPane({
         rows={4}
         autoFocus
         disabled={isReviewing}
-        placeholder={t("placeholder")}
+        placeholder={reword ? t("rewordPlaceholder") : t("placeholder")}
         onChange={(event) => setText(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {

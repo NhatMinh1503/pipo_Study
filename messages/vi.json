@@ -272,7 +272,9 @@
       "locked": "Chưa mở khoá"
     },
     "yourTranslation": "Bản dịch của bạn",
+    "yourRewording": "Diễn đạt lại bằng lời của bạn",
     "placeholder": "Gõ bản dịch câu đang được tô sáng...",
+    "rewordPlaceholder": "Viết lại câu đang sáng bằng từ khác (giữ nguyên nghĩa)...",
     "keyboardHint": "Enter để kiểm tra · Shift+Enter để xuống dòng",
     "attempts": "Lần thử thứ {count}",
     "check": "Kiểm tra",
@@ -291,7 +293,8 @@
       "rateLimited": "Bạn đã dùng hết lượt AI lúc này (quá nhiều lượt trong 1 phút, hoặc hết lượt hôm nay). Thử lại sau ít phút nhé.",
       "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
       "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
-      "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại."
+      "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại.",
+      "copiedSource": "Đây là nguyên văn câu gốc. Hãy viết bằng lời của bạn — lần này không bị tính."
     },
     "xp": {
       "earned": "+{xp} XP",
@@ -956,6 +959,7 @@
     "opponentAbsent": "Đối thủ đang mất kết nối. Nếu vắng quá 90 giây, bạn sẽ được tính thắng.",
     "abandoned": "Trận đấu đã kết thúc vì cả hai người chơi cùng vắng mặt",
     "abandonedHint": "Không ai thắng trận này.",
+    "copiedSource": "Đây là nguyên văn câu gốc. Hãy tự viết câu trả lời.",
     "noPaste": "Trong trận đấu không dán được văn bản — hãy tự gõ nhé.",
     "rewardNote": "Hoàn thành trận: +3 xu, thắng thêm +2 (tối đa 5 trận/ngày).",
     "ghost": {

@@ -11,6 +11,7 @@ import { PageHeader } from "@/components/common/page-header";
 import { VerdictBadge } from "@/components/lessons/verdict-badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ApiError } from "@/lib/api/http";
 
 import { useBattleRoom } from "../_hooks/use-battle-room";
 import { AnswerForm } from "./answer-form";
@@ -129,7 +130,13 @@ export function BattleRoom({ battleId, userId }: BattleRoomProps) {
           <span className="text-muted-foreground">{room.lastResult.feedback}</span>
         </div>
       )}
-      {room.submitError && <p className="text-sm text-destructive">{t("gradeFailed")}</p>}
+      {room.submitError && (
+        <p role="alert" className="text-sm text-destructive">
+          {room.submitError instanceof ApiError && room.submitError.code === "COPIED_SOURCE"
+            ? t("copiedSource")
+            : t("gradeFailed")}
+        </p>
+      )}
 
       {sentence ? (
         <section className="sheet-tight space-y-4 p-5">

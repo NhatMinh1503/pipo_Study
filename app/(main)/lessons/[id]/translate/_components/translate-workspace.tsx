@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { SourceAttribution } from "@/components/lessons/source-attribution";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +21,7 @@ import { TargetPane } from "./target-pane";
  */
 export function TranslateWorkspace({ workspace }: { workspace: LessonWorkspace }) {
   const t = useTranslations("translate");
+  const locale = useLocale();
   const session = useTranslateSession(workspace);
   useWarmVocabulary(workspace.id);
   const total = session.sentences.length;
@@ -75,6 +76,7 @@ export function TranslateWorkspace({ workspace }: { workspace: LessonWorkspace }
                     attemptCount={session.current.attempts.length}
                     isGrading={session.isGrading}
                     isReviewing={session.isReviewing}
+                    reword={locale === workspace.language}
                     onSubmit={session.submit}
                     onNext={session.goToNext}
                   />

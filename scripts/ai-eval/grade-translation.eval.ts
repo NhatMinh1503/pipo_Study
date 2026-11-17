@@ -18,7 +18,7 @@ import {
   PROMPT_VERSION,
   SYSTEM_INSTRUCTION,
   type GradeInput,
-} from "@/server/prompts/grade-translation.v1";
+} from "@/server/prompts/grade-translation.v2";
 
 process.loadEnvFile(".env.local");
 

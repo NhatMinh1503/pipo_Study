@@ -10,7 +10,7 @@ import {
   SYSTEM_INSTRUCTION,
   type GradeInput,
   type GradeResponse,
-} from "@/server/prompts/grade-translation.v1";
+} from "@/server/prompts/grade-translation.v2";
 
 export type Grader = ((input: GradeInput) => Promise<GradeResponse>) & {
   /** Only real AI verdicts may enter the shared grading cache. */

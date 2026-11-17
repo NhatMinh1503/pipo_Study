@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 3.2.0
       # Starts only Postgres and applies every migration from scratch
       - run: supabase db start
       - run: supabase test db
@@ -55,7 +55,7 @@ jobs:
           cache: npm
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 3.2.0
       - run: npm ci
       # Full local stack (Auth, Mailpit, Realtime, Storage) with migrations and seed applied
       - run: supabase start

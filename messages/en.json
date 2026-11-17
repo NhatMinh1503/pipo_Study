@@ -272,7 +272,9 @@
       "locked": "Locked"
     },
     "yourTranslation": "Your translation",
+    "yourRewording": "Say it in your own words",
     "placeholder": "Type the translation of the highlighted sentence...",
+    "rewordPlaceholder": "Rewrite the highlighted sentence with other words (same meaning)...",
     "keyboardHint": "Enter to check · Shift+Enter for a new line",
     "attempts": "Attempt {count}",
     "check": "Check",
@@ -291,7 +293,8 @@
       "rateLimited": "You've reached the AI limit for now (too many checks in a minute, or today's quota is used up). Try again shortly.",
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
-      "network": "Connection lost. Check your network and try again."
+      "network": "Connection lost. Check your network and try again.",
+      "copiedSource": "That is the original sentence. Write it in your own words — this try was not counted."
     },
     "xp": {
       "earned": "+{xp} XP",
@@ -956,6 +959,7 @@
     "opponentAbsent": "Your opponent has lost connection. If they stay away for more than 90 seconds, you win.",
     "abandoned": "This battle ended because both players were away",
     "abandonedHint": "Nobody wins this battle.",
+    "copiedSource": "That is the original sentence. Write your own answer.",
     "noPaste": "Pasting is off during a battle — type your own answer.",
     "rewardNote": "Finishing a battle: +3 coins, +2 more for a win (up to 5 battles a day).",
     "ghost": {

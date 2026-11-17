@@ -17,6 +17,19 @@ async function createLesson(page: Page, title: string, text: string) {
 const answerBox = (page: Page) => page.getByLabel(/Bản dịch của bạn/);
 
 test.describe("translate flow", () => {
+  test("pasting the source sentence back is rejected and not counted", async ({
+    page,
+  }, testInfo) => {
+    await createOnboardedUser(page, testInfo);
+    await createLesson(page, "Chép câu gốc", "猫が寝ています。犬が走っています。");
+
+    await answerBox(page).fill("猫が寝ています。");
+    await answerBox(page).press("Enter");
+    await expect(page.getByText("Đây là nguyên văn câu gốc")).toBeVisible();
+    await expect(page.getByText("0/2 câu")).toBeVisible();
+    await expect(page.getByText("Lần thử thứ 1")).toHaveCount(0);
+  });
+
   test("wrong answer shows a hint, right answer unlocks the next sentence, finishing pays XP", async ({
     page,
   }, testInfo) => {

@@ -11,7 +11,7 @@ import {
   PROMPT_VERSION,
   type GradeInput,
   type GradeResponse,
-} from "@/server/prompts/grade-translation.v1";
+} from "@/server/prompts/grade-translation.v2";
 import type { Database } from "@/types/database";
 
 type Client = SupabaseClient<Database>;

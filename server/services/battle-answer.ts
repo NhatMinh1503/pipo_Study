@@ -9,6 +9,7 @@ import {
   type BattleDecision,
 } from "@/lib/battle/scoring";
 import type { BattleAnswerResponse } from "@/lib/schemas/battle";
+import { isCopyOfSource } from "@/lib/nlp/copy-guard";
 import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
 import type { Database } from "@/types/database";
@@ -17,7 +18,9 @@ import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 type Client = SupabaseClient<Database>;
 
 export class BattleError extends Error {
-  constructor(readonly code: "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "INTERNAL") {
+  constructor(
+    readonly code: "NOT_FOUND" | "CONFLICT" | "RATE_LIMITED" | "COPIED_SOURCE" | "INTERNAL",
+  ) {
     super(code);
   }
 }
@@ -86,6 +89,17 @@ export async function submitBattleAnswer(
     contextAfter: battle.sentences[sentenceIndex + 1] ?? null,
     referenceTranslation: null,
   };
+
+  // Pasting the source is never an answer; the clock keeps running while they rewrite it
+  if (
+    isCopyOfSource({
+      source,
+      answer: translation,
+      sameLanguage: gradeInput.sourceLanguage === gradeInput.targetLanguage,
+    })
+  ) {
+    throw new BattleError("COPIED_SOURCE");
+  }
 
   const cached = await readCachedGrade(adminClient, gradeInput);
   if (!cached) {

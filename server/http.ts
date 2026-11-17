@@ -11,6 +11,7 @@ export type ApiErrorCode =
   | "AI_NOT_CONFIGURED"
   | "AI_UNAVAILABLE"
   | "AI_BAD_REQUEST"
+  | "COPIED_SOURCE"
   | "INTERNAL";
 
 const STATUS: Record<ApiErrorCode, number> = {
@@ -22,6 +23,7 @@ const STATUS: Record<ApiErrorCode, number> = {
   AI_NOT_CONFIGURED: 503,
   AI_UNAVAILABLE: 503,
   AI_BAD_REQUEST: 502,
+  COPIED_SOURCE: 422,
   INTERNAL: 500,
 };
 
