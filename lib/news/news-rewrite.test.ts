@@ -8,6 +8,9 @@ describe("findOpenSource", () => {
   it.each([
     ["https://www.kantei.go.jp/jp/105/actions/202611/02hyoukei.html", "kantei"],
     ["https://www.gov.uk/government/news/one-million-more-scans", "govuk"],
+    ["https://jp.globalvoices.org/2026/11/02/65795/", "globalvoices-ja"],
+    ["https://globalvoices.org/2026/11/15/madagascar-marine-areas/", "globalvoices-en"],
+    ["https://newsinhealth.nih.gov/2026/11/wearable-tech", "nih"],
   ])("accepts %s", (url, id) => {
     expect(findOpenSource(url)?.id).toBe(id);
   });
@@ -15,6 +18,8 @@ describe("findOpenSource", () => {
   it.each([
     "https://www3.nhk.or.jp/news/html/x.html",
     "https://www.gov.uk/guidance/x",
+    "https://globalvoices.org/author/someone/",
+    "https://newsinhealth.nih.gov/about-us",
     "https://www.gov.uk@evil.test/government/news/x",
     "https://www.kantei.go.jp:8443/jp/x.html",
     "http://www.kantei.go.jp/jp/x.html",
@@ -30,6 +35,32 @@ describe("attributionFor", () => {
     const text = attributionFor(OPEN_SOURCES.kantei, "表敬", "https://www.kantei.go.jp/jp/a.html");
     expect(text).toContain("「表敬」（首相官邸ホームページ）");
     expect(text).toContain("加工して作成");
+  });
+
+  it("names the Global Voices writers and the CC BY licence", () => {
+    const ja = attributionFor(
+      OPEN_SOURCES["globalvoices-ja"],
+      "シラヤ族",
+      "https://jp.globalvoices.org/2026/11/02/65795/",
+      "記者 (English) Oiwan Lam · 翻訳 (日本語) Yasuhisa Miyata",
+    );
+    expect(ja).toContain("「シラヤ族」（記者 (English) Oiwan Lam");
+    expect(ja).toContain("CC BY 3.0");
+    expect(ja).toContain("書き直して作成");
+    const en = attributionFor(
+      OPEN_SOURCES["globalvoices-en"],
+      "Tea",
+      "https://globalvoices.org/2026/11/15/tea/",
+    );
+    expect(en).toBe(
+      "Adapted for learners by pipo from “Tea”, Global Voices, https://globalvoices.org/2026/11/15/tea/, licensed under CC BY 3.0.",
+    );
+  });
+
+  it("credits NIH News in Health without implying NIH reviewed the text", () => {
+    expect(
+      attributionFor(OPEN_SOURCES.nih, "Wearable Tech", "https://newsinhealth.nih.gov/2026/11/w"),
+    ).toContain("Not reviewed by NIH");
   });
 
   it("carries the OGL statement", () => {

@@ -537,6 +537,7 @@ export type Database = {
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
           source: Database["public"]["Enums"]["lesson_source"]
+          source_credits: string | null
           source_license: string | null
           source_name: string | null
           source_url: string | null
@@ -551,6 +552,7 @@ export type Database = {
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
           source?: Database["public"]["Enums"]["lesson_source"]
+          source_credits?: string | null
           source_license?: string | null
           source_name?: string | null
           source_url?: string | null
@@ -565,6 +567,7 @@ export type Database = {
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
           source?: Database["public"]["Enums"]["lesson_source"]
+          source_credits?: string | null
           source_license?: string | null
           source_name?: string | null
           source_url?: string | null
@@ -1276,6 +1279,7 @@ export type Database = {
           p_language: Database["public"]["Enums"]["learning_language"]
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
+          p_source_credits?: string
           p_source_license?: string
           p_source_name?: string
           p_source_url?: string
@@ -1289,6 +1293,7 @@ export type Database = {
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
           p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_credits?: string
           p_source_license?: string
           p_source_name?: string
           p_source_url?: string
@@ -1307,6 +1312,7 @@ export type Database = {
           p_level: Database["public"]["Enums"]["proficiency_level"]
           p_sentences: string[]
           p_source: Database["public"]["Enums"]["lesson_source"]
+          p_source_credits: string
           p_source_license: string
           p_source_name: string
           p_source_url: string

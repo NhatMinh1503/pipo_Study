@@ -245,7 +245,8 @@
     "news": "ニュース",
     "generate": "AIで作成",
     "source": {
-      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成"
+      "adapted": "<source></source>（<license></license>）をもとに pipo が学習者向けに加工して作成",
+      "credits": "クレジット：{credits}"
     },
     "newsRewrite": {
       "writing": "AIがこのニュースをあなたのレベルに書き直しています…",
@@ -642,7 +643,9 @@
     "copyrightNote": "pipoは見出しとリンクのみを表示します。記事の内容は各発行元に帰属します。",
     "open": {
       "title": "オープンソースの読み物",
-      "description": "{source}（{license}）のニュースです。ライセンス上、編集・加工が認められています。「教材を作る」を押すと、AIが原文をコピーせずにあなたのレベルで書き直します。"
+      "description": "{sources} の記事です（いずれも改変を認めるライセンス）。「教材を作る」を押すと、AI があなたのレベルに合わせて書き直します。原文はそのまま写しません。",
+      "all": "すべて",
+      "filterLabel": "ソースで絞り込む"
     },
     "headlines": {
       "title": "{source}の最新見出し"

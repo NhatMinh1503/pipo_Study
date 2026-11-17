@@ -245,7 +245,8 @@
     "news": "Tin tức",
     "generate": "Tạo bằng AI",
     "source": {
-      "adapted": "Bài đọc do pipo biên tập lại cho người học từ <source></source>, theo giấy phép <license></license>."
+      "adapted": "Bài đọc do pipo biên tập lại cho người học từ <source></source>, theo giấy phép <license></license>.",
+      "credits": "Tác giả: {credits}."
     },
     "newsRewrite": {
       "writing": "AI đang viết lại tin này thành bài đọc đúng trình độ của bạn…",
@@ -642,7 +643,9 @@
     "copyrightNote": "pipo chỉ hiển thị tiêu đề và liên kết; nội dung bài báo thuộc về nhà xuất bản.",
     "open": {
       "title": "Bài đọc từ nguồn mở",
-      "description": "Tin từ {source} ({license}) — giấy phép cho phép biên tập lại. Bấm “Tạo bài” để AI viết lại thành đoạn văn đúng trình độ của bạn, không sao chép nguyên văn."
+      "description": "Bài từ {sources}: các nguồn có giấy phép cho phép biên tập lại. Bấm “Tạo bài” để AI viết lại thành đoạn văn đúng trình độ của bạn, không sao chép nguyên văn.",
+      "all": "Tất cả",
+      "filterLabel": "Lọc theo nguồn"
     },
     "headlines": {
       "title": "Tin nóng từ {source}"

@@ -18,7 +18,7 @@ export async function getLessonWorkspace(
   const { data: lesson } = await client
     .from("lessons")
     .select(
-      "id, title, language, level, completed_at, source_name, source_url, source_license, sentences(id, position, source_text, reference_translation, completed_at, tokens, attempts(verdict, feedback, hint, user_translation, created_at))",
+      "id, title, language, level, completed_at, source_name, source_url, source_license, source_credits, sentences(id, position, source_text, reference_translation, completed_at, tokens, attempts(verdict, feedback, hint, user_translation, created_at))",
     )
     .eq("id", lessonId)
     .order("position", { referencedTable: "sentences" })
@@ -34,7 +34,12 @@ export async function getLessonWorkspace(
     completedAt: lesson.completed_at,
     source:
       lesson.source_name && lesson.source_url && lesson.source_license
-        ? { name: lesson.source_name, url: lesson.source_url, license: lesson.source_license }
+        ? {
+            name: lesson.source_name,
+            url: lesson.source_url,
+            license: lesson.source_license,
+            credits: lesson.source_credits,
+          }
         : null,
     sentences: lesson.sentences.map((sentence) => {
       const completed = sentence.completed_at !== null;

@@ -245,7 +245,8 @@
     "news": "News",
     "generate": "Generate with AI",
     "source": {
-      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence."
+      "adapted": "Passage adapted for learners by pipo from <source></source>, under the <license></license> licence.",
+      "credits": "Credits: {credits}."
     },
     "newsRewrite": {
       "writing": "The AI is rewriting this story at your level…",
@@ -642,7 +643,9 @@
     "copyrightNote": "pipo shows only headlines and links; article content belongs to its publisher.",
     "open": {
       "title": "Readings from open sources",
-      "description": "News from {source} ({license}) — the licence allows adaptation. Press “Make a lesson” and the AI rewrites it at your level, without copying the original."
+      "description": "Articles from {sources}, whose licences allow adaptation. Tap “Make a lesson” and the AI rewrites one at your level, without copying the original.",
+      "all": "All",
+      "filterLabel": "Filter by source"
     },
     "headlines": {
       "title": "Headlines from {source}"

@@ -42,7 +42,11 @@ export async function rewriteNewsForLesson(
   const source = findOpenSource(url);
   if (!source) throw new NewsRewriteError("NOT_FOUND");
 
-  const respond = (title: string, passage: string, originalTitle: string): NewsRewriteResponse => ({
+  const respond = (
+    title: string,
+    passage: string,
+    article: Pick<OpenArticle, "title" | "credits">,
+  ): NewsRewriteResponse => ({
     title,
     passage,
     source: {
@@ -50,7 +54,8 @@ export async function rewriteNewsForLesson(
       url,
       license: source.license,
       licenseUrl: source.licenseUrl,
-      attribution: attributionFor(source, originalTitle, url),
+      attribution: attributionFor(source, article.title, url, article.credits),
+      credits: article.credits,
     },
   });
 
@@ -66,7 +71,7 @@ export async function rewriteNewsForLesson(
     .eq("level", level)
     .eq("prompt_version", PROMPT_VERSION)
     .maybeSingle();
-  if (cached) return respond(cached.title, cached.passage, article.title);
+  if (cached) return respond(cached.title, cached.passage, article);
 
   const { data: allowed, error: limitError } = await userClient.rpc("rate_limit_hit", {
     p_key: "ai",
@@ -97,5 +102,5 @@ export async function rewriteNewsForLesson(
         { onConflict: "source_url,level,prompt_version", ignoreDuplicates: true },
       );
   }
-  return respond(draft.title, passage, article.title);
+  return respond(draft.title, passage, article);
 }

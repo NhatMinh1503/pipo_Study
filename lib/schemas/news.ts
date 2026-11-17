@@ -11,6 +11,8 @@ export const newsRewriteResponseSchema = z.object({
     license: z.string(),
     licenseUrl: z.string(),
     attribution: z.string(),
+    /** Writers and translators to name (Global Voices); null for other sources. */
+    credits: z.string().nullable().default(null),
   }),
 });
 
