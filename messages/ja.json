@@ -107,15 +107,18 @@
     "goals": {
       "title": "今日の目標",
       "progress": "{done}/{total}",
-      "translate": "翻訳を1つ完了する",
-      "translateDetail": "{count, plural, =0 {今日はまだです} other {今日#件完了}}",
-      "review": "期限のカードを復習する",
-      "reviewLeft": "{count, plural, other {残り#枚}}",
-      "reviewDetail": "{count, plural, =0 {期限のカードはありません} other {今日#枚復習しました}}",
+      "review": "カードを復習する",
       "focus": "ポモドーロを1回集中する",
       "focusDetail": "{count, plural, =0 {まだありません} other {#回完了}}",
       "done": "完了",
-      "todo": "未完了"
+      "todo": "未完了",
+      "translateGoal": "3文を訳す",
+      "translateSentences": "今日 {count}/{target} 文",
+      "reviewProgress": "今日 {count}/{target} 枚",
+      "reviewNothing": "今日は復習するカードがありません",
+      "skip": "今日はなし",
+      "bonusHint": "今日の目標をぜんぶ終えると +{coins} コイン",
+      "bonusEarned": "今日の目標達成：+{coins} コイン"
     },
     "activity": {
       "title": "過去7日間のXP・合計{total}",
@@ -138,7 +141,8 @@
       "label": "今日の状況",
       "streak": "{count}日連続",
       "due": "復習 {count}枚",
-      "goals": "今日 · {done}/{total} 目標"
+      "goals": "今日 · {done}/{total} 目標",
+      "freezes": "フリーズ {count}"
     }
   },
   "languages": {
@@ -664,7 +668,8 @@
       "decoration": "庭の飾り",
       "topic_pack": "AIレッスン用トピックパック",
       "seed": "木の種",
-      "pet": "ペット"
+      "pet": "ペット",
+      "streak": "連続学習"
     },
     "errors": {
       "notEnoughCoins": "コインが足りません。",
@@ -743,6 +748,14 @@
         "name": "くもスライム",
         "description": "道のそばをふわふわ浮かぶ雲。タップすると庭に雨をふらせます。"
       }
+    },
+    "freeze": {
+      "name": "ストリークフリーズ",
+      "description": "1日休んでも連続記録が続きます。自動で使われます。",
+      "held": "所持 {held}/{max}",
+      "full": "上限",
+      "bought": "フリーズを手に入れました",
+      "limit": "フリーズは2つまでです"
     }
   },
   "skills": {
@@ -849,7 +862,22 @@
     "empty": "まだランキングに誰もいません",
     "anonymous": "匿名の学習者",
     "you": "あなた",
-    "notRanked": "まだトップ50に入っていません。学習を続けて上位を目指しましょう！"
+    "notRanked": "まだトップ50に入っていません。学習を続けて上位を目指しましょう！",
+    "reset": {
+      "week": "このランキングは月曜日に始まり、次の月曜日にリセットされます。",
+      "month": "このランキングは1日に始まり、来月リセットされます。"
+    },
+    "resetStreak": "今の連続記録（フリーズした日も含む）。",
+    "mine": {
+      "label": "あなたの順位",
+      "rank": "あなたの順位",
+      "position": "{total}人中 {rank}位",
+      "best": {
+        "xp": "最高の週",
+        "focus": "最高の集中週",
+        "streak": "最長の連続記録"
+      }
+    }
   },
   "battle": {
     "title": "1対1翻訳バトル",

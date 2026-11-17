@@ -28,6 +28,29 @@ export const GAME = {
     /** Rewarded reviews needed today before the queue-clear bonus can be earned. */
     clearMinReviews: 5,
   },
+  goals: {
+    /** Mirrors SQL today_goals: sentences unlocked today for the translate goal. */
+    translateSentences: 3,
+    /** Review goal = min(this, cards seen before and due at the first look of the day). */
+    maxReviews: 5,
+    focusSessions: 1,
+    /** Coins once per local day when every goal that applies is done. */
+    bonusCoins: 5,
+  },
+  streak: {
+    /** Mirrors SQL buy_streak_freeze: price in Coins and how many can be held. */
+    freezePrice: 50,
+    maxFreezes: 2,
+    /** Mirrors SQL streak_milestone_coins (then 100 coins every 100 days). */
+    milestones: [
+      { days: 3, coins: 5 },
+      { days: 7, coins: 10 },
+      { days: 14, coins: 20 },
+      { days: 30, coins: 40 },
+      { days: 60, coins: 60 },
+      { days: 100, coins: 100 },
+    ],
+  },
   level: {
     /** Mirrors SQL level_for_xp: xp_to_next(L) = base + step × (L − 1). */
     base: 50,

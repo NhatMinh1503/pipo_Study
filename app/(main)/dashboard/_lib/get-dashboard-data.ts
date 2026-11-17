@@ -4,7 +4,8 @@ import { connection } from "next/server";
 
 import type { ErrorTag } from "@/lib/ai/error-tags";
 import { countByTag } from "@/lib/analytics/error-stats";
-import { dayKey, lastDayKeys, sumByDay, type DayTotal } from "@/lib/dashboard/days";
+import { lastDayKeys, sumByDay, type DayTotal } from "@/lib/dashboard/days";
+import { todayGoalsSchema, type TodayGoals } from "@/lib/schemas/goals";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentProfile } from "@/server/profile";
 import { listLessonsWithProgress, type LessonSummary } from "@/server/queries/lessons";
@@ -20,12 +21,6 @@ export interface RecentWord {
   meaning: string;
 }
 
-export interface TodayGoals {
-  lessonsCompleted: number;
-  focusSessions: number;
-  cardsReviewed: number;
-}
-
 export interface DashboardData {
   xp: number;
   /** Level and progress, computed by the database (wallet_summaries). */
@@ -33,11 +28,14 @@ export interface DashboardData {
   coins: number;
   streakCurrent: number;
   streakBest: number;
+  /** Streak freezes held (each covers one missed day). */
+  streakFreezes: number;
   dueCards: number;
   inProgress: LessonSummary[];
   /** XP earned per local day, oldest first, ending today. */
   activity: DayTotal[];
-  today: TodayGoals;
+  /** Server-side daily goals; null only if the database could not answer. */
+  today: TodayGoals | null;
   recentWords: RecentWord[];
   /** Most frequent mistake of the last two weeks, if any. */
   weakPoint: { tag: ErrorTag; count: number } | null;
@@ -52,47 +50,39 @@ export async function getDashboardData(): Promise<DashboardData> {
   const profile = await getCurrentProfile();
   const timeZone = profile?.timezone ?? "UTC";
   const days = lastDayKeys(now, timeZone, ACTIVITY_DAYS);
-  const todayKey = dayKey(now, timeZone);
   // One extra day back covers every time zone's "today" and the whole chart window
   const since = new Date(now.getTime() - (ACTIVITY_DAYS + 1) * DAY_MS).toISOString();
-  const recentSince = new Date(now.getTime() - 2 * DAY_MS).toISOString();
-  const isToday = (iso: string | null) =>
-    iso !== null && dayKey(new Date(iso), timeZone) === todayKey;
 
-  const [wallet, due, inProgress, xpRows, lessonsDone, focus, reviewed, words, errors] =
-    await Promise.all([
-      supabase
-        .from("wallet_summaries")
-        .select("xp, coins, effective_streak, streak_best, level, stars, xp_into_level, xp_to_next")
-        .maybeSingle(),
-      supabase
-        .from("flashcards")
-        .select("id", { count: "exact", head: true })
-        .lte("due_date", now.toISOString()),
-      listLessonsWithProgress({ inProgressOnly: true, limit: 3 }),
-      supabase
-        .from("transactions")
-        .select("xp_delta, created_at")
-        .gt("xp_delta", 0)
-        .gte("created_at", since),
-      supabase.from("lessons").select("completed_at").gte("completed_at", recentSince),
-      supabase
-        .from("pomodoro_sessions")
-        .select("ended_at")
-        .eq("status", "completed")
-        .gte("ended_at", recentSince),
-      supabase.from("flashcards").select("last_reviewed_at").gte("last_reviewed_at", recentSince),
-      supabase
-        .from("vocab_items")
-        .select("id, term, reading, meaning")
-        .order("created_at", { ascending: false })
-        .limit(5),
-      supabase
-        .from("error_logs")
-        .select("tag, created_at")
-        .gte("created_at", new Date(now.getTime() - WEAK_POINT_DAYS * DAY_MS).toISOString())
-        .limit(2000),
-    ]);
+  const [wallet, due, inProgress, xpRows, goals, words, errors] = await Promise.all([
+    supabase
+      .from("wallet_summaries")
+      .select(
+        "xp, coins, effective_streak, streak_best, streak_freezes, level, stars, xp_into_level, xp_to_next",
+      )
+      .maybeSingle(),
+    supabase
+      .from("flashcards")
+      .select("id", { count: "exact", head: true })
+      .lte("due_date", now.toISOString()),
+    listLessonsWithProgress({ inProgressOnly: true, limit: 3 }),
+    supabase
+      .from("transactions")
+      .select("xp_delta, created_at")
+      .gt("xp_delta", 0)
+      .gte("created_at", since),
+    // Records goals reached so far and pays the daily bonus once (SQL today_goals)
+    supabase.rpc("today_goals"),
+    supabase
+      .from("vocab_items")
+      .select("id, term, reading, meaning")
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("error_logs")
+      .select("tag, created_at")
+      .gte("created_at", new Date(now.getTime() - WEAK_POINT_DAYS * DAY_MS).toISOString())
+      .limit(2000),
+  ]);
 
   return {
     xp: wallet.data?.xp ?? 0,
@@ -106,6 +96,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     // effective_streak (SQL) is the single source: a broken streak reads as 0
     streakCurrent: wallet.data?.effective_streak ?? 0,
     streakBest: wallet.data?.streak_best ?? 0,
+    streakFreezes: wallet.data?.streak_freezes ?? 0,
     dueCards: due.count ?? 0,
     inProgress,
     activity: sumByDay(
@@ -113,11 +104,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       days,
       timeZone,
     ),
-    today: {
-      lessonsCompleted: (lessonsDone.data ?? []).filter((row) => isToday(row.completed_at)).length,
-      focusSessions: (focus.data ?? []).filter((row) => isToday(row.ended_at)).length,
-      cardsReviewed: (reviewed.data ?? []).filter((row) => isToday(row.last_reviewed_at)).length,
-    },
+    today: todayGoalsSchema.safeParse(goals.data).data ?? null,
     recentWords: words.data ?? [],
     weakPoint:
       countByTag(

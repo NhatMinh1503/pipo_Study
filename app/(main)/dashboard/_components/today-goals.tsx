@@ -1,47 +1,54 @@
-import { CircleCheck, Circle, Target } from "lucide-react";
+import { CircleCheck, Circle, CircleMinus, Coins, Target } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
-import type { TodayGoals as TodayGoalsData } from "../_lib/get-dashboard-data";
+import { applicableGoals, type TodayGoals as TodayGoalsData } from "@/lib/schemas/goals";
 
 interface TodayGoalsProps {
-  today: TodayGoalsData;
-  dueCards: number;
+  goals: TodayGoalsData | null;
 }
 
-/** How many of today's three habits are already done. */
-export function countGoalsDone(today: TodayGoalsData, dueCards: number): number {
-  return [today.lessonsCompleted > 0, dueCards === 0, today.focusSessions > 0].filter(Boolean)
-    .length;
+/** How many of today's goals that apply are done, and how many apply. */
+export function countGoals(goals: TodayGoalsData | null): { done: number; total: number } {
+  if (!goals) return { done: 0, total: 3 };
+  const list = applicableGoals(goals);
+  return { done: list.filter((goal) => goal.done).length, total: list.length };
 }
 
-/** Three small daily habits (PRD engagement goal): translate, review, focus. */
-export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
+/**
+ * Three small daily habits (PRD engagement goal): translate, review, focus. The server records
+ * each goal when it is reached, so a tick never disappears later in the day.
+ */
+export async function TodayGoals({ goals }: TodayGoalsProps) {
   const t = await getTranslations("dashboard.goals");
-  const goals = [
+  if (!goals) return null;
+
+  const rows = [
     {
       key: "translate",
       href: "/lessons",
-      done: today.lessonsCompleted > 0,
-      detail: t("translateDetail", { count: today.lessonsCompleted }),
+      state: goals.translate.done ? "done" : "todo",
+      detail: t("translateSentences", {
+        count: goals.translate.count,
+        target: goals.translate.target,
+      }),
     },
     {
       key: "review",
       href: "/review",
-      done: dueCards === 0,
-      detail:
-        dueCards > 0
-          ? t("reviewLeft", { count: dueCards })
-          : t("reviewDetail", { count: today.cardsReviewed }),
+      state: !goals.review.applicable ? "skip" : goals.review.done ? "done" : "todo",
+      detail: goals.review.applicable
+        ? t("reviewProgress", { count: goals.review.count, target: goals.review.target })
+        : t("reviewNothing"),
     },
     {
       key: "focus",
       href: "/pomodoro",
-      done: today.focusSessions > 0,
-      detail: t("focusDetail", { count: today.focusSessions }),
+      state: goals.focus.done ? "done" : "todo",
+      detail: t("focusDetail", { count: goals.focus.count }),
     },
   ] as const;
-  const doneCount = goals.filter((goal) => goal.done).length;
+  const { done, total } = countGoals(goals);
 
   return (
     <section className="sheet flex flex-col bg-tint-mint" aria-labelledby="today-goals-heading">
@@ -52,19 +59,21 @@ export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
             {t("title")}
           </h2>
         </div>
-        <span className={doneCount === goals.length ? "pill text-success" : "pill text-foreground"}>
-          {t("progress", { done: doneCount, total: goals.length })}
+        <span className={done === total ? "pill text-success" : "pill text-foreground"}>
+          {t("progress", { done, total })}
         </span>
       </header>
       <ul className="divide-y divide-dashed divide-border/30">
-        {goals.map((goal) => {
-          const Icon = goal.done ? CircleCheck : Circle;
+        {rows.map((goal) => {
+          const Icon =
+            goal.state === "done" ? CircleCheck : goal.state === "skip" ? CircleMinus : Circle;
+          const finished = goal.state !== "todo";
           return (
             <li key={goal.key}>
               <Link href={goal.href} className="flex items-center gap-3 px-5 py-3 hover:bg-card/50">
                 <Icon
                   className={
-                    goal.done
+                    goal.state === "done"
                       ? "size-5 shrink-0 text-success"
                       : "size-5 shrink-0 text-muted-foreground"
                   }
@@ -73,21 +82,33 @@ export async function TodayGoals({ today, dueCards }: TodayGoalsProps) {
                 <span className="min-w-0 flex-1">
                   <span
                     className={
-                      goal.done
+                      finished
                         ? "block text-sm text-muted-foreground line-through"
                         : "block text-sm font-medium"
                     }
                   >
-                    {t(goal.key)}
+                    {t(goal.key === "translate" ? "translateGoal" : goal.key)}
                   </span>
                   <span className="block text-xs text-muted-foreground">{goal.detail}</span>
                 </span>
-                <span className="sr-only">{goal.done ? t("done") : t("todo")}</span>
+                <span className="sr-only">
+                  {goal.state === "done"
+                    ? t("done")
+                    : goal.state === "skip"
+                      ? t("skip")
+                      : t("todo")}
+                </span>
               </Link>
             </li>
           );
         })}
       </ul>
+      <p className="flex items-center gap-1.5 border-t border-dashed border-border/40 px-5 py-2.5 text-xs text-muted-foreground">
+        <Coins className="size-3.5" aria-hidden />
+        {goals.rewarded
+          ? t("bonusEarned", { coins: goals.bonusCoins })
+          : t("bonusHint", { coins: goals.bonusCoins })}
+      </p>
     </section>
   );
 }
