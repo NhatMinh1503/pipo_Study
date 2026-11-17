@@ -297,6 +297,10 @@
       "earned": "+{xp} XP",
       "capped": "Batas XP hari ini untuk pelajaran buatanmu sendiri sudah tercapai",
       "streakKept": "Runtunan belajarmu tetap terhitung"
+    },
+    "flag": {
+      "button": "AI salah menilai?",
+      "thanks": "Terima kasih, sudah dicatat."
     }
   },
   "result": {
@@ -1005,6 +1009,42 @@
     "remove": "Hapus",
     "restored": "Postingan dipulihkan",
     "removed": "Postingan dihapus",
-    "failed": "Gagal, silakan coba lagi."
+    "failed": "Gagal, silakan coba lagi.",
+    "insights": "Metrik"
+  },
+  "insights": {
+    "title": "Metrik produk",
+    "description": "30 hari terakhir, dibanding target PRD.",
+    "summary": "{signups} pendaftar · {active} pelajar aktif · {calls} penilaian AI ({failed} gagal)",
+    "met": "Tercapai",
+    "notMet": "Belum",
+    "failed": "Metrik tidak bisa dimuat.",
+    "note": "Akurasi AI = 1 − (tanda \"AI salah\" / jumlah penilaian). D1/D7: pendaftar yang belajar lagi tepat di hari ke-1 / ke-7.",
+    "rows": {
+      "d7": {
+        "label": "Retensi D7",
+        "target": "Target > 40%"
+      },
+      "d1": {
+        "label": "Retensi D1",
+        "target": "Sebagai acuan"
+      },
+      "translate": {
+        "label": "Sesi terjemahan per hari aktif",
+        "target": "Target ≥ 2"
+      },
+      "focus": {
+        "label": "Sesi Pomodoro per hari aktif",
+        "target": "Target ≥ 1"
+      },
+      "latency": {
+        "label": "Waktu penilaian AI",
+        "target": "Target < 1,5 dtk (p95)"
+      },
+      "accuracy": {
+        "label": "Akurasi AI",
+        "target": "Target > 95%"
+      }
+    }
   }
 }

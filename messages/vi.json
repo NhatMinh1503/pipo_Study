@@ -297,6 +297,10 @@
       "earned": "+{xp} XP",
       "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo",
       "streakKept": "Bạn vẫn giữ chuỗi ngày học"
+    },
+    "flag": {
+      "button": "AI chấm sai?",
+      "thanks": "Cảm ơn bạn, đã ghi nhận."
     }
   },
   "result": {
@@ -1005,6 +1009,42 @@
     "remove": "Xoá bài",
     "restored": "Đã khôi phục bài",
     "removed": "Đã xoá bài",
-    "failed": "Không thực hiện được, thử lại nhé."
+    "failed": "Không thực hiện được, thử lại nhé.",
+    "insights": "Chỉ số"
+  },
+  "insights": {
+    "title": "Chỉ số sản phẩm",
+    "description": "30 ngày gần nhất, so với mục tiêu trong PRD.",
+    "summary": "{signups} người đăng ký · {active} người học hoạt động · {calls} lượt AI chấm ({failed} lỗi)",
+    "met": "Đạt",
+    "notMet": "Chưa đạt",
+    "failed": "Không tải được chỉ số.",
+    "note": "Độ chính xác AI = 1 − (số lần người học báo \"AI chấm sai\" / số lần chấm). D1/D7: người đăng ký quay lại học đúng ngày thứ 1 / thứ 7.",
+    "rows": {
+      "d7": {
+        "label": "Giữ chân D7",
+        "target": "Mục tiêu > 40%"
+      },
+      "d1": {
+        "label": "Giữ chân D1",
+        "target": "Tham khảo"
+      },
+      "translate": {
+        "label": "Phiên dịch / ngày hoạt động",
+        "target": "Mục tiêu ≥ 2"
+      },
+      "focus": {
+        "label": "Phiên Pomodoro / ngày hoạt động",
+        "target": "Mục tiêu ≥ 1"
+      },
+      "latency": {
+        "label": "Thời gian AI chấm câu",
+        "target": "Mục tiêu < 1,5 giây (p95)"
+      },
+      "accuracy": {
+        "label": "Độ chính xác AI",
+        "target": "Mục tiêu > 95%"
+      }
+    }
   }
 }

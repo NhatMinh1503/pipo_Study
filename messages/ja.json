@@ -297,6 +297,10 @@
       "earned": "+{xp} XP",
       "capped": "自作レッスンの今日のXP上限に達しました",
       "streakKept": "連続学習日数はそのまま続きます"
+    },
+    "flag": {
+      "button": "AIの採点がまちがい？",
+      "thanks": "ありがとうございます。記録しました。"
     }
   },
   "result": {
@@ -1005,6 +1009,42 @@
     "remove": "削除",
     "restored": "投稿をもとに戻しました",
     "removed": "投稿を削除しました",
-    "failed": "できませんでした。もう一度ためしてください。"
+    "failed": "できませんでした。もう一度ためしてください。",
+    "insights": "指標"
+  },
+  "insights": {
+    "title": "プロダクト指標",
+    "description": "直近30日、PRDの目標との比較。",
+    "summary": "登録 {signups} · アクティブ {active} · AI採点 {calls} 回（失敗 {failed}）",
+    "met": "達成",
+    "notMet": "未達成",
+    "failed": "指標を読みこめませんでした。",
+    "note": "AIの正確さ = 1 −（「採点がまちがい」の数 / 採点数）。D1/D7：登録から1日目／7日目にまた学習した人。",
+    "rows": {
+      "d7": {
+        "label": "D7 継続率",
+        "target": "目標 > 40%"
+      },
+      "d1": {
+        "label": "D1 継続率",
+        "target": "参考"
+      },
+      "translate": {
+        "label": "アクティブ日あたりの翻訳セッション",
+        "target": "目標 ≥ 2"
+      },
+      "focus": {
+        "label": "アクティブ日あたりのポモドーロ",
+        "target": "目標 ≥ 1"
+      },
+      "latency": {
+        "label": "AI採点の時間",
+        "target": "目標 < 1.5秒（p95）"
+      },
+      "accuracy": {
+        "label": "AIの正確さ",
+        "target": "目標 > 95%"
+      }
+    }
   }
 }

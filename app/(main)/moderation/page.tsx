@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
@@ -7,6 +8,7 @@ import { Suspense } from "react";
 import { EmptyState } from "@/components/common/empty-state";
 import { PageContainer } from "@/components/common/page-container";
 import { PageHeader } from "@/components/common/page-header";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,7 +28,15 @@ async function ModerationQueue() {
 
   return (
     <>
-      <PageHeader title={t("title")} description={t("description")} />
+      <PageHeader
+        title={t("title")}
+        description={t("description")}
+        actions={
+          <Button asChild variant="outline" size="sm">
+            <Link href="/insights">{t("insights")}</Link>
+          </Button>
+        }
+      />
       {!queue?.length ? (
         <EmptyState icon={ShieldCheck} title={t("empty")} />
       ) : (

@@ -297,6 +297,10 @@
       "earned": "+{xp} XP",
       "capped": "Today's XP limit for your own lessons is reached",
       "streakKept": "Your study streak still counts"
+    },
+    "flag": {
+      "button": "AI got this wrong?",
+      "thanks": "Thanks, noted."
     }
   },
   "result": {
@@ -1005,6 +1009,42 @@
     "remove": "Remove",
     "restored": "Post restored",
     "removed": "Post removed",
-    "failed": "That didn't work, please try again."
+    "failed": "That didn't work, please try again.",
+    "insights": "Metrics"
+  },
+  "insights": {
+    "title": "Product metrics",
+    "description": "Last 30 days, against the PRD targets.",
+    "summary": "{signups} sign-ups · {active} active learners · {calls} AI gradings ({failed} failed)",
+    "met": "Met",
+    "notMet": "Not met",
+    "failed": "Could not load the metrics.",
+    "note": "AI accuracy = 1 − (\"AI got this wrong\" flags / graded attempts). D1/D7: sign-ups who studied again exactly on day 1 / day 7.",
+    "rows": {
+      "d7": {
+        "label": "D7 retention",
+        "target": "Target > 40%"
+      },
+      "d1": {
+        "label": "D1 retention",
+        "target": "For reference"
+      },
+      "translate": {
+        "label": "Translation sessions per active day",
+        "target": "Target ≥ 2"
+      },
+      "focus": {
+        "label": "Pomodoro sessions per active day",
+        "target": "Target ≥ 1"
+      },
+      "latency": {
+        "label": "AI grading time",
+        "target": "Target < 1.5 s (p95)"
+      },
+      "accuracy": {
+        "label": "AI accuracy",
+        "target": "Target > 95%"
+      }
+    }
   }
 }

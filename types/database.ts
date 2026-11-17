@@ -34,6 +34,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_calls: {
+        Row: {
+          created_at: string
+          id: number
+          latency_ms: number
+          outcome: string
+          prompt_version: string
+          provider: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          latency_ms: number
+          outcome: string
+          prompt_version: string
+          provider?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          latency_ms?: number
+          outcome?: string
+          prompt_version?: string
+          provider?: string | null
+        }
+        Relationships: []
+      }
       app_health: {
         Row: {
           id: number
@@ -98,6 +125,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      attempt_flags: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       battle_answers: {
         Row: {
@@ -1410,6 +1455,7 @@ export type Database = {
         }
         Returns: string
       }
+      kpi_summary: { Args: { p_days?: number }; Returns: Json }
       leaderboard: {
         Args: { p_metric: string; p_period: string }
         Returns: {

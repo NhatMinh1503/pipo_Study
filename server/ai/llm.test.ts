@@ -26,6 +26,24 @@ describe("providerOrder", () => {
 });
 
 describe("generateWithFallback", () => {
+  it("records latency and outcome without user data", async () => {
+    const record = vi.fn();
+    const call = vi.fn().mockResolvedValue(ok);
+    await generateWithFallback(request, { env: both, call, record });
+    expect(record).toHaveBeenCalledWith(
+      expect.objectContaining({ promptVersion: "t.v1", provider: "gemini", outcome: "ok" }),
+    );
+  });
+
+  it("records a failed call when every provider fails", async () => {
+    const record = vi.fn();
+    const call = vi.fn().mockRejectedValue(new AiError("AI_UNAVAILABLE", "down"));
+    await expect(generateWithFallback(request, { env: both, call, record })).rejects.toThrow();
+    expect(record).toHaveBeenCalledWith(
+      expect.objectContaining({ provider: null, outcome: "failed" }),
+    );
+  });
+
   it("answers from the primary with a short budget when a fallback exists", async () => {
     const call = vi.fn().mockResolvedValue(ok);
     const result = await generateWithFallback(request, { env: both, call });
