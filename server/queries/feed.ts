@@ -15,7 +15,7 @@ export async function listFeed(cursor?: string): Promise<{ posts: FeedPost[]; ha
 
   let query = supabase
     .from("posts")
-    .select("id, user_id, title, language, pairs, created_at")
+    .select("id, user_id, title, language, pairs, created_at, hidden_at")
     .order("created_at", { ascending: false })
     .order("id", { ascending: false })
     .limit(FEED_PAGE_SIZE + 1);
@@ -76,6 +76,7 @@ export async function listFeed(cursor?: string): Promise<{ posts: FeedPost[]; ha
           : [],
       ),
       createdAt: post.created_at,
+      hidden: post.hidden_at !== null,
       author: authorOf(post.user_id),
       likeCount: postLikes.length,
       likedByMe: postLikes.some((like) => like.user_id === user.id),

@@ -290,7 +290,7 @@
     "allDoneDescription": "Nhận điểm và xem tổng kết.",
     "finish": "Nhận thưởng & xem kết quả",
     "errors": {
-      "rateLimited": "Bạn đã dùng hết lượt chấm AI hôm nay. Hãy quay lại vào ngày mai.",
+      "rateLimited": "Bạn đã dùng hết lượt AI lúc này (quá nhiều lượt trong 1 phút, hoặc hết lượt hôm nay). Thử lại sau ít phút nhé.",
       "notConfigured": "AI chưa được cấu hình (thiếu GEMINI_API_KEY).",
       "unavailable": "AI đang bận, chưa chấm được. Lần này không bị tính — hãy thử lại.",
       "network": "Mất kết nối. Hãy kiểm tra mạng và thử lại.",
@@ -300,6 +300,10 @@
       "earned": "+{xp} XP",
       "capped": "Đã đạt giới hạn XP hôm nay cho bài tự tạo",
       "streakKept": "Bạn vẫn giữ chuỗi ngày học"
+    },
+    "flag": {
+      "button": "AI chấm sai?",
+      "thanks": "Cảm ơn bạn, đã ghi nhận."
     }
   },
   "result": {
@@ -445,7 +449,8 @@
       "title": "Thời gian mỗi phiên",
       "minutes": "{minutes} phút",
       "slider": "Thời gian mỗi phiên (phút)"
-    }
+    },
+    "keepAwake": "Giữ màn hình sáng khi tập trung"
   },
   "garden": {
     "title": "Vườn tri thức",
@@ -763,7 +768,7 @@
   },
   "skills": {
     "title": "Cây kỹ năng",
-    "description": "Hoàn thành mục tiêu để mở khoá bước tiếp theo của từng nhánh.",
+    "description": "Học theo chủ đề và trình độ: đạt từ 60% ở một nút để mở trình độ tiếp theo.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "đã hoàn thành",
@@ -787,6 +792,33 @@
         "title": "Tập trung",
         "goal": "{count, plural, other {# phiên Pomodoro}}"
       }
+    },
+    "tree": {
+      "title": "Lộ trình theo chủ đề",
+      "description": "Mỗi nút là một bài AI viết đúng chủ đề và trình độ. Các trình độ đến trình độ của bạn đã mở sẵn.",
+      "topics": {
+        "daily": "Đời sống",
+        "food": "Ẩm thực",
+        "travel": "Du lịch",
+        "school": "Trường học",
+        "work": "Công việc",
+        "technology": "Công nghệ"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "đã vượt qua",
+        "open": "đã mở",
+        "locked": "chưa mở khoá"
+      },
+      "best": "Tốt nhất {percent}%",
+      "start": "Học",
+      "again": "Học lại",
+      "starting": "Đang tạo bài…",
+      "locked": "Nút này chưa mở khoá"
+    },
+    "achievements": {
+      "title": "Thành tựu",
+      "description": "Huy hiệu theo mốc hoạt động."
     }
   },
   "profile": {
@@ -833,7 +865,7 @@
     "deleteTitle": "Xoá bài đăng này?",
     "deleteDescription": "Bài đăng cùng mọi bình luận sẽ bị xoá vĩnh viễn.",
     "report": "Báo cáo",
-    "reported": "Đã gửi báo cáo. Cảm ơn bạn!",
+    "reported": "Đã báo cáo. Bài này sẽ không hiện với bạn nữa.",
     "like": "Thích",
     "comments": "{count, plural, other {# bình luận}}",
     "commentPlaceholder": "Viết bình luận…",
@@ -841,7 +873,9 @@
     "empty": "Chưa có bài đăng nào",
     "emptyHint": "Hoàn thành một bài dịch rồi bấm “Chia sẻ lên cộng đồng” ở màn tổng kết.",
     "older": "Bài cũ hơn",
-    "newest": "Mới nhất"
+    "newest": "Mới nhất",
+    "underReview": "Đang chờ xem xét",
+    "moderation": "Kiểm duyệt"
   },
   "leaderboard": {
     "title": "Bảng xếp hạng",
@@ -925,7 +959,16 @@
     "opponentAbsent": "Đối thủ đang mất kết nối. Nếu vắng quá 90 giây, bạn sẽ được tính thắng.",
     "abandoned": "Trận đấu đã kết thúc vì cả hai người chơi cùng vắng mặt",
     "abandonedHint": "Không ai thắng trận này.",
-    "copiedSource": "Đây là nguyên văn câu gốc. Hãy tự viết câu trả lời."
+    "copiedSource": "Đây là nguyên văn câu gốc. Hãy tự viết câu trả lời.",
+    "noPaste": "Trong trận đấu không dán được văn bản — hãy tự gõ nhé.",
+    "rewardNote": "Hoàn thành trận: +3 xu, thắng thêm +2 (tối đa 5 trận/ngày).",
+    "ghost": {
+      "start": "Đấu với bản ghi",
+      "hint": "Không có ai online? Đua với lượt chơi đã ghi của một người học khác.",
+      "none": "Chưa có bản ghi nào cho ngôn ngữ này. Thử lại sau nhé.",
+      "label": "Bản ghi của {name}",
+      "rule": "Bạn đang đua với một bản ghi: nó trả lời theo đúng tốc độ lúc được ghi."
+    }
   },
   "offline": {
     "title": "Bạn đang ngoại tuyến",
@@ -960,5 +1003,60 @@
         "toNext": "XP tới mốc sau"
       }
     }
+  },
+  "moderation": {
+    "title": "Kiểm duyệt",
+    "description": "Bài bị báo cáo. Bài có từ 3 báo cáo đã tự ẩn khỏi bảng tin.",
+    "empty": "Không có bài nào cần xem xét",
+    "meta": "{reports} báo cáo · {pairs} câu",
+    "hidden": "đang ẩn",
+    "restore": "Khôi phục",
+    "remove": "Xoá bài",
+    "restored": "Đã khôi phục bài",
+    "removed": "Đã xoá bài",
+    "failed": "Không thực hiện được, thử lại nhé.",
+    "insights": "Chỉ số"
+  },
+  "insights": {
+    "title": "Chỉ số sản phẩm",
+    "description": "30 ngày gần nhất, so với mục tiêu trong PRD.",
+    "summary": "{signups} người đăng ký · {active} người học hoạt động · {calls} lượt AI chấm ({failed} lỗi)",
+    "met": "Đạt",
+    "notMet": "Chưa đạt",
+    "failed": "Không tải được chỉ số.",
+    "note": "Độ chính xác AI = 1 − (số lần người học báo \"AI chấm sai\" / số lần chấm). D1/D7: người đăng ký quay lại học đúng ngày thứ 1 / thứ 7.",
+    "rows": {
+      "d7": {
+        "label": "Giữ chân D7",
+        "target": "Mục tiêu > 40%"
+      },
+      "d1": {
+        "label": "Giữ chân D1",
+        "target": "Tham khảo"
+      },
+      "translate": {
+        "label": "Phiên dịch / ngày hoạt động",
+        "target": "Mục tiêu ≥ 2"
+      },
+      "focus": {
+        "label": "Phiên Pomodoro / ngày hoạt động",
+        "target": "Mục tiêu ≥ 1"
+      },
+      "latency": {
+        "label": "Thời gian AI chấm câu",
+        "target": "Mục tiêu < 1,5 giây (p95)"
+      },
+      "accuracy": {
+        "label": "Độ chính xác AI",
+        "target": "Mục tiêu > 95%"
+      }
+    }
+  },
+  "pwa": {
+    "title": "Cài pipo lên điện thoại",
+    "description": "Mở pipo như một ứng dụng: biểu tượng trên màn hình chính, Pomodoro báo khi hết giờ, Ôn tập, Sổ tay và Chép chính tả của bài đã mở dùng được cả khi mất mạng.",
+    "install": "Cài ứng dụng",
+    "ios": "Trên iPhone/iPad: bấm nút Chia sẻ trong Safari → \"Thêm vào MH chính\".",
+    "other": "Mở menu trình duyệt và chọn \"Cài đặt ứng dụng\" hoặc \"Thêm vào màn hình chính\"."
   }
 }

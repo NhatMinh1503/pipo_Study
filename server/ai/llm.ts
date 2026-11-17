@@ -71,11 +71,22 @@ export async function generateWithFallback<T>(
     call?: Call;
     /** Background jobs (e.g. warming a lesson's vocabulary) can afford longer answers. */
     budgets?: { failover: CallBudget; last: CallBudget };
+    /** Where the latency metric goes (KPI: < 1.5 s per sentence); defaults to ai_calls. */
+    record?: (metric: AiCallMetric) => void;
   } = {},
 ): Promise<LlmResult<T>> {
   const order = providerOrder(deps.env ?? getServerEnv());
   const call = deps.call ?? callProvider;
+  const record = deps.record ?? recordAiCall;
   if (order.length === 0) throw new AiError("AI_NOT_CONFIGURED", "No AI provider key is set");
+  const started = performance.now();
+  const finish = (provider: AiProvider | null, outcome: AiCallMetric["outcome"]) =>
+    record({
+      promptVersion: request.promptVersion,
+      provider,
+      outcome,
+      latencyMs: Math.round(performance.now() - started),
+    });
 
   let lastError: unknown;
   for (const [index, provider] of order.entries()) {
@@ -85,6 +96,7 @@ export async function generateWithFallback<T>(
     const budget = isLast ? budgets.last : budgets.failover;
     try {
       const result = await call(provider, request, budget);
+      finish(provider, index === 0 ? "ok" : "failover");
       return { ...result, provider };
     } catch (error) {
       lastError = error;
@@ -98,7 +110,35 @@ export async function generateWithFallback<T>(
       }
     }
   }
+  finish(null, "failed");
   throw lastError instanceof AiError
     ? lastError
     : new AiError("AI_UNAVAILABLE", "No AI provider answered");
+}
+
+export interface AiCallMetric {
+  promptVersion: string;
+  provider: AiProvider | null;
+  outcome: "ok" | "failover" | "failed";
+  latencyMs: number;
+}
+
+/**
+ * Stores one AI call's latency for the KPI page. No user id and no text: only the prompt,
+ * provider, outcome and time. Fire-and-forget: metrics never slow down or break a request.
+ */
+function recordAiCall(metric: AiCallMetric): void {
+  void (async () => {
+    try {
+      const { createAdminClient } = await import("@/server/supabase-admin");
+      await createAdminClient().from("ai_calls").insert({
+        prompt_version: metric.promptVersion,
+        provider: metric.provider,
+        outcome: metric.outcome,
+        latency_ms: metric.latencyMs,
+      });
+    } catch {
+      // Metrics are best effort
+    }
+  })();
 }

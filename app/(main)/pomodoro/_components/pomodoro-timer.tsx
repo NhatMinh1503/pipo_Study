@@ -119,6 +119,16 @@ export function PomodoroTimer({ garden }: PomodoroTimerProps) {
           {phase === "focus" ? t("focusHint") : t("idleHint")}
         </p>
 
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            className="size-4 accent-primary"
+            checked={pomodoro.keepAwake}
+            onChange={(event) => pomodoro.setKeepAwake(event.target.checked)}
+          />
+          {t("keepAwake")}
+        </label>
+
         <Button asChild variant="ghost">
           <Link href="/garden">
             <Trees aria-hidden />

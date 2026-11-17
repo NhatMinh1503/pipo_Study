@@ -40,6 +40,7 @@ export function PostCard({ post, postedAgo }: PostCardProps) {
           <p className="truncate text-sm font-medium">{name}</p>
           <p className="mono-label">{postedAgo}</p>
         </div>
+        {post.hidden && <span className="pill text-destructive">{t("underReview")}</span>}
         {post.mine ? (
           <ConfirmDialog
             title={t("deleteTitle")}

@@ -93,9 +93,18 @@ export function DictationSession({ workspace }: { workspace: LessonWorkspace }) 
         </section>
       )}
 
-      <Button type="submit" className="w-full" disabled={!result && !answer.trim()}>
-        {result ? t("next") : t("check")}
-      </Button>
+      {/* On phones the keyboard hides the page: keep listen + check reachable at the bottom */}
+      <div className="sticky bottom-0 z-10 -mx-4 flex items-center gap-3 border-t-2 border-border bg-background/95 px-4 py-3 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0">
+        <PlayButton
+          key={`bar-${sentence.id}`}
+          text={sentence.sourceText}
+          language={workspace.language}
+          className="sm:hidden"
+        />
+        <Button type="submit" className="flex-1" disabled={!result && !answer.trim()}>
+          {result ? t("next") : t("check")}
+        </Button>
+      </div>
     </form>
   );
 }

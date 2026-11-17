@@ -15,6 +15,7 @@ interface AnswerFormProps {
 export function AnswerForm({ isSubmitting, onSubmit }: AnswerFormProps) {
   const t = useTranslations("battle");
   const [text, setText] = useState("");
+  const [pasteBlocked, setPasteBlocked] = useState(false);
   const inputId = useId();
 
   const submit = () => {
@@ -40,6 +41,11 @@ export function AnswerForm({ isSubmitting, onSubmit }: AnswerFormProps) {
         maxLength={1000}
         disabled={isSubmitting}
         onChange={(event) => setText(event.target.value)}
+        // Pasting a machine translation would make the race meaningless (audit §15b)
+        onPaste={(event) => {
+          event.preventDefault();
+          setPasteBlocked(true);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
             event.preventDefault();
@@ -48,7 +54,9 @@ export function AnswerForm({ isSubmitting, onSubmit }: AnswerFormProps) {
         }}
       />
       <div className="flex items-center justify-between gap-3">
-        <p className="mono-label">{t("keyboardHint")}</p>
+        <p className="mono-label" aria-live="polite">
+          {pasteBlocked ? t("noPaste") : t("keyboardHint")}
+        </p>
         <SubmitButton isPending={isSubmitting} className="shrink-0">
           {isSubmitting ? t("grading") : t("submit")}
         </SubmitButton>

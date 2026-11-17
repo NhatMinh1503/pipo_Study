@@ -62,8 +62,8 @@
 
 ### H. Hệ sinh thái mở rộng
 
-- Browser Extension: bôi đen để dịch trên mọi trang, đồng bộ từ vựng về app.
-- Mobile App (PWA/Flutter) tối ưu Pomodoro và Dictation.
+- ~~Browser Extension~~: bỏ (2026-11-17, phí Chrome Web Store trái quy tắc chi phí 0).
+- Mobile App: PWA nâng cao tối ưu Pomodoro và Dictation (đã làm, S31).
 
 ## 3. KPIs
 

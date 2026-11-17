@@ -290,7 +290,7 @@
     "allDoneDescription": "Claim your reward and see the summary.",
     "finish": "Claim reward & see results",
     "errors": {
-      "rateLimited": "You have used today's AI checks. Come back tomorrow.",
+      "rateLimited": "You've reached the AI limit for now (too many checks in a minute, or today's quota is used up). Try again shortly.",
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
       "network": "Connection lost. Check your network and try again.",
@@ -300,6 +300,10 @@
       "earned": "+{xp} XP",
       "capped": "Today's XP limit for your own lessons is reached",
       "streakKept": "Your study streak still counts"
+    },
+    "flag": {
+      "button": "AI got this wrong?",
+      "thanks": "Thanks, noted."
     }
   },
   "result": {
@@ -445,7 +449,8 @@
       "title": "Session length",
       "minutes": "{minutes} min",
       "slider": "Session length in minutes"
-    }
+    },
+    "keepAwake": "Keep the screen on while focusing"
   },
   "garden": {
     "title": "Knowledge Garden",
@@ -763,7 +768,7 @@
   },
   "skills": {
     "title": "Skill tree",
-    "description": "Reach goals to unlock the next step of each branch.",
+    "description": "Learn by topic and level: score 60% or more on a node to open the next level.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "completed",
@@ -787,6 +792,33 @@
         "title": "Focus",
         "goal": "{count, plural, one {# Pomodoro session} other {# Pomodoro sessions}}"
       }
+    },
+    "tree": {
+      "title": "Topic path",
+      "description": "Each node is an AI lesson on that topic at that level. Levels up to yours are already open.",
+      "topics": {
+        "daily": "Daily life",
+        "food": "Food",
+        "travel": "Travel",
+        "school": "School",
+        "work": "Work",
+        "technology": "Technology"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "passed",
+        "open": "open",
+        "locked": "locked"
+      },
+      "best": "Best {percent}%",
+      "start": "Learn",
+      "again": "Again",
+      "starting": "Writing the lesson…",
+      "locked": "This node is still locked"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "description": "Badges for activity milestones."
     }
   },
   "profile": {
@@ -833,7 +865,7 @@
     "deleteTitle": "Delete this post?",
     "deleteDescription": "The post and all its comments will be removed for good.",
     "report": "Report",
-    "reported": "Report sent. Thank you!",
+    "reported": "Reported. You won't see this post any more.",
     "like": "Like",
     "comments": "{count, plural, one {# comment} other {# comments}}",
     "commentPlaceholder": "Write a comment…",
@@ -841,7 +873,9 @@
     "empty": "No posts yet",
     "emptyHint": "Finish a translation, then press “Share to community” on the summary screen.",
     "older": "Older posts",
-    "newest": "Newest"
+    "newest": "Newest",
+    "underReview": "Under review",
+    "moderation": "Moderation"
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -925,7 +959,16 @@
     "opponentAbsent": "Your opponent has lost connection. If they stay away for more than 90 seconds, you win.",
     "abandoned": "This battle ended because both players were away",
     "abandonedHint": "Nobody wins this battle.",
-    "copiedSource": "That is the original sentence. Write your own answer."
+    "copiedSource": "That is the original sentence. Write your own answer.",
+    "noPaste": "Pasting is off during a battle — type your own answer.",
+    "rewardNote": "Finishing a battle: +3 coins, +2 more for a win (up to 5 battles a day).",
+    "ghost": {
+      "start": "Race a recorded run",
+      "hint": "Nobody online? Race another learner's recorded run.",
+      "none": "No recorded runs for this language yet. Try again later.",
+      "label": "{name}'s recorded run",
+      "rule": "You are racing a recorded run: it answers at the pace it was recorded."
+    }
   },
   "offline": {
     "title": "You're offline",
@@ -960,5 +1003,60 @@
         "toNext": "XP to next"
       }
     }
+  },
+  "moderation": {
+    "title": "Moderation",
+    "description": "Reported posts. Posts with 3 reports are already hidden from the feed.",
+    "empty": "Nothing to review",
+    "meta": "{reports} reports · {pairs} sentences",
+    "hidden": "hidden",
+    "restore": "Restore",
+    "remove": "Remove",
+    "restored": "Post restored",
+    "removed": "Post removed",
+    "failed": "That didn't work, please try again.",
+    "insights": "Metrics"
+  },
+  "insights": {
+    "title": "Product metrics",
+    "description": "Last 30 days, against the PRD targets.",
+    "summary": "{signups} sign-ups · {active} active learners · {calls} AI gradings ({failed} failed)",
+    "met": "Met",
+    "notMet": "Not met",
+    "failed": "Could not load the metrics.",
+    "note": "AI accuracy = 1 − (\"AI got this wrong\" flags / graded attempts). D1/D7: sign-ups who studied again exactly on day 1 / day 7.",
+    "rows": {
+      "d7": {
+        "label": "D7 retention",
+        "target": "Target > 40%"
+      },
+      "d1": {
+        "label": "D1 retention",
+        "target": "For reference"
+      },
+      "translate": {
+        "label": "Translation sessions per active day",
+        "target": "Target ≥ 2"
+      },
+      "focus": {
+        "label": "Pomodoro sessions per active day",
+        "target": "Target ≥ 1"
+      },
+      "latency": {
+        "label": "AI grading time",
+        "target": "Target < 1.5 s (p95)"
+      },
+      "accuracy": {
+        "label": "AI accuracy",
+        "target": "Target > 95%"
+      }
+    }
+  },
+  "pwa": {
+    "title": "Install pipo on your phone",
+    "description": "Open pipo like an app: a home-screen icon, Pomodoro alerts when time is up, and Review, Notebook and the dictation of lessons you opened work even offline.",
+    "install": "Install app",
+    "ios": "On iPhone/iPad: tap Share in Safari → \"Add to Home Screen\".",
+    "other": "Open your browser menu and choose \"Install app\" or \"Add to Home screen\"."
   }
 }

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { PageContainer } from "@/components/common/page-container";
 import { PageHeader } from "@/components/common/page-header";
+import { InstallApp } from "@/components/pwa/install-app";
 import { Skeleton } from "@/components/ui/skeleton";
 import { requireOnboardedProfile } from "@/server/profile";
 
@@ -28,6 +29,7 @@ async function SettingsContent() {
         }}
         timeZones={timeZones}
       />
+      <InstallApp />
       <DeleteAccount />
     </>
   );

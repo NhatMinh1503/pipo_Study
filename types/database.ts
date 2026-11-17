@@ -34,6 +34,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_calls: {
+        Row: {
+          created_at: string
+          id: number
+          latency_ms: number
+          outcome: string
+          prompt_version: string
+          provider: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: never
+          latency_ms: number
+          outcome: string
+          prompt_version: string
+          provider?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: never
+          latency_ms?: number
+          outcome?: string
+          prompt_version?: string
+          provider?: string | null
+        }
+        Relationships: []
+      }
       app_health: {
         Row: {
           id: number
@@ -98,6 +125,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      attempt_flags: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       battle_answers: {
         Row: {
@@ -177,6 +222,8 @@ export type Database = {
           created_at: string
           created_by: string
           finished_at: string | null
+          ghost_battle_id: string | null
+          ghost_user_id: string | null
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
@@ -189,6 +236,8 @@ export type Database = {
           created_at?: string
           created_by: string
           finished_at?: string | null
+          ghost_battle_id?: string | null
+          ghost_user_id?: string | null
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
@@ -201,6 +250,8 @@ export type Database = {
           created_at?: string
           created_by?: string
           finished_at?: string | null
+          ghost_battle_id?: string | null
+          ghost_user_id?: string | null
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
@@ -569,6 +620,7 @@ export type Database = {
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
+          skill_node: string | null
           source: Database["public"]["Enums"]["lesson_source"]
           source_credits: string | null
           source_license: string | null
@@ -584,6 +636,7 @@ export type Database = {
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
+          skill_node?: string | null
           source?: Database["public"]["Enums"]["lesson_source"]
           source_credits?: string | null
           source_license?: string | null
@@ -599,6 +652,7 @@ export type Database = {
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
+          skill_node?: string | null
           source?: Database["public"]["Enums"]["lesson_source"]
           source_credits?: string | null
           source_license?: string | null
@@ -687,6 +741,21 @@ export type Database = {
           },
         ]
       }
+      moderators: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       news_rewrites: {
         Row: {
           created_at: string
@@ -761,28 +830,34 @@ export type Database = {
       posts: {
         Row: {
           created_at: string
+          hidden_at: string | null
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           lesson_id: string | null
           pairs: Json
+          reviewed_at: string | null
           title: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          hidden_at?: string | null
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           lesson_id?: string | null
           pairs: Json
+          reviewed_at?: string | null
           title: string
           user_id: string
         }
         Update: {
           created_at?: string
+          hidden_at?: string | null
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           lesson_id?: string | null
           pairs?: Json
+          reviewed_at?: string | null
           title?: string
           user_id?: string
         }
@@ -1286,6 +1361,7 @@ export type Database = {
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      award_battle: { Args: { p_battle_id: string }; Returns: undefined }
       award_lesson_completion: {
         Args: {
           p_bonus_xp: number
@@ -1346,6 +1422,14 @@ export type Database = {
         Args: { w: Database["public"]["Tables"]["wallets"]["Row"] }
         Returns: number
       }
+      ghost_timeline: {
+        Args: { p_battle_id: string }
+        Returns: {
+          offset_seconds: number
+          points: number
+          sentence_index: number
+        }[]
+      }
       insert_lesson_rows: {
         Args: {
           p_language: Database["public"]["Enums"]["learning_language"]
@@ -1362,6 +1446,7 @@ export type Database = {
         Returns: string
       }
       is_battle_player: { Args: { p_battle_id: string }; Returns: boolean }
+      is_moderator: { Args: never; Returns: boolean }
       join_battle: {
         Args: {
           p_language: Database["public"]["Enums"]["learning_language"]
@@ -1370,6 +1455,7 @@ export type Database = {
         }
         Returns: string
       }
+      kpi_summary: { Args: { p_days?: number }; Returns: Json }
       leaderboard: {
         Args: { p_metric: string; p_period: string }
         Returns: {
@@ -1408,6 +1494,22 @@ export type Database = {
           value: number
         }[]
       }
+      moderate_post: {
+        Args: { p_action: string; p_post_id: string }
+        Returns: undefined
+      }
+      moderation_queue: {
+        Args: never
+        Returns: {
+          author_id: string
+          created_at: string
+          hidden_at: string
+          open_reports: number
+          pairs: Json
+          post_id: string
+          title: string
+        }[]
+      }
       next_garden_plot: {
         Args: { p_user_id: string }
         Returns: Record<string, unknown>
@@ -1427,8 +1529,18 @@ export type Database = {
       }
       record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
       remove_decoration: { Args: { p_item_id: string }; Returns: undefined }
+      review_count: { Args: never; Returns: number }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
       streak_milestone_coins: { Args: { p_days: number }; Returns: number }
+      skill_tree_progress: {
+        Args: never
+        Returns: {
+          best_accuracy: number
+          lessons_done: number
+          skill_node: string
+        }[]
+      }
+      start_ghost_battle: { Args: { p_battle_id: string }; Returns: string }
       start_pomodoro: {
         Args: {
           p_planned_minutes?: number

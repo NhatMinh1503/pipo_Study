@@ -39,6 +39,10 @@ describe("GAME config matches design/game/registry.md", () => {
     ]);
   });
 
+  it("AI burst cap", () => {
+    expect(GAME.ai.perMinute).toBe(30);
+  });
+
   it("level curve", () => {
     expect(GAME.level).toEqual({ base: 50, step: 40, cap: 50, starXp: 2000 });
   });

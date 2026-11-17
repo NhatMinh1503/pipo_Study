@@ -19,6 +19,8 @@ export interface FeedPost {
   language: LearningLanguage;
   pairs: { source: string; translation: string }[];
   createdAt: string;
+  /** Hidden after reports, waiting for a moderator; only its author still sees it. */
+  hidden: boolean;
   author: Author;
   likeCount: number;
   likedByMe: boolean;

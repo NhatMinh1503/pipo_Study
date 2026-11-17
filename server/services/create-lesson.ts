@@ -99,6 +99,8 @@ export interface CreateGeneratedLessonParams {
   language: LearningLanguage;
   level: ProficiencyLevel;
   sentences: string[];
+  /** Skill-tree node ("travel:N4") the lesson belongs to, if started from the tree. */
+  skillNode?: string;
 }
 
 /** Saves an AI-generated passage (topic lesson or micro-lesson) as the learner's ai lesson. */
@@ -112,5 +114,14 @@ export async function createGeneratedLesson(params: CreateGeneratedLessonParams)
     p_source: "ai",
   });
   if (error || !data) throw new CreateLessonError(error?.code);
+  if (params.skillNode) {
+    // Only the server tags a lesson with a skill-tree node (clients may update the title only)
+    const { error: tagError } = await params.adminClient
+      .from("lessons")
+      .update({ skill_node: params.skillNode })
+      .eq("id", data)
+      .eq("user_id", params.userId);
+    if (tagError) throw new CreateLessonError(tagError.code);
+  }
   return data;
 }

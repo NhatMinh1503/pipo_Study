@@ -290,7 +290,7 @@
     "allDoneDescription": "Ambil hadiahmu dan lihat ringkasannya.",
     "finish": "Ambil hadiah & lihat hasil",
     "errors": {
-      "rateLimited": "Jatah pemeriksaan AI hari ini sudah habis. Kembali lagi besok.",
+      "rateLimited": "Batas AI tercapai untuk saat ini (terlalu banyak dalam semenit, atau kuota hari ini habis). Coba lagi sebentar lagi.",
       "notConfigured": "AI belum dikonfigurasi (GEMINI_API_KEY tidak ada).",
       "unavailable": "AI sedang sibuk dan tidak bisa menilai ini. Tidak dihitung — silakan coba lagi.",
       "network": "Koneksi terputus. Periksa jaringanmu dan coba lagi.",
@@ -300,6 +300,10 @@
       "earned": "+{xp} XP",
       "capped": "Batas XP hari ini untuk pelajaran buatanmu sendiri sudah tercapai",
       "streakKept": "Runtunan belajarmu tetap terhitung"
+    },
+    "flag": {
+      "button": "AI salah menilai?",
+      "thanks": "Terima kasih, sudah dicatat."
     }
   },
   "result": {
@@ -445,7 +449,8 @@
       "title": "Lama sesi",
       "minutes": "{minutes} menit",
       "slider": "Lama sesi dalam menit"
-    }
+    },
+    "keepAwake": "Biarkan layar tetap menyala saat fokus"
   },
   "garden": {
     "title": "Taman Pengetahuan",
@@ -763,7 +768,7 @@
   },
   "skills": {
     "title": "Pohon keterampilan",
-    "description": "Capai target untuk membuka langkah berikutnya di setiap cabang.",
+    "description": "Belajar per topik dan level: skor 60% atau lebih di satu titik membuka level berikutnya.",
     "nodeLabel": "{goal} — {state}",
     "state": {
       "done": "selesai",
@@ -787,6 +792,33 @@
         "title": "Fokus",
         "goal": "{count, plural, other {# sesi Pomodoro}}"
       }
+    },
+    "tree": {
+      "title": "Jalur topik",
+      "description": "Setiap titik adalah pelajaran AI tentang topik itu di level itu. Level sampai levelmu sudah terbuka.",
+      "topics": {
+        "daily": "Kehidupan sehari-hari",
+        "food": "Makanan",
+        "travel": "Perjalanan",
+        "school": "Sekolah",
+        "work": "Pekerjaan",
+        "technology": "Teknologi"
+      },
+      "nodeLabel": "{topic} {level} — {state}",
+      "state": {
+        "done": "lulus",
+        "open": "terbuka",
+        "locked": "terkunci"
+      },
+      "best": "Terbaik {percent}%",
+      "start": "Belajar",
+      "again": "Lagi",
+      "starting": "Menulis pelajaran…",
+      "locked": "Titik ini masih terkunci"
+    },
+    "achievements": {
+      "title": "Pencapaian",
+      "description": "Lencana untuk tonggak aktivitas."
     }
   },
   "profile": {
@@ -833,7 +865,7 @@
     "deleteTitle": "Hapus postingan ini?",
     "deleteDescription": "Postingan dan semua komentarnya akan dihapus selamanya.",
     "report": "Laporkan",
-    "reported": "Laporan terkirim. Terima kasih!",
+    "reported": "Dilaporkan. Kamu tidak akan melihat postingan ini lagi.",
     "like": "Suka",
     "comments": "{count, plural, other {# komentar}}",
     "commentPlaceholder": "Tulis komentar…",
@@ -841,7 +873,9 @@
     "empty": "Belum ada postingan",
     "emptyHint": "Selesaikan sebuah terjemahan, lalu tekan “Bagikan ke komunitas” di layar ringkasan.",
     "older": "Postingan lebih lama",
-    "newest": "Terbaru"
+    "newest": "Terbaru",
+    "underReview": "Sedang ditinjau",
+    "moderation": "Moderasi"
   },
   "leaderboard": {
     "title": "Papan peringkat",
@@ -925,7 +959,16 @@
     "opponentAbsent": "Koneksi lawanmu terputus. Jika ia pergi lebih dari 90 detik, kamu menang.",
     "abandoned": "Duel ini berakhir karena kedua pemain pergi",
     "abandonedHint": "Tidak ada yang menang dalam duel ini.",
-    "copiedSource": "Itu kalimat aslinya. Tulis jawabanmu sendiri."
+    "copiedSource": "Itu kalimat aslinya. Tulis jawabanmu sendiri.",
+    "noPaste": "Menempel dimatikan selama pertandingan — ketik jawabanmu sendiri.",
+    "rewardNote": "Menyelesaikan pertandingan: +3 koin, +2 lagi jika menang (maks. 5 pertandingan sehari).",
+    "ghost": {
+      "start": "Lawan rekaman",
+      "hint": "Tidak ada yang online? Lawan rekaman pelajar lain.",
+      "none": "Belum ada rekaman untuk bahasa ini. Coba lagi nanti.",
+      "label": "Rekaman {name}",
+      "rule": "Kamu melawan rekaman: ia menjawab secepat saat direkam."
+    }
   },
   "offline": {
     "title": "Kamu sedang offline",
@@ -960,5 +1003,60 @@
         "toNext": "XP ke berikutnya"
       }
     }
+  },
+  "moderation": {
+    "title": "Moderasi",
+    "description": "Postingan yang dilaporkan. Postingan dengan 3 laporan sudah disembunyikan dari feed.",
+    "empty": "Tidak ada yang perlu ditinjau",
+    "meta": "{reports} laporan · {pairs} kalimat",
+    "hidden": "disembunyikan",
+    "restore": "Pulihkan",
+    "remove": "Hapus",
+    "restored": "Postingan dipulihkan",
+    "removed": "Postingan dihapus",
+    "failed": "Gagal, silakan coba lagi.",
+    "insights": "Metrik"
+  },
+  "insights": {
+    "title": "Metrik produk",
+    "description": "30 hari terakhir, dibanding target PRD.",
+    "summary": "{signups} pendaftar · {active} pelajar aktif · {calls} penilaian AI ({failed} gagal)",
+    "met": "Tercapai",
+    "notMet": "Belum",
+    "failed": "Metrik tidak bisa dimuat.",
+    "note": "Akurasi AI = 1 − (tanda \"AI salah\" / jumlah penilaian). D1/D7: pendaftar yang belajar lagi tepat di hari ke-1 / ke-7.",
+    "rows": {
+      "d7": {
+        "label": "Retensi D7",
+        "target": "Target > 40%"
+      },
+      "d1": {
+        "label": "Retensi D1",
+        "target": "Sebagai acuan"
+      },
+      "translate": {
+        "label": "Sesi terjemahan per hari aktif",
+        "target": "Target ≥ 2"
+      },
+      "focus": {
+        "label": "Sesi Pomodoro per hari aktif",
+        "target": "Target ≥ 1"
+      },
+      "latency": {
+        "label": "Waktu penilaian AI",
+        "target": "Target < 1,5 dtk (p95)"
+      },
+      "accuracy": {
+        "label": "Akurasi AI",
+        "target": "Target > 95%"
+      }
+    }
+  },
+  "pwa": {
+    "title": "Pasang pipo di ponselmu",
+    "description": "Buka pipo seperti aplikasi: ikon di layar utama, Pomodoro memberi tahu saat waktu habis, dan Ulasan, Buku catatan serta dikte pelajaran yang pernah dibuka tetap jalan saat offline.",
+    "install": "Pasang aplikasi",
+    "ios": "Di iPhone/iPad: ketuk Bagikan di Safari → \"Tambah ke Layar Utama\".",
+    "other": "Buka menu browser dan pilih \"Instal aplikasi\" atau \"Tambahkan ke layar utama\"."
   }
 }

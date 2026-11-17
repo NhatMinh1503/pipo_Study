@@ -8,6 +8,7 @@ import { VerdictBadge } from "@/components/lessons/verdict-badge";
 
 import type { Feedback } from "../_hooks/use-translate-session";
 
+import { FlagGradeButton } from "./flag-grade-button";
 import { SentenceXpNote } from "./sentence-xp-note";
 
 /** AI result for the current sentence: verdict, comment, hint (when wrong), reference (when right). */
@@ -45,6 +46,9 @@ export function FeedbackPanel({ feedback }: { feedback: Feedback | null }) {
           {result.referenceTranslation}
         </p>
       )}
+      <div className="flex justify-end">
+        <FlagGradeButton key={result.attemptId} attemptId={result.attemptId} />
+      </div>
     </section>
   );
 }

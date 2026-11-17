@@ -96,5 +96,24 @@ export async function reportPost(postId: unknown): Promise<ActionResult> {
     .insert({ post_id: id.data, user_id: user.id, reason: "inappropriate" });
   // Reporting twice is fine: the first report stands
   if (error && error.code !== "23505") return { ok: false, error: "errors.unexpected" };
+  // A reported post disappears from the reporter's feed right away
+  revalidatePath("/community");
+  return { ok: true };
+}
+
+const moderateSchema = z.object({ postId: z.uuid(), action: z.enum(["restore", "remove"]) });
+
+/** Moderator decision on a reported post; the database checks the moderator list. */
+export async function moderatePost(input: unknown): Promise<ActionResult> {
+  const parsed = moderateSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "errors.unexpected" };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("moderate_post", {
+    p_post_id: parsed.data.postId,
+    p_action: parsed.data.action,
+  });
+  if (error) return { ok: false, error: "errors.unexpected" };
+  revalidatePath("/moderation");
+  revalidatePath("/community");
   return { ok: true };
 }
