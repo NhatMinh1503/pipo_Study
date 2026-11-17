@@ -14,10 +14,17 @@ export async function findBattle(): Promise<ActionResult> {
   const { learning_language: language, level } = profile;
   if (!language || !level) return { ok: false, error: "errors.unexpected" };
   const supabase = await createClient();
+  // Passages of the last battles (first sentence identifies one) are skipped while others remain
+  const { data: recent } = await supabase
+    .from("battles")
+    .select("sentences")
+    .order("created_at", { ascending: false })
+    .limit(10);
+  const played = (recent ?? []).map((battle) => battle.sentences[0] ?? "");
   const { data: battleId, error } = await supabase.rpc("join_battle", {
     p_language: language,
     p_level: level,
-    p_sentences: pickPassage(language, level),
+    p_sentences: pickPassage(language, level, played),
   });
   if (error || !battleId) return { ok: false, error: "errors.unexpected" };
   redirect(`/battle/${battleId}`);
@@ -54,4 +61,17 @@ export async function claimBattleTimeout(battleId: unknown): Promise<ActionResul
   });
   if (error) return { ok: false, error: "errors.unexpected" };
   return claimed ? { ok: true } : { ok: false };
+}
+
+/**
+ * Nobody to play with: race a recorded run of another learner instead (ghost mode).
+ * The battle stays the same room; the server swaps in the recorded passage.
+ */
+export async function startGhostBattle(battleId: unknown): Promise<ActionResult> {
+  const id = z.uuid().safeParse(battleId);
+  if (!id.success) return { ok: false, error: "errors.unexpected" };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("start_ghost_battle", { p_battle_id: id.data });
+  if (error?.code === "P0002") return { ok: false, error: "battle.ghost.none" };
+  return error ? { ok: false, error: "errors.unexpected" } : { ok: true };
 }

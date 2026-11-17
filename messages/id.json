@@ -948,7 +948,16 @@
     "absenceRule": "Meninggalkan aplikasi lebih dari 90 detik dihitung sebagai menyerah.",
     "opponentAbsent": "Koneksi lawanmu terputus. Jika ia pergi lebih dari 90 detik, kamu menang.",
     "abandoned": "Duel ini berakhir karena kedua pemain pergi",
-    "abandonedHint": "Tidak ada yang menang dalam duel ini."
+    "abandonedHint": "Tidak ada yang menang dalam duel ini.",
+    "noPaste": "Menempel dimatikan selama pertandingan — ketik jawabanmu sendiri.",
+    "rewardNote": "Menyelesaikan pertandingan: +3 koin, +2 lagi jika menang (maks. 5 pertandingan sehari).",
+    "ghost": {
+      "start": "Lawan rekaman",
+      "hint": "Tidak ada yang online? Lawan rekaman pelajar lain.",
+      "none": "Belum ada rekaman untuk bahasa ini. Coba lagi nanti.",
+      "label": "Rekaman {name}",
+      "rule": "Kamu melawan rekaman: ia menjawab secepat saat direkam."
+    }
   },
   "offline": {
     "title": "Kamu sedang offline",

@@ -27,10 +27,12 @@ export function Scoreboard({ me, opponent, opponentOnline, total }: ScoreboardPr
         />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-medium">{player.name ?? label}</span>
+        <span className="block truncate text-sm font-medium">
+          {player.ghost ? t("ghost.label", { name: player.name ?? label }) : (player.name ?? label)}
+        </span>
         <span className="mono-label">
           {t("progress", { answered: player.answered, total })}
-          {!online && ` · ${t("offline")}`}
+          {!online && !player.ghost && ` · ${t("offline")}`}
         </span>
       </span>
       <span className="mono-value text-xl font-bold">{player.score}</span>

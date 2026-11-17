@@ -2,7 +2,12 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-import { battlePoints, decideWinner } from "@/lib/battle/scoring";
+import {
+  battlePoints,
+  decideAgainstGhost,
+  decideWinner,
+  type BattleDecision,
+} from "@/lib/battle/scoring";
 import type { BattleAnswerResponse } from "@/lib/schemas/battle";
 import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
@@ -129,24 +134,54 @@ export async function submitBattleAnswer(
 }
 
 async function closeIfDone(adminClient: Client, battleId: string, at: Date): Promise<boolean> {
-  const { data: players } = await adminClient
-    .from("battle_players")
-    .select("user_id, score, finished_at")
-    .eq("battle_id", battleId);
-  const winner = decideWinner(
-    (players ?? []).map((player) => ({
-      userId: player.user_id,
-      score: player.score,
-      finishedAt: player.finished_at,
-    })),
-  );
-  if (!winner) return false;
+  const [{ data: battle }, { data: players }] = await Promise.all([
+    adminClient
+      .from("battles")
+      .select("ghost_battle_id, ghost_user_id")
+      .eq("id", battleId)
+      .maybeSingle(),
+    adminClient
+      .from("battle_players")
+      .select("user_id, score, finished_at")
+      .eq("battle_id", battleId),
+  ]);
 
-  // Both finishers may race here; they compute the same winner and only one update matches
-  await adminClient
+  let decision: BattleDecision | null;
+  if (battle?.ghost_battle_id && battle.ghost_user_id) {
+    // Ghost race: the recorded run's final score is fixed, so the result is known right away
+    const me = players?.[0];
+    const { data: ghost } = await adminClient
+      .from("battle_players")
+      .select("score")
+      .eq("battle_id", battle.ghost_battle_id)
+      .eq("user_id", battle.ghost_user_id)
+      .maybeSingle();
+    decision =
+      me && ghost
+        ? decideAgainstGhost(
+            { userId: me.user_id, score: me.score },
+            { userId: battle.ghost_user_id, score: ghost.score },
+          )
+        : null;
+  } else {
+    decision = decideWinner(
+      (players ?? []).map((player) => ({
+        userId: player.user_id,
+        score: player.score,
+        finishedAt: player.finished_at,
+      })),
+    );
+  }
+  if (!decision) return false;
+
+  // Both finishers may race here; they compute the same result and only one update matches
+  const { data: closed } = await adminClient
     .from("battles")
-    .update({ status: "finished", winner_id: winner, finished_at: at.toISOString() })
+    .update({ status: "finished", winner_id: decision.winnerId, finished_at: at.toISOString() })
     .eq("id", battleId)
-    .eq("status", "active");
+    .eq("status", "active")
+    .select("id");
+  // Only the request that closed the battle pays; award_battle is idempotent anyway
+  if (closed?.length) await adminClient.rpc("award_battle", { p_battle_id: battleId });
   return true;
 }

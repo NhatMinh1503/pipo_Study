@@ -106,6 +106,20 @@ test.describe("battle", () => {
 
     await page.getByRole("link", { name: "Về sảnh đấu" }).click();
     await expect(page.getByRole("link", { name: /Thắng/ })).toBeVisible();
+
+    // Alone in the lobby, a third learner races a recorded run instead of waiting (ghost mode)
+    const loneContext = await browser.newContext();
+    const lone = await loneContext.newPage();
+    await createOnboardedUser(lone, testInfo);
+    await lone.goto("/battle");
+    await lone.getByRole("button", { name: "Tìm đối thủ" }).click();
+    await expect(lone.getByRole("heading", { name: "Đang chờ đối thủ…" })).toBeVisible({
+      timeout: 20_000,
+    });
+    await lone.getByRole("button", { name: "Đấu với bản ghi" }).click();
+    await expect(lone.getByText(/Bản ghi của/)).toBeVisible({ timeout: 15_000 });
+    await expect(lone.getByText("Câu 1/5")).toBeVisible();
+    await loneContext.close();
     await otherContext.close();
   });
 

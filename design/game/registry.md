@@ -52,6 +52,8 @@ value is approved but not implemented yet.
 | streak_freeze_max            | 2                                        | 1–3       | gate     | SQL wallets CHECK + `GAME.streak`                                    | streak-goals §2   | 2026-11-17 |
 | streak_milestones            | 3→5, 7→10, 14→20, 30→40, 60→60, 100n→100 | —         | feel     | SQL `streak_milestone_coins` + `GAME.streak`                         | streak-goals §2   | 2026-11-17 |
 | skill_pass_accuracy          | 60 %                                     | 50–80 %   | gate     | `lib/skills/topics.ts` (`PASS_ACCURACY`)                             | skill-tree        | 2026-11-17 |
+| battle_finish_coins          | 3 (+2 for the winner)                    | 1–5       | economy  | SQL `award_battle`                                                   | battle            | 2026-11-17 |
+| battle_daily_rewarded        | 5 battles per local day                  | 3–10      | gate     | SQL `award_battle`                                                   | battle            | 2026-11-17 |
 | tree_per_session             | 1 whole tree per completed session       | fixed     | gate     | SQL `tend_garden` (migration 20261110040100)                         | Forest style      | 2026-11-10 |
 | garden_grid                  | 8 × 6 tiles                              | fixed     | gate     | _(planned)_ lib/garden/layout.ts                                     | garden-scene §3.4 | 2026-11-07 |
 | plots_per_garden             | 31                                       | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.4 | 2026-11-07 |
@@ -92,6 +94,7 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 | All daily goals done                                     | Coins    | 5                           | once per local day                                              | streak-goals §1      |
 | Streak milestone                                         | Coins    | 5 / 10 / 20 / 40 / 60 / 100 | once per milestone per streak run                               | streak-goals §2      |
 | Shop: streak freeze                                      | Coins    | 50 each (hold ≤ 2)          | —                                                               | streak-goals §2      |
+| Battle finished (all sentences answered)                 | Coins    | 3, +2 for the winner        | 5 battles per local day                                         | battle               |
 | Pomodoro session                                         | XP       | 0                           | —                                                               | xp-levels §3.7       |
 | Shop: themes                                             | Coins    | 60 each                     | —                                                               | S23 (DB)             |
 | Shop: decorations                                        | Coins    | 25–40                       | —                                                               | S23 (DB)             |

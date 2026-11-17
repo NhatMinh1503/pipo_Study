@@ -948,7 +948,16 @@
     "absenceRule": "Rời ứng dụng quá 90 giây sẽ bị xử thua.",
     "opponentAbsent": "Đối thủ đang mất kết nối. Nếu vắng quá 90 giây, bạn sẽ được tính thắng.",
     "abandoned": "Trận đấu đã kết thúc vì cả hai người chơi cùng vắng mặt",
-    "abandonedHint": "Không ai thắng trận này."
+    "abandonedHint": "Không ai thắng trận này.",
+    "noPaste": "Trong trận đấu không dán được văn bản — hãy tự gõ nhé.",
+    "rewardNote": "Hoàn thành trận: +3 xu, thắng thêm +2 (tối đa 5 trận/ngày).",
+    "ghost": {
+      "start": "Đấu với bản ghi",
+      "hint": "Không có ai online? Đua với lượt chơi đã ghi của một người học khác.",
+      "none": "Chưa có bản ghi nào cho ngôn ngữ này. Thử lại sau nhé.",
+      "label": "Bản ghi của {name}",
+      "rule": "Bạn đang đua với một bản ghi: nó trả lời theo đúng tốc độ lúc được ghi."
+    }
   },
   "offline": {
     "title": "Bạn đang ngoại tuyến",

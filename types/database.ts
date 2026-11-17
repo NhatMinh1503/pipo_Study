@@ -177,6 +177,8 @@ export type Database = {
           created_at: string
           created_by: string
           finished_at: string | null
+          ghost_battle_id: string | null
+          ghost_user_id: string | null
           id: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
@@ -189,6 +191,8 @@ export type Database = {
           created_at?: string
           created_by: string
           finished_at?: string | null
+          ghost_battle_id?: string | null
+          ghost_user_id?: string | null
           id?: string
           language: Database["public"]["Enums"]["learning_language"]
           level: Database["public"]["Enums"]["proficiency_level"]
@@ -201,6 +205,8 @@ export type Database = {
           created_at?: string
           created_by?: string
           finished_at?: string | null
+          ghost_battle_id?: string | null
+          ghost_user_id?: string | null
           id?: string
           language?: Database["public"]["Enums"]["learning_language"]
           level?: Database["public"]["Enums"]["proficiency_level"]
@@ -1289,6 +1295,7 @@ export type Database = {
     }
     Functions: {
       abandon_pomodoro: { Args: { p_session_id: string }; Returns: undefined }
+      award_battle: { Args: { p_battle_id: string }; Returns: undefined }
       award_lesson_completion: {
         Args: {
           p_bonus_xp: number
@@ -1348,6 +1355,14 @@ export type Database = {
       effective_streak: {
         Args: { w: Database["public"]["Tables"]["wallets"]["Row"] }
         Returns: number
+      }
+      ghost_timeline: {
+        Args: { p_battle_id: string }
+        Returns: {
+          offset_seconds: number
+          points: number
+          sentence_index: number
+        }[]
       }
       insert_lesson_rows: {
         Args: {
@@ -1441,6 +1456,7 @@ export type Database = {
           skill_node: string
         }[]
       }
+      start_ghost_battle: { Args: { p_battle_id: string }; Returns: string }
       start_pomodoro: {
         Args: {
           p_planned_minutes?: number

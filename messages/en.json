@@ -948,7 +948,16 @@
     "absenceRule": "Leaving the app for more than 90 seconds counts as a forfeit.",
     "opponentAbsent": "Your opponent has lost connection. If they stay away for more than 90 seconds, you win.",
     "abandoned": "This battle ended because both players were away",
-    "abandonedHint": "Nobody wins this battle."
+    "abandonedHint": "Nobody wins this battle.",
+    "noPaste": "Pasting is off during a battle — type your own answer.",
+    "rewardNote": "Finishing a battle: +3 coins, +2 more for a win (up to 5 battles a day).",
+    "ghost": {
+      "start": "Race a recorded run",
+      "hint": "Nobody online? Race another learner's recorded run.",
+      "none": "No recorded runs for this language yet. Try again later.",
+      "label": "{name}'s recorded run",
+      "rule": "You are racing a recorded run: it answers at the pace it was recorded."
+    }
   },
   "offline": {
     "title": "You're offline",

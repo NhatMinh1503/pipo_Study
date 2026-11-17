@@ -6,7 +6,7 @@ import { useEffect, useEffectEvent, useState } from "react";
 import { battleKey, useBattle, useBattleAnswer } from "@/lib/api/use-battle";
 import { HEARTBEAT_INTERVAL_SECONDS, shouldClaimTimeout } from "@/lib/battle/presence";
 import type { BattleAnswerResponse } from "@/lib/schemas/battle";
-import { claimBattleTimeout, leaveBattle } from "@/server/actions/battle";
+import { claimBattleTimeout, leaveBattle, startGhostBattle } from "@/server/actions/battle";
 
 import { useBattleChannel } from "./use-battle-channel";
 import { useBattleHeartbeat } from "./use-battle-heartbeat";
@@ -24,7 +24,10 @@ export function useBattleRoom(battleId: string, userId: string) {
   const state = battle.data ?? null;
   const me = state?.players.find((player) => player.userId === userId) ?? null;
   const opponent = state?.players.find((player) => player.userId !== userId) ?? null;
-  const opponentOnline = opponent ? onlineIds.includes(opponent.userId) : false;
+  // A recorded run is always "there"; only live opponents use presence
+  const opponentOnline = opponent
+    ? opponent.ghost === true || onlineIds.includes(opponent.userId)
+    : false;
 
   const isOpen = state?.status === "waiting" || state?.status === "active";
   useBattleHeartbeat(battleId, isOpen);
@@ -65,6 +68,12 @@ export function useBattleRoom(battleId: string, userId: string) {
     );
   };
 
+  const raceGhost = async () => {
+    const result = await startGhostBattle(battleId);
+    if (result.ok) refresh();
+    return result;
+  };
+
   const leave = async () => {
     const result = await leaveBattle(battleId);
     if (result.ok) notify();
@@ -84,5 +93,6 @@ export function useBattleRoom(battleId: string, userId: string) {
     submitError: answer.error,
     lastResult,
     leave,
+    raceGhost,
   };
 }

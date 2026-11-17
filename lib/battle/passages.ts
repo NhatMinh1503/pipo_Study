@@ -11,6 +11,66 @@ const PASSAGES: Record<LearningLanguage, readonly Passage[]> = {
     {
       levels: ["N5", "N4"],
       sentences: [
+        "私の部屋は小さいです。",
+        "窓から山が見えます。",
+        "机の上に本が三冊あります。",
+        "夜はベッドで音楽を聞きます。",
+        "この部屋が大好きです。",
+      ],
+    },
+    {
+      levels: ["N5", "N4"],
+      sentences: [
+        "駅の近くに新しい店ができました。",
+        "店の人はとても親切でした。",
+        "私は赤いかばんを買いました。",
+        "値段はあまり高くなかったです。",
+        "また行きたいと思います。",
+      ],
+    },
+    {
+      levels: ["N3"],
+      sentences: [
+        "最近、料理を始めました。",
+        "最初は卵焼きもうまく作れませんでした。",
+        "動画を見ながら何回も練習しました。",
+        "今では友だちにお弁当を作ることもあります。",
+        "おいしいと言われると、とてもうれしいです。",
+      ],
+    },
+    {
+      levels: ["N3"],
+      sentences: [
+        "来月、大阪へ引っ越すことになりました。",
+        "新しい会社は駅から歩いて五分です。",
+        "部屋を探すのに思ったより時間がかかりました。",
+        "荷物が多いので、少しずつ準備しています。",
+        "新しい生活が楽しみです。",
+      ],
+    },
+    {
+      levels: ["N2", "N1"],
+      sentences: [
+        "在宅勤務が広まり、働き方は大きく変わった。",
+        "通勤時間がなくなった分、家族と過ごす時間が増えたという人も多い。",
+        "一方で、仕事と生活の区別がつきにくいという声もある。",
+        "そのため、勤務時間をはっきり決める会社が増えている。",
+        "柔軟さと規律のバランスが今後の課題だろう。",
+      ],
+    },
+    {
+      levels: ["N2", "N1"],
+      sentences: [
+        "地方の小さな町では、人口の減少が深刻な問題となっている。",
+        "若者の多くは進学や就職をきっかけに都市へ出ていく。",
+        "その結果、商店街の店が次々と閉まってしまった。",
+        "最近は空き家を活用して移住者を呼び込む取り組みも見られる。",
+        "町の魅力をどう伝えるかが、成功の鍵を握っている。",
+      ],
+    },
+    {
+      levels: ["N5", "N4"],
+      sentences: [
         "毎朝七時に起きます。",
         "朝ごはんはパンとコーヒーです。",
         "電車で学校へ行きます。",
@@ -53,6 +113,56 @@ const PASSAGES: Record<LearningLanguage, readonly Passage[]> = {
     {
       levels: ["A1", "A2"],
       sentences: [
+        "My sister has a small dog.",
+        "His name is Max.",
+        "He likes to play in the garden.",
+        "Every evening we walk him to the park.",
+        "He is very happy there.",
+      ],
+    },
+    {
+      levels: ["A1", "A2"],
+      sentences: [
+        "I went to the market on Saturday.",
+        "I bought apples, bread and cheese.",
+        "The weather was cold but sunny.",
+        "I met an old friend near the station.",
+        "We had coffee together.",
+      ],
+    },
+    {
+      levels: ["B1", "B2"],
+      sentences: [
+        "Last year I decided to learn to play the guitar.",
+        "At first my fingers hurt after only ten minutes.",
+        "I practised a little every day instead of a lot once a week.",
+        "After three months I could play my first full song.",
+        "Small steps turned out to be the secret.",
+      ],
+    },
+    {
+      levels: ["B1", "B2"],
+      sentences: [
+        "More and more people are choosing to cycle to work.",
+        "It saves money and keeps them fit at the same time.",
+        "However, many cities still lack safe bike lanes.",
+        "Some companies now offer showers for staff who cycle.",
+        "Small changes like these can make a big difference.",
+      ],
+    },
+    {
+      levels: ["C1", "C2"],
+      sentences: [
+        "Few inventions have reshaped daily life as quietly as the shipping container.",
+        "Before it became standard, loading a ship could take several days.",
+        "Goods were carried piece by piece, and theft was common.",
+        "Standard boxes allowed cranes, trucks and trains to work together seamlessly.",
+        "The resulting fall in costs made global trade what it is today.",
+      ],
+    },
+    {
+      levels: ["A1", "A2"],
+      sentences: [
         "My name is Lan and I live in Hanoi.",
         "I work at a small bookshop.",
         "Every morning I drink green tea.",
@@ -84,17 +194,21 @@ const PASSAGES: Record<LearningLanguage, readonly Passage[]> = {
 };
 
 /**
- * A passage for the learner's language and level. `pick` is injectable so tests are deterministic;
- * the result is copied because Postgres receives it as a fresh array.
+ * A passage for the learner's language and level, avoiding ones they played recently (`exclude`
+ * holds the first sentence of each) while another is available. `pick` is injectable so tests
+ * are deterministic; the result is copied because Postgres receives it as a fresh array.
  */
 export function pickPassage(
   language: LearningLanguage,
   level: ProficiencyLevel,
+  exclude: readonly string[] = [],
   pick: (count: number) => number = (count) => Math.floor(Math.random() * count),
 ): string[] {
   const all = PASSAGES[language];
   const matching = all.filter((passage) => passage.levels.includes(level));
-  const pool = matching.length > 0 ? matching : all;
+  const levelPool = matching.length > 0 ? matching : all;
+  const fresh = levelPool.filter((passage) => !exclude.includes(passage.sentences[0] ?? ""));
+  const pool = fresh.length > 0 ? fresh : levelPool;
   const passage = pool[pick(pool.length)] ?? pool[0];
   return passage ? [...passage.sentences] : [];
 }

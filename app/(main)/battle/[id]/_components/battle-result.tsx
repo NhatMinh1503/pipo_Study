@@ -14,11 +14,16 @@ export function BattleResult({ state, userId }: { state: BattleState; userId: st
     <section className="sheet space-y-5 p-6 text-center" aria-live="polite">
       <Trophy className="mx-auto size-10 text-primary" aria-hidden />
       <h2 className="font-heading text-2xl font-bold">{t(`outcome.${outcome}`)}</h2>
+      <p className="text-sm text-muted-foreground">{t("rewardNote")}</p>
       <ul className="mx-auto max-w-xs divide-y divide-dashed divide-border/30">
         {state.players.map((player) => (
           <li key={player.userId} className="flex justify-between gap-3 py-2">
             <span className="truncate">
-              {player.userId === userId ? t("you") : (player.name ?? t("opponent"))}
+              {player.userId === userId
+                ? t("you")
+                : player.ghost
+                  ? t("ghost.label", { name: player.name ?? t("opponent") })
+                  : (player.name ?? t("opponent"))}
             </span>
             <span className="mono-value font-semibold">{player.score}</span>
           </li>

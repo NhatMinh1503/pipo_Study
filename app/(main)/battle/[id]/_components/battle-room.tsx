@@ -67,9 +67,21 @@ export function BattleRoom({ battleId, userId }: BattleRoomProps) {
         <LoaderCircle className="mx-auto size-8 animate-spin text-primary" aria-hidden />
         <h1 className="font-heading text-xl font-bold">{t("waiting")}</h1>
         <p className="text-sm text-muted-foreground">{t("waitingHint")}</p>
-        <Button variant="outline" onClick={leave}>
-          {t("cancel")}
-        </Button>
+        <div className="flex flex-wrap justify-center gap-2">
+          <Button
+            onClick={async () => {
+              const result = await room.raceGhost();
+              if (!result.ok)
+                toast.error(t(result.error === "battle.ghost.none" ? "ghost.none" : "failed"));
+            }}
+          >
+            {t("ghost.start")}
+          </Button>
+          <Button variant="outline" onClick={leave}>
+            {t("cancel")}
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">{t("ghost.hint")}</p>
       </section>
     );
   }
@@ -96,7 +108,7 @@ export function BattleRoom({ battleId, userId }: BattleRoomProps) {
         }
       />
       <p className="mono-label" role="note">
-        {t("absenceRule")}
+        {state.isGhost ? t("ghost.rule") : t("absenceRule")}
       </p>
       {room.opponentAbsent && (
         <p className="sheet-flat bg-tint-sand p-3 text-sm" role="status">
