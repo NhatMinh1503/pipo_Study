@@ -272,7 +272,9 @@
       "locked": "Locked"
     },
     "yourTranslation": "Your translation",
+    "yourRewording": "Say it in your own words",
     "placeholder": "Type the translation of the highlighted sentence...",
+    "rewordPlaceholder": "Rewrite the highlighted sentence with other words (same meaning)...",
     "keyboardHint": "Enter to check · Shift+Enter for a new line",
     "attempts": "Attempt {count}",
     "check": "Check",
@@ -291,7 +293,8 @@
       "rateLimited": "You have used today's AI checks. Come back tomorrow.",
       "notConfigured": "AI is not configured (GEMINI_API_KEY missing).",
       "unavailable": "The AI is busy and could not grade this. It was not counted — please try again.",
-      "network": "Connection lost. Check your network and try again."
+      "network": "Connection lost. Check your network and try again.",
+      "copiedSource": "That is the original sentence. Write it in your own words — this try was not counted."
     },
     "xp": {
       "earned": "+{xp} XP",
@@ -921,7 +924,8 @@
     "absenceRule": "Leaving the app for more than 90 seconds counts as a forfeit.",
     "opponentAbsent": "Your opponent has lost connection. If they stay away for more than 90 seconds, you win.",
     "abandoned": "This battle ended because both players were away",
-    "abandonedHint": "Nobody wins this battle."
+    "abandonedHint": "Nobody wins this battle.",
+    "copiedSource": "That is the original sentence. Write your own answer."
   },
   "offline": {
     "title": "You're offline",

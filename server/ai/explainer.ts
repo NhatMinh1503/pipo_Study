@@ -9,7 +9,7 @@ import {
   SYSTEM_INSTRUCTION as BATCH_SYSTEM_INSTRUCTION,
   type ExplainWordsInput,
   type ExplainWordsResponse,
-} from "@/server/prompts/explain-words.v1";
+} from "@/server/prompts/explain-words.v2";
 import {
   buildExplainPrompt,
   explainResponseSchema,
@@ -17,7 +17,7 @@ import {
   SYSTEM_INSTRUCTION,
   type ExplainInput,
   type ExplainResponse,
-} from "@/server/prompts/explain-word.v1";
+} from "@/server/prompts/explain-word.v2";
 
 export type Explainer = ((input: ExplainInput) => Promise<ExplainResponse>) & {
   /** Fake answers must never reach the shared cache that real users read. */

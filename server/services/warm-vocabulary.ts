@@ -6,7 +6,7 @@ import { collectLessonWords, type LessonWord } from "@/lib/dictionary/lesson-wor
 import type { DisplayLanguage } from "@/lib/schemas/common";
 import type { BatchExplainer } from "@/server/ai/explainer";
 import { logger } from "@/server/logger";
-import { MAX_WORDS_PER_CALL } from "@/server/prompts/explain-words.v1";
+import { MAX_WORDS_PER_CALL } from "@/server/prompts/explain-words.v2";
 import { getTokenizedWorkspace } from "@/server/services/ensure-tokens";
 import type { Database } from "@/types/database";
 

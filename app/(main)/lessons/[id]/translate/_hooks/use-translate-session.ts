@@ -15,6 +15,7 @@ export type Feedback =
 
 const ERROR_KEYS: Record<string, string> = {
   RATE_LIMITED: "translate.errors.rateLimited",
+  COPIED_SOURCE: "translate.errors.copiedSource",
   AI_NOT_CONFIGURED: "translate.errors.notConfigured",
   AI_UNAVAILABLE: "translate.errors.unavailable",
   AI_BAD_REQUEST: "translate.errors.unavailable",
