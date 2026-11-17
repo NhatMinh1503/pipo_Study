@@ -107,15 +107,18 @@
     "goals": {
       "title": "Today's goals",
       "progress": "{done}/{total}",
-      "translate": "Finish 1 translation",
-      "translateDetail": "{count, plural, =0 {None yet today} one {# done today} other {# done today}}",
-      "review": "Clear your due cards",
-      "reviewLeft": "{count, plural, one {# card left} other {# cards left}}",
-      "reviewDetail": "{count, plural, =0 {Nothing due} one {# card reviewed today} other {# cards reviewed today}}",
+      "review": "Review due cards",
       "focus": "Focus for 1 Pomodoro",
       "focusDetail": "{count, plural, =0 {No sessions yet} one {# session done} other {# sessions done}}",
       "done": "done",
-      "todo": "to do"
+      "todo": "to do",
+      "translateGoal": "Translate 3 sentences",
+      "translateSentences": "{count}/{target} sentences today",
+      "reviewProgress": "{count}/{target} reviews today",
+      "reviewNothing": "Nothing due today — enjoy the rest",
+      "skip": "not needed today",
+      "bonusHint": "Finish today's goals for +{coins} coins",
+      "bonusEarned": "Today's goals done: +{coins} coins earned"
     },
     "activity": {
       "title": "XP, last 7 days · {total} total",
@@ -138,7 +141,8 @@
       "label": "Today's status",
       "streak": "{count, plural, one {# day} other {# days}} streak",
       "due": "{count, plural, one {# card} other {# cards}} due",
-      "goals": "Today · {done}/{total} goals"
+      "goals": "Today · {done}/{total} goals",
+      "freezes": "{count, plural, one {# freeze} other {# freezes}}"
     }
   },
   "languages": {
@@ -667,7 +671,8 @@
       "decoration": "Garden decorations",
       "topic_pack": "Topic packs for AI lessons",
       "seed": "Tree seeds",
-      "pet": "Pets"
+      "pet": "Pets",
+      "streak": "Streak"
     },
     "errors": {
       "notEnoughCoins": "Not enough coins.",
@@ -746,6 +751,14 @@
         "name": "Cloud slime",
         "description": "A fluffy cloud that floats along the path. Tap it: it rains on the garden."
       }
+    },
+    "freeze": {
+      "name": "Streak freeze",
+      "description": "Covers one missed day so your streak keeps going. Used automatically.",
+      "held": "Held {held}/{max}",
+      "full": "Full",
+      "bought": "Streak freeze ready",
+      "limit": "You can hold at most 2 freezes"
     }
   },
   "skills": {
@@ -852,7 +865,22 @@
     "empty": "Nobody on the board yet",
     "anonymous": "Anonymous learner",
     "you": "You",
-    "notRanked": "You're not in the top 50 yet — keep learning to climb!"
+    "notRanked": "You're not in the top 50 yet — keep learning to climb!",
+    "reset": {
+      "week": "This board started on Monday and resets next Monday.",
+      "month": "This board started on the 1st and resets next month."
+    },
+    "resetStreak": "Current streaks, frozen days included.",
+    "mine": {
+      "label": "Your standing",
+      "rank": "Your rank",
+      "position": "#{rank} of {total}",
+      "best": {
+        "xp": "Best week ever",
+        "focus": "Best focus week",
+        "streak": "Longest streak"
+      }
+    }
   },
   "battle": {
     "title": "1v1 translation battle",

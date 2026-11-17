@@ -5,7 +5,7 @@ Agents read this before defining any value and propose changes instead of
 contradicting it. Only values the user (Minh) has approved go in the tables;
 proposals stay in the system's own design doc until approved.
 
-Last updated: 2026-11-07 (garden scene spec approved)
+Last updated: 2026-11-17 (streak-goals, skill tree, battle, community specs)
 
 "Defined in" shows where the value lives **today**. `→ lib/game/config.ts` marks values
 that task T1 of `xp-levels.md` moves into the single config module. _(planned)_ means the
@@ -45,6 +45,12 @@ value is approved but not implemented yet.
 | battle_opponent_timeout_s    | 90                                       | 60–180    | gate     | migration `…_battle_presence_timeout.sql` + `lib/battle/presence.ts` | audit §17 (c)     | 2026-11-05 |
 | battle_waiting_room_idle_s   | 45                                       | 30–90     | gate     | migration `…_battle_presence_timeout.sql`                            | audit §17 (c)     | 2026-11-05 |
 | battle_abandon_after_minutes | 15                                       | 10–30     | gate     | migration `…_battle_presence_timeout.sql`                            | audit §17 (c)     | 2026-11-05 |
+| daily_translate_sentences    | 3                                        | 2–5       | gate     | SQL `today_goals` + `GAME.goals`                                     | streak-goals §1   | 2026-11-17 |
+| daily_review_max             | 5                                        | 3–10      | gate     | SQL `today_goals` + `GAME.goals`                                     | streak-goals §1   | 2026-11-17 |
+| daily_goals_bonus_coins      | 5                                        | 3–10      | feel     | SQL `today_goals` + `GAME.goals`                                     | streak-goals §1   | 2026-11-17 |
+| streak_freeze_price          | 50 Coins                                 | 30–80     | economy  | SQL `buy_streak_freeze` + `GAME.streak`                              | streak-goals §2   | 2026-11-17 |
+| streak_freeze_max            | 2                                        | 1–3       | gate     | SQL wallets CHECK + `GAME.streak`                                    | streak-goals §2   | 2026-11-17 |
+| streak_milestones            | 3→5, 7→10, 14→20, 30→40, 60→60, 100n→100 | —         | feel     | SQL `streak_milestone_coins` + `GAME.streak`                         | streak-goals §2   | 2026-11-17 |
 | tree_per_session             | 1 whole tree per completed session       | fixed     | gate     | SQL `tend_garden` (migration 20261110040100)                         | Forest style      | 2026-11-10 |
 | garden_grid                  | 8 × 6 tiles                              | fixed     | gate     | _(planned)_ lib/garden/layout.ts                                     | garden-scene §3.4 | 2026-11-07 |
 | plots_per_garden             | 31                                       | fixed     | gate     | _(planned)_ lib/garden/layout.ts + SQL                               | garden-scene §3.4 | 2026-11-07 |
@@ -63,7 +69,7 @@ value is approved but not implemented yet.
 | xp_to_reach(L)   | `20L² − 10L − 10`                                                                    | Lv50 = 49 490 | xp-levels §4.3 | 2026-11-05 |
 | level(xp)        | `min(level_cap, max L with xp_to_reach(L) ≤ xp)`                                     | [1, 50]       | xp-levels §4.3 | 2026-11-05 |
 | stars(xp)        | `xp ≥ 49 490 ? floor((xp − 49 490) / star_xp) : 0`                                   | [0, ∞)        | xp-levels §4.4 | 2026-11-05 |
-| effective_streak | `streak_current` if `last_active_date ≥ today_local − 1`, else 0                     | [0, ∞)        | audit §17 (b)  | 2026-11-05 |
+| effective_streak | `streak_current` if `last_active_date ≥ today_local − 1 − streak_freezes`, else 0    | [0, ∞)        | streak-goals   | 2026-11-17 |
 | pomodoro_coins   | `max(1, minutes / 5)`                                                                | 2–24          | S21 (existing) | 2026-11-10 |
 
 **Tree per session** (Forest style, 2026-11-10): every completed focus session plants one mature tree of the species picked for it; on the Pomodoro page it grows sprout → young → mature at ⅓ and ⅔ of the session. A session left early plants nothing (the page shows it wilting). Trees from the older 4-session rule were all marked mature.
@@ -82,6 +88,9 @@ the first review of a new card, bonuses, Pomodoro, shop, battle, community.
 | Rewarded review (due, seen before)                       | XP       | 1 per card                  | once per card per local day                                     | xp-levels §3.3       |
 | Review queue cleared (≥ 5 rewarded)                      | XP       | 5                           | once per local day                                              | xp-levels §3.4       |
 | Pomodoro session                                         | Coins    | 1 per 5 minutes             | none                                                            | S21                  |
+| All daily goals done                                     | Coins    | 5                           | once per local day                                              | streak-goals §1      |
+| Streak milestone                                         | Coins    | 5 / 10 / 20 / 40 / 60 / 100 | once per milestone per streak run                               | streak-goals §2      |
+| Shop: streak freeze                                      | Coins    | 50 each (hold ≤ 2)          | —                                                               | streak-goals §2      |
 | Pomodoro session                                         | XP       | 0                           | —                                                               | xp-levels §3.7       |
 | Shop: themes                                             | Coins    | 60 each                     | —                                                               | S23 (DB)             |
 | Shop: decorations                                        | Coins    | 25–40                       | —                                                               | S23 (DB)             |

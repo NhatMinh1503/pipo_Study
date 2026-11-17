@@ -107,15 +107,18 @@
     "goals": {
       "title": "Mục tiêu hôm nay",
       "progress": "{done}/{total}",
-      "translate": "Hoàn thành 1 bài dịch",
-      "translateDetail": "{count, plural, =0 {Chưa có bài nào hôm nay} other {Đã xong # bài hôm nay}}",
-      "review": "Ôn hết thẻ đến hạn",
-      "reviewLeft": "{count, plural, other {Còn # thẻ}}",
-      "reviewDetail": "{count, plural, =0 {Không có thẻ nào đến hạn} other {Đã ôn # thẻ hôm nay}}",
+      "review": "Ôn thẻ đến hạn",
       "focus": "Tập trung 1 phiên Pomodoro",
       "focusDetail": "{count, plural, =0 {Chưa có phiên nào} other {Đã xong # phiên}}",
       "done": "đã xong",
-      "todo": "chưa xong"
+      "todo": "chưa xong",
+      "translateGoal": "Dịch 3 câu",
+      "translateSentences": "{count}/{target} câu hôm nay",
+      "reviewProgress": "Đã ôn {count}/{target} thẻ hôm nay",
+      "reviewNothing": "Hôm nay không có thẻ đến hạn — nghỉ chút nhé",
+      "skip": "hôm nay không cần",
+      "bonusHint": "Xong mục tiêu hôm nay được +{coins} xu",
+      "bonusEarned": "Đã xong mục tiêu hôm nay: +{coins} xu"
     },
     "activity": {
       "title": "XP 7 ngày qua · tổng {total}",
@@ -138,7 +141,8 @@
       "label": "Trạng thái hôm nay",
       "streak": "Chuỗi {count} ngày",
       "due": "{count} thẻ cần ôn",
-      "goals": "Hôm nay · {done}/{total} mục tiêu"
+      "goals": "Hôm nay · {done}/{total} mục tiêu",
+      "freezes": "{count, plural, other {# lượt đóng băng}}"
     }
   },
   "languages": {
@@ -667,7 +671,8 @@
       "decoration": "Trang trí Vườn tri thức",
       "topic_pack": "Gói chủ đề cho bài AI",
       "seed": "Hạt giống cây",
-      "pet": "Thú cưng"
+      "pet": "Thú cưng",
+      "streak": "Chuỗi ngày học"
     },
     "errors": {
       "notEnoughCoins": "Không đủ Coins.",
@@ -746,6 +751,14 @@
         "name": "Slime mây",
         "description": "Cụm mây bông bềnh bay dọc lối đi. Chạm vào: nó làm mưa tưới vườn."
       }
+    },
+    "freeze": {
+      "name": "Đóng băng chuỗi",
+      "description": "Giữ chuỗi khi bạn lỡ một ngày. Tự dùng khi cần.",
+      "held": "Đang có {held}/{max}",
+      "full": "Đã đủ",
+      "bought": "Đã có thêm 1 lượt đóng băng",
+      "limit": "Chỉ giữ được tối đa 2 lượt đóng băng"
     }
   },
   "skills": {
@@ -852,7 +865,22 @@
     "empty": "Chưa có ai trên bảng xếp hạng",
     "anonymous": "Người học ẩn danh",
     "you": "Bạn",
-    "notRanked": "Bạn chưa vào top 50 — tiếp tục học để leo bảng nhé!"
+    "notRanked": "Bạn chưa vào top 50 — tiếp tục học để leo bảng nhé!",
+    "reset": {
+      "week": "Bảng này bắt đầu từ thứ Hai và làm mới vào thứ Hai tới.",
+      "month": "Bảng này bắt đầu từ ngày 1 và làm mới vào tháng sau."
+    },
+    "resetStreak": "Chuỗi hiện tại, tính cả ngày được đóng băng.",
+    "mine": {
+      "label": "Vị trí của bạn",
+      "rank": "Hạng của bạn",
+      "position": "#{rank} / {total}",
+      "best": {
+        "xp": "Tuần tốt nhất",
+        "focus": "Tuần tập trung tốt nhất",
+        "streak": "Chuỗi dài nhất"
+      }
+    }
   },
   "battle": {
     "title": "Đấu dịch 1v1",

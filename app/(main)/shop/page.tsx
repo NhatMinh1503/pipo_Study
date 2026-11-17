@@ -6,9 +6,11 @@ import { Suspense } from "react";
 import { PageContainer } from "@/components/common/page-container";
 import { PageHeader } from "@/components/common/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
+import { createClient } from "@/lib/supabase/server";
 import { getShopState } from "@/server/queries/shop";
 
 import { ShopItemCard } from "./_components/shop-item-card";
+import { StreakFreezeCard } from "./_components/streak-freeze-card";
 
 export const metadata: Metadata = { title: "Shop" };
 
@@ -16,7 +18,12 @@ export const metadata: Metadata = { title: "Shop" };
 const SECTIONS = ["seed", "decoration", "pet"] as const;
 
 async function ShopContent() {
-  const [state, t] = await Promise.all([getShopState(), getTranslations("shop")]);
+  const supabase = await createClient();
+  const [state, t, wallet] = await Promise.all([
+    getShopState(),
+    getTranslations("shop"),
+    supabase.from("wallet_summaries").select("streak_freezes").maybeSingle(),
+  ]);
 
   return (
     <>
@@ -33,6 +40,14 @@ async function ShopContent() {
           </span>
         }
       />
+      <section className="space-y-3">
+        <h2 className="mono-label">{t("sections.streak")}</h2>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <li>
+            <StreakFreezeCard coins={state.coins} held={wallet.data?.streak_freezes ?? 0} />
+          </li>
+        </ul>
+      </section>
       {SECTIONS.map((kind) => {
         const items = state.items.filter((item) => item.kind === kind);
         // A section with nothing to sell (e.g. before a catalog migration) is not shown

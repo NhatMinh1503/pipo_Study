@@ -21,6 +21,16 @@ test.describe("dashboard", () => {
     await expect(page.getByRole("link", { name: /スーパーで買い物/ })).toBeVisible();
   });
 
+  test("a new learner gets no daily goal for free", async ({ page }, testInfo) => {
+    await createOnboardedUser(page, testInfo);
+    const goals = page.getByRole("region", { name: "Mục tiêu hôm nay" });
+    // Nothing due yet: the review goal does not apply, the other two are still to do
+    await expect(goals).toContainText("0/2");
+    await expect(goals).toContainText("Hôm nay không có thẻ đến hạn");
+    await expect(goals).toContainText("0/3 câu hôm nay");
+    await expect(goals).toContainText("Xong mục tiêu hôm nay được +5 xu");
+  });
+
   test("switching the display language updates the whole UI", async ({ page }, testInfo) => {
     // A fresh user: changing the shared demo user's language would break parallel tests
     await createOnboardedUser(page, testInfo);

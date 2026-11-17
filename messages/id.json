@@ -107,15 +107,18 @@
     "goals": {
       "title": "Target hari ini",
       "progress": "{done}/{total}",
-      "translate": "Selesaikan 1 terjemahan",
-      "translateDetail": "{count, plural, =0 {Belum ada hari ini} other {# selesai hari ini}}",
-      "review": "Selesaikan kartu yang jatuh tempo",
-      "reviewLeft": "{count, plural, other {sisa # kartu}}",
-      "reviewDetail": "{count, plural, =0 {Tidak ada yang jatuh tempo} other {# kartu diulang hari ini}}",
+      "review": "Ulas kartu jatuh tempo",
       "focus": "Fokus 1 Pomodoro",
       "focusDetail": "{count, plural, =0 {Belum ada sesi} other {# sesi selesai}}",
       "done": "selesai",
-      "todo": "belum"
+      "todo": "belum",
+      "translateGoal": "Terjemahkan 3 kalimat",
+      "translateSentences": "{count}/{target} kalimat hari ini",
+      "reviewProgress": "{count}/{target} ulasan hari ini",
+      "reviewNothing": "Tidak ada kartu jatuh tempo hari ini",
+      "skip": "tidak perlu hari ini",
+      "bonusHint": "Selesaikan target hari ini untuk +{coins} koin",
+      "bonusEarned": "Target hari ini selesai: +{coins} koin"
     },
     "activity": {
       "title": "XP, 7 hari terakhir · total {total}",
@@ -138,7 +141,8 @@
       "label": "Status hari ini",
       "streak": "Runtunan {count, plural, other {# hari}}",
       "due": "{count, plural, other {# kartu}} jatuh tempo",
-      "goals": "Hari ini · {done}/{total} target"
+      "goals": "Hari ini · {done}/{total} target",
+      "freezes": "{count} pembeku"
     }
   },
   "languages": {
@@ -667,7 +671,8 @@
       "decoration": "Dekorasi taman",
       "topic_pack": "Paket topik untuk pelajaran AI",
       "seed": "Benih pohon",
-      "pet": "Hewan peliharaan"
+      "pet": "Hewan peliharaan",
+      "streak": "Runtunan"
     },
     "errors": {
       "notEnoughCoins": "Koin tidak cukup.",
@@ -746,6 +751,14 @@
         "name": "Slime awan",
         "description": "Awan lembut yang melayang di samping jalan. Ketuk: ia menurunkan hujan."
       }
+    },
+    "freeze": {
+      "name": "Pembeku runtunan",
+      "description": "Menjaga runtunanmu saat melewatkan satu hari. Dipakai otomatis.",
+      "held": "Dimiliki {held}/{max}",
+      "full": "Penuh",
+      "bought": "Pembeku runtunan siap",
+      "limit": "Maksimal 2 pembeku"
     }
   },
   "skills": {
@@ -852,7 +865,22 @@
     "empty": "Belum ada yang di papan",
     "anonymous": "Pelajar anonim",
     "you": "Kamu",
-    "notRanked": "Kamu belum masuk 50 besar — terus belajar untuk naik!"
+    "notRanked": "Kamu belum masuk 50 besar — terus belajar untuk naik!",
+    "reset": {
+      "week": "Papan ini dimulai Senin dan direset Senin depan.",
+      "month": "Papan ini dimulai tanggal 1 dan direset bulan depan."
+    },
+    "resetStreak": "Runtunan saat ini, termasuk hari yang dibekukan.",
+    "mine": {
+      "label": "Posisimu",
+      "rank": "Peringkatmu",
+      "position": "#{rank} dari {total}",
+      "best": {
+        "xp": "Minggu terbaik",
+        "focus": "Minggu fokus terbaik",
+        "streak": "Runtunan terpanjang"
+      }
+    }
   },
   "battle": {
     "title": "Duel terjemahan 1v1",

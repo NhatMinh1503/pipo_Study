@@ -12,7 +12,7 @@ import { QuickLinks } from "./quick-links";
 import { RecentWords } from "./recent-words";
 import { StatusBand } from "./status-band";
 import { ReviewDueCard } from "./review-due-card";
-import { countGoalsDone, TodayGoals } from "./today-goals";
+import { countGoals, TodayGoals } from "./today-goals";
 import { WeakPointCard } from "./weak-point-card";
 
 export async function DashboardContent() {
@@ -23,7 +23,8 @@ export async function DashboardContent() {
       <StatusBand
         streak={data.streakCurrent}
         dueCards={data.dueCards}
-        goalsDone={countGoalsDone(data.today, data.dueCards)}
+        goals={countGoals(data.today)}
+        freezes={data.streakFreezes}
       />
       {/* One ruled strip, three figures — not three separate tiles */}
       <section
@@ -51,7 +52,7 @@ export async function DashboardContent() {
         <ContinueLessons lessons={data.inProgress} />
       </div>
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr] lg:items-start">
-        <TodayGoals today={data.today} dueCards={data.dueCards} />
+        <TodayGoals goals={data.today} />
         <ActivityChart activity={data.activity} />
       </div>
       <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
