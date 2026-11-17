@@ -267,7 +267,9 @@
       "locked": "Terkunci"
     },
     "yourTranslation": "Terjemahanmu",
+    "yourRewording": "Katakan dengan kata-katamu sendiri",
     "placeholder": "Ketik terjemahan kalimat yang disorot...",
+    "rewordPlaceholder": "Tulis ulang kalimat yang disorot dengan kata lain (makna sama)...",
     "keyboardHint": "Enter untuk memeriksa · Shift+Enter untuk baris baru",
     "attempts": "Percobaan ke-{count}",
     "check": "Periksa",
@@ -286,7 +288,8 @@
       "rateLimited": "Jatah pemeriksaan AI hari ini sudah habis. Kembali lagi besok.",
       "notConfigured": "AI belum dikonfigurasi (GEMINI_API_KEY tidak ada).",
       "unavailable": "AI sedang sibuk dan tidak bisa menilai ini. Tidak dihitung — silakan coba lagi.",
-      "network": "Koneksi terputus. Periksa jaringanmu dan coba lagi."
+      "network": "Koneksi terputus. Periksa jaringanmu dan coba lagi.",
+      "copiedSource": "Itu kalimat aslinya. Tulis dengan kata-katamu sendiri — percobaan ini tidak dihitung."
     },
     "xp": {
       "earned": "+{xp} XP",
@@ -890,7 +893,8 @@
     "absenceRule": "Meninggalkan aplikasi lebih dari 90 detik dihitung sebagai menyerah.",
     "opponentAbsent": "Koneksi lawanmu terputus. Jika ia pergi lebih dari 90 detik, kamu menang.",
     "abandoned": "Duel ini berakhir karena kedua pemain pergi",
-    "abandonedHint": "Tidak ada yang menang dalam duel ini."
+    "abandonedHint": "Tidak ada yang menang dalam duel ini.",
+    "copiedSource": "Itu kalimat aslinya. Tulis jawabanmu sendiri."
   },
   "offline": {
     "title": "Kamu sedang offline",

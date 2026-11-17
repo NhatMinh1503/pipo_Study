@@ -267,7 +267,9 @@
       "locked": "未解放"
     },
     "yourTranslation": "あなたの翻訳",
+    "yourRewording": "自分のことばで言いかえる",
     "placeholder": "ハイライトされた文の翻訳を入力...",
+    "rewordPlaceholder": "光っている文を、ちがうことばで書いてください（いみは同じ）...",
     "keyboardHint": "Enterで判定 · Shift+Enterで改行",
     "attempts": "{count}回目の挑戦",
     "check": "判定する",
@@ -286,7 +288,8 @@
       "rateLimited": "今日のAI判定回数を使い切りました。また明日どうぞ。",
       "notConfigured": "AIが設定されていません（GEMINI_API_KEY がありません）。",
       "unavailable": "AIが混み合っていて判定できませんでした。今回はカウントされません。もう一度お試しください。",
-      "network": "接続が切れました。ネットワークを確認して再度お試しください。"
+      "network": "接続が切れました。ネットワークを確認して再度お試しください。",
+      "copiedSource": "これはもとの文と同じです。自分のことばで書いてください。（今回はカウントしません）"
     },
     "xp": {
       "earned": "+{xp} XP",
@@ -890,7 +893,8 @@
     "absenceRule": "アプリを90秒以上離れると不戦敗になります。",
     "opponentAbsent": "相手の接続が切れています。90秒以上戻らない場合、あなたの勝ちになります。",
     "abandoned": "両方のプレイヤーが不在のため、対戦は終了しました",
-    "abandonedHint": "この対戦に勝者はいません。"
+    "abandonedHint": "この対戦に勝者はいません。",
+    "copiedSource": "これはもとの文と同じです。自分のことばで答えてください。"
   },
   "offline": {
     "title": "オフラインです",

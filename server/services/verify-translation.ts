@@ -3,17 +3,18 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { sentenceXpSchema, type SentenceXp } from "@/lib/schemas/translation";
+import { isCopyOfSource } from "@/lib/nlp/copy-guard";
 import { scoreSentence } from "@/lib/scoring";
 import type { Grader } from "@/server/ai/grader";
 import { readCachedGrade, storeGrade } from "@/server/services/grading-cache";
-import type { GradeResponse } from "@/server/prompts/grade-translation.v1";
+import type { GradeResponse } from "@/server/prompts/grade-translation.v2";
 import type { Database } from "@/types/database";
 import { DEFAULT_LOCALE } from "@/lib/i18n/config";
 
 type Client = SupabaseClient<Database>;
 
 export class ServiceError extends Error {
-  constructor(readonly code: "NOT_FOUND" | "RATE_LIMITED" | "INTERNAL") {
+  constructor(readonly code: "NOT_FOUND" | "RATE_LIMITED" | "COPIED_SOURCE" | "INTERNAL") {
     super(code);
   }
 }
@@ -79,6 +80,18 @@ export async function verifyTranslation(
     contextAfter: neighbor(sentence.position + 1),
     referenceTranslation: sentence.reference_translation,
   };
+
+  // Handing the sentence back is never an answer, whatever an AI or the cache would say.
+  // Rejected before quota and before any attempt is stored, so the learner just writes again.
+  if (
+    isCopyOfSource({
+      source: gradeInput.source,
+      answer: userTranslation,
+      sameLanguage: gradeInput.sourceLanguage === gradeInput.targetLanguage,
+    })
+  ) {
+    throw new ServiceError("COPIED_SOURCE");
+  }
 
   // Someone already wrote exactly this: answer instantly, without spending AI quota
   const cached = await readCachedGrade(adminClient, gradeInput);

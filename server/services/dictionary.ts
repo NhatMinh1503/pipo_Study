@@ -16,7 +16,7 @@ import {
   type WordExplanation,
 } from "@/lib/schemas/dictionary";
 import type { Explainer } from "@/server/ai/explainer";
-import type { ExplainInput } from "@/server/prompts/explain-word.v1";
+import type { ExplainInput } from "@/server/prompts/explain-word.v2";
 import type { Database } from "@/types/database";
 
 type Client = SupabaseClient<Database>;

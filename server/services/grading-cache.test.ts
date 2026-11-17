@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { GradeInput } from "@/server/prompts/grade-translation.v1";
+import type { GradeInput } from "@/server/prompts/grade-translation.v2";
 
 import { gradingCacheKey } from "./grading-cache";
 
