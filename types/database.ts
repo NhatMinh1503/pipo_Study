@@ -278,6 +278,39 @@ export type Database = {
           },
         ]
       }
+      daily_goal_days: {
+        Row: {
+          created_at: string
+          focus_done_at: string | null
+          local_date: string
+          review_done_at: string | null
+          review_target: number
+          rewarded_at: string | null
+          translate_done_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          focus_done_at?: string | null
+          local_date: string
+          review_done_at?: string | null
+          review_target: number
+          rewarded_at?: string | null
+          translate_done_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          focus_done_at?: string | null
+          local_date?: string
+          review_done_at?: string | null
+          review_target?: number
+          rewarded_at?: string | null
+          translate_done_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       dictionary_entries: {
         Row: {
           common: boolean
@@ -1100,6 +1133,7 @@ export type Database = {
           last_active_date: string | null
           streak_best: number
           streak_current: number
+          streak_freezes: number
           updated_at: string
           user_id: string
           xp: number
@@ -1110,6 +1144,7 @@ export type Database = {
           last_active_date?: string | null
           streak_best?: number
           streak_current?: number
+          streak_freezes?: number
           updated_at?: string
           user_id: string
           xp?: number
@@ -1120,6 +1155,7 @@ export type Database = {
           last_active_date?: string | null
           streak_best?: number
           streak_current?: number
+          streak_freezes?: number
           updated_at?: string
           user_id?: string
           xp?: number
@@ -1215,6 +1251,7 @@ export type Database = {
           level: number | null
           stars: number | null
           streak_best: number | null
+          streak_freezes: number | null
           user_id: string | null
           xp: number | null
           xp_into_level: number | null
@@ -1226,6 +1263,7 @@ export type Database = {
           level?: never
           stars?: never
           streak_best?: number | null
+          streak_freezes?: number | null
           user_id?: string | null
           xp?: number | null
           xp_into_level?: never
@@ -1237,6 +1275,7 @@ export type Database = {
           level?: never
           stars?: never
           streak_best?: number | null
+          streak_freezes?: number | null
           user_id?: string | null
           xp?: number | null
           xp_into_level?: never
@@ -1263,6 +1302,7 @@ export type Database = {
       }
       backfill_garden_trees: { Args: { p_user_id?: string }; Returns: number }
       battle_heartbeat: { Args: { p_battle_id: string }; Returns: undefined }
+      buy_streak_freeze: { Args: never; Returns: number }
       buy_item: { Args: { p_item_id: string }; Returns: number }
       can_plant_species: {
         Args: {
@@ -1340,6 +1380,15 @@ export type Database = {
           value: number
         }[]
       }
+      leaderboard_period_start: { Args: { p_period: string }; Returns: string }
+      leaderboard_personal_bests: { Args: never; Returns: Json }
+      leaderboard_scores: {
+        Args: { p_metric: string; p_period: string }
+        Returns: {
+          user_id: string
+          value: number
+        }[]
+      }
       leave_battle: { Args: { p_battle_id: string }; Returns: undefined }
       level_for_xp: { Args: { p_xp: number }; Returns: number }
       level_matches_language: {
@@ -1351,6 +1400,14 @@ export type Database = {
       }
       manual_xp_today: { Args: { p_user_id: string }; Returns: number }
       mark_level_ups_seen: { Args: { p_ids: string[] }; Returns: number }
+      my_leaderboard_rank: {
+        Args: { p_metric: string; p_period: string }
+        Returns: {
+          rank: number
+          total: number
+          value: number
+        }[]
+      }
       next_garden_plot: {
         Args: { p_user_id: string }
         Returns: Record<string, unknown>
@@ -1371,6 +1428,7 @@ export type Database = {
       record_study_activity: { Args: { p_user_id: string }; Returns: undefined }
       remove_decoration: { Args: { p_item_id: string }; Returns: undefined }
       stars_for_xp: { Args: { p_xp: number }; Returns: number }
+      streak_milestone_coins: { Args: { p_days: number }; Returns: number }
       start_pomodoro: {
         Args: {
           p_planned_minutes?: number
@@ -1398,6 +1456,7 @@ export type Database = {
         Args: { p_session_id: string; p_user_id: string }
         Returns: undefined
       }
+      today_goals: { Args: never; Returns: Json }
       wallet_apply: {
         Args: {
           p_coins_delta: number

@@ -43,3 +43,18 @@ export async function setAccent(itemId: unknown): Promise<ActionResult> {
   revalidatePath("/", "layout");
   return { ok: true };
 }
+
+const FREEZE_ERRORS: Record<string, string> = {
+  "23514": "shop.errors.notEnoughCoins",
+  "22023": "shop.freeze.limit",
+};
+
+/** Buys one streak freeze; the database checks the price, the balance and the limit. */
+export async function buyStreakFreeze(): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("buy_streak_freeze");
+  if (error) return { ok: false, error: FREEZE_ERRORS[error.code] ?? "errors.unexpected" };
+
+  revalidatePath("/", "layout");
+  return { ok: true };
+}

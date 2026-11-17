@@ -25,6 +25,20 @@ describe("GAME config matches design/game/registry.md", () => {
     expect(GAME.review).toEqual({ xp: 1, clearBonusXp: 5, clearMinReviews: 5 });
   });
 
+  it("daily goals and streak", () => {
+    expect(GAME.goals).toEqual({
+      translateSentences: 3,
+      maxReviews: 5,
+      focusSessions: 1,
+      bonusCoins: 5,
+    });
+    expect(GAME.streak.freezePrice).toBe(50);
+    expect(GAME.streak.maxFreezes).toBe(2);
+    expect(GAME.streak.milestones.map((milestone) => milestone.days)).toEqual([
+      3, 7, 14, 30, 60, 100,
+    ]);
+  });
+
   it("level curve", () => {
     expect(GAME.level).toEqual({ base: 50, step: 40, cap: 50, starXp: 2000 });
   });

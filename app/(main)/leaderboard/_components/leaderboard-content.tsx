@@ -1,4 +1,5 @@
-import { Trophy } from "lucide-react";
+import { Medal, Trophy } from "lucide-react";
+import { z } from "zod";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
@@ -12,6 +13,12 @@ import { requireUser } from "@/server/auth";
 
 const METRICS = ["xp", "streak", "focus"] as const;
 const PERIODS = ["week", "month"] as const;
+
+const personalBestsSchema = z.object({
+  bestWeekXp: z.number(),
+  bestWeekFocus: z.number(),
+  bestStreak: z.number(),
+});
 
 interface LeaderboardContentProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -27,7 +34,20 @@ export async function LeaderboardContent({ searchParams }: LeaderboardContentPro
   const period = PERIODS.find((value) => value === query.period) ?? "week";
 
   const supabase = await createClient();
-  const { data: rows } = await supabase.rpc("leaderboard", { p_metric: metric, p_period: period });
+  const args = { p_metric: metric, p_period: period };
+  const [{ data: rows }, { data: mine }, { data: bests }] = await Promise.all([
+    supabase.rpc("leaderboard", args),
+    supabase.rpc("my_leaderboard_rank", args),
+    supabase.rpc("leaderboard_personal_bests"),
+  ]);
+  const myRank = mine?.[0];
+  const best = personalBestsSchema.safeParse(bests).data;
+  const bestValue =
+    metric === "xp"
+      ? best?.bestWeekXp
+      : metric === "focus"
+        ? best?.bestWeekFocus
+        : best?.bestStreak;
 
   const tab = (active: boolean) =>
     cn(
@@ -66,6 +86,32 @@ export async function LeaderboardContent({ searchParams }: LeaderboardContentPro
           </nav>
         )}
       </div>
+
+      <p className="mono-label">{metric === "streak" ? t("resetStreak") : t(`reset.${period}`)}</p>
+
+      <section
+        aria-label={t("mine.label")}
+        className="sheet-flat grid grid-cols-2 divide-x divide-dashed divide-border/30 bg-tint-sand"
+      >
+        <div className="px-4 py-3">
+          <p className="mono-label">{t("mine.rank")}</p>
+          <p className="mono-value text-xl font-bold">
+            {myRank?.rank ? t("mine.position", { rank: myRank.rank, total: myRank.total }) : "—"}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {t(`unit.${metric}`, { count: Number(myRank?.value ?? 0) })}
+          </p>
+        </div>
+        <div className="px-4 py-3">
+          <p className="mono-label flex items-center gap-1.5">
+            <Medal className="size-3.5" aria-hidden />
+            {t(`mine.best.${metric}`)}
+          </p>
+          <p className="mono-value text-xl font-bold">
+            {t(`unit.${metric}`, { count: Number(bestValue ?? 0) })}
+          </p>
+        </div>
+      </section>
 
       {!rows?.length ? (
         <EmptyState icon={Trophy} title={t("empty")} />
