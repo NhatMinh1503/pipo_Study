@@ -1,13 +1,16 @@
 // pipo service worker — hand-written, no build step.
-// Notebook and Review stay readable offline: their pages are cached network-first, and the
-// build's static assets cache-first. Everything else goes to the network and falls back to
-// /offline. Bump VERSION to drop old caches after changing this file.
-const VERSION = "v2";
+// Notebook, Review, Pomodoro and the dictation pages of lessons already opened stay usable
+// offline: their pages are cached network-first, and the build's static assets cache-first.
+// Everything else goes to the network and falls back to /offline. Bump VERSION to drop old
+// caches after changing this file.
+const VERSION = "v3";
 const STATIC_CACHE = `pipo-static-${VERSION}`;
 // Must match PAGE_CACHE in lib/pwa/constants.ts (cleared on the login page)
 const PAGE_CACHE = "pipo-pages";
 const OFFLINE_URL = "/offline";
-const OFFLINE_PAGES = ["/notebook", "/review"];
+const OFFLINE_PAGES = ["/notebook", "/review", "/pomodoro"];
+// Dictation is graded on the device (diff + speech synthesis), so a lesson opened once works offline
+const OFFLINE_PATTERNS = [/^\/lessons\/[0-9a-f-]{36}\/dictation$/];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -46,9 +49,9 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    const cacheable = OFFLINE_PAGES.some(
-      (page) => url.pathname === page || url.pathname.startsWith(`${page}/`),
-    );
+    const cacheable =
+      OFFLINE_PAGES.some((page) => url.pathname === page || url.pathname.startsWith(`${page}/`)) ||
+      OFFLINE_PATTERNS.some((pattern) => pattern.test(url.pathname));
     event.respondWith(cacheable ? networkFirstPage(request) : networkOrOffline(request));
   }
 });
@@ -86,3 +89,16 @@ async function networkOrOffline(request) {
 async function offlinePage() {
   return (await caches.match(OFFLINE_URL)) ?? new Response("Offline", { status: 503 });
 }
+
+// Tapping a timer notification brings the app back (or opens it) on the page it points to
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const target = new URL(event.notification.data?.url ?? "/dashboard", self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
+      const open = windows.find((client) => client.url.startsWith(self.location.origin));
+      if (open) return open.navigate(target).then((client) => (client ?? open).focus());
+      return self.clients.openWindow(target);
+    }),
+  );
+});

@@ -446,7 +446,8 @@
       "title": "Thời gian mỗi phiên",
       "minutes": "{minutes} phút",
       "slider": "Thời gian mỗi phiên (phút)"
-    }
+    },
+    "keepAwake": "Giữ màn hình sáng khi tập trung"
   },
   "garden": {
     "title": "Vườn tri thức",
@@ -1046,5 +1047,12 @@
         "target": "Mục tiêu > 95%"
       }
     }
+  },
+  "pwa": {
+    "title": "Cài pipo lên điện thoại",
+    "description": "Mở pipo như một ứng dụng: biểu tượng trên màn hình chính, Pomodoro báo khi hết giờ, Ôn tập, Sổ tay và Chép chính tả của bài đã mở dùng được cả khi mất mạng.",
+    "install": "Cài ứng dụng",
+    "ios": "Trên iPhone/iPad: bấm nút Chia sẻ trong Safari → \"Thêm vào MH chính\".",
+    "other": "Mở menu trình duyệt và chọn \"Cài đặt ứng dụng\" hoặc \"Thêm vào màn hình chính\"."
   }
 }

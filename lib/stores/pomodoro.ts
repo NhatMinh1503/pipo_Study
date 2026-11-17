@@ -19,6 +19,9 @@ interface PomodoroState {
   preferredMinutes: number;
   /** The tree this focus session plants, so the page can show it growing. */
   tree: SessionTree | null;
+  /** Keep the screen on during focus (Screen Wake Lock); on by default. */
+  keepAwake: boolean;
+  setKeepAwake: (value: boolean) => void;
   startFocus: (session: {
     id: string;
     startedAt: string;
@@ -47,6 +50,8 @@ export const usePomodoroStore = create<PomodoroState>()(
     (set) => ({
       ...idle,
       preferredMinutes: DEFAULT_FOCUS_MINUTES,
+      keepAwake: true,
+      setKeepAwake: (keepAwake) => set({ keepAwake }),
       startFocus: ({ id, startedAt, minutes, tree }) =>
         set({ phase: "focus", sessionId: id, startedAt, minutes, tree }),
       // The break keeps the tree, now grown, to show what the session planted
@@ -60,13 +65,22 @@ export const usePomodoroStore = create<PomodoroState>()(
       // Server and first client render both start idle; the saved state loads after mount
       skipHydration: true,
       storage: createJSONStorage(() => localStorage),
-      partialize: ({ phase, sessionId, startedAt, minutes, preferredMinutes, tree }) => ({
+      partialize: ({
         phase,
         sessionId,
         startedAt,
         minutes,
         preferredMinutes,
         tree,
+        keepAwake,
+      }) => ({
+        phase,
+        sessionId,
+        startedAt,
+        minutes,
+        preferredMinutes,
+        tree,
+        keepAwake,
       }),
     },
   ),

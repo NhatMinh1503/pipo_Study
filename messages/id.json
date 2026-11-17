@@ -446,7 +446,8 @@
       "title": "Lama sesi",
       "minutes": "{minutes} menit",
       "slider": "Lama sesi dalam menit"
-    }
+    },
+    "keepAwake": "Biarkan layar tetap menyala saat fokus"
   },
   "garden": {
     "title": "Taman Pengetahuan",
@@ -1046,5 +1047,12 @@
         "target": "Target > 95%"
       }
     }
+  },
+  "pwa": {
+    "title": "Pasang pipo di ponselmu",
+    "description": "Buka pipo seperti aplikasi: ikon di layar utama, Pomodoro memberi tahu saat waktu habis, dan Ulasan, Buku catatan serta dikte pelajaran yang pernah dibuka tetap jalan saat offline.",
+    "install": "Pasang aplikasi",
+    "ios": "Di iPhone/iPad: ketuk Bagikan di Safari → \"Tambah ke Layar Utama\".",
+    "other": "Buka menu browser dan pilih \"Instal aplikasi\" atau \"Tambahkan ke layar utama\"."
   }
 }

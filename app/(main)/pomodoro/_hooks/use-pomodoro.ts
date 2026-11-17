@@ -6,7 +6,9 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { useNow } from "@/hooks/use-now";
+import { useWakeLock } from "@/hooks/use-wake-lock";
 import { BREAK_MINUTES, formatClock, progress, remainingMs } from "@/lib/pomodoro/timer";
+import { notifyUser } from "@/lib/pwa/notify";
 import type { TreeSpecies } from "@/lib/garden/growth";
 import type { SessionTree } from "@/lib/pomodoro/grow";
 import { usePomodoroStore } from "@/lib/stores/pomodoro";
@@ -16,9 +18,7 @@ import { abandonFocus, completeFocus, startFocus } from "../_lib/actions";
 const RETRY_MS = 15_000;
 
 function notify(title: string, body: string) {
-  if (typeof Notification !== "undefined" && Notification.permission === "granted") {
-    new Notification(title, { body });
-  }
+  void notifyUser(title, body);
 }
 
 /**
@@ -79,6 +79,9 @@ export function usePomodoro() {
     }
   }, [store.phase, left, t]);
 
+  // On a phone the screen would sleep mid-session; keep it on while focusing (if the learner wants)
+  useWakeLock(store.phase === "focus" && store.keepAwake);
+
   // Live countdown in the browser tab title
   useEffect(() => {
     if (store.phase === "idle" || left === null) return;
@@ -119,6 +122,8 @@ export function usePomodoro() {
     minutes: store.minutes,
     preferredMinutes: store.preferredMinutes,
     setPreferredMinutes: store.setPreferredMinutes,
+    keepAwake: store.keepAwake,
+    setKeepAwake: store.setKeepAwake,
     tree: store.tree,
     /** null until the clock is available on the client. */
     clock: left === null ? null : formatClock(left),

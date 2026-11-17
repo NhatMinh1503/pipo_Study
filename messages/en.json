@@ -446,7 +446,8 @@
       "title": "Session length",
       "minutes": "{minutes} min",
       "slider": "Session length in minutes"
-    }
+    },
+    "keepAwake": "Keep the screen on while focusing"
   },
   "garden": {
     "title": "Knowledge Garden",
@@ -1046,5 +1047,12 @@
         "target": "Target > 95%"
       }
     }
+  },
+  "pwa": {
+    "title": "Install pipo on your phone",
+    "description": "Open pipo like an app: a home-screen icon, Pomodoro alerts when time is up, and Review, Notebook and the dictation of lessons you opened work even offline.",
+    "install": "Install app",
+    "ios": "On iPhone/iPad: tap Share in Safari → \"Add to Home Screen\".",
+    "other": "Open your browser menu and choose \"Install app\" or \"Add to Home screen\"."
   }
 }
