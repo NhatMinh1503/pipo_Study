@@ -6,14 +6,15 @@ Leaderboard part of audit §10 is in the same change (calendar periods, own rank
 
 ## 1. Daily goals
 
-| Goal      | Done when (learner's local day)                                     | Target          |
-| --------- | ------------------------------------------------------------------- | --------------- |
-| Translate | sentences unlocked today (`reward_claims.kind = 'sentence'`)        | 3               |
-| Review    | rewarded reviews today (`transactions.reason = 'flashcard_review'`) | `review_target` |
-| Focus     | completed Pomodoro sessions today                                   | 1               |
+| Goal      | Done when (learner's local day)                              | Target          |
+| --------- | ------------------------------------------------------------ | --------------- |
+| Translate | sentences unlocked today (`reward_claims.kind = 'sentence'`) | 3               |
+| Review    | different cards reviewed today (new cards included)          | `review_target` |
+| Focus     | completed Pomodoro sessions today                            | 1               |
 
-- `review_target = min(5, cards seen before and due)` is **fixed at the first look of the day**
-  (`daily_goal_days`). New cards (never reviewed) do not count, so saving words never moves it.
+- `review_target = min(5, cards due)` is **fixed at the first look of the day**
+  (`daily_goal_days`), so saving words later never moves it. New cards count (fix 2026-11-17:
+  a learner with only new cards due saw "nothing due" and could never reach the goal).
 - `review_target = 0` → the review goal does not apply today (shown as "nothing due"), it is
   never ticked for free, and the day has 2 goals instead of 3.
 - A goal once reached stores `*_done_at` and never un-ticks.

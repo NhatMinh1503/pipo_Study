@@ -31,7 +31,7 @@ export const GAME = {
   goals: {
     /** Mirrors SQL today_goals: sentences unlocked today for the translate goal. */
     translateSentences: 3,
-    /** Review goal = min(this, cards seen before and due at the first look of the day). */
+    /** Review goal = min(this, cards due at the first look of the day; new cards count). */
     maxReviews: 5,
     focusSessions: 1,
     /** Coins once per local day when every goal that applies is done. */

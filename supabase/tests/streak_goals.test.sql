@@ -83,7 +83,7 @@ set local role authenticated;
 set local request.jwt.claims = '{"sub":"a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2","role":"authenticated"}';
 select is(public.today_goals() -> 'review' ->> 'done', 'false', 'no review goal ticked without reviewing');
 select is(public.today_goals() -> 'review' ->> 'applicable', 'false',
-  'with no card seen before and due, the review goal does not apply');
+  'with no card due, the review goal does not apply');
 select is(public.today_goals() ->> 'rewarded', 'false', 'no bonus before any goal');
 reset role;
 
