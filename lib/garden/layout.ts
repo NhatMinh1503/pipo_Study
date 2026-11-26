@@ -1,155 +1,149 @@
 import { GAME } from "@/lib/game/config";
 
 /**
- * The fixed garden map (garden-scene spec §3.4): T tree plot, D decoration slot, = path,
- * W pond (meadow when the learner has no pond). Plots and slots are numbered in reading
- * order; plot indexes match garden_trees.plot_index. The path winds from the left edge
- * (column 0) to the right edge (last column), one tile wide, never touching itself.
+ * The floating clay island the garden is built on (garden-scene spec §3.4, 3D version).
+ * Positions were measured from the island model (public/garden3d/island.glb) seen from
+ * above: x runs left to right, y from the back of the island to the front, both in logical
+ * px with the island 640 px wide, like the old 2D scene. `h` is the height of the ground
+ * there in the same units. Plots and slots are numbered in reading order (back row first);
+ * plot indexes match garden_trees.plot_index.
  */
-export const GRID = [
-  "TTTTTTTTT",
-  "TTTDTT===",
-  "TT===D=DT",
-  "TD=T===TT",
-  "===DWWTTT",
-  "TTTTWWTTT",
-] as const;
-
-export const COLS = 9;
-export const ROWS = 6;
-/** Isometric diamond tile, 2:1 like farm games (garden-scene spec §4.2). */
-export const TILE_W = 80;
-export const TILE_H = 40;
-/** Screen position of the map's top corner (grid point 0,0). */
-export const ISO_ORIGIN = { x: 260, y: 126 } as const;
-/** Where the meadow meets the distant forest in the painted backdrop (bg-garden). */
-export const HORIZON_Y = 124;
-export const SCENE_WIDTH = 640;
-export const SCENE_HEIGHT = 432;
-
-export interface Tile {
-  x: number;
-  y: number;
-}
 
 export interface Point {
   x: number;
   y: number;
 }
 
-function tilesOf(symbol: string): Tile[] {
-  return GRID.flatMap((row, y) =>
-    [...row].flatMap((cell, x) => (cell === symbol ? [{ x, y }] : [])),
-  );
+export interface GroundPoint extends Point {
+  /** Ground height at this point, logical px above the island's centre. */
+  h: number;
 }
 
-export const PLOTS = tilesOf("T");
-export const DECOR_SLOTS = tilesOf("D");
-export const POND_TILES = tilesOf("W");
-export const PATH_TILES = tilesOf("=");
+/** The garden box keeps the old 2D proportions, so the page layout does not jump. */
+export const SCENE_WIDTH = 640;
+export const SCENE_HEIGHT = 432;
 
-const isPath = ({ x, y }: Tile) => GRID[y]?.[x] === "=";
+/** Ground the island covers seen from above, logical px (x across, y back to front). */
+export const ISLAND_SIZE: Point = { x: 640, y: 500 };
+
+/** Island model units to logical px (the model is 0.95 units wide). */
+export const UNITS_TO_PX = 673.84;
+/** Where the model's own origin sits in logical px. */
+export const ISLAND_ORIGIN: Point = { x: 319.3, y: 253.2 };
+/**
+ * Box around the island model in world units (logical px, relative to ISLAND_ORIGIN, y up),
+ * so the camera can be framed before the model has loaded.
+ */
+export const ISLAND_BOUNDS = {
+  min: { x: -319.3, y: -111.4, z: -253.2 },
+  max: { x: 320, y: 107.8, z: 252.9 },
+} as const;
+
+/** Height of the grass and the dirt path (they are level), logical px. */
+export const GROUND_H = 78.5;
+
+const ground = ([x, y, h]: readonly [number, number, number]): GroundPoint => ({ x, y, h });
+
+/** Centres of the 26 tilled plots, the top of the soil as height. */
+export const PLOTS: readonly GroundPoint[] = (
+  [
+    [86.8, 88.9, 87.2],
+    [177.8, 88.9, 86.8],
+    [267.4, 91.0, 86.6],
+    [354.1, 91.7, 86.7],
+    [426.7, 107.4, 83.7],
+    [499.2, 103.1, 87.0],
+    [566.8, 103.1, 86.8],
+    [79.6, 175.6, 83.6],
+    [169.2, 175.6, 86.7],
+    [266.7, 175.6, 88.0],
+    [359.8, 170.7, 85.2],
+    [427.4, 174.2, 83.5],
+    [83.2, 246.8, 85.8],
+    [157.2, 248.9, 85.0],
+    [611.6, 231.1, 84.9],
+    [78.2, 315.7, 84.6],
+    [286.6, 310.8, 86.5],
+    [546.1, 290.8, 84.9],
+    [611.6, 288.0, 85.4],
+    [544.0, 359.1, 87.8],
+    [74.0, 454.4, 85.7],
+    [144.4, 446.6, 85.8],
+    [215.5, 446.6, 85.7],
+    [278.8, 440.2, 83.6],
+    [483.6, 434.5, 86.8],
+    [543.3, 426.0, 86.0],
+  ] as const
+).map(ground);
+
+/** Grass spots for placed decorations (spec §3.5), off the path and the plots. */
+export const DECOR_SLOTS: readonly GroundPoint[] = (
+  [
+    [462.2, 291.6, 78.5],
+    [128.0, 330.7, 78.7],
+    [492.1, 359.1, 78.5],
+    [603.0, 369.8, 77.1],
+    [227.6, 384.0, 78.5],
+  ] as const
+).map(ground);
 
 /**
- * The path tiles in walking order, from the one on the left edge to the one on the right
- * edge: each step goes to the only neighbouring path tile not visited yet.
+ * The sandy path in walking order, from the left edge of the island to the right edge.
+ * Pipo and the pets walk a smooth curve through these points (lib/garden/path.ts).
  */
-function walkPath(): Tile[] {
-  const start = PATH_TILES.find((tile) => tile.x === 0);
-  if (!start) throw new Error("The garden path must start on the left edge");
-  const route = [start];
-  const seen = new Set([`${start.x},${start.y}`]);
-  for (;;) {
-    const last = route.at(-1) ?? start;
-    const next = [
-      { x: last.x + 1, y: last.y },
-      { x: last.x, y: last.y - 1 },
-      { x: last.x, y: last.y + 1 },
-      { x: last.x - 1, y: last.y },
-    ].find((tile) => isPath(tile) && !seen.has(`${tile.x},${tile.y}`));
-    if (!next) break;
-    route.push(next);
-    seen.add(`${next.x},${next.y}`);
-  }
-  if (route.length !== PATH_TILES.length || route.at(-1)?.x !== COLS - 1) {
-    throw new Error("The garden path must be one winding line from the left edge to the right");
-  }
-  return route;
-}
+export const PATH_POINTS: readonly GroundPoint[] = (
+  [
+    [28.4, 387.6, 77.7],
+    [85.3, 371.2, 78.8],
+    [142.2, 355.6, 78.5],
+    [179.2, 332.8, 78.5],
+    [204.8, 297.2, 78.5],
+    [238.2, 257.4, 78.5],
+    [298.7, 243.2, 78.7],
+    [369.8, 245.3, 78.5],
+    [433.8, 229.0, 78.5],
+    [497.8, 200.5, 78.1],
+    [554.7, 179.2, 78.3],
+    [608.0, 170.7, 74.6],
+  ] as const
+).map(ground);
 
-/** Path tiles in the order Pipo walks them. */
-export const PATH_ROUTE: readonly Tile[] = walkPath();
-
-/** Path tiles drawn past each end of the map, so the path leads off the scene. */
-export const PATH_EXTENSION = 3;
-
-/** The drawn path: the route plus a few tiles continuing straight out of each edge. */
-export const PATH_DRAWN: readonly Tile[] = (() => {
-  const first = PATH_ROUTE[0];
-  const last = PATH_ROUTE.at(-1);
-  if (!first || !last) return [];
-  const before = Array.from({ length: PATH_EXTENSION }, (_, index) => ({
-    x: first.x - PATH_EXTENSION + index,
-    y: first.y,
-  }));
-  const after = Array.from({ length: PATH_EXTENSION }, (_, index) => ({
-    x: last.x + 1 + index,
-    y: last.y,
-  }));
-  return [...before, ...PATH_ROUTE, ...after];
-})();
-
-/** Index in PATH_ROUTE of the path tile next to this tile (sharing an edge), or -1. */
-export function pathNeighbour({ x, y }: Tile): number {
-  return PATH_ROUTE.findIndex((tile) => Math.abs(tile.x - x) + Math.abs(tile.y - y) === 1);
-}
+/** The pond is part of the island model; koi swim around this point. */
+export const POND: GroundPoint = { x: 379.7, y: 398.9, h: 78.5 };
+/** Half size of the ellipse the koi swim, logical px. */
+export const KOI_ORBIT: Point = { x: 34, y: 30 };
 
 if (PLOTS.length !== GAME.garden.plotsPerGarden || DECOR_SLOTS.length !== GAME.garden.decorSlots) {
-  throw new Error("Garden layout does not match GAME.garden");
+  throw new Error("The island layout and GAME.garden disagree about plot or slot counts");
 }
 
-export function plotTile(index: number): Tile {
-  const tile = PLOTS[index];
-  if (!tile) throw new Error(`No plot ${index}`);
-  return tile;
+export function plotPoint(index: number): GroundPoint {
+  const point = PLOTS[index];
+  if (!point) throw new Error(`No garden plot ${index}`);
+  return point;
 }
 
-export function decorTile(index: number): Tile {
-  const tile = DECOR_SLOTS[index];
-  if (!tile) throw new Error(`No decoration slot ${index}`);
-  return tile;
+export function decorPoint(slot: number): GroundPoint {
+  const point = DECOR_SLOTS[slot];
+  if (!point) throw new Error(`No decoration slot ${slot}`);
+  return point;
 }
 
-/**
- * Projects a point of the grid (in tile units, may be fractional) to scene coordinates:
- * +x runs down-right, +y runs down-left, like the plots of a farm game.
- */
-export function project(gridX: number, gridY: number): Point {
-  return {
-    x: ISO_ORIGIN.x + ((gridX - gridY) * TILE_W) / 2,
-    y: ISO_ORIGIN.y + ((gridX + gridY) * TILE_H) / 2,
-  };
-}
-
-/** Centre of a tile in scene coordinates (spec §4.2). */
-export function tileCenter({ x, y }: Tile): Point {
-  return project(x + 0.5, y + 0.5);
-}
-
-/** Where a standing object's anchor (trunk base, feet) sits on a tile. */
-export function tileBase(tile: Tile): Point {
-  const center = tileCenter(tile);
-  return { x: center.x, y: center.y + 3 };
-}
-
-/** The four corners of a tile (top, right, bottom, left), for outlines. */
-export function tileCorners({ x, y }: Tile): Point[] {
-  return [project(x, y), project(x + 1, y), project(x + 1, y + 1), project(x, y + 1)];
-}
-
-/** Centre of the 2×2 pond area, or null if the layout has none. */
-export function pondCenter(): Point | null {
-  const [first] = POND_TILES;
-  if (!first) return null;
-  return project(first.x + 1, first.y + 1);
+/** Shortest distance from a point to a polyline, logical px. */
+export function distanceToPolyline(point: Point, line: readonly Point[]): number {
+  let best = Infinity;
+  for (let index = 0; index < line.length - 1; index += 1) {
+    const a = line[index];
+    const b = line[index + 1];
+    if (!a || !b) continue;
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const lengthSquared = dx * dx + dy * dy || 1;
+    const t = Math.min(
+      1,
+      Math.max(0, ((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSquared),
+    );
+    best = Math.min(best, Math.hypot(point.x - (a.x + t * dx), point.y - (a.y + t * dy)));
+  }
+  return best;
 }

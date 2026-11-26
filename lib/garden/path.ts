@@ -1,22 +1,7 @@
-import { PATH_ROUTE, project, type Point } from "./layout";
+import { PATH_POINTS, type Point } from "./layout";
 
-/** How far past each edge of the map Pipo walks, in tiles from the edge tile's centre. */
-const OVERSHOOT = 1.1;
-
-/**
- * Waypoints: both ends of the path (just outside the map, where the drawn path continues)
- * plus the centre of each path tile in walking order, so route tile k is waypoint k + 1.
- */
-export const PATH_WAYPOINTS: Point[] = (() => {
-  const first = PATH_ROUTE[0];
-  const last = PATH_ROUTE.at(-1);
-  if (!first || !last) return [];
-  return [
-    project(first.x + 0.5 - OVERSHOOT, first.y + 0.5),
-    ...PATH_ROUTE.map((tile) => project(tile.x + 0.5, tile.y + 0.5)),
-    project(last.x + 0.5 + OVERSHOOT, last.y + 0.5),
-  ];
-})();
+/** Waypoints of the walk: the island's sandy path, edge to edge (see layout.ts). */
+export const PATH_WAYPOINTS: readonly Point[] = PATH_POINTS.map(({ x, y }) => ({ x, y }));
 
 const SAMPLES_PER_SEGMENT = 24;
 
@@ -77,4 +62,17 @@ export function pointAt(distance: number): Point {
   const span = b.distance - a.distance || 1;
   const t = (distance - a.distance) / span;
   return { x: a.point.x + (b.point.x - a.point.x) * t, y: a.point.y + (b.point.y - a.point.y) * t };
+}
+
+/**
+ * The spot on the path closest to a point: how far along the path it is, and how far
+ * away. Pipo uses it to find where to stop beside a tree or a bench.
+ */
+export function closestOnPath(point: Point): { distance: number; gap: number } {
+  let best = { distance: 0, gap: Infinity };
+  for (const sample of samples) {
+    const gap = Math.hypot(sample.point.x - point.x, sample.point.y - point.y);
+    if (gap < best.gap) best = { distance: sample.distance, gap };
+  }
+  return best;
 }

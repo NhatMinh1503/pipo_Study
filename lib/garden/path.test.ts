@@ -1,17 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { PATH_ROUTE, project } from "./layout";
-import { PATH_WAYPOINTS, pathLength, pointAt, waypointDistances } from "./path";
+import { PATH_POINTS } from "./layout";
+import { PATH_WAYPOINTS, closestOnPath, pathLength, pointAt, waypointDistances } from "./path";
 
 // garden-scene spec §3.4 (test case #3)
 describe("garden path", () => {
-  it("winds through every path tile, from past one edge of the map to past the other", () => {
-    expect(PATH_WAYPOINTS[0]).toEqual(project(0.5 - 1.1, 4.5));
-    expect(PATH_WAYPOINTS.at(-1)).toEqual(project(8.5 + 1.1, 1.5));
-    expect(PATH_WAYPOINTS).toHaveLength(PATH_ROUTE.length + 2);
-    PATH_ROUTE.forEach((tile, index) => {
-      expect(PATH_WAYPOINTS[index + 1]).toEqual(project(tile.x + 0.5, tile.y + 0.5));
-    });
+  it("follows the island's sandy path", () => {
+    expect(PATH_WAYPOINTS).toEqual(PATH_POINTS.map(({ x, y }) => ({ x, y })));
   });
 
   it("passes through every waypoint", () => {
@@ -35,5 +30,13 @@ describe("garden path", () => {
   it("clamps outside the path", () => {
     expect(pointAt(-50)).toEqual(pointAt(0));
     expect(pointAt(pathLength() + 50)).toEqual(pointAt(pathLength()));
+  });
+
+  it("finds the closest spot on the path", () => {
+    const middle = pointAt(300);
+    const onPath = closestOnPath(middle);
+    expect(onPath.distance).toBeCloseTo(300, -1);
+    expect(onPath.gap).toBeLessThan(2);
+    expect(closestOnPath({ x: middle.x, y: middle.y - 200 }).gap).toBeGreaterThan(100);
   });
 });
