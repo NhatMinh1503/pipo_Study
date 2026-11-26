@@ -9,7 +9,7 @@ import {
   type GroundPoint,
   type Point,
 } from "./layout";
-import { gardenPets, petModelId, treeModelId } from "./models";
+import { decorModelId, gardenPets, petModelId, treeModelId } from "./models";
 import { closestOnPath } from "./path";
 import { petFrames, type PetId } from "./pets";
 import type { PipoStop } from "./pipo-machine";
@@ -57,7 +57,8 @@ export interface SceneModel {
   plots: readonly GroundPoint[];
   /** Back to front (by y), so overlapping trees sort naturally. */
   trees: ({ id: string; model: string; plot: number } & GroundPoint)[];
-  decorations: ({ id: string; asset: string; slot: number } & GroundPoint)[];
+  /** `model` is the clay model, or null for a decoration still drawn from its picture. */
+  decorations: ({ id: string; asset: string; model: string | null; slot: number } & GroundPoint)[];
   /** Decoration slots, for highlighting an empty one while placing. */
   decorSlots: readonly GroundPoint[];
   /** Koi swim in the island's pond once the learner owns the pond. */
@@ -107,6 +108,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     .map((decoration) => ({
       id: decoration.itemId,
       asset: decoration.itemId,
+      model: decorModelId(decoration.itemId),
       slot: decoration.slot,
       ...decorPoint(decoration.slot),
     }))

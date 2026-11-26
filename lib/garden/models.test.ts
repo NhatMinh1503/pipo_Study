@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { allModelIds, gardenPets, modelUrl, petModelId, treeModelId } from "./models";
+import { allModelIds, decorModelId, gardenPets, modelUrl, petModelId, treeModelId } from "./models";
 
 describe("garden 3D models", () => {
   it("grows a shared sprout into a bigger model each session", () => {
@@ -31,6 +31,12 @@ describe("garden 3D models", () => {
     expect(petModelId("pet-slime-moss")).toBe("pet-moss-jelly");
     expect(petModelId("deco-slime")).toBeNull();
     expect(petModelId("pet-slime-cloud")).toBeNull();
+  });
+
+  it("draws the torii, lantern and bench with clay models", () => {
+    expect(decorModelId("deco-torii")).toBe("deco-torii");
+    expect(decorModelId("deco-bench")).toBe("deco-bench");
+    expect(decorModelId("deco-pond")).toBeNull();
   });
 
   it("shows only the pets that have a 3D model", () => {

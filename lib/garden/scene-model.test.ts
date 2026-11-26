@@ -99,8 +99,14 @@ describe("garden scene model", () => {
       ],
     });
     expect(model.decorations).toEqual([
-      { id: "deco-bench", asset: "deco-bench", slot: 1, ...decorPoint(1) },
-      { id: "deco-lantern", asset: "deco-lantern", slot: 4, ...decorPoint(4) },
+      { id: "deco-bench", asset: "deco-bench", model: "deco-bench", slot: 1, ...decorPoint(1) },
+      {
+        id: "deco-lantern",
+        asset: "deco-lantern",
+        model: "deco-lantern",
+        slot: 4,
+        ...decorPoint(4),
+      },
     ]);
     expect(model.stops).toEqual([
       { distance: stopAt(closestOnPath(decorPoint(1)).distance), kind: "bench" },

@@ -41,8 +41,8 @@ import {
   decorPoint,
   type Point,
 } from "@/lib/garden/layout";
-import { ISLAND_MODEL, modelUrl } from "@/lib/garden/models";
-import { pathLength, pointAt } from "@/lib/garden/path";
+import { ISLAND_MODEL, PIPO_MODEL, modelUrl } from "@/lib/garden/models";
+import { closestOnPath, pathLength, pointAt } from "@/lib/garden/path";
 import { createPetBehaviour, type PetWorld } from "@/lib/garden/pet-behaviour";
 import type { PetId } from "@/lib/garden/pets";
 import {
@@ -100,8 +100,17 @@ const PET_LANES = [9, -5] as const;
 const PIPO_GREET_JUMP = 22;
 /** Pipo squashes a little less than the slime. */
 const PIPO_SQUASH = 0.12;
-/** Empty rows under the chick in pipo-body (where legs used to attach), in logical px. */
-const PIPO_BODY_GAP = 9;
+/** Pipo's height, px (before FIGURE_SCALE). */
+const PIPO_HEIGHT = 40;
+/** Decoration heights, px, and the widest they may be (before FIGURE_SCALE). */
+const DECOR_SIZE: Record<string, { height: number; width: number }> = {
+  "deco-torii": { height: 70, width: 72 },
+  "deco-lantern": { height: 44, width: 30 },
+  "deco-bench": { height: 30, width: 46 },
+};
+/** A walker turns this much of the way toward where it walks; the rest faces the camera. */
+const WALK_TURN = 0.6;
+const TURN_SPEED = 8;
 /** Opacity of a tree while Pipo or a pet walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
 /** The island bobs gently up and down, px, and how fast (radians per second). */
@@ -117,14 +126,6 @@ const DRAG_SLOP = 5;
 const SPIN_KEEP = 0.04;
 /** Raycasts only look at things that can be tapped. */
 const PICK_LAYER = 1;
-
-const PIPO_PARTS = [
-  "pipo-body",
-  "pipo-wing-back",
-  "pipo-wing-front",
-  "pipo-eyes-open",
-  "pipo-eyes-closed",
-];
 
 function treeStep(modelId: string): string {
   return modelId === "sprout" ? "sprout" : (modelId.match(/-(\d)(?:-|$)/)?.[1] ?? "4");
@@ -236,12 +237,15 @@ export async function createGardenRenderer(
   // --- Loading -----------------------------------------------------------------------
   const loader = new GLTFLoader();
   loader.setMeshoptDecoder(MeshoptDecoder);
-  const modelIds = new Set<string>([ISLAND_MODEL]);
+  const modelIds = new Set<string>([ISLAND_MODEL, PIPO_MODEL]);
   for (const tree of model.trees) modelIds.add(tree.model);
   for (const pet of model.pets) if (pet.model) modelIds.add(pet.model);
 
-  const pictureIds = new Set<string>(PIPO_PARTS);
-  for (const decoration of model.decorations) pictureIds.add(decoration.asset);
+  const pictureIds = new Set<string>();
+  for (const decoration of model.decorations) {
+    if (decoration.model) modelIds.add(decoration.model);
+    else pictureIds.add(decoration.asset);
+  }
   if (model.koi) pictureIds.add("koi-a").add("koi-b");
   for (const pet of model.pets)
     if (!pet.model) for (const frame of pet.frames) pictureIds.add(frame);
@@ -314,9 +318,21 @@ export async function createGardenRenderer(
   // --- Decorations, koi, highlight -------------------------------------------------------
   const cards: Billboard[] = [];
   for (const decoration of model.decorations) {
+    const at = toWorld(decoration.x, decoration.y, decoration.h);
+    if (decoration.model) {
+      const size = DECOR_SIZE[decoration.model] ?? { height: 40, width: 40 };
+      const piece = placeModel(getModel(decoration.model), size.height, true, size.width);
+      piece.position.copy(at);
+      piece.scale.setScalar(FIGURE_SCALE);
+      // Face the path, so the bench looks onto it and the gate opens toward it
+      const onPath = pointAt(closestOnPath(decoration).distance);
+      piece.rotation.y = Math.atan2(onPath.x - decoration.x, onPath.y - decoration.y);
+      garden.add(piece);
+      continue;
+    }
     const card = new Billboard();
     card.add(anchoredCard(decoration.asset, picture(decoration.asset)));
-    card.position.copy(toWorld(decoration.x, decoration.y, decoration.h));
+    card.position.copy(at);
     card.scale.setScalar(FIGURE_SCALE);
     garden.add(card);
     cards.push(card);
@@ -343,35 +359,21 @@ export async function createGardenRenderer(
   highlight.visible = false;
   garden.add(highlight);
 
-  // --- Pipo: its 2D parts on a camera-facing card ----------------------------------------
+  // --- Pipo: the clay chick with round glasses -----------------------------------------
   const pipo = new Group();
   pipo.userData.pipo = true;
   const pipoShadow = blobShadow(shadows, 30);
-  const pipoCard = new Billboard();
-  pipoCard.scale.setScalar(FIGURE_SCALE);
-  const facing = new Group();
+  /** Moved and squashed by Pipo's hops and jumps. */
   const torso = new Group();
-  const inner = new Group();
-  // No legs: the round body sits on the ground and squashes from its bottom when it lands
-  inner.position.y = -PIPO_BODY_GAP;
-  const bodyAnchor = gardenAsset("pipo-body").anchor;
-  const part = (id: string, depth: number) => {
-    const card = anchoredCard(id, picture(id));
-    const attach = gardenAsset(id).attach ?? bodyAnchor;
-    card.position.set(attach.x - bodyAnchor.x, -(attach.y - bodyAnchor.y), depth);
-    return card;
-  };
-  const wingBack = part("pipo-wing-back", -0.5);
-  const body = anchoredCard("pipo-body", picture("pipo-body"));
-  const wingFront = part("pipo-wing-front", 0.5);
-  const eyes = part("pipo-eyes-open", 1);
-  inner.add(wingBack, body, wingFront, eyes);
-  torso.add(inner);
-  facing.add(torso);
-  pipoCard.add(facing);
-  pipo.add(pipoShadow, pipoCard);
-  makePickable(pipoCard);
+  /** Turned toward where Pipo walks, or to the camera when it stops. */
+  const pipoTurn = new Group();
+  pipoTurn.add(placeModel(getModel(PIPO_MODEL), PIPO_HEIGHT, false));
+  torso.add(pipoTurn);
+  torso.scale.setScalar(FIGURE_SCALE);
+  pipo.add(pipoShadow, torso);
+  makePickable(torso);
   garden.add(pipo);
+  let pipoYaw = 0;
 
   // --- Pets: the same behaviour objects as before, drawn in 3D ----------------------------
   const petFx = new ParticleLayer();
@@ -570,14 +572,21 @@ export async function createGardenRenderer(
     speak(step.events);
     const place = placeAt(pipoState.distance);
     pipo.position.set(place.x, place.h, place.z);
-    pipoCard.face(camera);
-    // Pipo faces the way it walks across the screen, whichever way the island is turned
-    const across =
-      (place.tangentX * Math.cos(garden.rotation.y) +
-        place.tangentZ * Math.sin(garden.rotation.y)) *
-      pipoState.direction;
-    if (Math.abs(across) > 0.05) facing.scale.x = across > 0 ? 1 : -1;
-    eyes.material.map = picture(pipoState.blinking > 0 ? "pipo-eyes-closed" : "pipo-eyes-open");
+    {
+      // Like the clay pets: face where it walks (partly toward us), face us when it stops
+      const toCamera = -garden.rotation.y;
+      const wrap = (angle: number) => Math.atan2(Math.sin(angle), Math.cos(angle));
+      const heading = Math.atan2(
+        place.tangentX * pipoState.direction,
+        place.tangentZ * pipoState.direction,
+      );
+      const target =
+        pipoState.mode === "walking" && moving
+          ? toCamera + wrap(heading - toCamera) * WALK_TURN
+          : toCamera;
+      pipoYaw += wrap(target - pipoYaw) * Math.min(1, dt * TURN_SPEED);
+      pipoTurn.rotation.y = pipoYaw;
+    }
     const walking = pipoState.mode === "walking";
     const sitting = pipoState.mode === "sitting";
     // 0 on the ground, 1 at the top of a hop (same bounce as the slime)
@@ -592,17 +601,18 @@ export async function createGardenRenderer(
       const air = Math.max(0, Math.sin(Math.min(1, progress * 1.25) * Math.PI));
       const crouch = progress < 0.12 ? Math.sin((progress / 0.12) * Math.PI) * 0.1 : 0;
       torso.position.y = moving ? air * PIPO_GREET_JUMP : 0;
-      torso.scale.set(1 + crouch, 1 - crouch, 1);
-      const flap = moving ? Math.sin(elapsed * 34) * (0.5 + air * 0.6) - air * 0.5 : 0;
-      wingFront.rotation.z = -flap;
-      wingBack.rotation.z = flap;
+      torso.scale.set(
+        (1 + crouch) * FIGURE_SCALE,
+        (1 - crouch) * FIGURE_SCALE,
+        (1 + crouch) * FIGURE_SCALE,
+      );
+      // A happy spin in the air instead of the 2D wing flaps
+      pipoTurn.rotation.y += moving ? Math.min(1, progress * 1.25) * Math.PI * 2 : 0;
     } else {
       torso.position.y = lift * SCENE.pipoHopHeight;
       const sit = sitting ? 0.06 : 0;
-      torso.scale.set(1 + squash + sit + breath, 1 - squash - sit - breath + lift * 0.06, 1);
-      // Wings lift a little at the top of each hop
-      wingFront.rotation.z = lift * 0.35;
-      wingBack.rotation.z = -lift * 0.35;
+      const wide = (1 + squash + sit + breath) * FIGURE_SCALE;
+      torso.scale.set(wide, (1 - squash - sit - breath + lift * 0.06) * FIGURE_SCALE, wide);
     }
     const shadowSize = 30 * (1 - lift * 0.35);
     pipoShadow.scale.set(shadowSize, 1, shadowSize * 0.8);
@@ -710,7 +720,7 @@ export async function createGardenRenderer(
   raycaster.layers.set(PICK_LAYER);
   const pointer = new Vector2();
   const pickables: Object3D[] = [
-    pipoCard,
+    torso,
     ...pets.map((view) => view.root),
     ...trees.map((tree) => tree.holder),
   ];
@@ -725,7 +735,7 @@ export async function createGardenRenderer(
     for (const hit of raycaster.intersectObjects(pickables, true)) {
       for (let node: Object3D | null = hit.object; node; node = node.parent) {
         const { treeId, petId, pipo: isPipo } = node.userData;
-        if (isPipo === true || node === pipoCard) return { kind: "pipo" };
+        if (isPipo === true) return { kind: "pipo" };
         if (typeof treeId === "string") return { kind: "tree", id: treeId };
         const view =
           typeof petId === "string" ? pets.find((candidate) => candidate.id === petId) : undefined;
