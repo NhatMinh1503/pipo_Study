@@ -52,7 +52,7 @@ test.describe("pomodoro", () => {
     const picker = page.getByRole("radiogroup", { name: "Cây sẽ trồng" });
     await expect(picker.getByRole("radio", { name: /Thông Nhật/ })).toBeChecked();
     await expect(picker.getByRole("radio", { name: /Anh đào/ })).toBeDisabled();
-    await expect(picker.getByRole("radio", { name: /Phong đỏ/ })).toBeDisabled();
+    await expect(picker.getByRole("radio", { name: /Sồi/ })).toBeDisabled();
     await expect(picker).toContainText("Cần hạt giống");
 
     await picker.getByRole("radio", { name: /Tre/ }).check();

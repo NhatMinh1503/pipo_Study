@@ -467,7 +467,7 @@
     "species": {
       "pine": "黒松",
       "bamboo": "竹",
-      "maple": "紅葉",
+      "maple": "オーク",
       "sakura": "桜"
     },
     "sceneLabel": "知識の庭：木 {count} 本、育成中 {growing} 本",
@@ -717,8 +717,8 @@
         "description": "会議・メール・面接のトピックを追加。"
       },
       "seed-maple": {
-        "name": "もみじの種",
-        "description": "ポモドーロで植えられる木にもみじが加わります。"
+        "name": "どんぐり",
+        "description": "ポモドーロで植えられる木にオークが加わります。"
       },
       "seed-sakura": {
         "name": "桜の種",
