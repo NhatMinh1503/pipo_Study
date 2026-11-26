@@ -467,7 +467,7 @@
     "species": {
       "pine": "Thông Nhật",
       "bamboo": "Tre",
-      "maple": "Phong đỏ",
+      "maple": "Sồi",
       "sakura": "Anh đào"
     },
     "sceneLabel": "Vườn tri thức: {count} cây, {growing} cây đang lớn",
@@ -717,8 +717,8 @@
         "description": "Thêm chủ đề họp, email, phỏng vấn."
       },
       "seed-maple": {
-        "name": "Hạt phong đỏ",
-        "description": "Mở khoá cây phong đỏ để trồng trong các phiên Pomodoro."
+        "name": "Hạt sồi",
+        "description": "Mở khoá cây sồi để trồng trong các phiên Pomodoro."
       },
       "seed-sakura": {
         "name": "Hạt anh đào",

@@ -30,7 +30,8 @@ const GROUND_BOTTOM = 12;
 const LEAF_COLOURS: Record<TreeSpecies, string[]> = {
   pine: ["#7fb04a", "#5f9a3a", "#a5cf6b"],
   bamboo: ["#8cc45c", "#6aa846", "#b9dc85"],
-  maple: ["#f0742f", "#e2492f", "#f7a640"],
+  // The maple species is drawn as an oak now (lib/garden/models.ts)
+  maple: ["#6f9f45", "#557f35", "#93bf62"],
   sakura: ["#f8b4c6", "#f48c9c", "#fde0e8"],
 };
 const LEAVES = [

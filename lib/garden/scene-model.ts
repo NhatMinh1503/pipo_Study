@@ -1,17 +1,16 @@
-import { isBlooming, stageFor, treeAssetId, type TreeSpecies } from "./growth";
+import { stageFor, isBlooming, type TreeSpecies } from "./growth";
 import {
-  PATH_DRAWN,
+  DECOR_SLOTS,
+  KOI_ORBIT,
   PLOTS,
-  decorTile,
-  pathNeighbour,
-  plotTile,
-  pondCenter,
-  tileBase,
-  tileCenter,
+  POND,
+  decorPoint,
+  plotPoint,
+  type GroundPoint,
   type Point,
-  type Tile,
 } from "./layout";
-import { pathLength, pointAt, waypointDistances } from "./path";
+import { petModelId, treeModelId } from "./models";
+import { closestOnPath } from "./path";
 import { petFrames, type PetId } from "./pets";
 import type { PipoStop } from "./pipo-machine";
 
@@ -35,23 +34,18 @@ export interface SceneInput {
   hasPond: boolean;
   /** Owned pets, in catalog order (see ownedPets). */
   pets?: readonly PetId[];
-  /** Owns the red bridge; it is drawn across the pond, so it needs the pond too. */
+  /** Owns the red bridge (the island model has one over its pond). */
   hasBridge?: boolean;
   /** Today had study activity: mature sakura are in bloom. */
   studiedToday: boolean;
 }
 
-export interface SceneStone extends Point {
-  asset: string;
-  scale: number;
-  /** Mirrored left to right, so the few stone pictures do not repeat. */
-  flip: boolean;
-}
-
 export interface ScenePet {
   id: PetId;
-  /** Its idle, second idle and skill pictures (see petFrames). */
+  /** Its idle, second idle and skill pictures (see petFrames), for pets without a model. */
   frames: [string, string, string];
+  /** Its 3D model, or null while it is still drawn from 2D frames. */
+  model: string | null;
   /** Where it starts, as a share of the path length. */
   start: number;
   /** 1 walks toward the end of the path, -1 toward the start. */
@@ -59,110 +53,67 @@ export interface ScenePet {
 }
 
 export interface SceneModel {
-  /** Tilled plots, back to front, positioned at their tile centre. */
-  tiles: { asset: string; x: number; y: number }[];
-  /** Tiles the dirt path covers (it runs past both map edges); the renderer softens its edge. */
-  pathTiles: readonly Tile[];
-  /** Stepping stones along the path, back to front. */
-  stones: SceneStone[];
-  /** Back to front (by anchor y), so later items are drawn on top. */
-  trees: ({ id: string; asset: string } & Point)[];
-  decorations: ({ id: string; asset: string; slot: number } & Point)[];
-  pond: Point | null;
-  /** Where the bridge stands across the pond, or null. */
-  bridge: Point | null;
-  koi: boolean;
+  /** Every plot on the island, so the renderer can outline an empty one. */
+  plots: readonly GroundPoint[];
+  /** Back to front (by y), so overlapping trees sort naturally. */
+  trees: ({ id: string; model: string; plot: number } & GroundPoint)[];
+  decorations: ({ id: string; asset: string; slot: number } & GroundPoint)[];
+  /** Decoration slots, for highlighting an empty one while placing. */
+  decorSlots: readonly GroundPoint[];
+  /** Koi swim in the island's pond once the learner owns the pond. */
+  koi: { center: GroundPoint; orbit: Point } | null;
   /** Pets roaming the path, spread out along it and walking both ways. */
   pets: ScenePet[];
   /** Places Pipo may stop: viewing spots next to mature trees beside the path. */
   stops: PipoStop[];
-  /** Blooming sakura canopies petals fall from. */
-  petalSources: Point[];
+  /** Blooming sakura petals fall from (the base of the tree; the renderer adds the canopy). */
+  petalSources: GroundPoint[];
 }
 
-export const STONE_ASSETS = ["stone-a", "stone-b", "stone-c", "stone-d", "stone-e"] as const;
-/** Distance between stepping stones along the path, logical px. */
-const STONE_SPACING = 30;
+/** A plot or slot this close to the path (logical px) counts as "beside the path". */
+export const BESIDE_PATH = 80;
 
-/**
- * Stepping stones every few steps along the path, a little left and right of its middle.
- * Fixed by position (no randomness) so the garden looks the same on every visit.
- */
-function steppingStones(): SceneStone[] {
-  const stones: SceneStone[] = [];
-  const total = pathLength();
-  for (let index = 0, distance = 14; distance < total - 10; index += 1) {
-    const at = pointAt(distance);
-    const ahead = pointAt(distance + 1);
-    const length = Math.hypot(ahead.x - at.x, ahead.y - at.y) || 1;
-    // Sideways on the ground: perpendicular to the walking direction, flattened like the tiles
-    const side = index % 2 === 0 ? -1 : 1;
-    const normal = { x: -(ahead.y - at.y) / length, y: (ahead.x - at.x) / length / 2 };
-    stones.push({
-      asset: STONE_ASSETS[(index * 3) % STONE_ASSETS.length] ?? "stone-a",
-      x: Math.round((at.x + normal.x * side * 3) * 10) / 10,
-      y: Math.round((at.y + normal.y * side * 3) * 10) / 10,
-      scale: 0.66 + ((index * 5) % 4) * 0.06,
-      flip: (index * 7) % 3 === 1,
-    });
-    distance += STONE_SPACING + ((index * 11) % 3) * 3;
-  }
-  return stones.sort((a, b) => a.y - b.y);
-}
-
-const STONES = steppingStones();
-
-/** Waypoint distance of the path tile beside this tile, or null when it is not by the path. */
-function stopBeside(tile: Tile): number | null {
-  const index = pathNeighbour(tile);
-  return index < 0 ? null : (waypointDistances[index + 1] ?? null);
-}
-
-/** The bridge stands on the near half of the pond so it reads as crossing the water. */
-function bridgeOverPond(): Point | null {
-  const center = pondCenter();
-  return center ? { x: center.x, y: center.y + 14 } : null;
+/** Distance along the path to stop at beside a point, or null when it is too far away. */
+function stopBeside(point: Point): number | null {
+  const closest = closestOnPath(point);
+  return closest.gap <= BESIDE_PATH ? Math.round(closest.distance * 10) / 10 : null;
 }
 
 /**
- * Everything the garden scene draws, computed from real data without touching PixiJS
- * (garden-scene spec §3.3–3.4, §4.2). The renderer only turns this into sprites.
+ * Everything the garden scene draws, computed from real data without touching three.js
+ * (garden-scene spec §3.3–3.4, §4.2). The renderer only turns this into meshes.
  */
 export function buildSceneModel(input: SceneInput): SceneModel {
-  // The meadow is part of the painted backdrop; plots sit on it as tiles
-  const tiles: SceneModel["tiles"] = PLOTS.map((tile) => ({
-    asset: "plot-soil",
-    ...tileCenter(tile),
-  })).sort((a, b) => a.y - b.y || a.x - b.x);
-
   const trees = input.trees
     .map((tree) => ({
       id: tree.id,
-      asset: treeAssetId(tree, input.studiedToday),
-      ...tileBase(plotTile(tree.plot)),
+      model: treeModelId(tree, input.studiedToday),
+      plot: tree.plot,
+      ...plotPoint(tree.plot),
     }))
     .sort((a, b) => a.y - b.y || a.x - b.x);
 
-  // Pipo stops on the path tile beside a grown tree to look at it
+  // Pipo stops on the path beside a grown tree to look at it
   const viewStops = new Set<number>();
   for (const tree of input.trees) {
-    const distance = stageFor(tree.sessions) === "mature" ? stopBeside(plotTile(tree.plot)) : null;
+    const distance = stageFor(tree.sessions) === "mature" ? stopBeside(plotPoint(tree.plot)) : null;
     if (distance !== null) viewStops.add(distance);
   }
+
   const decorations = (input.decorations ?? [])
     .map((decoration) => ({
       id: decoration.itemId,
       asset: decoration.itemId,
       slot: decoration.slot,
-      ...tileBase(decorTile(decoration.slot)),
+      ...decorPoint(decoration.slot),
     }))
     .sort((a, b) => a.slot - b.slot);
 
-  // Pipo sits on a bench placed right beside the path (a bench wins over a view there)
+  // Pipo sits on a bench placed beside the path (a bench wins over a view there)
   const benchStops = new Set<number>();
   for (const decoration of input.decorations ?? []) {
     const distance =
-      decoration.itemId === "deco-bench" ? stopBeside(decorTile(decoration.slot)) : null;
+      decoration.itemId === "deco-bench" ? stopBeside(decorPoint(decoration.slot)) : null;
     if (distance !== null) benchStops.add(distance);
   }
 
@@ -175,23 +126,18 @@ export function buildSceneModel(input: SceneInput): SceneModel {
 
   const petalSources = input.trees
     .filter((tree) => isBlooming(tree, input.studiedToday))
-    .map((tree) => {
-      const base = tileBase(plotTile(tree.plot));
-      return { x: base.x, y: base.y - 64 };
-    });
+    .map((tree) => plotPoint(tree.plot));
 
   return {
-    tiles,
-    pathTiles: PATH_DRAWN,
-    stones: STONES,
+    plots: PLOTS,
     trees,
     decorations,
-    pond: input.hasPond ? pondCenter() : null,
-    bridge: input.hasPond && input.hasBridge ? bridgeOverPond() : null,
-    koi: input.hasPond,
+    decorSlots: DECOR_SLOTS,
+    koi: input.hasPond ? { center: POND, orbit: KOI_ORBIT } : null,
     pets: (input.pets ?? []).map((id, index, all) => ({
       id,
       frames: petFrames(id),
+      model: petModelId(id),
       start: (index + 0.5) / all.length,
       direction: index % 2 === 0 ? -1 : 1,
     })),

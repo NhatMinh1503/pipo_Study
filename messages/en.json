@@ -467,7 +467,7 @@
     "species": {
       "pine": "Japanese pine",
       "bamboo": "Bamboo",
-      "maple": "Red maple",
+      "maple": "Oak",
       "sakura": "Cherry"
     },
     "sceneLabel": "Knowledge garden: {count} trees, {growing} growing",
@@ -717,8 +717,8 @@
         "description": "Adds meeting, email and interview topics."
       },
       "seed-maple": {
-        "name": "Maple seed",
-        "description": "Unlocks the red maple to plant in Pomodoro sessions."
+        "name": "Acorn",
+        "description": "Unlocks the oak to plant in Pomodoro sessions."
       },
       "seed-sakura": {
         "name": "Cherry seed",

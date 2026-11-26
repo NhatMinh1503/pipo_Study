@@ -467,7 +467,7 @@
     "species": {
       "pine": "Pinus Jepang",
       "bamboo": "Bambu",
-      "maple": "Maple merah",
+      "maple": "Ek",
       "sakura": "Sakura"
     },
     "sceneLabel": "Taman pengetahuan: {count} pohon, {growing} sedang tumbuh",
@@ -717,8 +717,8 @@
         "description": "Menambah topik rapat, email, dan wawancara."
       },
       "seed-maple": {
-        "name": "Benih maple",
-        "description": "Membuka maple merah untuk ditanam di sesi Pomodoro."
+        "name": "Benih ek",
+        "description": "Membuka pohon ek untuk ditanam di sesi Pomodoro."
       },
       "seed-sakura": {
         "name": "Benih sakura",

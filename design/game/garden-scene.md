@@ -54,7 +54,7 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 | ---------- | -------- | ------------------------ |
 | Thông Nhật | `pine`   | ✅                       |
 | Tre        | `bamboo` | ✅                       |
-| Phong đỏ   | `maple`  | Cần sở hữu `seed-maple`  |
+| Sồi        | `maple`  | Cần sở hữu `seed-maple`  |
 | Anh đào    | `sakura` | Cần sở hữu `seed-sakura` |
 
 - Server kiểm tra quyền dùng loài khi bắt đầu phiên; client chỉ hiển thị.
@@ -67,6 +67,15 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 - Cánh hoa rơi chỉ xuất hiện khi có ít nhất 1 cây anh đào đang nở.
 
 ### 3.4 Bản đồ, lối đi, khu vườn 2 **[Chốt]**
+
+> **Đổi sang 3D ngày 26/11/2026 (Minh yêu cầu, branch `feat/garden-3d`).** Vườn giờ là **một hòn đảo bay bằng đất sét** (model Meshy `public/garden3d/island.glb`), vẽ bằng three.js thay cho PixiJS. Phần lưới isometric bên dưới chỉ còn là lịch sử. Điều đang áp dụng:
+>
+> - **26 ô trồng cây** mỗi khu vườn (đúng số luống đất trên đảo), đánh số theo thứ tự đọc từ hàng sau ra hàng trước; **5 chỗ đồ trang trí** trên cỏ. Toạ độ đo từ model, nằm ở `lib/garden/layout.ts` (logical px, đảo rộng 640 px, `h` = độ cao mặt đất). Migration `20261126010000_garden_island_26_plots.sql` đánh số lại cây của từng người theo thứ tự: vườn 1 giữ ô 0–25, cây ở ô 26–30 sang đầu vườn 2, không mất cây nào.
+> - **Lối đi** là con đường cát của đảo, từ mép trái sang mép phải (`PATH_POINTS`), vẫn nội suy Catmull-Rom. Pipo dừng ngắm cây trưởng thành / ngồi ghế khi ô hoặc chỗ trang trí cách lối đi ≤ 80 px (`BESIDE_PATH`).
+> - **Cây**: model đất sét theo số phiên: 1 phiên = mầm chung (`sprout`), rồi `-2`, `-3`, `-4` (trưởng thành). Loài `maple` hiển thị và đổi tên thành **Sồi** (model `oak-*`, mã DB giữ nguyên). Anh đào trưởng thành nở hồng vào ngày có học, ngày khác tán xanh (`sakura-4-green`).
+> - **Hồ và cầu** là một phần của model đảo nên luôn hiện; cá koi chỉ có khi sở hữu `deco-pond`.
+> - **Thú cưng**: dung nham, thỏ mochi anh đào, slime rêu dùng model 3D; đào, nước, mây và Pipo vẫn là ảnh 2D trên thẻ quay về camera. Hành vi (`lib/garden/pet-behaviour.ts`) và kỹ năng giữ nguyên; renderer chỉ đổi cách áp `pose()` sang 3D (nhảy = độ cao, nghiêng = cúi người, thỏ mochi xoay thật khi dùng kỹ năng).
+> - Cây đứng trước Pipo **hoặc thú cưng** sẽ mờ đi để vẫn thấy chúng.
 
 Lưới **9×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ trang trí, `=` = lối đi, `W` = hồ 2×2). Đổi từ 8×6 với lối đi thẳng sang lối đi uốn khúc ngày 10/11/2026 (Minh yêu cầu làm lại cả vườn):
 

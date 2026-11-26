@@ -80,7 +80,7 @@ export const GAME = {
     /** Species anyone can plant; the others need a seed item (seed-<species>). */
     freeSpecies: ["pine", "bamboo"],
     /** Mirrors the garden layout and SQL next_garden_plot. */
-    plotsPerGarden: 31,
+    plotsPerGarden: 26,
     decorSlots: 5,
   },
   battle: {

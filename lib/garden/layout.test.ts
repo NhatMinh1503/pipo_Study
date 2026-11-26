@@ -1,100 +1,76 @@
 import { describe, expect, it } from "vitest";
 
+import { GAME } from "@/lib/game/config";
+
 import {
-  COLS,
   DECOR_SLOTS,
-  HORIZON_Y,
-  ROWS,
-  SCENE_HEIGHT,
-  SCENE_WIDTH,
+  GROUND_H,
+  PATH_POINTS,
   PLOTS,
-  POND_TILES,
-  PATH_DRAWN,
-  PATH_ROUTE,
-  PATH_TILES,
-  decorTile,
-  pathNeighbour,
-  plotTile,
-  project,
-  tileBase,
-  tileCenter,
-  tileCorners,
+  POND,
+  ISLAND_SIZE,
+  decorPoint,
+  distanceToPolyline,
+  plotPoint,
 } from "./layout";
 
-// garden-scene spec §3.4 (test case #2)
-describe("garden layout", () => {
-  it("has 31 tree plots, 5 decoration slots, a 2×2 pond and a 14-tile path", () => {
-    expect(PLOTS).toHaveLength(31);
-    expect(DECOR_SLOTS).toHaveLength(5);
-    expect(POND_TILES).toHaveLength(4);
-    expect(PATH_TILES).toHaveLength(14);
+// garden-scene spec §3.4 (test case #2), measured on the 3D island
+describe("island layout", () => {
+  it("has one plot per garden plot and one spot per decoration slot", () => {
+    expect(PLOTS).toHaveLength(GAME.garden.plotsPerGarden);
+    expect(PLOTS).toHaveLength(26);
+    expect(DECOR_SLOTS).toHaveLength(GAME.garden.decorSlots);
   });
 
-  it("walks the path as one line from the left edge to the right edge", () => {
-    expect(PATH_ROUTE).toHaveLength(PATH_TILES.length);
-    expect(PATH_ROUTE[0]).toEqual({ x: 0, y: 4 });
-    expect(PATH_ROUTE.at(-1)).toEqual({ x: COLS - 1, y: 1 });
-    // Every step moves to a tile sharing an edge
-    PATH_ROUTE.slice(1).forEach((tile, index) => {
-      const previous = PATH_ROUTE[index] ?? tile;
-      expect(Math.abs(tile.x - previous.x) + Math.abs(tile.y - previous.y)).toBe(1);
-    });
-  });
-
-  it("draws the path three tiles past each edge of the map", () => {
-    expect(PATH_DRAWN).toHaveLength(PATH_TILES.length + 6);
-    expect(PATH_DRAWN[0]).toEqual({ x: -3, y: 4 });
-    expect(PATH_DRAWN.at(-1)).toEqual({ x: COLS + 2, y: 1 });
-  });
-
-  it("finds the path tile beside a tile", () => {
-    expect(pathNeighbour({ x: 3, y: 3 })).toBe(3); // (2,3), the first of three neighbours
-    expect(pathNeighbour({ x: 0, y: 0 })).toBe(-1);
-  });
-
-  it("fills plots in reading order", () => {
-    expect(plotTile(0)).toEqual({ x: 0, y: 0 });
-    expect(plotTile(8)).toEqual({ x: 8, y: 0 });
-    expect(plotTile(9)).toEqual({ x: 0, y: 1 });
-    expect(plotTile(12)).toEqual({ x: 4, y: 1 }); // (3,1) is a decoration slot
-    expect(plotTile(30)).toEqual({ x: 8, y: 5 });
-  });
-
-  it("places decoration slots on the D tiles", () => {
-    expect(decorTile(0)).toEqual({ x: 3, y: 1 });
-    expect(decorTile(4)).toEqual({ x: 3, y: 4 });
-  });
-
-  it("maps tiles to isometric scene coordinates (spec §4.2)", () => {
-    expect(tileCenter({ x: 0, y: 0 })).toEqual({ x: 260, y: 146 });
-    // +x goes down-right, +y goes down-left
-    expect(tileCenter({ x: 1, y: 0 })).toEqual({ x: 300, y: 166 });
-    expect(tileCenter({ x: 0, y: 1 })).toEqual({ x: 220, y: 166 });
-    expect(tileCenter({ x: 8, y: 5 })).toEqual({ x: 380, y: 406 });
-    expect(tileBase({ x: 0, y: 0 })).toEqual({ x: 260, y: 149 });
-  });
-
-  it("keeps the whole map inside the scene, below the horizon", () => {
-    const corners = [project(0, 0), project(COLS, 0), project(COLS, ROWS), project(0, ROWS)];
-    for (const corner of corners) {
-      expect(corner.x).toBeGreaterThanOrEqual(0);
-      expect(corner.x).toBeLessThanOrEqual(SCENE_WIDTH);
-      expect(corner.y).toBeGreaterThan(HORIZON_Y);
-      expect(corner.y).toBeLessThanOrEqual(SCENE_HEIGHT);
+  it("keeps everything on the island", () => {
+    for (const point of [...PLOTS, ...DECOR_SLOTS, ...PATH_POINTS, POND]) {
+      expect(point.x).toBeGreaterThan(0);
+      expect(point.x).toBeLessThan(ISLAND_SIZE.x);
+      expect(point.y).toBeGreaterThan(0);
+      expect(point.y).toBeLessThan(ISLAND_SIZE.y);
     }
   });
 
-  it("outlines a tile with its four diamond corners", () => {
-    expect(tileCorners({ x: 0, y: 0 })).toEqual([
-      { x: 260, y: 126 },
-      { x: 300, y: 146 },
-      { x: 260, y: 166 },
-      { x: 220, y: 146 },
-    ]);
+  it("numbers plots in reading order, back row first", () => {
+    expect(plotPoint(0).y).toBeLessThan(plotPoint(7).y);
+    expect(plotPoint(0).x).toBeLessThan(plotPoint(1).x);
+    expect(plotPoint(25).y).toBeGreaterThan(plotPoint(12).y);
   });
 
-  it("rejects indexes outside the layout", () => {
-    expect(() => plotTile(31)).toThrow();
-    expect(() => decorTile(5)).toThrow();
+  it("raises the soil of the plots a little above the grass", () => {
+    for (const plot of PLOTS) expect(plot.h).toBeGreaterThan(GROUND_H);
+  });
+
+  it("keeps plots apart from each other and decorations off the plots and the path", () => {
+    PLOTS.forEach((a, i) =>
+      PLOTS.slice(i + 1).forEach((b) =>
+        expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(40),
+      ),
+    );
+    for (const slot of DECOR_SLOTS) {
+      expect(distanceToPolyline(slot, PATH_POINTS)).toBeGreaterThan(20);
+      for (const plot of PLOTS)
+        expect(Math.hypot(slot.x - plot.x, slot.y - plot.y)).toBeGreaterThan(30);
+    }
+  });
+
+  it("runs the path from the left edge of the island to the right edge", () => {
+    expect(PATH_POINTS[0]?.x).toBeLessThan(60);
+    expect(PATH_POINTS.at(-1)?.x).toBeGreaterThan(580);
+  });
+
+  it("rejects plots and slots that do not exist", () => {
+    expect(() => plotPoint(26)).toThrow();
+    expect(() => plotPoint(-1)).toThrow();
+    expect(() => decorPoint(5)).toThrow();
+  });
+
+  it("measures the distance to a polyline", () => {
+    const line = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+    ];
+    expect(distanceToPolyline({ x: 5, y: 3 }, line)).toBeCloseTo(3);
+    expect(distanceToPolyline({ x: 14, y: 3 }, line)).toBeCloseTo(5);
   });
 });

@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(19);
+select plan(21);
 
 -- Forest-style garden (migration 20261110040100): each completed Pomodoro session plants
 -- one whole (mature) tree of the species it was started with; an abandoned one plants none.
@@ -91,16 +91,16 @@ select is((select count(*)::int from public.garden_trees
   where user_id = 'a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3' and sessions = 4 and legacy), 33,
   'all of them mature and marked legacy');
 select results_eq($$ select garden, plot, species from pg_temp.trees('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3')
-  where (garden, plot) in ((1, 0), (1, 1), (1, 2), (1, 3), (1, 30), (2, 0), (2, 1)) $$,
+  where (garden, plot) in ((1, 0), (1, 1), (1, 2), (1, 3), (1, 25), (2, 0), (2, 1)) $$,
   $$ values (1, 0, 'pine'), (1, 1, 'bamboo'), (1, 2, 'maple'), (1, 3, 'sakura'),
-            (1, 30, 'maple'), (2, 0, 'sakura'), (2, 1, 'pine') $$,
-  'oldest first, species in rotation, 31 per garden then garden 2');
+            (1, 25, 'bamboo'), (2, 0, 'maple'), (2, 1, 'sakura') $$,
+  'oldest first, species in rotation, 26 per garden then garden 2');
 select is(public.backfill_garden_trees('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3'), 0, 'running it again adds nothing');
 
 select pg_temp.focus('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3', 'bamboo');
 select results_eq($$ select garden_index, plot_index from public.garden_trees
   where user_id = 'a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3' and not legacy $$,
-  $$ values (2, 2) $$, 'a new tree after the old ones goes to the next free plot');
+  $$ values (2, 7) $$, 'a new tree after the old ones goes to the next free plot');
 
 -- Access: own trees only, no direct writes
 set local request.jwt.claims = '{"sub":"a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2","role":"authenticated"}';
@@ -109,6 +109,14 @@ select is((select count(*)::int from public.garden_trees), 1, 'a learner sees on
 select throws_ok(
   $$ insert into public.garden_trees (user_id, garden_index, plot_index, species) values (auth.uid(), 1, 5, 'sakura') $$,
   '42501', null, 'learners cannot plant trees directly');
+
+reset role;
+select throws_ok(
+  $$ insert into public.garden_trees (user_id, garden_index, plot_index, species)
+     values ('a2a2a2a2-a2a2-a2a2-a2a2-a2a2a2a2a2a2', 1, 26, 'pine') $$,
+  '23514', null, 'the island has plots 0–25 only');
+select is((select o_plot from public.next_garden_plot('a3a3a3a3-a3a3-a3a3-a3a3-a3a3a3a3a3a3')), 8,
+  'the next plot follows the last tree');
 
 select * from finish();
 rollback;
