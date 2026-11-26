@@ -1,28 +1,49 @@
-// The PixiJS garden (garden-scene spec §3.6–3.8, §7). Imported only with import() from the
-// garden page, so pixi.js never reaches the bundles of other pages.
+// The 3D clay garden (garden-scene spec §3.6–3.8, §7): a floating island with clay trees,
+// Pipo and the pets. Imported only with import() from the garden page, so three.js never
+// reaches the bundles of other pages.
 import {
-  Application,
-  Assets,
-  BlurFilter,
-  Container,
-  Graphics,
-  Rectangle,
+  AmbientLight,
+  Box3,
+  Clock,
+  DirectionalLight,
+  Group,
+  HemisphereLight,
+  Layers,
+  Mesh,
+  MeshBasicMaterial,
+  PlaneGeometry,
+  Raycaster,
+  RingGeometry,
+  SRGBColorSpace,
+  Scene,
   Sprite,
-  TilingSprite,
+  SpriteMaterial,
+  TextureLoader,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+  PCFSoftShadowMap,
+  type Material,
+  type Object3D,
   type Texture,
-} from "pixi.js";
+} from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 
 import { assetUrl, gardenAsset } from "@/lib/garden/assets";
 import { SCENE } from "@/lib/garden/config";
 import {
+  GROUND_H,
   SCENE_HEIGHT,
   SCENE_WIDTH,
-  decorTile,
-  tileCorners,
+  UNITS_TO_PX,
+  decorPoint,
   type Point,
-  type Tile,
 } from "@/lib/garden/layout";
+import { ISLAND_MODEL, modelUrl } from "@/lib/garden/models";
 import { pathLength, pointAt } from "@/lib/garden/path";
+import { createPetBehaviour, type PetWorld } from "@/lib/garden/pet-behaviour";
+import type { PetId } from "@/lib/garden/pets";
 import {
   clickPipo,
   initialPipo,
@@ -30,12 +51,12 @@ import {
   type PipoEvent,
   type PipoState,
 } from "@/lib/garden/pipo-machine";
-import { createPetBehaviour, type PetWorld } from "@/lib/garden/pet-behaviour";
-import type { PetId } from "@/lib/garden/pets";
 import type { SceneModel } from "@/lib/garden/scene-model";
 
-import { ParticleLayer, shapes } from "./pets/particles";
-import { createPetView } from "./pets/pet-view";
+import { ParticleLayer, ShapeBook } from "./pets/particles";
+import { createPetView, type PetLook } from "./pets/pet-view";
+import { Billboard, anchoredCard, blobShadow, shadowTexture } from "./three/billboard";
+import { fitGardenCamera, gardenCamera, toWorld } from "./three/camera";
 
 export interface RendererOptions {
   reducedMotion: boolean;
@@ -57,59 +78,88 @@ export interface GardenRenderer {
   destroy: () => void;
 }
 
-const PIPO_PARTS = [
-  "pipo-shadow",
-  "pipo-wing-back",
-  "pipo-body",
-  "pipo-wing-front",
-  "pipo-eyes-open",
-  "pipo-eyes-closed",
-];
-/** Pets keep to two lanes across the path so they pass each other instead of overlapping. */
-const PET_LANES = [7, 2] as const;
+// World units are the logical px of the 2D garden (x across, y up, z toward the viewer), so
+// layout numbers, hop heights and particle speeds keep their meaning.
+
+/** Tree height in px for each step of growth: the shared sprout, then -2, -3 and -4. */
+const TREE_HEIGHT: Record<string, number> = { sprout: 22, "2": 44, "3": 64, "4": 102 };
+/** Height of each pet model, px (the 2D frames were about this tall). */
+const PET_HEIGHT: Record<string, number> = {
+  "pet-ember-lava": 34,
+  "pet-sakura-mochi": 42,
+  "pet-moss-jelly": 40,
+};
+/** Pets keep to two lanes beside the path so they pass each other instead of overlapping. */
+const PET_LANES = [9, -5] as const;
 /** How high Pipo jumps when greeted, flapping its wings. */
 const PIPO_GREET_JUMP = 22;
 /** Pipo squashes a little less than the slime. */
 const PIPO_SQUASH = 0.12;
 /** Empty rows under the chick in pipo-body (where legs used to attach), in logical px. */
 const PIPO_BODY_GAP = 9;
-/** Opacity of a tree while Pipo walks behind it. */
+/** Opacity of a tree while Pipo or a pet walks behind it. */
 const OCCLUDING_ALPHA = 0.45;
-/** How soft the edge of the dirt path is, and how far its shade spreads into the meadow. */
-const PATH_EDGE_BLUR = 2.5;
-const PATH_SHADE_BLUR = 6;
-/** The koi swim an ellipse this wide and tall around the middle of the pond. */
-const KOI_ORBIT = { x: 46, y: 18 } as const;
+/** The island bobs gently up and down, px, and how fast (radians per second). */
+const BOB_HEIGHT = 3;
+const BOB_SPEED = 0.6;
+/** Raycasts only look at things that can be tapped. */
+const PICK_LAYER = 1;
 
-/** One polygon per path tile, grown a little around its centre so neighbours overlap. */
-function pathShape(tiles: readonly Tile[], grow: number, colour: number, alpha: number): Graphics {
-  const shape = new Graphics();
-  for (const tile of tiles) {
-    const corners = tileCorners(tile);
-    const cx = corners.reduce((sum, corner) => sum + corner.x, 0) / corners.length;
-    const cy = corners.reduce((sum, corner) => sum + corner.y, 0) / corners.length;
-    shape.poly(
-      corners.flatMap((corner) => [cx + (corner.x - cx) * grow, cy + (corner.y - cy) * grow]),
-    );
-  }
-  return shape.fill({ color: colour, alpha });
+const PIPO_PARTS = [
+  "pipo-body",
+  "pipo-wing-back",
+  "pipo-wing-front",
+  "pipo-eyes-open",
+  "pipo-eyes-closed",
+];
+
+function treeHeight(modelId: string): number {
+  if (modelId === "sprout") return TREE_HEIGHT.sprout ?? 22;
+  const step = modelId.match(/-(\d)(?:-|$)/)?.[1] ?? "4";
+  return TREE_HEIGHT[step] ?? 94;
 }
 
-function neededAssets(model: SceneModel): string[] {
-  const ids = new Set<string>(["bg-garden", "tile-path", "cloud-a", "cloud-b", ...PIPO_PARTS]);
-  for (const tile of model.tiles) ids.add(tile.asset);
-  for (const stone of model.stones) ids.add(stone.asset);
-  for (const tree of model.trees) ids.add(tree.asset);
-  for (const decoration of model.decorations) ids.add(decoration.asset);
-  if (model.pond) ids.add("deco-pond");
-  if (model.bridge) ids.add("deco-bridge");
-  if (model.koi) ids.add("koi-a").add("koi-b");
-  for (const pet of model.pets) for (const frame of pet.frames) ids.add(frame);
-  if (model.pets.length > 0) ids.add("slime-shadow");
-  // The sakura bunny's petal swirl uses the sakura petal
-  if (model.pets.some((pet) => pet.id === "pet-slime-sakura")) ids.add("petal");
-  if (model.petalSources.length > 0) ids.add("petal");
-  return [...ids];
+/** A copy of a model, scaled to `height` px, standing on the origin. Materials are its own. */
+function placeModel(source: Object3D, height: number, shadows: boolean): Group {
+  const model = source.clone(true);
+  model.traverse((node) => {
+    if (node instanceof Mesh) {
+      node.material = Array.isArray(node.material)
+        ? node.material.map((material: Material) => material.clone())
+        : node.material.clone();
+      node.castShadow = shadows;
+      node.receiveShadow = shadows;
+    }
+  });
+  const box = new Box3().setFromObject(model);
+  const size = box.getSize(new Vector3());
+  const scale = height / (size.y || 1);
+  const fit = new Group();
+  fit.scale.setScalar(scale);
+  fit.position.set(
+    (-(box.min.x + box.max.x) / 2) * scale,
+    -box.min.y * scale,
+    (-(box.min.z + box.max.z) / 2) * scale,
+  );
+  fit.add(model);
+  const holder = new Group();
+  holder.add(fit);
+  return holder;
+}
+
+function materialsOf(root: Object3D): Material[] {
+  const found: Material[] = [];
+  root.traverse((node) => {
+    if (node instanceof Mesh) {
+      if (Array.isArray(node.material)) found.push(...node.material);
+      else found.push(node.material);
+    }
+  });
+  return found;
+}
+
+function makePickable(root: Object3D): void {
+  root.traverse((node) => node.layers.enable(PICK_LAYER));
 }
 
 export async function createGardenRenderer(
@@ -118,154 +168,212 @@ export async function createGardenRenderer(
   options: RendererOptions,
 ): Promise<GardenRenderer> {
   const random = options.random ?? Math.random;
-  const app = new Application();
-  await app.init({
-    width: SCENE_WIDTH,
-    height: SCENE_HEIGHT,
-    backgroundAlpha: 0,
+  const moving = !options.reducedMotion;
+
+  // --- Renderer, scene, camera, light ------------------------------------------------
+  const renderer = new WebGLRenderer({
     antialias: true,
-    resolution: Math.min(window.devicePixelRatio || 1, 2),
-    autoDensity: true,
+    alpha: true,
+    powerPreference: "low-power",
   });
-  app.ticker.maxFPS = 60;
-  // Scale with the container; PixiJS maps pointer positions through the CSS size
-  app.canvas.style.width = "100%";
-  app.canvas.style.height = "auto";
-  app.canvas.style.display = "block";
-  host.appendChild(app.canvas);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = SRGBColorSpace;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.setClearColor(0x000000, 0);
+  const canvas = renderer.domElement;
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
+  canvas.style.display = "block";
+  canvas.style.touchAction = "manipulation";
+  // A soft sky behind the floating island
+  canvas.style.background = "linear-gradient(180deg, #cfe9f6 0%, #e9f4f1 55%, #fbf1e1 100%)";
 
-  const ids = neededAssets(model);
-  await Assets.load(ids.map((id) => ({ alias: id, src: assetUrl(id) })));
-  const texture = (id: string): Texture => Assets.get<Texture>(id);
-  const sprite = (id: string): Sprite => {
-    const info = gardenAsset(id);
-    const result = new Sprite(texture(id));
-    result.anchor.set(info.anchor.x / info.width, info.anchor.y / info.height);
-    return result;
-  };
-  /** A body part placed at its attach point, relative to the body's anchor. */
-  const part = (id: string, body: string): Sprite => {
-    const piece = sprite(id);
-    const attach = gardenAsset(id).attach ?? { x: 0, y: 0 };
-    const anchor = gardenAsset(body).anchor;
-    piece.position.set(attach.x - anchor.x, attach.y - anchor.y);
-    return piece;
-  };
+  const scene = new Scene();
+  const camera = gardenCamera(SCENE_WIDTH / SCENE_HEIGHT);
+  scene.add(new HemisphereLight(0xfff8ec, 0x7d8c63, 1.5), new AmbientLight(0xffffff, 0.35));
+  const sun = new DirectionalLight(0xfff3df, 2.1);
+  sun.position.set(-220, 520, 320);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.left = -380;
+  sun.shadow.camera.right = 380;
+  sun.shadow.camera.top = 380;
+  sun.shadow.camera.bottom = -380;
+  sun.shadow.camera.near = 50;
+  sun.shadow.camera.far = 1500;
+  sun.shadow.bias = -0.0004;
+  sun.shadow.normalBias = 0.8;
+  scene.add(sun, sun.target);
 
-  // --- Background: the painted sky, Mount Fuji, forest and meadow; drifting clouds -------
-  const backdrop = sprite("bg-garden");
-  const clouds = Array.from({ length: SCENE.clouds }, (_, index) => {
-    const cloud = sprite(index % 2 === 0 ? "cloud-a" : "cloud-b");
-    cloud.position.set(80 + index * 210, 18 + (index % 2) * 16);
-    cloud.alpha = 0.92;
-    return { sprite: cloud, speed: 3 + index * 1.2 };
-  });
-  app.stage.addChild(backdrop, ...clouds.map((cloud) => cloud.sprite));
+  /** Everything on the island; it bobs as one piece. */
+  const garden = new Group();
+  scene.add(garden);
 
-  // --- Ground: the dirt path with a soft edge, stepping stones, plots, pond, koi ----------
-  const ground = new Container();
-  const sceneFrame = new Rectangle(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-  // A faint shade where the meadow meets the path, then the dirt cut out by a blurred mask
-  const shade = pathShape(model.pathTiles, 1.12, 0x3c4a1c, 0.28);
-  shade.filters = [new BlurFilter({ strength: PATH_SHADE_BLUR })];
-  const maskShape = pathShape(model.pathTiles, 0.98, 0xffffff, 1);
-  maskShape.filters = [new BlurFilter({ strength: PATH_EDGE_BLUR })];
-  const maskTexture = app.renderer.generateTexture({ target: maskShape, frame: sceneFrame });
-  maskShape.destroy();
-  const pathMask = new Sprite(maskTexture);
-  const dirt = new TilingSprite({
-    texture: texture("tile-path"),
-    width: SCENE_WIDTH,
-    height: SCENE_HEIGHT,
-  });
-  dirt.mask = pathMask;
-  ground.addChild(shade, dirt, pathMask);
-  for (const stone of model.stones) {
-    const piece = sprite(stone.asset);
-    piece.position.set(stone.x, stone.y);
-    piece.scale.set(stone.flip ? -stone.scale : stone.scale, stone.scale);
-    ground.addChild(piece);
+  // --- Loading -----------------------------------------------------------------------
+  const loader = new GLTFLoader();
+  loader.setMeshoptDecoder(MeshoptDecoder);
+  const modelIds = new Set<string>([ISLAND_MODEL]);
+  for (const tree of model.trees) modelIds.add(tree.model);
+  for (const pet of model.pets) if (pet.model) modelIds.add(pet.model);
+
+  const pictureIds = new Set<string>([...PIPO_PARTS, "cloud-a", "cloud-b"]);
+  for (const decoration of model.decorations) pictureIds.add(decoration.asset);
+  if (model.koi) pictureIds.add("koi-a").add("koi-b");
+  for (const pet of model.pets)
+    if (!pet.model) for (const frame of pet.frames) pictureIds.add(frame);
+  if (model.petalSources.length > 0 || model.pets.some((pet) => pet.id === "pet-slime-sakura")) {
+    pictureIds.add("petal");
   }
-  for (const tile of model.tiles) {
-    const piece = sprite(tile.asset);
-    piece.position.set(tile.x, tile.y);
-    ground.addChild(piece);
+
+  const textureLoader = new TextureLoader();
+  const [models, pictures] = await Promise.all([
+    Promise.all(
+      [...modelIds].map(async (id) => [id, (await loader.loadAsync(modelUrl(id))).scene] as const),
+    ),
+    Promise.all(
+      [...pictureIds].map(async (id) => {
+        const texture = await textureLoader.loadAsync(assetUrl(id));
+        texture.colorSpace = SRGBColorSpace;
+        texture.anisotropy = 4;
+        return [id, texture] as const;
+      }),
+    ),
+  ]);
+  const modelById = new Map<string, Object3D>(models);
+  const pictureById = new Map<string, Texture>(pictures);
+  const getModel = (id: string): Object3D => {
+    const found = modelById.get(id);
+    if (!found) throw new Error(`Garden model not loaded: ${id}`);
+    return found;
+  };
+  const picture = (id: string): Texture => {
+    const found = pictureById.get(id);
+    if (!found) throw new Error(`Garden picture not loaded: ${id}`);
+    return found;
+  };
+  const shapes = new ShapeBook();
+  const shadows = shadowTexture();
+
+  // --- The island ----------------------------------------------------------------------
+  const island = getModel(ISLAND_MODEL);
+  island.scale.setScalar(UNITS_TO_PX);
+  island.traverse((node) => {
+    if (node instanceof Mesh) node.receiveShadow = true;
+  });
+  garden.add(island);
+
+  // --- Trees ---------------------------------------------------------------------------
+  const trees = model.trees.map((tree) => {
+    const holder = placeModel(getModel(tree.model), treeHeight(tree.model), true);
+    holder.position.copy(toWorld(tree.x, tree.y, tree.h - 1));
+    // A little turn per plot so rows of the same tree do not look stamped
+    holder.rotation.y = ((tree.plot * 37) % 360) * (Math.PI / 180);
+    holder.userData.treeId = tree.id;
+    makePickable(holder);
+    garden.add(holder);
+    return {
+      holder,
+      y: tree.y,
+      materials: materialsOf(holder),
+      faded: false,
+      rect: { left: 0, bottom: 0, right: 0, top: 0 },
+    };
+  });
+
+  // --- Decorations, koi, highlight -------------------------------------------------------
+  const cards: Billboard[] = [];
+  for (const decoration of model.decorations) {
+    const card = new Billboard();
+    card.add(anchoredCard(decoration.asset, picture(decoration.asset)));
+    card.position.copy(toWorld(decoration.x, decoration.y, decoration.h));
+    garden.add(card);
+    cards.push(card);
   }
-  const koi: Sprite[] = [];
-  if (model.pond) {
-    const pond = sprite("deco-pond");
-    pond.position.set(model.pond.x, model.pond.y);
-    ground.addChild(pond);
-    if (model.koi) {
-      for (let index = 0; index < SCENE.koi; index += 1) {
-        const fish = sprite(index === 0 ? "koi-a" : "koi-b");
-        ground.addChild(fish);
-        koi.push(fish);
-      }
+
+  const koi: Mesh[] = [];
+  if (model.koi) {
+    for (let index = 0; index < SCENE.koi; index += 1) {
+      const id = index === 0 ? "koi-a" : "koi-b";
+      const info = gardenAsset(id);
+      const fish = new Mesh(
+        new PlaneGeometry(info.width, info.height).rotateX(-Math.PI / 2),
+        new MeshBasicMaterial({ map: picture(id), transparent: true, depthWrite: false }),
+      );
+      garden.add(fish);
+      koi.push(fish);
     }
   }
-  const highlight = new Graphics();
+
+  const highlight = new Mesh(
+    new RingGeometry(15, 19, 40).rotateX(-Math.PI / 2),
+    new MeshBasicMaterial({ color: 0xfcf4ec, transparent: true, opacity: 0.95, depthWrite: false }),
+  );
   highlight.visible = false;
-  ground.addChild(highlight);
-  app.stage.addChild(ground);
+  garden.add(highlight);
 
-  // --- World: trees, Pipo, slime, drawn back to front by their feet ---------------------
-  const world = new Container({ sortableChildren: true });
-  app.stage.addChild(world);
-  const treeSprites: { sprite: Sprite; x: number; y: number; halfWidth: number; height: number }[] =
-    [];
-  for (const tree of model.trees) {
-    const piece = sprite(tree.asset);
-    piece.position.set(tree.x, tree.y);
-    piece.zIndex = tree.y;
-    piece.eventMode = "static";
-    piece.cursor = "pointer";
-    piece.on("pointertap", () => options.onTreeSelect(tree.id));
-    world.addChild(piece);
-    const info = gardenAsset(tree.asset);
-    treeSprites.push({
-      sprite: piece,
-      x: tree.x,
-      y: tree.y,
-      halfWidth: info.width / 2 - 4,
-      height: info.height - 8,
-    });
-  }
+  // --- Clouds drifting behind the island ------------------------------------------------
+  const clouds = Array.from({ length: SCENE.clouds }, (_, index) => {
+    const id = index % 2 === 0 ? "cloud-a" : "cloud-b";
+    const cloud = new Billboard();
+    const card = anchoredCard(id, picture(id));
+    card.scale.setScalar(1.8);
+    card.material.opacity = 0.92;
+    cloud.add(card);
+    cloud.position.set(-320 + index * 260, 200 + (index % 2) * 40, -480);
+    scene.add(cloud);
+    return { cloud, speed: 4 + index * 1.5 };
+  });
 
-  if (model.bridge) {
-    const bridge = sprite("deco-bridge");
-    bridge.position.set(model.bridge.x, model.bridge.y);
-    bridge.zIndex = model.bridge.y;
-    world.addChild(bridge);
-  }
-
-  for (const decoration of model.decorations) {
-    const piece = sprite(decoration.asset);
-    piece.position.set(decoration.x, decoration.y);
-    piece.zIndex = decoration.y;
-    world.addChild(piece);
-  }
-
-  const pipo = new Container();
-  const torso = new Container();
-  const pipoShadow = part("pipo-shadow", "pipo-body");
-  const wingBack = part("pipo-wing-back", "pipo-body");
-  const wingFront = part("pipo-wing-front", "pipo-body");
-  const eyes = part("pipo-eyes-open", "pipo-body");
-  torso.addChild(wingBack, sprite("pipo-body"), wingFront, eyes);
+  // --- Pipo: its 2D parts on a camera-facing card ----------------------------------------
+  const pipo = new Group();
+  pipo.userData.pipo = true;
+  const pipoShadow = blobShadow(shadows, 30);
+  const pipoCard = new Billboard();
+  const facing = new Group();
+  const torso = new Group();
+  const inner = new Group();
   // No legs: the round body sits on the ground and squashes from its bottom when it lands
-  torso.pivot.set(0, -PIPO_BODY_GAP);
-  pipo.addChild(pipoShadow, torso);
-  pipo.eventMode = "static";
-  pipo.cursor = "pointer";
-  world.addChild(pipo);
+  inner.position.y = -PIPO_BODY_GAP;
+  const bodyAnchor = gardenAsset("pipo-body").anchor;
+  const part = (id: string, depth: number) => {
+    const card = anchoredCard(id, picture(id));
+    const attach = gardenAsset(id).attach ?? bodyAnchor;
+    card.position.set(attach.x - bodyAnchor.x, -(attach.y - bodyAnchor.y), depth);
+    return card;
+  };
+  const wingBack = part("pipo-wing-back", -0.5);
+  const body = anchoredCard("pipo-body", picture("pipo-body"));
+  const wingFront = part("pipo-wing-front", 0.5);
+  const eyes = part("pipo-eyes-open", 1);
+  inner.add(wingBack, body, wingFront, eyes);
+  torso.add(inner);
+  facing.add(torso);
+  pipoCard.add(facing);
+  pipo.add(pipoShadow, pipoCard);
+  makePickable(pipoCard);
+  garden.add(pipo);
 
-  // Pets: behaviour objects (lib/garden/pet-behaviour.ts) drawn by their PetView subclass
-  const petFx = new ParticleLayer(new Container());
-  const petWorld: PetWorld = { pathLength: pathLength(), moving: !options.reducedMotion, random };
+  // --- Pets: the same behaviour objects as before, drawn in 3D ----------------------------
+  const petFx = new ParticleLayer();
+  garden.add(petFx.group);
+  const petWorld: PetWorld = { pathLength: pathLength(), moving, random };
   const pets = model.pets.map((pet, index) => {
-    const [idle, alt, skill] = pet.frames;
-    const info = gardenAsset(idle);
+    let look: PetLook;
+    if (pet.model) {
+      const height = PET_HEIGHT[pet.model] ?? 32;
+      const placed = placeModel(getModel(pet.model), height, false);
+      const width = new Box3().setFromObject(placed).getSize(new Vector3()).x;
+      look = { kind: "model", model: placed, width };
+    } else {
+      const [idle, alt, skill] = pet.frames;
+      look = {
+        kind: "card",
+        art: idle,
+        frames: { idle: picture(idle), alt: picture(alt), skill: picture(skill) },
+        width: gardenAsset(idle).width * 0.7,
+      };
+    }
     const view = createPetView(
       createPetBehaviour(pet.id, {
         start: pet.start,
@@ -274,29 +382,71 @@ export async function createGardenRenderer(
         pathLength: pathLength(),
       }),
       {
-        frames: { idle: texture(idle), alt: texture(alt), skill: texture(skill) },
-        anchor: { x: info.anchor.x / info.width, y: info.anchor.y / info.height },
-        shadow: texture("slime-shadow"),
-        petal: pet.id === "pet-slime-sakura" ? texture("petal") : null,
+        look,
+        shadow: shadows,
+        shapes,
+        petal: pet.id === "pet-slime-sakura" ? picture("petal") : null,
       },
       petFx,
       PET_LANES[index % PET_LANES.length] ?? 0,
       random,
     );
-    view.root.on("pointertap", () => {
-      if (view.triggerSkill(petWorld)) options.onPetSkill?.(pet.id);
-    });
-    world.addChild(view.root);
+    makePickable(view.root);
+    garden.add(view.root);
     return view;
   });
-  app.stage.addChild(petFx.container);
 
-  // --- Petals ------------------------------------------------------------------------
-  const fx = new Container();
-  app.stage.addChild(fx);
-  const petals: { sprite: Sprite; vx: number; vy: number; floor: number; age: number }[] = [];
+  // --- Falling petals --------------------------------------------------------------------
+  const petals: { sprite: Sprite; vx: number; vy: number; age: number }[] = [];
+  const petalMaterial = pictureById.has("petal")
+    ? new SpriteMaterial({ map: picture("petal"), transparent: true, depthWrite: false })
+    : null;
 
-  // --- Behaviour ---------------------------------------------------------------------
+  // --- Framing -----------------------------------------------------------------------------
+  const projected = new Vector3();
+  const measureTrees = () => {
+    for (const tree of trees) {
+      const box = new Box3().setFromObject(tree.holder);
+      let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+      for (let index = 0; index < 8; index += 1) {
+        projected
+          .set(
+            index & 1 ? box.max.x : box.min.x,
+            index & 2 ? box.max.y : box.min.y,
+            index & 4 ? box.max.z : box.min.z,
+          )
+          .project(camera);
+        minX = Math.min(minX, projected.x);
+        maxX = Math.max(maxX, projected.x);
+        minY = Math.min(minY, projected.y);
+        maxY = Math.max(maxY, projected.y);
+      }
+      // Only the canopy hides Pipo; shrink the box to its middle
+      const shrinkX = (maxX - minX) * 0.15;
+      tree.rect = {
+        left: minX + shrinkX,
+        bottom: minY + (maxY - minY) * 0.25,
+        right: maxX - shrinkX,
+        top: maxY,
+      };
+    }
+  };
+  const resize = () => {
+    const width = Math.max(1, host.clientWidth);
+    const height = Math.max(1, host.clientHeight);
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    garden.position.y = 0;
+    scene.updateMatrixWorld();
+    fitGardenCamera(camera);
+    measureTrees();
+  };
+  host.appendChild(canvas);
+  resize();
+  const observer = new ResizeObserver(resize);
+  observer.observe(host);
+
+  // --- Behaviour ---------------------------------------------------------------------------
   const context = {
     pathLength: pathLength(),
     stops: model.stops,
@@ -305,9 +455,19 @@ export async function createGardenRenderer(
   let pipoState: PipoState = initialPipo();
   let elapsed = 0;
   let petalClock = 0;
+  const head = new Vector3();
+  const walkers: { object: Object3D; y: number }[] = [];
 
+  /** Scene coordinates (the 640×432 box) of a world point, for the speech bubble. */
+  const toScene = (point: Vector3): Point => {
+    const ndc = point.clone().project(camera);
+    return { x: ((ndc.x + 1) / 2) * SCENE_WIDTH, y: ((1 - ndc.y) / 2) * SCENE_HEIGHT };
+  };
   const speak = (events: PipoEvent[]) => {
-    if (events.includes("speak")) options.onPipoSpeak({ x: pipo.x, y: pipo.y - 50 });
+    if (!events.includes("speak")) return;
+    pipo.getWorldPosition(head);
+    head.y += 54;
+    options.onPipoSpeak(toScene(head));
   };
   const greetPipo = () => {
     const result = clickPipo(pipoState);
@@ -316,12 +476,12 @@ export async function createGardenRenderer(
     if (options.reducedMotion) return;
     // A few feathers flutter down from the flapping wings
     for (let index = 0; index < 4; index += 1) {
-      const feather = shapes.leaf(2.2, index % 2 === 0 ? 0xfce68a : 0xfff6cf);
-      petFx.add(feather, {
-        x: pipo.x + (random() - 0.5) * 16,
-        y: pipo.y - 20 - random() * 8,
+      petFx.add(shapes.leaf(2.2, index % 2 === 0 ? 0xfce68a : 0xfff6cf), {
+        x: pipo.position.x + (random() - 0.5) * 16,
+        y: pipo.position.y + 20 + random() * 8,
+        z: pipo.position.z + (random() - 0.5) * 10,
         vx: (random() - 0.5) * 30,
-        vy: -10 - random() * 20,
+        vy: 10 + random() * 20,
         gravity: 30,
         drag: 0.4,
         spin: (random() - 0.5) * 8,
@@ -330,25 +490,43 @@ export async function createGardenRenderer(
       });
     }
   };
-  const usePetSkill = (petId: PetId) => {
+  const triggerPetSkill = (petId: PetId) => {
     const view = pets.find((candidate) => candidate.id === petId);
     if (view?.triggerSkill(petWorld)) options.onPetSkill?.(petId);
   };
-  pipo.on("pointertap", greetPipo);
+
+  /** Path point and direction at a distance, on the ground. */
+  const placeAt = (distance: number) => {
+    const at = pointAt(distance);
+    const before = pointAt(distance - 2);
+    const after = pointAt(distance + 2);
+    const dx = after.x - before.x;
+    const dz = after.y - before.y;
+    const length = Math.hypot(dx, dz) || 1;
+    const world = toWorld(at.x, at.y, GROUND_H);
+    return {
+      x: world.x,
+      z: world.z,
+      h: GROUND_H,
+      tangentX: dx / length,
+      tangentZ: dz / length,
+      at,
+    };
+  };
 
   const update = (dt: number) => {
     elapsed += dt;
-    const moving = !options.reducedMotion;
+    if (moving) garden.position.y = Math.sin(elapsed * BOB_SPEED) * BOB_HEIGHT;
 
     // Pipo
     const step = stepPipo(pipoState, dt, context, random);
     pipoState = step.state;
     speak(step.events);
-    const at = pointAt(pipoState.distance);
-    pipo.position.set(at.x, at.y);
-    pipo.zIndex = at.y;
-    pipo.scale.x = pipoState.direction;
-    eyes.texture = texture(pipoState.blinking > 0 ? "pipo-eyes-closed" : "pipo-eyes-open");
+    const place = placeAt(pipoState.distance);
+    pipo.position.set(place.x, place.h, place.z);
+    pipoCard.face(camera);
+    facing.scale.x = pipoState.direction;
+    eyes.material.map = picture(pipoState.blinking > 0 ? "pipo-eyes-closed" : "pipo-eyes-open");
     const walking = pipoState.mode === "walking";
     const sitting = pipoState.mode === "sitting";
     // 0 on the ground, 1 at the top of a hop (same bounce as the slime)
@@ -362,114 +540,228 @@ export async function createGardenRenderer(
       // A happy jump: crouch, spring up flapping hard, land with a little squash
       const air = Math.max(0, Math.sin(Math.min(1, progress * 1.25) * Math.PI));
       const crouch = progress < 0.12 ? Math.sin((progress / 0.12) * Math.PI) * 0.1 : 0;
-      torso.y = moving ? -air * PIPO_GREET_JUMP : 0;
-      torso.scale.set(1 + crouch, 1 - crouch);
+      torso.position.y = moving ? air * PIPO_GREET_JUMP : 0;
+      torso.scale.set(1 + crouch, 1 - crouch, 1);
       const flap = moving ? Math.sin(elapsed * 34) * (0.5 + air * 0.6) - air * 0.5 : 0;
-      wingFront.rotation = flap;
-      wingBack.rotation = -flap;
+      wingFront.rotation.z = -flap;
+      wingBack.rotation.z = flap;
     } else {
-      torso.y = -lift * SCENE.pipoHopHeight;
+      torso.position.y = lift * SCENE.pipoHopHeight;
       const sit = sitting ? 0.06 : 0;
-      torso.scale.set(1 + squash + sit + breath, 1 - squash - sit - breath + lift * 0.06);
+      torso.scale.set(1 + squash + sit + breath, 1 - squash - sit - breath + lift * 0.06, 1);
       // Wings lift a little at the top of each hop
-      wingFront.rotation = -lift * 0.35;
-      wingBack.rotation = lift * 0.35;
+      wingFront.rotation.z = lift * 0.35;
+      wingBack.rotation.z = -lift * 0.35;
     }
-    pipoShadow.scale.set(1 - lift * 0.35);
-    pipoShadow.alpha = 1 - lift * 0.4;
-
-    // A tree standing in front of Pipo fades so Pipo stays visible behind its canopy
-    for (const tree of treeSprites) {
-      const covers =
-        tree.y > at.y && Math.abs(tree.x - at.x) < tree.halfWidth && at.y > tree.y - tree.height;
-      tree.sprite.alpha = covers ? OCCLUDING_ALPHA : 1;
-    }
+    const shadowSize = 30 * (1 - lift * 0.35);
+    pipoShadow.scale.set(shadowSize, 1, shadowSize * 0.8);
+    pipoShadow.material.opacity = 1 - lift * 0.4;
 
     // Pets wander, rest and use their skills; each species draws its own effect
     for (const view of pets) {
       const events = view.behaviour.update(dt, petWorld);
       if (events.includes("skill")) options.onPetSkill?.(view.id);
-      view.render(dt, petWorld, pointAt(view.behaviour.distance));
+      view.render(dt, petWorld, placeAt(view.behaviour.distance), camera);
     }
+    // A tree standing in front of Pipo or a pet fades so they stay visible behind it
+    walkers.length = 0;
+    walkers.push({ object: pipo, y: place.at.y });
+    for (const view of pets)
+      walkers.push({ object: view.root, y: pointAt(view.behaviour.distance).y });
+    for (const tree of trees) {
+      const { left, bottom, right, top } = tree.rect;
+      const covers = walkers.some((walker) => {
+        if (tree.y <= walker.y) return false;
+        walker.object.getWorldPosition(head);
+        head.y += 18;
+        head.project(camera);
+        return head.x > left && head.x < right && head.y > bottom && head.y < top;
+      });
+      if (covers === tree.faded) continue;
+      tree.faded = covers;
+      for (const material of tree.materials) {
+        material.transparent = covers;
+        material.opacity = covers ? OCCLUDING_ALPHA : 1;
+        material.depthWrite = !covers;
+        material.needsUpdate = true;
+      }
+    }
+
     petFx.update(dt);
+
+    for (const card of cards) card.face(camera);
 
     // Koi swim slow ellipses around the pond
     koi.forEach((fish, index) => {
-      if (!model.pond) return;
+      if (!model.koi) return;
+      const { center, orbit } = model.koi;
       const angle = (moving ? elapsed * 0.5 : 0) + index * Math.PI;
-      fish.position.set(
-        model.pond.x + Math.cos(angle) * KOI_ORBIT.x,
-        model.pond.y + Math.sin(angle) * KOI_ORBIT.y,
+      const at = toWorld(
+        center.x + Math.cos(angle) * orbit.x,
+        center.y + Math.sin(angle) * orbit.y,
+        center.h + 0.6,
       );
-      fish.rotation = angle + Math.PI / 2;
+      fish.position.copy(at);
+      fish.rotation.y = -(angle + Math.PI / 2);
     });
 
+    for (const { cloud } of clouds) cloud.face(camera);
     if (!moving) return;
 
-    for (const cloud of clouds) {
-      cloud.sprite.x += cloud.speed * dt;
-      if (cloud.sprite.x > SCENE_WIDTH + 80) cloud.sprite.x = -80;
+    for (const { cloud, speed } of clouds) {
+      cloud.position.x += speed * dt;
+      if (cloud.position.x > 520) cloud.position.x = -520;
     }
 
-    // Petals fall from blooming sakura
+    // Petals fall from blooming sakura canopies
     petalClock += dt;
-    if (model.petalSources.length > 0 && petalClock > 0.5 && petals.length < SCENE.maxPetals) {
+    if (
+      petalMaterial &&
+      model.petalSources.length > 0 &&
+      petalClock > 0.5 &&
+      petals.length < SCENE.maxPetals
+    ) {
       petalClock = 0;
       const source = model.petalSources[Math.floor(random() * model.petalSources.length)];
       if (source) {
-        const petal = sprite("petal");
-        petal.position.set(source.x + (random() - 0.5) * 50, source.y + (random() - 0.5) * 20);
-        fx.addChild(petal);
-        petals.push({
-          sprite: petal,
-          vx: 4 + random() * 6,
-          vy: 10 + random() * 8,
-          floor: source.y + 80,
-          age: 0,
-        });
+        const sprite = new Sprite(petalMaterial.clone());
+        sprite.scale.setScalar(7);
+        sprite.position.copy(
+          toWorld(
+            source.x + (random() - 0.5) * 50,
+            source.y + (random() - 0.5) * 30,
+            source.h + 50 + random() * 30,
+          ),
+        );
+        garden.add(sprite);
+        petals.push({ sprite, vx: 4 + random() * 6, vy: 10 + random() * 8, age: 0 });
       }
     }
     for (let index = petals.length - 1; index >= 0; index -= 1) {
       const petal = petals[index];
       if (!petal) continue;
       petal.age += dt;
-      petal.sprite.x += (petal.vx + Math.sin(petal.age * 3) * 8) * dt;
-      petal.sprite.y += petal.vy * dt;
-      petal.sprite.rotation += dt;
-      if (petal.sprite.y > petal.floor) petal.sprite.alpha -= dt;
-      if (petal.sprite.alpha <= 0) {
-        petal.sprite.destroy();
+      petal.sprite.position.x += (petal.vx + Math.sin(petal.age * 3) * 8) * dt;
+      petal.sprite.position.y -= petal.vy * dt;
+      petal.sprite.material.rotation += dt;
+      if (petal.sprite.position.y < GROUND_H + 1) {
+        petal.sprite.position.y = GROUND_H + 1;
+        petal.sprite.material.opacity -= dt;
+      }
+      if (petal.sprite.material.opacity <= 0) {
+        garden.remove(petal.sprite);
+        petal.sprite.material.dispose();
         petals.splice(index, 1);
       }
     }
   };
 
-  app.ticker.add((ticker) => update(Math.min(ticker.deltaMS / 1000, 0.1)));
+  // --- Tapping ------------------------------------------------------------------------------
+  const raycaster = new Raycaster();
+  raycaster.layers = new Layers();
+  raycaster.layers.set(PICK_LAYER);
+  const pointer = new Vector2();
+  const pickables: Object3D[] = [
+    pipoCard,
+    ...pets.map((view) => view.root),
+    ...trees.map((tree) => tree.holder),
+  ];
+  type Picked = { kind: "tree"; id: string } | { kind: "pet"; id: PetId } | { kind: "pipo" } | null;
+  const pick = (event: PointerEvent | MouseEvent): Picked => {
+    const rect = canvas.getBoundingClientRect();
+    pointer.set(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1,
+    );
+    raycaster.setFromCamera(pointer, camera);
+    for (const hit of raycaster.intersectObjects(pickables, true)) {
+      for (let node: Object3D | null = hit.object; node; node = node.parent) {
+        const { treeId, petId, pipo: isPipo } = node.userData;
+        if (isPipo === true || node === pipoCard) return { kind: "pipo" };
+        if (typeof treeId === "string") return { kind: "tree", id: treeId };
+        const view =
+          typeof petId === "string" ? pets.find((candidate) => candidate.id === petId) : undefined;
+        if (view) return { kind: "pet", id: view.id };
+      }
+    }
+    return null;
+  };
+  const onClick = (event: MouseEvent) => {
+    const picked = pick(event);
+    if (picked?.kind === "tree") options.onTreeSelect(picked.id);
+    else if (picked?.kind === "pipo") greetPipo();
+    else if (picked?.kind === "pet") triggerPetSkill(picked.id);
+  };
+  let hoverQueued = false;
+  const onMove = (event: PointerEvent) => {
+    if (hoverQueued || event.pointerType !== "mouse") return;
+    hoverQueued = true;
+    requestAnimationFrame(() => {
+      hoverQueued = false;
+      canvas.style.cursor = pick(event) ? "pointer" : "default";
+    });
+  };
+  canvas.addEventListener("click", onClick);
+  canvas.addEventListener("pointermove", onMove);
+
+  // --- Loop ----------------------------------------------------------------------------------
+  const clock = new Clock();
+  let frame = 0;
+  const loop = () => {
+    update(Math.min(clock.getDelta(), 0.1));
+    renderer.render(scene, camera);
+    frame = requestAnimationFrame(loop);
+  };
   update(0);
+  loop();
 
   // Nothing animates in a hidden tab
   const onVisibility = () => {
-    if (document.hidden) app.ticker.stop();
-    else app.ticker.start();
+    cancelAnimationFrame(frame);
+    if (!document.hidden) {
+      clock.getDelta();
+      loop();
+    }
   };
   document.addEventListener("visibilitychange", onVisibility);
 
   const highlightSlot = (slot: number | null) => {
-    highlight.clear();
     highlight.visible = slot !== null;
     if (slot === null) return;
-    highlight
-      .poly(tileCorners(decorTile(slot)).flatMap((corner) => [corner.x, corner.y]))
-      .stroke({ width: 3, color: 0xfcf4ec, alignment: 1 });
+    const point = decorPoint(slot);
+    highlight.position.copy(toWorld(point.x, point.y, point.h + 0.8));
   };
 
   return {
     greetPipo,
-    usePetSkill,
+    usePetSkill: triggerPetSkill,
     highlightSlot,
     destroy: () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
-      app.destroy(true, { children: true });
+      canvas.removeEventListener("click", onClick);
+      canvas.removeEventListener("pointermove", onMove);
+      petFx.dispose();
+      const textures = new Set<Texture>([...pictureById.values(), shadows]);
+      scene.traverse((node) => {
+        if (node instanceof Mesh || node instanceof Sprite) {
+          node.geometry.dispose();
+          const materials: Material[] = Array.isArray(node.material)
+            ? node.material
+            : [node.material];
+          for (const material of materials) {
+            for (const value of Object.values(material))
+              if (value && typeof value === "object" && "isTexture" in value) textures.add(value);
+            material.dispose();
+          }
+        }
+      });
+      for (const texture of textures) texture.dispose();
+      petalMaterial?.dispose();
+      shapes.dispose();
+      renderer.dispose();
+      canvas.remove();
     },
   };
 }

@@ -18,7 +18,7 @@ interface UseGardenSceneOptions {
 }
 
 /**
- * Mounts the PixiJS garden in `host`. pixi.js is loaded with import() here, so it only
+ * Mounts the 3D garden in `host`. three.js is loaded with import() here, so it only
  * downloads on the garden page. The scene is rebuilt when the model or motion setting changes.
  */
 export function useGardenScene(

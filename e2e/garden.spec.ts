@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-import { plotTile, SCENE_HEIGHT, SCENE_WIDTH, tileBase } from "../lib/garden/layout";
+import { gardenCamera, sceneSpot } from "../app/(main)/garden/_lib/three/camera";
+import { plotPoint, SCENE_HEIGHT, SCENE_WIDTH } from "../lib/garden/layout";
 
 import { grantItem, plantTree } from "./helpers/admin";
 import { createOnboardedUser } from "./helpers/auth";
@@ -55,16 +56,17 @@ test.describe("garden scene", () => {
     await expect(dialog).toHaveCount(0);
     await expect(treeButton).toBeFocused();
 
-    // Plot 0 is the top corner of the isometric map: click the sapling just above its base
+    // Plot 0 is the back left corner of the island: click the sapling just above its base
     const scene = page.getByRole("img", { name: /Vườn tri thức/ });
     // Focusing the list may have scrolled the top of the scene (plot 0) out of view
     await scene.evaluate((element) => element.scrollIntoView({ block: "center" }));
     const box = await scene.boundingBox();
     if (!box) throw new Error("scene has no size");
-    const base = tileBase(plotTile(0));
+    const plot = plotPoint(0);
+    const spot = sceneSpot(gardenCamera(SCENE_WIDTH / SCENE_HEIGHT), plot.x, plot.y, plot.h + 20);
     await page.mouse.click(
-      box.x + (base.x / SCENE_WIDTH) * box.width,
-      box.y + ((base.y - 24) / SCENE_HEIGHT) * box.height,
+      box.x + (spot.x / SCENE_WIDTH) * box.width,
+      box.y + (spot.y / SCENE_HEIGHT) * box.height,
     );
     await expect(page.getByRole("dialog", { name: "Tre" })).toBeVisible();
   });
@@ -107,10 +109,10 @@ test.describe("garden scene", () => {
     await expect(page.getByLabel("Vị trí của Đèn lồng")).toHaveValue("storage");
   });
 
-  // garden-scene spec §3.4: 31 plots per garden; more trees open garden 2
+  // garden-scene spec §3.4: 26 plots per garden; more trees open garden 2
   test("switches between gardens once the first one is full", async ({ page }, testInfo) => {
     const email = await createOnboardedUser(page, testInfo);
-    for (let plot = 0; plot < 31; plot += 1) {
+    for (let plot = 0; plot < 26; plot += 1) {
       await plantTree(email, { species: "pine", sessions: 4, plot });
     }
     await plantTree(email, { species: "bamboo", sessions: 4, plot: 0, garden: 2 });
@@ -122,7 +124,7 @@ test.describe("garden scene", () => {
 
     await nav.getByRole("link", { name: "Khu vườn trước" }).click();
     await expect(nav).toContainText("Khu vườn 1/2");
-    await expect(page.getByRole("button", { name: "Thông Nhật · Trưởng thành" })).toHaveCount(31);
+    await expect(page.getByRole("button", { name: "Thông Nhật · Trưởng thành" })).toHaveCount(26);
     await expect(page.locator("[data-scene-ready='true']")).toHaveCount(1);
   });
 });
