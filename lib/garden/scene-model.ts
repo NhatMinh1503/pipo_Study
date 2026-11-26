@@ -9,7 +9,7 @@ import {
   type GroundPoint,
   type Point,
 } from "./layout";
-import { petModelId, treeModelId } from "./models";
+import { gardenPets, petModelId, treeModelId } from "./models";
 import { closestOnPath } from "./path";
 import { petFrames, type PetId } from "./pets";
 import type { PipoStop } from "./pipo-machine";
@@ -62,7 +62,7 @@ export interface SceneModel {
   decorSlots: readonly GroundPoint[];
   /** Koi swim in the island's pond once the learner owns the pond. */
   koi: { center: GroundPoint; orbit: Point } | null;
-  /** Pets roaming the path, spread out along it and walking both ways. */
+  /** Pets roaming the path (those with a 3D model), spread out along it, walking both ways. */
   pets: ScenePet[];
   /** Places Pipo may stop: viewing spots next to mature trees beside the path. */
   stops: PipoStop[];
@@ -137,7 +137,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     decorations,
     decorSlots: DECOR_SLOTS,
     koi: input.hasPond ? { center: POND, orbit: KOI_ORBIT } : null,
-    pets: (input.pets ?? []).map((id, index, all) => ({
+    pets: gardenPets(input.pets ?? []).map((id, index, all) => ({
       id,
       frames: petFrames(id),
       model: petModelId(id),

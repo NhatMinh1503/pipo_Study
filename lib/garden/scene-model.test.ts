@@ -23,17 +23,22 @@ describe("garden scene model", () => {
     expect(model.koi).toBeNull();
   });
 
-  it("spreads owned pets along the path, walking both ways, with a model when they have one", () => {
+  it("spreads the 3D pets along the path, walking both ways, and leaves the 2D ones out", () => {
     const model = buildSceneModel({
       ...empty,
-      pets: ["deco-slime", "pet-slime-ember", "pet-slime-cloud"],
+      pets: [
+        "deco-slime",
+        "pet-slime-moss",
+        "pet-slime-ember",
+        "pet-slime-cloud",
+        "pet-slime-sakura",
+      ],
     });
-    expect(model.pets.map((pet) => [pet.id, pet.frames[0], pet.model])).toEqual([
-      ["deco-slime", "pet-peach", null],
-      ["pet-slime-ember", "pet-ember", "pet-ember-lava"],
-      ["pet-slime-cloud", "pet-cloud", null],
+    expect(model.pets.map((pet) => [pet.id, pet.model])).toEqual([
+      ["pet-slime-moss", "pet-moss-jelly"],
+      ["pet-slime-ember", "pet-ember-lava"],
+      ["pet-slime-sakura", "pet-sakura-mochi"],
     ]);
-    expect(model.pets[2]?.frames).toEqual(["pet-cloud", "pet-cloud-b", "pet-cloud-skill"]);
     expect(model.pets.map((pet) => pet.start)).toEqual([1 / 6, 3 / 6, 5 / 6]);
     expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1]);
   });

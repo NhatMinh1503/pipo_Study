@@ -46,6 +46,14 @@ export function petModelId(id: PetId): string | null {
   return PET_MODEL[id] ?? null;
 }
 
+/**
+ * Pets shown in the garden: only those with a 3D model. Minh asked to drop the 2D pets
+ * (26/11/2026); the others come back as their clay models are made.
+ */
+export function gardenPets(pets: readonly PetId[]): PetId[] {
+  return pets.filter((id) => petModelId(id) !== null);
+}
+
 export function modelUrl(id: string): string {
   return `/garden3d/${id}.glb`;
 }

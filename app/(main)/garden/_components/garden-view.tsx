@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { stageFor } from "@/lib/garden/growth";
+import { gardenPets } from "@/lib/garden/models";
 import { PETS, type PetId } from "@/lib/garden/pets";
 import { SCENE_HEIGHT, SCENE_WIDTH } from "@/lib/garden/layout";
 import { buildSceneModel } from "@/lib/garden/scene-model";
@@ -112,7 +113,7 @@ export function GardenView({ scene }: GardenViewProps) {
         </p>
       </div>
 
-      <PetSkills pets={scene.pets} disabled={status !== "ready"} onUse={usePetSkill} />
+      <PetSkills pets={gardenPets(scene.pets)} disabled={status !== "ready"} onUse={usePetSkill} />
 
       <section aria-labelledby="garden-tree-list" className="space-y-2">
         <h2 id="garden-tree-list" className="mono-label">
