@@ -208,10 +208,11 @@ export async function createGardenRenderer(
 
   const scene = new Scene();
   const camera = gardenCamera(SCENE_WIDTH / SCENE_HEIGHT);
-  // Warm light like the concept art: a clear sun for bright tops, plenty of sky light so
-  // the shadows stay soft
-  scene.add(new HemisphereLight(0xfff3e0, 0x9b8f6c, 1.55), new AmbientLight(0xfff6ea, 0.4));
-  const sun = new DirectionalLight(0xffe9cc, 2.2);
+  // Light measured against the concept art: a strong, nearly white sun gives the trees
+  // their bright tops and shaded sides (the concept's light-to-dark spread), with just
+  // enough sky light that shadows do not go black
+  scene.add(new HemisphereLight(0xf7f5ef, 0x8a876d, 0.8), new AmbientLight(0xffffff, 0.12));
+  const sun = new DirectionalLight(0xfff2e1, 3.7);
   sun.position.set(-220, 520, 320);
   sun.castShadow = true;
   sun.shadow.mapSize.set(1024, 1024);
