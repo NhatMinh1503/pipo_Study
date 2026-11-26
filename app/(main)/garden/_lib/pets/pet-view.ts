@@ -40,6 +40,8 @@ export interface PetPlace {
 }
 
 const between = (min: number, max: number, roll: number) => min + (max - min) * roll;
+/** An angle folded into -π..π, so turning always takes the short way round. */
+const wrap = (angle: number) => Math.atan2(Math.sin(angle), Math.cos(angle));
 /** A walking model turns this much of the way toward where it walks; the rest faces us. */
 const WALK_TURN = 0.6;
 /** How fast a model turns to face a new way, per second. */
@@ -62,6 +64,8 @@ export class PetView {
   private readonly card: Mesh<PlaneGeometry, MeshBasicMaterial> | null = null;
   private readonly billboard: Billboard | null = null;
   private yaw = 0;
+  /** Which way the card faces on screen: 1 right, -1 left. */
+  private screenSide = 1;
   private wasUsingSkill = false;
   /** Direction it walks on the ground (already flipped by behaviour.direction). */
   protected readonly forward = new Vector3(1, 0, 0);
@@ -101,8 +105,11 @@ export class PetView {
     return true;
   }
 
-  /** Called every frame after the behaviour has been updated. */
-  render(dt: number, world: PetWorld, place: PetPlace, camera: Camera): void {
+  /**
+   * Called every frame after the behaviour has been updated. `viewYaw` is how far the island
+   * is turned (the learner can drag it round), so the pet knows which way the camera is.
+   */
+  render(dt: number, world: PetWorld, place: PetPlace, camera: Camera, viewYaw: number): void {
     const direction = this.behaviour.direction;
     this.forward.set(place.tangentX * direction, 0, place.tangentZ * direction);
     // The lane is to the side of the path, toward the camera on both walking directions
@@ -125,14 +132,20 @@ export class PetView {
       this.billboard.face(camera);
       const texture = this.assets.look.kind === "card" ? this.assets.look.frames[pose.frame] : null;
       if (texture && this.card.material.map !== texture) this.card.material.map = texture;
-      // The path runs left to right across the screen, so the path direction is the
-      // screen direction and the 2D pose (scaleX carries it) applies as it is
-      this.card.scale.set(pose.scaleX, pose.scaleY, 1);
+      // The card faces left or right the way the pet walks across the screen. The pose's
+      // scaleX carries the path direction, so only its size is used here
+      const across = this.forward.x * Math.cos(viewYaw) + this.forward.z * Math.sin(viewYaw);
+      if (Math.abs(across) > 0.05) this.screenSide = across > 0 ? 1 : -1;
+      this.card.scale.set(Math.abs(pose.scaleX) * this.screenSide, pose.scaleY, 1);
       this.card.rotation.z = -pose.rotation;
     } else {
       const walking = !this.behaviour.resting && !this.behaviour.usingSkill && world.moving;
-      const target = walking ? Math.atan2(this.forward.x, this.forward.z) * WALK_TURN : 0;
-      this.yaw += (target - this.yaw) * Math.min(1, dt * TURN_SPEED);
+      // Facing the camera on the turned island means turning back by the island's turn
+      const toCamera = -viewYaw;
+      const target = walking
+        ? toCamera + wrap(Math.atan2(this.forward.x, this.forward.z) - toCamera) * WALK_TURN
+        : toCamera;
+      this.yaw += wrap(target - this.yaw) * Math.min(1, dt * TURN_SPEED);
       this.turn.rotation.y = this.yaw + this.extraYaw(world);
       // scaleX carries the walking direction in 2D; in 3D the turn shows it instead
       const width = this.modelWidthScale(Math.abs(pose.scaleX));

@@ -34,6 +34,7 @@ import { assetUrl, gardenAsset } from "@/lib/garden/assets";
 import { SCENE } from "@/lib/garden/config";
 import {
   GROUND_H,
+  ISLAND_ORIGIN,
   SCENE_HEIGHT,
   SCENE_WIDTH,
   UNITS_TO_PX,
@@ -56,7 +57,7 @@ import type { SceneModel } from "@/lib/garden/scene-model";
 import { ParticleLayer, ShapeBook } from "./pets/particles";
 import { createPetView, type PetLook } from "./pets/pet-view";
 import { Billboard, anchoredCard, blobShadow, shadowTexture } from "./three/billboard";
-import { fitGardenCamera, gardenCamera, toWorld } from "./three/camera";
+import { DEFAULT_YAW, fitGardenCamera, gardenCamera, toWorld } from "./three/camera";
 
 export interface RendererOptions {
   reducedMotion: boolean;
@@ -102,6 +103,14 @@ const OCCLUDING_ALPHA = 0.45;
 /** The island bobs gently up and down, px, and how fast (radians per second). */
 const BOB_HEIGHT = 3;
 const BOB_SPEED = 0.6;
+/** Painted backdrop behind the island (made with Gemini from the concept art). */
+const BACKDROP_URL = "/garden3d/backdrop.webp";
+/** Radians the island turns per px dragged sideways. */
+const DRAG_TURN = 0.008;
+/** A press that moves less than this (px) is a tap, not a drag. */
+const DRAG_SLOP = 5;
+/** Share of the spin kept each second after letting go. */
+const SPIN_KEEP = 0.04;
 /** Raycasts only look at things that can be tapped. */
 const PICK_LAYER = 1;
 
@@ -185,9 +194,11 @@ export async function createGardenRenderer(
   canvas.style.width = "100%";
   canvas.style.height = "100%";
   canvas.style.display = "block";
-  canvas.style.touchAction = "manipulation";
-  // A soft sky behind the floating island
-  canvas.style.background = "linear-gradient(180deg, #cfe9f6 0%, #e9f4f1 55%, #fbf1e1 100%)";
+  // Sideways drags turn the island; up and down still scroll the page on a phone
+  canvas.style.touchAction = "pan-y";
+  canvas.style.cursor = "grab";
+  // Painted clay backdrop (Mount Fuji and a forest on cream paper) behind the island
+  canvas.style.background = `url(${BACKDROP_URL}) center / cover no-repeat, #f3ecdf`;
 
   const scene = new Scene();
   const camera = gardenCamera(SCENE_WIDTH / SCENE_HEIGHT);
@@ -196,10 +207,11 @@ export async function createGardenRenderer(
   sun.position.set(-220, 520, 320);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  sun.shadow.camera.left = -380;
-  sun.shadow.camera.right = 380;
-  sun.shadow.camera.top = 380;
-  sun.shadow.camera.bottom = -380;
+  // Wide enough for the island at any turn (its corners reach about 410 px from the middle)
+  sun.shadow.camera.left = -440;
+  sun.shadow.camera.right = 440;
+  sun.shadow.camera.top = 440;
+  sun.shadow.camera.bottom = -440;
   sun.shadow.camera.near = 50;
   sun.shadow.camera.far = 1500;
   sun.shadow.bias = -0.0004;
@@ -208,6 +220,7 @@ export async function createGardenRenderer(
 
   /** Everything on the island; it bobs as one piece. */
   const garden = new Group();
+  garden.rotation.y = DEFAULT_YAW;
   scene.add(garden);
 
   // --- Loading -----------------------------------------------------------------------
@@ -217,7 +230,7 @@ export async function createGardenRenderer(
   for (const tree of model.trees) modelIds.add(tree.model);
   for (const pet of model.pets) if (pet.model) modelIds.add(pet.model);
 
-  const pictureIds = new Set<string>([...PIPO_PARTS, "cloud-a", "cloud-b"]);
+  const pictureIds = new Set<string>(PIPO_PARTS);
   for (const decoration of model.decorations) pictureIds.add(decoration.asset);
   if (model.koi) pictureIds.add("koi-a").add("koi-b");
   for (const pet of model.pets)
@@ -274,6 +287,7 @@ export async function createGardenRenderer(
     garden.add(holder);
     return {
       holder,
+      x: tree.x,
       y: tree.y,
       materials: materialsOf(holder),
       faded: false,
@@ -311,19 +325,6 @@ export async function createGardenRenderer(
   );
   highlight.visible = false;
   garden.add(highlight);
-
-  // --- Clouds drifting behind the island ------------------------------------------------
-  const clouds = Array.from({ length: SCENE.clouds }, (_, index) => {
-    const id = index % 2 === 0 ? "cloud-a" : "cloud-b";
-    const cloud = new Billboard();
-    const card = anchoredCard(id, picture(id));
-    card.scale.setScalar(1.8);
-    card.material.opacity = 0.92;
-    cloud.add(card);
-    cloud.position.set(-320 + index * 260, 200 + (index % 2) * 40, -480);
-    scene.add(cloud);
-    return { cloud, speed: 4 + index * 1.5 };
-  });
 
   // --- Pipo: its 2D parts on a camera-facing card ----------------------------------------
   const pipo = new Group();
@@ -454,9 +455,23 @@ export async function createGardenRenderer(
   };
   let pipoState: PipoState = initialPipo();
   let elapsed = 0;
+  // Dragging sideways turns the island around its vertical axis; its tilt stays fixed
+  let drag: { id: number; x: number; moved: number; time: number } | null = null;
+  let spin = 0;
+  let suppressClick = false;
+  let turnedSinceMeasure = false;
+  const turnBy = (radians: number) => {
+    garden.rotation.y += radians;
+    turnedSinceMeasure = true;
+  };
   let petalClock = 0;
   const head = new Vector3();
-  const walkers: { object: Object3D; y: number }[] = [];
+  const walkers: { object: Object3D; depth: number }[] = [];
+  /** How close a garden position is to the camera on the turned island (bigger is nearer). */
+  const depthOf = (x: number, y: number) => {
+    const yaw = garden.rotation.y;
+    return -(x - ISLAND_ORIGIN.x) * Math.sin(yaw) + (y - ISLAND_ORIGIN.y) * Math.cos(yaw);
+  };
 
   /** Scene coordinates (the 640×432 box) of a world point, for the speech bubble. */
   const toScene = (point: Vector3): Point => {
@@ -517,6 +532,18 @@ export async function createGardenRenderer(
   const update = (dt: number) => {
     elapsed += dt;
     if (moving) garden.position.y = Math.sin(elapsed * BOB_SPEED) * BOB_HEIGHT;
+    // The island keeps spinning a little after a flick, slowing to a stop
+    if (!drag && Math.abs(spin) > 0.01) {
+      turnBy(spin * dt);
+      spin *= SPIN_KEEP ** dt;
+    } else if (!drag) {
+      spin = 0;
+    }
+    if (turnedSinceMeasure) {
+      turnedSinceMeasure = false;
+      scene.updateMatrixWorld();
+      measureTrees();
+    }
 
     // Pipo
     const step = stepPipo(pipoState, dt, context, random);
@@ -525,7 +552,12 @@ export async function createGardenRenderer(
     const place = placeAt(pipoState.distance);
     pipo.position.set(place.x, place.h, place.z);
     pipoCard.face(camera);
-    facing.scale.x = pipoState.direction;
+    // Pipo faces the way it walks across the screen, whichever way the island is turned
+    const across =
+      (place.tangentX * Math.cos(garden.rotation.y) +
+        place.tangentZ * Math.sin(garden.rotation.y)) *
+      pipoState.direction;
+    if (Math.abs(across) > 0.05) facing.scale.x = across > 0 ? 1 : -1;
     eyes.material.map = picture(pipoState.blinking > 0 ? "pipo-eyes-closed" : "pipo-eyes-open");
     const walking = pipoState.mode === "walking";
     const sitting = pipoState.mode === "sitting";
@@ -561,17 +593,20 @@ export async function createGardenRenderer(
     for (const view of pets) {
       const events = view.behaviour.update(dt, petWorld);
       if (events.includes("skill")) options.onPetSkill?.(view.id);
-      view.render(dt, petWorld, placeAt(view.behaviour.distance), camera);
+      view.render(dt, petWorld, placeAt(view.behaviour.distance), camera, garden.rotation.y);
     }
     // A tree standing in front of Pipo or a pet fades so they stay visible behind it
     walkers.length = 0;
-    walkers.push({ object: pipo, y: place.at.y });
-    for (const view of pets)
-      walkers.push({ object: view.root, y: pointAt(view.behaviour.distance).y });
+    walkers.push({ object: pipo, depth: depthOf(place.at.x, place.at.y) });
+    for (const view of pets) {
+      const at = pointAt(view.behaviour.distance);
+      walkers.push({ object: view.root, depth: depthOf(at.x, at.y) });
+    }
     for (const tree of trees) {
       const { left, bottom, right, top } = tree.rect;
+      const depth = depthOf(tree.x, tree.y);
       const covers = walkers.some((walker) => {
-        if (tree.y <= walker.y) return false;
+        if (depth <= walker.depth) return false;
         walker.object.getWorldPosition(head);
         head.y += 18;
         head.project(camera);
@@ -605,13 +640,7 @@ export async function createGardenRenderer(
       fish.rotation.y = -(angle + Math.PI / 2);
     });
 
-    for (const { cloud } of clouds) cloud.face(camera);
     if (!moving) return;
-
-    for (const { cloud, speed } of clouds) {
-      cloud.position.x += speed * dt;
-      if (cloud.position.x > 520) cloud.position.x = -520;
-    }
 
     // Petals fall from blooming sakura canopies
     petalClock += dt;
@@ -686,7 +715,42 @@ export async function createGardenRenderer(
     }
     return null;
   };
+  const onDown = (event: PointerEvent) => {
+    if (event.button !== 0) return;
+    drag = { id: event.pointerId, x: event.clientX, moved: 0, time: performance.now() };
+    spin = 0;
+  };
+  const onDragMove = (event: PointerEvent) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const dx = event.clientX - drag.x;
+    drag.x = event.clientX;
+    drag.moved += Math.abs(dx);
+    if (drag.moved < DRAG_SLOP) return;
+    if (!canvas.hasPointerCapture(event.pointerId)) {
+      canvas.setPointerCapture(event.pointerId);
+      canvas.style.cursor = "grabbing";
+    }
+    const now = performance.now();
+    const seconds = Math.max((now - drag.time) / 1000, 0.001);
+    drag.time = now;
+    turnBy(dx * DRAG_TURN);
+    // Remember how fast it was turning, for the spin after letting go
+    spin = options.reducedMotion ? 0 : (dx * DRAG_TURN) / seconds;
+  };
+  const onUp = (event: PointerEvent) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    suppressClick = drag.moved >= DRAG_SLOP;
+    if (performance.now() - drag.time > 80) spin = 0;
+    if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
+    canvas.style.cursor = "grab";
+    drag = null;
+  };
   const onClick = (event: MouseEvent) => {
+    // The end of a drag is not a tap on whatever is under the pointer
+    if (suppressClick) {
+      suppressClick = false;
+      return;
+    }
     const picked = pick(event);
     if (picked?.kind === "tree") options.onTreeSelect(picked.id);
     else if (picked?.kind === "pipo") greetPipo();
@@ -694,13 +758,17 @@ export async function createGardenRenderer(
   };
   let hoverQueued = false;
   const onMove = (event: PointerEvent) => {
-    if (hoverQueued || event.pointerType !== "mouse") return;
+    if (hoverQueued || drag || event.pointerType !== "mouse") return;
     hoverQueued = true;
     requestAnimationFrame(() => {
       hoverQueued = false;
-      canvas.style.cursor = pick(event) ? "pointer" : "default";
+      canvas.style.cursor = pick(event) ? "pointer" : "grab";
     });
   };
+  canvas.addEventListener("pointerdown", onDown);
+  canvas.addEventListener("pointermove", onDragMove);
+  canvas.addEventListener("pointerup", onUp);
+  canvas.addEventListener("pointercancel", onUp);
   canvas.addEventListener("click", onClick);
   canvas.addEventListener("pointermove", onMove);
 
@@ -740,6 +808,10 @@ export async function createGardenRenderer(
       cancelAnimationFrame(frame);
       observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointermove", onDragMove);
+      canvas.removeEventListener("pointerup", onUp);
+      canvas.removeEventListener("pointercancel", onUp);
       canvas.removeEventListener("click", onClick);
       canvas.removeEventListener("pointermove", onMove);
       petFx.dispose();
