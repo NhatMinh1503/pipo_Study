@@ -63,7 +63,7 @@ describe("GAME config matches design/game/registry.md", () => {
       saplingAtSessions: 2,
       matureAtSessions: 4,
       freeSpecies: ["pine", "bamboo"],
-      plotsPerGarden: 31,
+      plotsPerGarden: 26,
       decorSlots: 5,
     });
   });
