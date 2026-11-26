@@ -84,7 +84,10 @@ function stopBeside(point: Point): number | null {
  * (garden-scene spec §3.3–3.4, §4.2). The renderer only turns this into meshes.
  */
 export function buildSceneModel(input: SceneInput): SceneModel {
-  const trees = input.trees
+  // A tree on a plot the island does not have (data from before the 26-plot migration)
+  // is left out instead of breaking the whole garden
+  const onIsland = input.trees.filter((tree) => tree.plot >= 0 && tree.plot < PLOTS.length);
+  const trees = onIsland
     .map((tree) => ({
       id: tree.id,
       model: treeModelId(tree, input.studiedToday),
@@ -95,7 +98,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
 
   // Pipo stops on the path beside a grown tree to look at it
   const viewStops = new Set<number>();
-  for (const tree of input.trees) {
+  for (const tree of onIsland) {
     const distance = stageFor(tree.sessions) === "mature" ? stopBeside(plotPoint(tree.plot)) : null;
     if (distance !== null) viewStops.add(distance);
   }
@@ -124,7 +127,7 @@ export function buildSceneModel(input: SceneInput): SceneModel {
     ...[...benchStops].map((distance) => ({ distance, kind: "bench" as const })),
   ].sort((a, b) => a.distance - b.distance);
 
-  const petalSources = input.trees
+  const petalSources = onIsland
     .filter((tree) => isBlooming(tree, input.studiedToday))
     .map((tree) => plotPoint(tree.plot));
 
