@@ -67,6 +67,7 @@ Quy tắc chi tiết theo thư mục nằm ở `.claude/rules/` (tự nạp khi 
    Thay đổi lớn → dừng lại, hỏi Minh.
 4. Luôn hỏi trước khi: `supabase db reset` hoặc `stop --no-backup` (mất dữ liệu local), sửa migration **đã commit**, xoá file, đổi cấu trúc thư mục, kết nối dịch vụ cloud.
 5. Xong session: `/ship` → commit + push → ghi `.claude/progress.md` → báo cáo, kèm **3–5 khái niệm mới** giải thích bằng tiếng Việt.
+6. **Việc có hình ảnh mẫu (concept, mockup, ảnh Minh gửi):** sau **mỗi lần** sửa giao diện/đồ hoạ, chụp lại sản phẩm thật (trình duyệt hoặc trang thử), đặt cạnh ảnh yêu cầu, liệt kê các điểm còn khác (bố cục, tỉ lệ, góc nhìn, màu, ánh sáng, chi tiết) rồi sửa tiếp đến khi giống nhất có thể. Chỉ báo xong kèm ảnh so sánh, nói rõ điểm nào chưa giống được và vì sao.
 
 ## 🛠 Lệnh thường dùng
 

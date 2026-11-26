@@ -83,13 +83,17 @@ export interface GardenRenderer {
 // layout numbers, hop heights and particle speeds keep their meaning.
 
 /** Tree height in px for each step of growth: the shared sprout, then -2, -3 and -4. */
-const TREE_HEIGHT: Record<string, number> = { sprout: 22, "2": 44, "3": 64, "4": 102 };
+const TREE_HEIGHT: Record<string, number> = { sprout: 26, "2": 58, "3": 86, "4": 124 };
+/** Widest a tree may be at each step, px, so a bushy model stays inside its plot like the concept. */
+const TREE_WIDTH: Record<string, number> = { sprout: 30, "2": 46, "3": 62, "4": 80 };
 /** Height of each pet model, px (the 2D frames were about this tall). */
 const PET_HEIGHT: Record<string, number> = {
   "pet-ember-lava": 34,
   "pet-sakura-mochi": 42,
   "pet-moss-jelly": 40,
 };
+/** Pipo, the pets and decorations are drawn this much bigger than their 2D art. */
+const FIGURE_SCALE = 1.25;
 /** Pets keep to two lanes beside the path so they pass each other instead of overlapping. */
 const PET_LANES = [9, -5] as const;
 /** How high Pipo jumps when greeted, flapping its wings. */
@@ -122,14 +126,15 @@ const PIPO_PARTS = [
   "pipo-eyes-closed",
 ];
 
-function treeHeight(modelId: string): number {
-  if (modelId === "sprout") return TREE_HEIGHT.sprout ?? 22;
-  const step = modelId.match(/-(\d)(?:-|$)/)?.[1] ?? "4";
-  return TREE_HEIGHT[step] ?? 94;
+function treeStep(modelId: string): string {
+  return modelId === "sprout" ? "sprout" : (modelId.match(/-(\d)(?:-|$)/)?.[1] ?? "4");
 }
 
-/** A copy of a model, scaled to `height` px, standing on the origin. Materials are its own. */
-function placeModel(source: Object3D, height: number, shadows: boolean): Group {
+/**
+ * A copy of a model, scaled to `height` px (or less, so it is at most `width` px wide),
+ * standing on the origin. Materials are its own.
+ */
+function placeModel(source: Object3D, height: number, shadows: boolean, width = Infinity): Group {
   const model = source.clone(true);
   model.traverse((node) => {
     if (node instanceof Mesh) {
@@ -142,7 +147,7 @@ function placeModel(source: Object3D, height: number, shadows: boolean): Group {
   });
   const box = new Box3().setFromObject(model);
   const size = box.getSize(new Vector3());
-  const scale = height / (size.y || 1);
+  const scale = Math.min(height / (size.y || 1), width / (Math.max(size.x, size.z) || 1));
   const fit = new Group();
   fit.scale.setScalar(scale);
   fit.position.set(
@@ -198,15 +203,19 @@ export async function createGardenRenderer(
   canvas.style.touchAction = "pan-y";
   canvas.style.cursor = "grab";
   // Painted clay backdrop (Mount Fuji and a forest on cream paper) behind the island
-  canvas.style.background = `url(${BACKDROP_URL}) center / cover no-repeat, #f3ecdf`;
+  // Zoomed a little and pinned to the bottom, so the horizon sits high behind the island
+  canvas.style.background = `url(${BACKDROP_URL}) 38% 100% / 118% auto no-repeat, #f3ecdf`;
 
   const scene = new Scene();
   const camera = gardenCamera(SCENE_WIDTH / SCENE_HEIGHT);
-  scene.add(new HemisphereLight(0xfff8ec, 0x7d8c63, 1.5), new AmbientLight(0xffffff, 0.35));
-  const sun = new DirectionalLight(0xfff3df, 2.1);
+  // Warm light like the concept art: a clear sun for bright tops, plenty of sky light so
+  // the shadows stay soft
+  scene.add(new HemisphereLight(0xfff3e0, 0x9b8f6c, 1.55), new AmbientLight(0xfff6ea, 0.4));
+  const sun = new DirectionalLight(0xffe9cc, 2.2);
   sun.position.set(-220, 520, 320);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.radius = 4;
   // Wide enough for the island at any turn (its corners reach about 410 px from the middle)
   sun.shadow.camera.left = -440;
   sun.shadow.camera.right = 440;
@@ -278,7 +287,13 @@ export async function createGardenRenderer(
 
   // --- Trees ---------------------------------------------------------------------------
   const trees = model.trees.map((tree) => {
-    const holder = placeModel(getModel(tree.model), treeHeight(tree.model), true);
+    const step = treeStep(tree.model);
+    const holder = placeModel(
+      getModel(tree.model),
+      TREE_HEIGHT[step] ?? 124,
+      true,
+      TREE_WIDTH[step] ?? 80,
+    );
     holder.position.copy(toWorld(tree.x, tree.y, tree.h - 1));
     // A little turn per plot so rows of the same tree do not look stamped
     holder.rotation.y = ((tree.plot * 37) % 360) * (Math.PI / 180);
@@ -301,6 +316,7 @@ export async function createGardenRenderer(
     const card = new Billboard();
     card.add(anchoredCard(decoration.asset, picture(decoration.asset)));
     card.position.copy(toWorld(decoration.x, decoration.y, decoration.h));
+    card.scale.setScalar(FIGURE_SCALE);
     garden.add(card);
     cards.push(card);
   }
@@ -331,6 +347,7 @@ export async function createGardenRenderer(
   pipo.userData.pipo = true;
   const pipoShadow = blobShadow(shadows, 30);
   const pipoCard = new Billboard();
+  pipoCard.scale.setScalar(FIGURE_SCALE);
   const facing = new Group();
   const torso = new Group();
   const inner = new Group();
@@ -393,6 +410,7 @@ export async function createGardenRenderer(
       random,
     );
     makePickable(view.root);
+    view.root.scale.setScalar(FIGURE_SCALE);
     garden.add(view.root);
     return view;
   });
