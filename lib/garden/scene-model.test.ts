@@ -37,10 +37,11 @@ describe("garden scene model", () => {
     expect(model.pets.map((pet) => [pet.id, pet.model])).toEqual([
       ["pet-slime-moss", "pet-moss-jelly"],
       ["pet-slime-ember", "pet-ember-lava"],
+      ["pet-slime-cloud", "pet-cloud"],
       ["pet-slime-sakura", "pet-sakura-mochi"],
     ]);
-    expect(model.pets.map((pet) => pet.start)).toEqual([1 / 6, 3 / 6, 5 / 6]);
-    expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1]);
+    expect(model.pets.map((pet) => pet.start)).toEqual([1 / 8, 3 / 8, 5 / 8, 7 / 8]);
+    expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1, 1]);
   });
 
   it("puts koi in the island's pond only when the learner owns the pond", () => {

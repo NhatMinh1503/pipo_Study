@@ -25,12 +25,13 @@ describe("garden 3D models", () => {
     expect(treeModelId({ species: "sakura", sessions: 3 }, true)).toBe("sakura-3");
   });
 
-  it("has a model for the ember, sakura and moss pets only so far", () => {
+  it("has a model for the ember, sakura, moss and cloud pets", () => {
     expect(petModelId("pet-slime-ember")).toBe("pet-ember-lava");
     expect(petModelId("pet-slime-sakura")).toBe("pet-sakura-mochi");
     expect(petModelId("pet-slime-moss")).toBe("pet-moss-jelly");
     expect(petModelId("deco-slime")).toBeNull();
-    expect(petModelId("pet-slime-cloud")).toBeNull();
+    expect(petModelId("pet-slime-cloud")).toBe("pet-cloud");
+    expect(petModelId("pet-slime-water")).toBeNull();
   });
 
   it("draws the torii, lantern and bench with clay models", () => {

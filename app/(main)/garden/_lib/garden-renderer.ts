@@ -91,6 +91,7 @@ const PET_HEIGHT: Record<string, number> = {
   "pet-ember-lava": 34,
   "pet-sakura-mochi": 42,
   "pet-moss-jelly": 40,
+  "pet-cloud": 36,
 };
 /** Pipo, the pets and decorations are drawn this much bigger than their 2D art. */
 const FIGURE_SCALE = 1.25;

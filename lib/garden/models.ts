@@ -49,11 +49,12 @@ export function treeModelId(tree: TreeGrowth, studiedToday: boolean): string {
   return base;
 }
 
-/** Pets that already have a 3D model; the others are still drawn from their 2D frames. */
+/** Pets that have a 3D model; the others (peach, water) are left out of the garden for now. */
 const PET_MODEL: Partial<Record<PetId, string>> = {
   "pet-slime-ember": "pet-ember-lava",
   "pet-slime-sakura": "pet-sakura-mochi",
   "pet-slime-moss": "pet-moss-jelly",
+  "pet-slime-cloud": "pet-cloud",
 };
 
 export function petModelId(id: PetId): string | null {
