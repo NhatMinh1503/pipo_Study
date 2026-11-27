@@ -114,4 +114,14 @@ describe("garden scene model", () => {
     });
     expect(model.stops).toHaveLength(1);
   });
+
+  it("leaves out trees on plots the island does not have instead of crashing", () => {
+    const model = buildSceneModel({
+      ...empty,
+      trees: [tree({ id: "ok", plot: 25 }), tree({ id: "old", plot: 30, species: "sakura" })],
+      studiedToday: true,
+    });
+    expect(model.trees.map((item) => item.id)).toEqual(["ok"]);
+    expect(model.petalSources).toEqual([]);
+  });
 });
