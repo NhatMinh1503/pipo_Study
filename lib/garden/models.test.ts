@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { allModelIds, modelUrl, petModelId, treeModelId } from "./models";
+import { allModelIds, decorModelId, gardenPets, modelUrl, petModelId, treeModelId } from "./models";
 
 describe("garden 3D models", () => {
   it("grows a shared sprout into a bigger model each session", () => {
@@ -25,12 +25,25 @@ describe("garden 3D models", () => {
     expect(treeModelId({ species: "sakura", sessions: 3 }, true)).toBe("sakura-3");
   });
 
-  it("has a model for the ember, sakura and moss pets only so far", () => {
+  it("has a model for the ember, sakura, moss and cloud pets", () => {
     expect(petModelId("pet-slime-ember")).toBe("pet-ember-lava");
     expect(petModelId("pet-slime-sakura")).toBe("pet-sakura-mochi");
     expect(petModelId("pet-slime-moss")).toBe("pet-moss-jelly");
     expect(petModelId("deco-slime")).toBeNull();
-    expect(petModelId("pet-slime-cloud")).toBeNull();
+    expect(petModelId("pet-slime-cloud")).toBe("pet-cloud");
+    expect(petModelId("pet-slime-water")).toBeNull();
+  });
+
+  it("draws the torii, lantern and bench with clay models", () => {
+    expect(decorModelId("deco-torii")).toBe("deco-torii");
+    expect(decorModelId("deco-bench")).toBe("deco-bench");
+    expect(decorModelId("deco-pond")).toBeNull();
+  });
+
+  it("shows only the pets that have a 3D model", () => {
+    expect(
+      gardenPets(["deco-slime", "pet-slime-ember", "pet-slime-water", "pet-slime-moss"]),
+    ).toEqual(["pet-slime-ember", "pet-slime-moss"]);
   });
 
   it("ships every model file in public/garden3d", () => {

@@ -19,6 +19,20 @@ const TREE_MODEL: Record<TreeSpecies, string> = {
 
 /** The floating island the whole garden stands on. */
 export const ISLAND_MODEL = "island";
+/** Pipo, the chick with round glasses. */
+export const PIPO_MODEL = "pipo";
+
+/** Decorations that have a clay model (shop item id to model). */
+const DECOR_MODEL: Record<string, string> = {
+  "deco-torii": "deco-torii",
+  "deco-lantern": "deco-lantern",
+  "deco-bench": "deco-bench",
+};
+
+/** Model of a placed decoration, or null to draw its 2D picture. */
+export function decorModelId(itemId: string): string | null {
+  return DECOR_MODEL[itemId] ?? null;
+}
 
 /**
  * Model for a tree: one shared sprout for the first session, then a bigger model for each
@@ -35,15 +49,24 @@ export function treeModelId(tree: TreeGrowth, studiedToday: boolean): string {
   return base;
 }
 
-/** Pets that already have a 3D model; the others are still drawn from their 2D frames. */
+/** Pets that have a 3D model; the others (peach, water) are left out of the garden for now. */
 const PET_MODEL: Partial<Record<PetId, string>> = {
   "pet-slime-ember": "pet-ember-lava",
   "pet-slime-sakura": "pet-sakura-mochi",
   "pet-slime-moss": "pet-moss-jelly",
+  "pet-slime-cloud": "pet-cloud",
 };
 
 export function petModelId(id: PetId): string | null {
   return PET_MODEL[id] ?? null;
+}
+
+/**
+ * Pets shown in the garden: only those with a 3D model. Minh asked to drop the 2D pets
+ * (26/11/2026); the others come back as their clay models are made.
+ */
+export function gardenPets(pets: readonly PetId[]): PetId[] {
+  return pets.filter((id) => petModelId(id) !== null);
 }
 
 export function modelUrl(id: string): string {
@@ -55,5 +78,13 @@ export function allModelIds(): string[] {
   const trees = Object.values(TREE_MODEL).flatMap((name) =>
     [2, 3, 4].map((step) => `${name}-${step}`),
   );
-  return [ISLAND_MODEL, "sprout", ...trees, "sakura-4-green", ...Object.values(PET_MODEL)];
+  return [
+    ISLAND_MODEL,
+    PIPO_MODEL,
+    "sprout",
+    ...trees,
+    "sakura-4-green",
+    ...Object.values(PET_MODEL),
+    ...Object.values(DECOR_MODEL),
+  ];
 }

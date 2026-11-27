@@ -76,6 +76,7 @@ Biến trang `/garden` từ lưới icon thành **một khu vườn sống độ
 > - **Hồ và cầu** là một phần của model đảo nên luôn hiện; cá koi chỉ có khi sở hữu `deco-pond`.
 > - **Thú cưng**: dung nham, thỏ mochi anh đào, slime rêu dùng model 3D; đào, nước, mây và Pipo vẫn là ảnh 2D trên thẻ quay về camera. Hành vi (`lib/garden/pet-behaviour.ts`) và kỹ năng giữ nguyên; renderer chỉ đổi cách áp `pose()` sang 3D (nhảy = độ cao, nghiêng = cúi người, thỏ mochi xoay thật khi dùng kỹ năng).
 > - Cây đứng trước Pipo **hoặc thú cưng** sẽ mờ đi để vẫn thấy chúng.
+> - **Góc nhìn (26/11/2026):** camera nhìn thấp (36°), đảo xoay sẵn −40° cho thấy góc chéo như diorama. **Kéo ngang để xoay đảo** quanh trục đứng (có quán tính nhẹ, tắt khi giảm chuyển động); góc nghiêng dọc bị khoá. Trên điện thoại kéo dọc vẫn cuộn trang. Nền là ảnh đất sét vẽ bằng Gemini (`public/garden3d/backdrop.webp`: núi Phú Sĩ, dải rừng, giấy kem chấm bi); mây trôi đã bỏ.
 
 Lưới **9×6 ô**, mẫu cố định (`T` = ô trồng cây, `D` = ô đồ trang trí, `=` = lối đi, `W` = hồ 2×2). Đổi từ 8×6 với lối đi thẳng sang lối đi uốn khúc ngày 10/11/2026 (Minh yêu cầu làm lại cả vườn):
 

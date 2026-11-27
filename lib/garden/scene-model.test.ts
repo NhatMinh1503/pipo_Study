@@ -23,19 +23,25 @@ describe("garden scene model", () => {
     expect(model.koi).toBeNull();
   });
 
-  it("spreads owned pets along the path, walking both ways, with a model when they have one", () => {
+  it("spreads the 3D pets along the path, walking both ways, and leaves the 2D ones out", () => {
     const model = buildSceneModel({
       ...empty,
-      pets: ["deco-slime", "pet-slime-ember", "pet-slime-cloud"],
+      pets: [
+        "deco-slime",
+        "pet-slime-moss",
+        "pet-slime-ember",
+        "pet-slime-cloud",
+        "pet-slime-sakura",
+      ],
     });
-    expect(model.pets.map((pet) => [pet.id, pet.frames[0], pet.model])).toEqual([
-      ["deco-slime", "pet-peach", null],
-      ["pet-slime-ember", "pet-ember", "pet-ember-lava"],
-      ["pet-slime-cloud", "pet-cloud", null],
+    expect(model.pets.map((pet) => [pet.id, pet.model])).toEqual([
+      ["pet-slime-moss", "pet-moss-jelly"],
+      ["pet-slime-ember", "pet-ember-lava"],
+      ["pet-slime-cloud", "pet-cloud"],
+      ["pet-slime-sakura", "pet-sakura-mochi"],
     ]);
-    expect(model.pets[2]?.frames).toEqual(["pet-cloud", "pet-cloud-b", "pet-cloud-skill"]);
-    expect(model.pets.map((pet) => pet.start)).toEqual([1 / 6, 3 / 6, 5 / 6]);
-    expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1]);
+    expect(model.pets.map((pet) => pet.start)).toEqual([1 / 8, 3 / 8, 5 / 8, 7 / 8]);
+    expect(model.pets.map((pet) => pet.direction)).toEqual([-1, 1, -1, 1]);
   });
 
   it("puts koi in the island's pond only when the learner owns the pond", () => {
@@ -94,8 +100,14 @@ describe("garden scene model", () => {
       ],
     });
     expect(model.decorations).toEqual([
-      { id: "deco-bench", asset: "deco-bench", slot: 1, ...decorPoint(1) },
-      { id: "deco-lantern", asset: "deco-lantern", slot: 4, ...decorPoint(4) },
+      { id: "deco-bench", asset: "deco-bench", model: "deco-bench", slot: 1, ...decorPoint(1) },
+      {
+        id: "deco-lantern",
+        asset: "deco-lantern",
+        model: "deco-lantern",
+        slot: 4,
+        ...decorPoint(4),
+      },
     ]);
     expect(model.stops).toEqual([
       { distance: stopAt(closestOnPath(decorPoint(1)).distance), kind: "bench" },
